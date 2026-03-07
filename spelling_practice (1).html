@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Spell It! ✏️</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky:#5BC8F5; --sun:#FFD23F; --grass:#4CD964; --coral:#FF6B6B;
+  --purple:#A78BFA; --navy:#1E2D5A; --orange:#FF9F43; --pink:#FF6EB4; --cream:#FFF8ED;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;z-index:0;
+  background:radial-gradient(circle at 10% 15%,rgba(91,200,245,0.18) 0%,transparent 35%),
+  radial-gradient(circle at 90% 80%,rgba(167,139,250,0.15) 0%,transparent 35%),
+  radial-gradient(circle at 50% 50%,rgba(255,210,63,0.1) 0%,transparent 50%);pointer-events:none;}
+.star{position:fixed;font-size:20px;animation:floatStar 6s ease-in-out infinite;pointer-events:none;z-index:0;opacity:0.45;}
+@keyframes floatStar{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-16px) rotate(18deg)}}
+.wrap{max-width:700px;margin:0 auto;padding:24px 16px 80px;position:relative;z-index:1;}
+
+.header{text-align:center;margin-bottom:22px;}
+.header h1{font-family:'Fredoka One',cursive;font-size:clamp(34px,8vw,56px);color:var(--navy);line-height:1;}
+.header h1 span{color:var(--coral);}
+.header p{font-size:14px;font-weight:700;color:#777;margin-top:6px;}
+
+.progress-wrap{background:white;border:3px solid var(--navy);border-radius:50px;padding:6px 12px;margin-bottom:16px;display:flex;align-items:center;gap:10px;box-shadow:4px 4px 0 var(--navy);}
+.progress-label{font-family:'Fredoka One',cursive;font-size:13px;color:var(--navy);white-space:nowrap;}
+.progress-bar-bg{flex:1;background:#f0f0f0;border-radius:50px;height:13px;overflow:hidden;}
+.progress-bar-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--grass),var(--sky));transition:width 0.5s cubic-bezier(0.34,1.56,0.64,1);width:0%;}
+.progress-score{font-family:'Fredoka One',cursive;font-size:16px;color:var(--coral);white-space:nowrap;}
+
+.nav-dots{display:flex;justify-content:center;gap:8px;margin-bottom:16px;}
+.dot{width:12px;height:12px;border-radius:50%;background:#ddd;border:2px solid var(--navy);transition:all 0.3s;}
+.dot.done{background:var(--grass);}
+.dot.current{background:var(--sun);transform:scale(1.3);}
+
+.ex-card{background:white;border:3px solid var(--navy);border-radius:22px;padding:24px 20px;margin-bottom:18px;box-shadow:6px 6px 0 var(--navy);display:none;animation:slideIn 0.4s cubic-bezier(0.34,1.56,0.64,1);}
+.ex-card.active{display:block;}
+@keyframes slideIn{from{opacity:0;transform:translateY(26px) scale(0.95)}to{opacity:1;transform:none}}
+@keyframes popIn{from{transform:scale(0.7);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes shakeIt{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes popBox{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+
+.ex-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 16px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:13px;color:white;margin-bottom:12px;}
+.ex-title{font-family:'Fredoka One',cursive;font-size:clamp(18px,4vw,24px);color:var(--navy);margin-bottom:4px;}
+.ex-subtitle{font-size:13px;font-weight:700;color:#888;margin-bottom:18px;}
+
+.word-display{background:var(--navy);border-radius:14px;padding:14px 16px;margin-bottom:14px;text-align:center;}
+.word-image-hint{font-size:44px;display:block;margin-bottom:4px;}
+.word-hint-label{font-family:'Fredoka One',cursive;font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:1px;text-transform:uppercase;}
+.word-hint-value{font-family:'Fredoka One',cursive;font-size:clamp(14px,3.5vw,19px);color:white;margin-top:3px;}
+
+.answer-input{width:100%;border:3px solid var(--navy);border-radius:13px;padding:12px 14px;font-family:'Fredoka One',cursive;font-size:clamp(17px,4vw,23px);color:var(--navy);text-align:center;outline:none;transition:all 0.2s;background:#f9f9f9;margin-bottom:10px;letter-spacing:2px;}
+.answer-input:focus{border-color:var(--purple);background:white;box-shadow:0 0 0 4px rgba(167,139,250,0.18);}
+.answer-input.correct{border-color:var(--grass);background:#f0fff4;color:#16a34a;}
+.answer-input.wrong{border-color:var(--coral);background:#fff5f5;color:var(--coral);animation:shakeIt 0.3s;}
+
+.letter-boxes{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:16px;}
+.letter-box{width:clamp(32px,7vw,48px);height:clamp(40px,8vw,56px);border:3px solid var(--navy);border-radius:10px;background:#f8f8f8;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:clamp(15px,3.5vw,22px);color:var(--navy);transition:all 0.2s;}
+.letter-box.filled{background:#EEF2FF;border-color:var(--purple);}
+.letter-box.correct{background:#DCFCE7;border-color:var(--grass);color:#16a34a;animation:popBox 0.3s;}
+.letter-box.wrong{background:#FEE2E2;border-color:var(--coral);color:var(--coral);animation:shakeIt 0.3s;}
+.letter-box.space-box{width:10px;background:transparent;border:none;}
+
+.scramble-letters{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-bottom:16px;}
+.scramble-chip{background:white;border:3px solid var(--navy);border-radius:11px;padding:8px 13px;font-family:'Fredoka One',cursive;font-size:clamp(17px,3.5vw,22px);color:var(--navy);cursor:pointer;transition:all 0.15s;box-shadow:0 4px 0 var(--navy);user-select:none;-webkit-user-select:none;}
+.scramble-chip:active{transform:translateY(4px);box-shadow:none;}
+.scramble-chip.used{background:#f0f0f0;color:#ccc;border-color:#ddd;box-shadow:none;pointer-events:none;}
+
+.missing-word-display{font-family:'Fredoka One',cursive;font-size:clamp(20px,5vw,36px);color:var(--navy);text-align:center;margin-bottom:14px;letter-spacing:3px;line-height:1.6;}
+.missing-inp{display:inline-block;width:clamp(24px,5vw,34px);border:none;border-bottom:4px solid var(--coral);background:transparent;font-family:'Fredoka One',cursive;font-size:clamp(17px,4vw,30px);text-align:center;color:var(--coral);outline:none;padding:0 2px 2px;}
+
+.btn-check{display:block;width:100%;background:var(--navy);color:white;border:none;border-radius:13px;padding:14px;font-family:'Fredoka One',cursive;font-size:clamp(14px,3.5vw,18px);cursor:pointer;transition:all 0.2s;box-shadow:0 5px 0 rgba(0,0,0,0.28);}
+.btn-check:active{transform:translateY(5px);box-shadow:none;}
+.btn-check:disabled{background:#bbb;box-shadow:none;cursor:default;}
+.btn-next{display:none;width:100%;background:linear-gradient(135deg,var(--grass),var(--sky));color:white;border:none;border-radius:13px;padding:14px;font-family:'Fredoka One',cursive;font-size:clamp(14px,3.5vw,18px);cursor:pointer;transition:all 0.2s;box-shadow:0 5px 0 rgba(0,0,0,0.16);margin-top:10px;}
+.btn-next.show{display:block;animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);}
+.btn-next:active{transform:translateY(5px);box-shadow:none;}
+.btn-hint{background:transparent;border:2.5px dashed var(--orange);color:var(--orange);border-radius:11px;padding:8px 16px;font-family:'Fredoka One',cursive;font-size:13px;cursor:pointer;transition:all 0.2s;margin-top:8px;width:100%;}
+.btn-hint:hover{background:#fff9ee;}
+
+.feedback{text-align:center;padding:12px;border-radius:12px;font-family:'Fredoka One',cursive;font-size:clamp(14px,3.5vw,18px);margin-top:10px;display:none;animation:popIn 0.3s;}
+.feedback.show{display:block;}
+.feedback.correct-fb{background:#DCFCE7;color:#16a34a;border:2.5px solid var(--grass);}
+.feedback.wrong-fb{background:#FEE2E2;color:#dc2626;border:2.5px solid var(--coral);}
+
+.counter-tag{text-align:center;font-size:13px;color:#aaa;font-weight:700;margin-bottom:8px;}
+
+/* EX1 HALVES */
+.halves-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.halves-col-title{font-family:'Fredoka One',cursive;font-size:12px;color:white;padding:6px 0;border-radius:9px;text-align:center;margin-bottom:6px;}
+.half-chip{background:white;border:3px solid var(--navy);border-radius:11px;padding:10px 8px;font-family:'Fredoka One',cursive;font-size:clamp(14px,3vw,18px);color:var(--navy);cursor:pointer;transition:all 0.18s;text-align:center;box-shadow:0 3px 0 var(--navy);user-select:none;-webkit-user-select:none;margin-bottom:8px;}
+.half-chip:active{transform:translateY(3px);box-shadow:none;}
+.half-chip.sel-left{border-color:var(--coral);background:#fff0f0;box-shadow:0 3px 0 var(--coral);}
+.half-chip.sel-right{border-color:var(--purple);background:#f3eeff;box-shadow:0 3px 0 var(--purple);}
+.half-chip.matched{border-color:var(--grass)!important;background:#e6fff6!important;color:#16a34a!important;box-shadow:none!important;pointer-events:none;animation:popBox 0.3s;}
+.half-chip.shake{animation:shakeIt 0.3s;border-color:var(--coral)!important;background:#fff0f0!important;}
+.matched-pairs{margin-bottom:10px;}
+.matched-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:7px;animation:popIn 0.3s;}
+.matched-full{background:#e6fff6;border:2.5px solid var(--grass);border-radius:11px;padding:8px 18px;font-family:'Fredoka One',cursive;font-size:clamp(14px,3vw,18px);color:#16a34a;text-align:center;}
+
+/* WORD SEARCH */
+.wordsearch-wrap{overflow-x:auto;margin-bottom:14px;text-align:center;}
+.ws-grid{display:inline-grid;border:3px solid var(--navy);border-radius:12px;overflow:hidden;background:white;touch-action:none;}
+.ws-cell{width:clamp(28px,6vw,40px);height:clamp(28px,6vw,40px);display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:clamp(11px,2.5vw,16px);color:var(--navy);cursor:pointer;border:1px solid #ebebeb;transition:background 0.1s;user-select:none;-webkit-user-select:none;background:white;}
+.ws-cell.selecting{background:#d4edff;}
+.ws-cell.found-1{background:var(--grass);color:white;}
+.ws-cell.found-2{background:var(--purple);color:white;}
+.ws-cell.found-3{background:var(--coral);color:white;}
+.ws-cell.found-4{background:var(--orange);color:white;}
+.ws-cell.found-5{background:var(--pink);color:white;}
+.ws-word-list{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;}
+.ws-word-item{display:flex;align-items:center;gap:6px;background:#f7f7f7;border:2.5px solid #ddd;border-radius:9px;padding:6px 12px;font-family:'Fredoka One',cursive;font-size:clamp(12px,2.8vw,15px);color:var(--navy);transition:all 0.2s;}
+.ws-word-item.found-word{background:#e6fff6;border-color:var(--grass);color:#16a34a;text-decoration:line-through;}
+
+/* GRAMMAR */
+.grammar-q{padding:13px 0;border-bottom:1.5px dashed #e5e5e5;}
+.grammar-q:last-child{border-bottom:none;}
+.grammar-sentence{font-size:clamp(13px,2.8vw,15.5px);font-weight:800;color:var(--navy);margin-bottom:9px;line-height:1.55;}
+.blank-word{font-family:'Fredoka One',cursive;color:var(--sky);background:#e8f7ff;border-radius:6px;padding:1px 8px;}
+.grammar-opts{display:flex;flex-wrap:wrap;gap:6px;}
+.grammar-opt{background:white;border:2.5px solid #ddd;border-radius:9px;padding:6px 14px;font-family:'Fredoka One',cursive;font-size:clamp(12px,2.8vw,15px);color:var(--navy);cursor:pointer;transition:all 0.15s;}
+.grammar-opt:hover{border-color:var(--purple);background:#f3eeff;}
+.grammar-opt.sel{border-color:var(--sky);background:#e8f7ff;}
+.grammar-opt.opt-correct{border-color:var(--grass)!important;background:#e6fff6!important;color:#16a34a!important;}
+.grammar-opt.opt-wrong{border-color:var(--coral)!important;background:#FEE2E2!important;color:#dc2626!important;}
+.grammar-q-num{font-family:'Fredoka One',cursive;font-size:11px;color:#bbb;margin-bottom:3px;}
+
+/* FINISH */
+.confetti-piece{position:fixed;width:9px;height:9px;border-radius:2px;animation:confettiFall 1.5s ease-in forwards;z-index:999;pointer-events:none;}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+.finish-screen{display:none;text-align:center;background:white;border:3px solid var(--navy);border-radius:22px;padding:34px 20px;box-shadow:6px 6px 0 var(--navy);animation:slideIn 0.5s cubic-bezier(0.34,1.56,0.64,1);}
+.finish-screen.show{display:block;}
+.finish-emoji{font-size:66px;display:block;margin-bottom:10px;}
+.finish-title{font-family:'Fredoka One',cursive;font-size:clamp(24px,6vw,38px);color:var(--navy);}
+.finish-score{font-family:'Fredoka One',cursive;font-size:clamp(50px,10vw,70px);background:linear-gradient(135deg,var(--coral),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin:10px 0;}
+.finish-msg{font-size:15px;font-weight:700;color:#666;margin-bottom:20px;}
+.btn-restart{background:var(--coral);color:white;border:none;border-radius:13px;padding:13px 34px;font-family:'Fredoka One',cursive;font-size:18px;cursor:pointer;box-shadow:0 5px 0 #c0392b;transition:all 0.2s;}
+.btn-restart:active{transform:translateY(5px);box-shadow:none;}
+</style>
+</head>
+<body>
+<div class="star" style="top:7%;left:5%;animation-delay:0s">⭐</div>
+<div class="star" style="top:13%;right:7%;animation-delay:1s">🌟</div>
+<div class="star" style="top:60%;left:3%;animation-delay:2s">✨</div>
+<div class="star" style="top:72%;right:4%;animation-delay:0.5s">⭐</div>
+
+<div class="wrap">
+  <div class="header">
+    <h1>Spell <span>It!</span> ✏️</h1>
+    <p>6 fun activities to practise your spelling! 🎒🎂✂️</p>
+  </div>
+  <div class="progress-wrap">
+    <span class="progress-label">⭐ Progress</span>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+    <span class="progress-score" id="progressScore">0/0</span>
+  </div>
+  <div class="nav-dots" id="navDots"></div>
+
+  <!-- EX 1: HALVES MATCHING -->
+  <div class="ex-card active" id="ex1">
+    <div class="ex-tag" style="background:var(--sky)">🧩 Activity 1 / 6</div>
+    <div class="ex-title">Match the two halves!</div>
+    <div class="ex-subtitle">Tap a word on the LEFT 👈 then its matching half on the RIGHT 👉</div>
+    <div id="ex1-content"></div>
+    <div class="feedback" id="ex1-feedback"></div>
+    <button class="btn-next" id="ex1-next" onclick="goToEx(2)">Next activity →</button>
+  </div>
+
+  <!-- EX 2: SCRAMBLED -->
+  <div class="ex-card" id="ex2">
+    <div class="ex-tag" style="background:var(--purple)">🔀 Activity 2 / 6</div>
+    <div class="ex-title">Unscramble the letters!</div>
+    <div class="ex-subtitle">Tap the letters in the correct order to spell the word 🧩</div>
+    <div id="ex2-content"></div>
+    <button class="btn-check" id="ex2-check" onclick="checkEx2()">✓ Check</button>
+    <div class="feedback" id="ex2-feedback"></div>
+    <button class="btn-next" id="ex2-next" onclick="nextEx2()">Next word →</button>
+  </div>
+
+  <!-- EX 3: FILL MISSING -->
+  <div class="ex-card" id="ex3">
+    <div class="ex-tag" style="background:var(--orange)">🔤 Activity 3 / 6</div>
+    <div class="ex-title">Fill in the missing letters!</div>
+    <div class="ex-subtitle">Type the missing letters to complete each word 🕵️</div>
+    <div id="ex3-content"></div>
+    <button class="btn-check" id="ex3-check" onclick="checkEx3()">✓ Check</button>
+    <div class="feedback" id="ex3-feedback"></div>
+    <button class="btn-next" id="ex3-next" onclick="nextEx3()">Next word →</button>
+  </div>
+
+  <!-- EX 4: WORD SEARCH -->
+  <div class="ex-card" id="ex4">
+    <div class="ex-tag" style="background:var(--grass)">🔍 Activity 4 / 6</div>
+    <div class="ex-title">Word search!</div>
+    <div class="ex-subtitle">Find all 5 words! Words go → or ↓ or ↘ only. Drag to select!</div>
+    <div id="ex4-content"></div>
+    <div class="feedback" id="ex4-feedback"></div>
+    <button class="btn-next" id="ex4-next" onclick="goToEx(5)">Next activity →</button>
+  </div>
+
+  <!-- EX 5: TYPE THE WORD -->
+  <div class="ex-card" id="ex5">
+    <div class="ex-tag" style="background:var(--pink)">✏️ Activity 5 / 6</div>
+    <div class="ex-title">Look and spell!</div>
+    <div class="ex-subtitle">Look at the picture clue and type the correct word 🎯</div>
+    <div id="ex5-content"></div>
+    <button class="btn-check" id="ex5-check" onclick="checkEx5()">✓ Check</button>
+    <button class="btn-hint" id="ex5-hint" onclick="hintEx5()">💡 Show first letter</button>
+    <div class="feedback" id="ex5-feedback"></div>
+    <button class="btn-next" id="ex5-next" onclick="nextEx5()">Next word →</button>
+  </div>
+
+  <!-- EX 6: GRAMMAR -->
+  <div class="ex-card" id="ex6">
+    <div class="ex-tag" style="background:var(--coral)">🏆 Activity 6 / 6</div>
+    <div class="ex-title">Grammar challenge!</div>
+    <div class="ex-subtitle">Choose the correct possessive word for each sentence 🧠</div>
+    <div id="ex6-content"></div>
+    <button class="btn-check" id="ex6-check" onclick="checkEx6()">✓ Check all answers</button>
+    <div class="feedback" id="ex6-feedback"></div>
+    <button class="btn-next" id="ex6-next" onclick="showFinish()">🏆 See my results!</button>
+  </div>
+
+  <!-- FINISH -->
+  <div class="finish-screen" id="finishScreen">
+    <span class="finish-emoji" id="finishEmoji">🎉</span>
+    <div class="finish-title" id="finishTitle">Amazing!</div>
+    <div class="finish-score" id="finishScore">0/0</div>
+    <div class="finish-msg" id="finishMsg">Well done!</div>
+    <button class="btn-restart" onclick="restart()">🔄 Play again!</button>
+  </div>
+</div>
+
+<script>
+const vocab=[
+  {word:"backpack",        emoji:"🎒"},
+  {word:"water bottle",   emoji:"🍶"},
+  {word:"magnifying glass",emoji:"🔍"},
+  {word:"guide book",     emoji:"📘"},
+  {word:"mobile phone",   emoji:"📱"},
+  {word:"sun cream",      emoji:"🧴"},
+  {word:"notebook",       emoji:"📓"},
+  {word:"colouring pens", emoji:"🖊️"},
+  {word:"paintbrush",     emoji:"🖌️"},
+  {word:"scissors",       emoji:"✂️"},
+  {word:"photo frame",    emoji:"🖼️"},
+  {word:"decorations",    emoji:"🎊"},
+  {word:"bracelet",       emoji:"📿"},
+  {word:"cherries",       emoji:"🍒"},
+  {word:"biscuit",        emoji:"🍪"},
+  {word:"orange",         emoji:"🍊"},
+  {word:"grapes",         emoji:"🍇"},
+  {word:"crisps",         emoji:"🥔"},
+];
+const hardWords=vocab.filter(w=>w.word.includes(" ")||w.word.length>=8);
+const easyWords=vocab.filter(w=>!w.word.includes(" ")&&w.word.length<8);
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function pick(arr,n){return shuffle(arr).slice(0,n);}
+
+let totalScore=0,totalQ=0,currentEx=1;
+
+// progress
+function updateProgress(){
+  document.getElementById("progressFill").style.width=((currentEx-1)/6*100)+"%";
+  document.getElementById("progressScore").textContent=totalScore+"/"+totalQ;
+  updateDots();
+}
+function updateDots(){
+  document.querySelectorAll(".dot").forEach((d,i)=>{
+    d.classList.remove("done","current");
+    if(i+1<currentEx)d.classList.add("done");
+    else if(i+1===currentEx)d.classList.add("current");
+  });
+}
+function buildDots(){
+  const c=document.getElementById("navDots");c.innerHTML="";
+  for(let i=1;i<=6;i++){const d=document.createElement("div");d.className="dot"+(i===1?" current":"");c.appendChild(d);}
+}
+function goToEx(n){
+  currentEx=n;
+  for(let i=1;i<=6;i++)document.getElementById("ex"+i).classList.remove("active");
+  document.getElementById("finishScreen").classList.remove("show");
+  if(n<=6){document.getElementById("ex"+n).classList.add("active");document.getElementById("ex"+n).scrollIntoView({behavior:"smooth",block:"start"});}
+  updateProgress();
+}
+
+// confetti
+function confetti(){
+  const cols=["#FFD23F","#FF6B6B","#4CD964","#5BC8F5","#A78BFA","#FF9F43","#FF6EB4"];
+  for(let i=0;i<28;i++){
+    const el=document.createElement("div");el.className="confetti-piece";
+    el.style.left=Math.random()*100+"vw";el.style.top="-10px";
+    el.style.background=cols[Math.floor(Math.random()*cols.length)];
+    el.style.width=(Math.random()*10+5)+"px";el.style.height=(Math.random()*10+5)+"px";
+    el.style.borderRadius=Math.random()>0.5?"50%":"2px";
+    el.style.animationDelay=Math.random()*0.4+"s";
+    el.style.animationDuration=(Math.random()*1+1)+"s";
+    document.body.appendChild(el);setTimeout(()=>el.remove(),2200);
+  }
+}
+function showFeedback(id,ok,ans){
+  const el=document.getElementById(id);el.classList.add("show");
+  if(ok){el.className="feedback show correct-fb";el.innerHTML="🎉 Correct! <strong>"+ans+"</strong> ✅";confetti();}
+  else{el.className="feedback show wrong-fb";el.innerHTML="❌ Answer: <strong>"+ans+"</strong>";}
+}
+
+// ===================== EX 1: HALVES =====================
+let ex1Words=[],ex1Total=0,ex1Matched=0,ex1SelLeft=null,ex1SelRight=null;
+
+function buildEx1(){
+  ex1Words=pick([...hardWords],5);
+  if(ex1Words.length<5)ex1Words=pick(vocab,5);
+  ex1Total=ex1Words.length;totalQ+=ex1Total;
+  ex1Matched=0;ex1SelLeft=null;ex1SelRight=null;
+
+  const lefts=[],rights=[];
+  ex1Words.forEach((w,i)=>{
+    const wd=w.word;
+    if(wd.includes(" ")){
+      const sp=wd.indexOf(" ");
+      lefts.push({text:wd.slice(0,sp),idx:i});
+      rights.push({text:wd.slice(sp+1),idx:i});
+    } else {
+      const sp=Math.ceil(wd.length/2);
+      lefts.push({text:wd.slice(0,sp)+"–",idx:i});
+      rights.push({text:wd.slice(sp),idx:i});
+    }
+  });
+  const sr=shuffle([...rights]);
+
+  document.getElementById("ex1-content").innerHTML=`
+    <div id="ex1-matched-list" class="matched-pairs"></div>
+    <div class="halves-grid">
+      <div>
+        <div class="halves-col-title" style="background:var(--coral)">👈 First part</div>
+        <div id="lefts-col">${lefts.map((l,i)=>`<div class="half-chip" id="left-${i}" onclick="selLeft(${i},${l.idx})">${l.text}</div>`).join("")}</div>
+      </div>
+      <div>
+        <div class="halves-col-title" style="background:var(--purple)">Second part 👉</div>
+        <div id="rights-col">${sr.map((r,i)=>`<div class="half-chip" id="right-${i}" data-wi="${r.idx}" onclick="selRight(${i},${r.idx})">${r.text}</div>`).join("")}</div>
+      </div>
+    </div>
+    <div class="counter-tag" id="ex1-counter">Matched: 0 / ${ex1Total}</div>
+  `;
+}
+
+function selLeft(ci,wi){
+  document.querySelectorAll(".half-chip.sel-left").forEach(e=>e.classList.remove("sel-left"));
+  ex1SelLeft={ci,wi};document.getElementById("left-"+ci).classList.add("sel-left");tryMatch1();
+}
+function selRight(ci,wi){
+  document.querySelectorAll(".half-chip.sel-right").forEach(e=>e.classList.remove("sel-right"));
+  ex1SelRight={ci,wi};document.getElementById("right-"+ci).classList.add("sel-right");tryMatch1();
+}
+function tryMatch1(){
+  if(!ex1SelLeft||!ex1SelRight)return;
+  const ok=ex1SelLeft.wi===ex1SelRight.wi;
+  const lEl=document.getElementById("left-"+ex1SelLeft.ci);
+  const rEl=document.getElementById("right-"+ex1SelRight.ci);
+  if(ok){
+    lEl.classList.add("matched");rEl.classList.add("matched");
+    ex1Matched++;totalScore++;updateProgress();
+    const w=ex1Words[ex1SelLeft.wi];
+    document.getElementById("ex1-matched-list").innerHTML+=`<div class="matched-row"><div class="matched-full">${w.emoji} ${w.word}</div></div>`;
+    document.getElementById("ex1-counter").textContent="Matched: "+ex1Matched+" / "+ex1Total;
+    if(ex1Matched===ex1Total){
+      const fb=document.getElementById("ex1-feedback");fb.className="feedback show correct-fb";fb.innerHTML="🎉 All matched! Well done! ✅";confetti();
+      document.getElementById("ex1-next").className="btn-next show";
+    }
+  } else {
+    lEl.classList.add("shake");rEl.classList.add("shake");
+    setTimeout(()=>{lEl.classList.remove("shake","sel-left");rEl.classList.remove("shake","sel-right");},400);
+  }
+  ex1SelLeft=null;ex1SelRight=null;
+}
+
+// ===================== EX 2: SCRAMBLE =====================
+let ex2Idx=0,ex2Words=[],ex2Selected=[],ex2ChipMap=[],ex2Score=0,ex2Total=0;
+
+function scrambleWord(word){
+  if(word.includes(" ")){
+    return word.split(" ").map(p=>{let s;do{s=shuffle(p.split(""));}while(s.join("")===p&&p.length>1);return s;});
+  }else{let s;do{s=shuffle(word.split(""));}while(s.join("")===word&&word.length>1);return[s];}
+}
+
+function buildEx2(){
+  ex2Words=shuffle([...hardWords,...easyWords.slice(0,2)]).slice(0,5);
+  ex2Total=ex2Words.length;totalQ+=ex2Total;ex2Idx=0;ex2Score=0;renderEx2();
+}
+function renderEx2(){
+  if(ex2Idx>=ex2Words.length){goToEx(3);return;}
+  const w=ex2Words[ex2Idx];ex2Selected=[];ex2ChipMap=[];
+  document.getElementById("ex2-feedback").className="feedback";
+  document.getElementById("ex2-next").className="btn-next";
+  document.getElementById("ex2-check").disabled=false;
+  const chars=w.word.split("");let bi=0;
+  let bH=`<div class="letter-boxes" id="ex2-boxes">`;
+  chars.forEach(ch=>{if(ch===" ")bH+=`<div class="letter-box space-box"></div>`;else{bH+=`<div class="letter-box" id="ex2-box-${bi}"></div>`;bi++;}});
+  bH+=`</div>`;
+  const parts=scrambleWord(w.word);let cH=`<div class="scramble-letters">`;
+  parts.flat().forEach((letter,i)=>{
+    ex2ChipMap.push({letter,used:false});
+    cH+=`<div class="scramble-chip" id="ex2-chip-${i}" onclick="selChip2(${i})">${letter.toUpperCase()}</div>`;
+  });
+  cH+=`</div>`;
+  document.getElementById("ex2-content").innerHTML=`
+    <div class="word-display"><span class="word-image-hint">${w.emoji}</span><div class="word-hint-label">Unscramble!</div></div>
+    ${bH}${cH}
+    <div class="counter-tag">Word ${ex2Idx+1}/${ex2Words.length} &nbsp;|&nbsp; <span style="color:var(--coral);cursor:pointer" onclick="clearEx2()">✕ Clear</span></div>`;
+}
+function selChip2(i){
+  if(ex2ChipMap[i].used)return;
+  const wc=ex2Words[ex2Idx].word.replace(/ /g,"");
+  if(ex2Selected.length>=wc.length)return;
+  ex2Selected.push({ci:i,letter:ex2ChipMap[i].letter});
+  ex2ChipMap[i].used=true;
+  document.getElementById("ex2-chip-"+i).classList.add("used");
+  const box=document.getElementById("ex2-box-"+(ex2Selected.length-1));
+  if(box){box.textContent=ex2ChipMap[i].letter.toUpperCase();box.classList.add("filled");}
+}
+function clearEx2(){
+  ex2Selected=[];ex2ChipMap.forEach((c,i)=>{c.used=false;const el=document.getElementById("ex2-chip-"+i);if(el)el.classList.remove("used");});
+  const wc=ex2Words[ex2Idx].word.replace(/ /g,"");
+  for(let i=0;i<wc.length;i++){const b=document.getElementById("ex2-box-"+i);if(b){b.textContent="";b.className="letter-box";}}
+}
+function checkEx2(){
+  const w=ex2Words[ex2Idx];const wc=w.word.replace(/ /g,"").toLowerCase();
+  const ans=ex2Selected.map(s=>s.letter).join("").toLowerCase();const ok=ans===wc;
+  document.getElementById("ex2-check").disabled=true;
+  for(let i=0;i<wc.length;i++){const b=document.getElementById("ex2-box-"+i);if(b)b.classList.add(ok?"correct":"wrong");}
+  if(ok){ex2Score++;totalScore++;}
+  showFeedback("ex2-feedback",ok,w.word);
+  document.getElementById("ex2-next").className="btn-next show";updateProgress();
+}
+function nextEx2(){ex2Idx++;if(ex2Idx>=ex2Words.length){goToEx(3);return;}renderEx2();}
+
+// ===================== EX 3: FILL MISSING =====================
+let ex3Idx=0,ex3Words=[],ex3HiddenPos=[],ex3Inputs=[],ex3Score=0,ex3Total=0;
+
+function buildEx3(){
+  ex3Words=shuffle([...hardWords,...easyWords]).slice(0,6);
+  ex3Total=ex3Words.length;totalQ+=ex3Total;ex3Idx=0;ex3Score=0;renderEx3();
+}
+function getMissing(word){
+  const chars=word.split("");const hc=Math.max(2,Math.floor(word.replace(/ /g,"").length*0.42));
+  let pos=[];for(let i=2;i<chars.length;i++){if(chars[i]!==" ")pos.push(i);}
+  return shuffle(pos).slice(0,hc);
+}
+function renderEx3(){
+  if(ex3Idx>=ex3Words.length){goToEx(4);return;}
+  const w=ex3Words[ex3Idx];ex3HiddenPos=getMissing(w.word);ex3Inputs=[];
+  document.getElementById("ex3-feedback").className="feedback";
+  document.getElementById("ex3-next").className="btn-next";
+  document.getElementById("ex3-check").disabled=false;
+  const chars=w.word.split("");let ii=0;
+  let html=`<div class="missing-word-display">`;
+  chars.forEach((ch,i)=>{
+    if(ch===" ")html+=`&nbsp;&nbsp;`;
+    else if(ex3HiddenPos.includes(i)){
+      html+=`<input class="missing-inp" id="ex3-inp-${ii}" maxlength="1" type="text" autocomplete="off" autocorrect="off" spellcheck="false" oninput="this.value=this.value.toLowerCase();jn3(${ii})">`;
+      ex3Inputs.push({idx:ii,char:ch.toLowerCase()});ii++;
+    }else html+=`<span>${ch}</span>`;
+  });
+  html+=`</div>`;
+  document.getElementById("ex3-content").innerHTML=`
+    <div class="word-display"><span class="word-image-hint">${w.emoji}</span><div class="word-hint-label">Fill in the missing letters!</div></div>
+    ${html}<div class="counter-tag">Word ${ex3Idx+1}/${ex3Words.length}</div>`;
+  const f=document.getElementById("ex3-inp-0");if(f)f.focus();
+}
+function jn3(i){const n=document.getElementById("ex3-inp-"+(i+1));if(n)n.focus();}
+function checkEx3(){
+  let ok=true;
+  ex3Inputs.forEach(inp=>{
+    const el=document.getElementById("ex3-inp-"+inp.idx);
+    const val=el?el.value.trim().toLowerCase():"";const right=val===inp.char;
+    if(!right)ok=false;
+    if(el){el.style.borderBottomColor=right?"var(--grass)":"var(--coral)";el.style.color=right?"#16a34a":"var(--coral)";el.disabled=true;}
+  });
+  document.getElementById("ex3-check").disabled=true;
+  if(ok){ex3Score++;totalScore++;}
+  showFeedback("ex3-feedback",ok,ex3Words[ex3Idx].word);
+  document.getElementById("ex3-next").className="btn-next show";updateProgress();
+}
+function nextEx3(){ex3Idx++;if(ex3Idx>=ex3Words.length){goToEx(4);return;}renderEx3();}
+
+// ===================== EX 4: WORD SEARCH =====================
+const WS=12;
+let wsWords=[],wsPlaced=[],wsGrid=[],wsFoundCount=0,wsSel=false,wsStart=null,wsSelCells=[];
+const wsCols=["found-1","found-2","found-3","found-4","found-5"];
+
+function buildEx4(){
+  // pick 5 words: prefer single-word items for clean grid, max length 12
+  const pool=vocab.map(w=>({...w,clean:w.word.replace(/ /g,"").toLowerCase()})).filter(w=>w.clean.length<=WS);
+  wsWords=shuffle(pool).slice(0,5);
+  wsFoundCount=0;wsPlaced=[];
+  wsGrid=Array.from({length:WS},()=>Array(WS).fill(""));
+  totalQ+=1;
+
+  wsWords.forEach(w=>{
+    const word=w.clean;let ok=false,tries=0;
+    while(!ok&&tries<300){
+      tries++;
+      const dir=Math.floor(Math.random()*3);
+      let r,c;
+      if(dir===0){r=Math.floor(Math.random()*WS);c=Math.floor(Math.random()*(WS-word.length));}
+      else if(dir===1){r=Math.floor(Math.random()*(WS-word.length));c=Math.floor(Math.random()*WS);}
+      else{r=Math.floor(Math.random()*(WS-word.length));c=Math.floor(Math.random()*(WS-word.length));}
+      let canPlace=true;const cells=[];
+      for(let i=0;i<word.length;i++){
+        const rr=r+(dir===0?0:i),cc=c+(dir===1?0:i);
+        if(wsGrid[rr][cc]!==""&&wsGrid[rr][cc]!==word[i]){canPlace=false;break;}
+        cells.push({r:rr,c:cc,ch:word[i]});
+      }
+      if(canPlace){cells.forEach(({r,c,ch})=>wsGrid[r][c]=ch);wsPlaced.push({w,cells,dir,found:false,colorClass:wsCols[wsPlaced.length]});ok=true;}
+    }
+  });
+
+  const alpha="abcdefghijklmnoprstuvwxy";
+  for(let r=0;r<WS;r++)for(let c=0;c<WS;c++)if(!wsGrid[r][c])wsGrid[r][c]=alpha[Math.floor(Math.random()*alpha.length)];
+
+  renderEx4();
+}
+function renderEx4(){
+  const wl=`<div class="ws-word-list">${wsWords.map((w,i)=>`<div class="ws-word-item" id="wsw-${i}">${w.emoji} ${w.word}</div>`).join("")}</div>`;
+  let gH=`<div class="wordsearch-wrap"><div class="ws-grid" id="wsG" style="grid-template-columns:repeat(${WS},1fr)">`;
+  for(let r=0;r<WS;r++)for(let c=0;c<WS;c++){
+    gH+=`<div class="ws-cell" id="wsc-${r}-${c}" data-r="${r}" data-c="${c}"
+      onpointerdown="wsStartFn(${r},${c})" onpointerenter="wsMoveFn(${r},${c})" onpointerup="wsEndFn()"
+    >${wsGrid[r][c].toUpperCase()}</div>`;
+  }
+  gH+=`</div></div>`;
+  document.getElementById("ex4-content").innerHTML=wl+gH+`<div class="counter-tag" id="ex4-ctr">Found: 0 / 5</div>`;
+}
+function wsStartFn(r,c){wsSel=true;wsStart={r,c};wsSelCells=[{r,c}];wsHL();}
+function wsMoveFn(r,c){
+  if(!wsSel)return;
+  wsSelCells=getLine(wsStart.r,wsStart.c,r,c);wsHL();
+}
+function wsEndFn(){
+  if(!wsSel)return;wsSel=false;
+  const str=wsSelCells.map(({r,c})=>wsGrid[r][c]).join("").toLowerCase();
+  let matched=false;
+  wsPlaced.forEach((p,pi)=>{
+    if(p.found)return;
+    if(str===p.w.clean){
+      p.found=true;matched=true;wsFoundCount++;
+      wsSelCells.forEach(({r,c})=>{const el=document.getElementById("wsc-"+r+"-"+c);if(el)el.className="ws-cell "+p.colorClass;});
+      document.getElementById("wsw-"+pi).classList.add("found-word");
+      document.getElementById("ex4-ctr").textContent="Found: "+wsFoundCount+" / 5";
+      if(wsFoundCount===5){
+        totalScore++;updateProgress();
+        const fb=document.getElementById("ex4-feedback");fb.className="feedback show correct-fb";fb.innerHTML="🎉 All 5 words found! Amazing! ✅";confetti();
+        document.getElementById("ex4-next").className="btn-next show";
+      }
+    }
+  });
+  if(!matched)wsSelCells.forEach(({r,c})=>{const el=document.getElementById("wsc-"+r+"-"+c);if(el&&!el.className.includes("found"))el.className="ws-cell";});
+  wsSelCells=[];
+}
+function getLine(r1,c1,r2,c2){
+  const cells=[];const dr=r2-r1,dc=c2-c1;
+  let sr=0,sc=0;
+  if(dr===0&&dc>0)sc=1;
+  else if(dc===0&&dr>0)sr=1;
+  else if(dr>0&&dc>0&&dr===dc){sr=1;sc=1;}
+  else return[{r:r1,c:c1}];
+  let r=r1,c=c1;
+  while(r>=0&&r<WS&&c>=0&&c<WS){
+    cells.push({r,c});if(r===r2&&c===c2)break;r+=sr;c+=sc;if(cells.length>WS)break;
+  }
+  return cells;
+}
+function wsHL(){
+  for(let r=0;r<WS;r++)for(let c=0;c<WS;c++){const el=document.getElementById("wsc-"+r+"-"+c);if(el&&!el.className.includes("found"))el.className="ws-cell";}
+  wsSelCells.forEach(({r,c})=>{const el=document.getElementById("wsc-"+r+"-"+c);if(el&&!el.className.includes("found"))el.classList.add("selecting");});
+}
+document.addEventListener("pointermove",e=>{
+  if(!wsSel)return;
+  const el=document.elementFromPoint(e.clientX,e.clientY);
+  if(el&&el.classList.contains("ws-cell")){wsMoveFn(parseInt(el.dataset.r),parseInt(el.dataset.c));}
+});
+document.addEventListener("pointerup",()=>{if(wsSel)wsEndFn();});
+
+// ===================== EX 5: TYPE THE WORD =====================
+let ex5Idx=0,ex5Words=[],ex5Score=0,ex5Total=0;
+
+function buildEx5(){
+  // 4 hard + 2 easy, ensure magnifying glass, water bottle etc appear
+  const priority=hardWords.filter(w=>["magnifying glass","water bottle","mobile phone","colouring pens","guide book","sun cream"].includes(w.word));
+  const rest=hardWords.filter(w=>!priority.includes(w));
+  ex5Words=shuffle([...shuffle(priority).slice(0,4),...pick(easyWords,2)]);
+  ex5Total=ex5Words.length;totalQ+=ex5Total;ex5Idx=0;ex5Score=0;renderEx5();
+}
+function renderEx5(){
+  if(ex5Idx>=ex5Words.length){goToEx(6);return;}
+  const w=ex5Words[ex5Idx];
+  document.getElementById("ex5-feedback").className="feedback";
+  document.getElementById("ex5-next").className="btn-next";
+  document.getElementById("ex5-check").disabled=false;
+  document.getElementById("ex5-hint").style.display="";
+  document.getElementById("ex5-content").innerHTML=`
+    <div class="word-display">
+      <span class="word-image-hint">${w.emoji}</span>
+      <div class="word-hint-label">What is this? Type the word!</div>
+      <div class="word-hint-value" style="opacity:0.35">${w.word.length} letters${w.word.includes(" ")?" (with a space)":""}</div>
+    </div>
+    <input class="answer-input" id="ex5-input" type="text" placeholder="Type here..." autocomplete="off" autocorrect="off" spellcheck="false"
+      oninput="this.value=this.value.toLowerCase()" onkeydown="if(event.key==='Enter')checkEx5()">
+    <div class="counter-tag">Word ${ex5Idx+1}/${ex5Words.length}</div>`;
+  document.getElementById("ex5-input").focus();
+}
+function hintEx5(){const inp=document.getElementById("ex5-input");if(!inp||inp.disabled)return;inp.value=ex5Words[ex5Idx].word[0];inp.focus();}
+function checkEx5(){
+  const inp=document.getElementById("ex5-input");if(!inp)return;
+  const val=inp.value.trim().toLowerCase();const correct=ex5Words[ex5Idx].word.toLowerCase();
+  const ok=val===correct;inp.classList.add(ok?"correct":"wrong");inp.disabled=true;
+  document.getElementById("ex5-check").disabled=true;document.getElementById("ex5-hint").style.display="none";
+  if(ok){ex5Score++;totalScore++;}
+  showFeedback("ex5-feedback",ok,ex5Words[ex5Idx].word);
+  document.getElementById("ex5-next").className="btn-next show";updateProgress();
+}
+function nextEx5(){ex5Idx++;if(ex5Idx>=ex5Words.length){goToEx(6);return;}renderEx5();}
+
+// ===================== EX 6: GRAMMAR =====================
+const grammarQs=[
+  {s:"This is ___ backpack. I take it on every hiking trip.",opts:["my","mine","her","hers"],ans:"my"},
+  {s:"Tom has a mobile phone. That mobile phone is ___.",opts:["him","his","her","hers"],ans:"his"},
+  {s:"We forgot ___ map. Now we're lost!",opts:["our","ours","their","theirs"],ans:"our"},
+  {s:"Sarah has a blue coat. The red one is not ___.",opts:["her","hers","she","his"],ans:"hers"},
+  {s:"The children put ___ colouring pens in the bag.",opts:["theirs","their","ours","our"],ans:"their"},
+  {s:"I have a notebook but I left ___ at home. Can I borrow yours?",opts:["my","mine","me","I"],ans:"mine"},
+  {s:"Can I borrow ___ sun cream? I forgot mine.",opts:["your","yours","you","her"],ans:"your"},
+  {s:"We made this photo frame together. It is ___!",opts:["our","ours","we","us"],ans:"ours"},
+  {s:"She always puts ___ magnifying glass in ___ backpack.",opts:["her / her","hers / hers","her / hers","hers / her"],ans:"her / her"},
+  {s:"'Whose guide book is this?' – 'It's ___! My name is on it!'",opts:["my","mine","me","I"],ans:"mine"},
+];
+let ex6Sel={},ex6Done=false,ex6Score=0,ex6Total=0;
+
+function buildEx6(){
+  ex6Total=grammarQs.length;totalQ+=ex6Total;
+  let html="";
+  grammarQs.forEach((q,i)=>{
+    const sent=q.s.replace("___",`<span class="blank-word">___</span>`);
+    html+=`<div class="grammar-q">
+      <div class="grammar-q-num">Question ${i+1} / ${grammarQs.length}</div>
+      <div class="grammar-sentence">${sent}</div>
+      <div class="grammar-opts" id="gopts-${i}">
+        ${q.opts.map((o,oi)=>`<div class="grammar-opt" id="gopt-${i}-${oi}" onclick="selGram(${i},${oi})">${o}</div>`).join("")}
+      </div>
+    </div>`;
+  });
+  document.getElementById("ex6-content").innerHTML=html;
+}
+function selGram(qi,oi){
+  if(ex6Done)return;
+  ex6Sel[qi]=oi;
+  document.querySelectorAll(`#gopts-${qi} .grammar-opt`).forEach(el=>el.classList.remove("sel"));
+  document.getElementById(`gopt-${qi}-${oi}`).classList.add("sel");
+}
+function checkEx6(){
+  ex6Done=true;ex6Score=0;
+  grammarQs.forEach((q,i)=>{
+    const sel=ex6Sel[i];const ci=q.opts.indexOf(q.ans);
+    q.opts.forEach((_,oi)=>{
+      const el=document.getElementById(`gopt-${i}-${oi}`);
+      el.style.pointerEvents="none";
+      if(oi===ci)el.classList.add("opt-correct");
+      else if(oi===sel&&sel!==ci)el.classList.add("opt-wrong");
+    });
+    if(sel===ci)ex6Score++;
+  });
+  totalScore+=ex6Score;updateProgress();
+  document.getElementById("ex6-check").disabled=true;
+  const fb=document.getElementById("ex6-feedback");fb.classList.add("show");
+  if(ex6Score===ex6Total){fb.className="feedback show correct-fb";fb.innerHTML=`🎉 Perfect! ${ex6Score}/${ex6Total} ✅`;confetti();}
+  else{fb.className="feedback show wrong-fb";fb.innerHTML=`You got ${ex6Score}/${ex6Total}. Green = correct answer ✅`;}
+  document.getElementById("ex6-next").className="btn-next show";
+}
+
+// ===================== FINISH =====================
+function showFinish(){
+  for(let i=1;i<=6;i++)document.getElementById("ex"+i).classList.remove("active");
+  const fs=document.getElementById("finishScreen");fs.classList.add("show");
+  const pct=Math.round(totalScore/totalQ*100);
+  document.getElementById("finishScore").textContent=totalScore+"/"+totalQ;
+  document.getElementById("progressFill").style.width="100%";
+  document.getElementById("progressScore").textContent=totalScore+"/"+totalQ;
+  let emoji,title,msg;
+  if(pct>=90){emoji="🏆";title="Outstanding!";msg="Perfect spelling champion! 🌟";}
+  else if(pct>=70){emoji="🎉";title="Great job!";msg="You're doing really well! Keep practising! 💪";}
+  else if(pct>=50){emoji="😊";title="Good try!";msg="You're getting better! Try again! ✨";}
+  else{emoji="💪";title="Keep going!";msg="Don't give up! Practise makes perfect! 🌈";}
+  document.getElementById("finishEmoji").textContent=emoji;
+  document.getElementById("finishTitle").textContent=title;
+  document.getElementById("finishMsg").textContent=msg;
+  for(let i=0;i<3;i++)setTimeout(confetti,i*400);
+  fs.scrollIntoView({behavior:"smooth",block:"start"});updateDots();
+}
+
+function restart(){
+  totalScore=0;totalQ=0;currentEx=1;
+  ex2Idx=0;ex2Score=0;ex2Total=0;
+  ex3Idx=0;ex3Score=0;ex3Total=0;
+  ex5Idx=0;ex5Score=0;ex5Total=0;
+  ex6Done=false;ex6Score=0;ex6Total=0;ex6Sel={};
+  document.getElementById("finishScreen").classList.remove("show");
+  init();
+}
+
+function init(){
+  buildDots();updateProgress();
+  buildEx1();buildEx2();buildEx3();buildEx4();buildEx5();buildEx6();
+  goToEx(1);
+}
+init();
+</script>
+</body>
+</html>
