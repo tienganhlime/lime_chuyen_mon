@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 5 – Vocabulary Homework</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f0f4ff;--card:#fff;--border:#dde3f0;
+  --blue:#2563eb;--green:#16a34a;--red:#dc2626;--orange:#d97706;
+  --text:#1e1b4b;--muted:#6b7280;--light:#f8fafc;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;height:100vh}
+
+/* HEADER */
+.header{background:var(--card);border-bottom:2px solid var(--border);padding:10px 24px;display:flex;align-items:center;gap:16px;flex-shrink:0}
+.logo{font-family:'Baloo 2',cursive;font-size:1.35em;color:var(--blue);white-space:nowrap}
+.tabs{display:flex;gap:5px;margin-left:auto}
+.tab{padding:6px 14px;border-radius:8px;border:2px solid var(--border);background:var(--light);font-weight:800;font-size:.8em;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .2s}
+.tab.active{border-color:var(--blue);background:var(--blue);color:#fff}
+.tab.done{border-color:#86efac;background:#f0fdf4;color:var(--green)}
+.tab:not(.active):not(.done){pointer-events:none}
+
+/* MAIN SCROLL */
+.main{flex:1;overflow-y:auto;padding:18px 28px 24px;display:flex;flex-direction:column;gap:12px}
+
+/* VIEW */
+.view{display:none;flex-direction:column;gap:12px;animation:fi .3s ease}
+.view.active{display:flex}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.vtitle{font-family:'Baloo 2',cursive;font-size:1.28em;color:var(--blue);padding-bottom:6px;border-bottom:3px solid var(--border)}
+.vsub{color:var(--muted);font-size:.86em;font-weight:700;margin-top:-4px}
+
+/* QUESTION CARD */
+.qcard{background:var(--card);border:2px solid var(--border);border-radius:13px;padding:15px 20px;display:flex;flex-direction:column;gap:9px}
+.qcard.ok-card{border-color:#86efac;background:#f0fdf4}
+.qcard.bad-card{border-color:#fca5a5;background:#fef2f2}
+.qnum{font-size:.72em;font-weight:900;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+.qdef{font-size:1.05em;font-weight:800;line-height:1.5;color:var(--text)}
+
+/* LETTER BOXES */
+.lrow{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-top:2px}
+.wgrp{display:flex;gap:3px}
+.lbox{width:36px;height:42px;border:2.5px solid #94a3b8;border-radius:7px;font-family:'Baloo 2',cursive;font-size:1.2em;font-weight:800;text-align:center;outline:none;background:#fff;color:var(--text);transition:border-color .15s;text-transform:uppercase;padding:0}
+.lbox:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.13)}
+.lbox.ok{border-color:var(--green);background:#f0fdf4;color:var(--green)}
+.lbox.bad{border-color:var(--red);background:#fef2f2;color:var(--red)}
+.lbox[disabled]{cursor:default}
+.wsep{width:10px}
+
+/* MATCHING */
+.mrow{display:grid;grid-template-columns:1fr 24px 1fr;gap:9px;align-items:center}
+.mdef{background:#eff6ff;border:2px solid #bfdbfe;border-radius:8px;padding:8px 12px;font-size:.91em;font-weight:700;color:var(--blue);line-height:1.4}
+.marr{text-align:center;color:var(--muted)}
+.msel{border:2.5px solid var(--border);border-radius:8px;padding:8px 10px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.91em;background:var(--light);color:var(--text);width:100%;outline:none}
+.msel:focus{border-color:var(--blue)}
+.msel[disabled]{opacity:1}
+.msel.ok{border-color:var(--green);background:#f0fdf4;color:var(--green)}
+.msel.bad{border-color:var(--red);background:#fef2f2;color:var(--red)}
+
+/* FILL SENTENCE */
+.wbank{display:flex;flex-wrap:wrap;gap:7px;padding:10px 14px;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px}
+.wblbl{font-size:.77em;font-weight:900;color:var(--blue);width:100%;margin-bottom:2px}
+.wchip{padding:4px 11px;background:#fff;border:2px solid var(--blue);border-radius:6px;font-weight:800;font-size:.85em;color:var(--blue)}
+.sline{font-size:1.03em;font-weight:800;line-height:2.2;color:var(--text)}
+.tinput{border:none;border-bottom:2.5px solid var(--blue);background:transparent;font-family:'Nunito',sans-serif;font-weight:800;font-size:.97em;color:var(--blue);width:165px;outline:none;text-align:center;padding:0 4px}
+.tinput:focus{border-bottom-color:#1d4ed8}
+.tinput[disabled]{color:var(--text);border-bottom-color:var(--border)}
+.tinput.ok{border-bottom-color:var(--green);color:var(--green)}
+.tinput.bad{border-bottom-color:var(--red);color:var(--red)}
+
+/* FEEDBACK */
+.fb{font-size:.83em;font-weight:800}
+.fb.ok{color:var(--green)}
+.fb.bad{color:var(--red)}
+
+/* FOOTER */
+.footer{background:var(--card);border-top:2px solid var(--border);padding:10px 24px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.pinfo{font-size:.85em;font-weight:800;color:var(--muted);white-space:nowrap}
+.pwrap{flex:1;height:5px;background:var(--border);border-radius:99px;overflow:hidden}
+.pbar{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:99px;transition:width .4s}
+.btn{padding:10px 22px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.93em;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn-blue{background:var(--blue);color:#fff;box-shadow:0 3px 10px rgba(37,99,235,.25)}
+.btn-green{background:var(--green);color:#fff;box-shadow:0 3px 10px rgba(22,163,74,.25)}
+.btn-orange{background:var(--orange);color:#fff;box-shadow:0 3px 10px rgba(217,119,6,.22)}
+.btn-red{background:var(--red);color:#fff;box-shadow:0 3px 10px rgba(220,38,38,.22)}
+
+/* RESULT SCREEN */
+#resScreen{display:none;flex:1;overflow-y:auto;padding:22px 28px;flex-direction:column;gap:16px}
+#resScreen.active{display:flex;animation:fi .4s ease}
+.resbanner{background:var(--card);border:3px solid var(--blue);border-radius:18px;padding:22px 28px;text-align:center}
+.resbanner h2{font-family:'Baloo 2',cursive;font-size:1.5em;color:var(--blue);margin-bottom:8px}
+.resscore{font-family:'Baloo 2',cursive;font-size:3.8em;font-weight:800;line-height:1}
+.resscore.great{color:var(--green)}.resscore.ok{color:var(--orange)}.resscore.poor{color:var(--red)}
+.resgrade{font-size:.97em;font-weight:800;color:var(--muted);margin-top:5px}
+.secgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.scard{background:var(--card);border:2px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center}
+.scard .sn{font-family:'Baloo 2',cursive;font-size:1.6em;font-weight:800}
+.scard .sl{font-size:.73em;font-weight:800;color:var(--muted);margin-top:2px;line-height:1.3}
+
+/* RETRY SECTION */
+.retry-header{background:#fef2f2;border:2px solid #fca5a5;border-radius:12px;padding:12px 16px;font-weight:800;font-size:.92em;color:var(--red)}
+.retry-sec-title{font-family:'Baloo 2',cursive;font-size:1.1em;color:var(--orange);margin-top:8px;padding:6px 0;border-bottom:2px solid #fde68a}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">📚 Unit 5 – BTVN Từ vựng</div>
+  <div class="tabs" id="tabs">
+    <div class="tab active" id="tab0" onclick="goView(0)">1. Điền từ (25)</div>
+    <div class="tab" id="tab1" onclick="goView(1)">2. Nối từ (15)</div>
+    <div class="tab" id="tab2" onclick="goView(2)">3. Điền câu (20)</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="mainArea">
+  <div class="view active" id="view0">
+    <div class="vtitle">Phần 1 – Điền từ theo định nghĩa</div>
+    <div class="vsub">Đọc định nghĩa, điền từng chữ cái vào ô. Mỗi ô = 1 chữ cái. Dấu cách giữa các từ đã được tách sẵn.</div>
+    <div id="v0q"></div>
+  </div>
+  <div class="view" id="view1">
+    <div class="vtitle">Phần 2 – Nối định nghĩa với từ vựng</div>
+    <div class="vsub">Chọn từ đúng trong danh sách cho mỗi định nghĩa.</div>
+    <div id="v1q"></div>
+  </div>
+  <div class="view" id="view2">
+    <div class="vtitle">Phần 3 – Điền từ vào câu</div>
+    <div class="vsub">Gõ từ thích hợp vào chỗ trống (xem bảng từ bên dưới).</div>
+    <div id="v2q"></div>
+  </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="resScreen">
+  <div class="resbanner">
+    <h2>🎉 Kết quả bài làm</h2>
+    <div class="resscore" id="resScore"></div>
+    <div class="resgrade" id="resGrade"></div>
+  </div>
+  <div class="secgrid" id="secGrid"></div>
+  <!-- Wrong answers review built here -->
+  <div id="wrongReview"></div>
+  <button class="btn btn-blue" style="align-self:center;margin-top:4px" onclick="location.reload()">🔄 Làm lại từ đầu</button>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="pinfo" id="pinfo">Phần 1 / 3</div>
+  <div class="pwrap"><div class="pbar" id="pbar" style="width:33%"></div></div>
+  <button class="btn btn-blue" id="btnAct" onclick="handleBtn()">Sang Phần 2 ➜</button>
+</div>
+
+<script>
+/* ══════════════════ DATA ══════════════════ */
+
+// All 51 items
+const ALL51 = [
+  {w:"vaccination",     d:"The process of giving someone a vaccine to protect them from disease"},
+  {w:"archaeological",  d:"Relating to the study of ancient human history through physical remains"},
+  {w:"evidence",        d:"Facts or information that prove something is true"},
+  {w:"period",          d:"A particular length of time in history"},
+  {w:"prehistory",      d:"The time before written historical records existed"},
+  {w:"catalogues",      d:"Complete lists of things in alphabetical or systematic order"},
+  {w:"record",          d:"A written account kept for future reference"},
+  {w:"population",      d:"The total number of people living in a place"},
+  {w:"community",       d:"A group of people living in the same area or sharing common interests"},
+  {w:"figure",          d:"A number or statistic representing an amount"},
+  {w:"resident",        d:"A person who lives permanently in a particular place"},
+  {w:"inhabitant",      d:"A person or animal that lives in a particular place"},
+  {w:"tribe",           d:"A social group sharing the same culture and traditions"},
+  {w:"dynasty",         d:"A series of rulers from the same family"},
+  {w:"ancestor",        d:"A person in your family who lived a long time ago"},
+  {w:"descendant",      d:"A person who is related to someone who lived in the past"},
+  {w:"historian",       d:"An expert who studies and writes about history"},
+  {w:"precise",         d:"Exact and accurate in every detail"},
+  {w:"sophisticated",   d:"Highly developed and complex in design or thinking"},
+  {w:"orally",          d:"By speaking rather than writing"},
+  {w:"invade",          d:"To enter a country or place by force to take control"},
+  {w:"historical",      d:"Relating to the study or recording of past events"},
+  {w:"historic",        d:"Famous or important in history; likely to be remembered"},
+  {w:"populate",        d:"To live in or fill a particular area"},
+  {w:"civilise",        d:"To bring a more developed social system and way of life to a people"},
+  {w:"abolition",       d:"The official ending of a law, system, or practice"},
+  {w:"colonisation",    d:"The process of establishing control over another country or area"},
+  {w:"generation",      d:"All the people born and living at about the same time"},
+  {w:"antique",         d:"An old object that is valuable because of its age and quality"},
+  {w:"burial",          d:"The ceremony of putting a dead body in the ground"},
+  {w:"chamber",         d:"A large room used for a special purpose, or an enclosed space"},
+  {w:"extent",          d:"The degree or level to which something happens"},
+  {w:"administration",  d:"The management and organisation of a country or institution"},
+  {w:"tenant",          d:"A person who pays rent to live in a property owned by someone else"},
+  {w:"site",            d:"A place where something important happened or is located"},
+  {w:"produce",         d:"Fresh fruits, vegetables, and other farm products"},
+  {w:"good",            d:"Products or merchandise that are bought and sold"},
+  {w:"settled life",    d:"A way of living in one fixed place rather than moving around"},
+  {w:"date back to",    d:"To have existed since a particular time in the past"},
+  {w:"left no trace of",d:"To disappear completely without leaving any evidence behind"},
+  // extras to reach nice numbers — reuse definitions with slight paraphrase handled by using same items split across parts
+  {w:"provide",         d:"To give someone something they need or want"},
+  {w:"precise",         d:"Perfectly exact; leaving no room for error"},  // duplicate handled differently in each section
+  {w:"orally",          d:"Transmitted by word of mouth, not in writing"},
+  // fill to 51 total unique concepts using all vocab from teacher list
+  {w:"on time",         d:"At the expected or scheduled moment; not late"},
+  {w:"in time",         d:"Early enough so as not to be too late"},
+  {w:"kill time",       d:"To do something to pass time while waiting"},
+  {w:"generation",      d:"People of similar age sharing the same era"},
+  {w:"go on",           d:"To continue doing something"},
+  {w:"go through",      d:"To experience something difficult or unpleasant"},
+  {w:"pass by",         d:"To go past something or someone"},
+  {w:"pass out",        d:"To lose consciousness suddenly"},
+];
+
+// Deduplicate: take first 51 unique words
+const seen = new Set();
+const VOCAB = [];
+for(const item of ALL51){
+  if(!seen.has(item.w)){ seen.add(item.w); VOCAB.push(item); }
+  if(VOCAB.length===51) break;
+}
+
+function shuffle(a){ return [...a].sort(()=>Math.random()-.5); }
+function norm(s){ return s.trim().toLowerCase().replace(/\s+/g,' '); }
+
+// Split into 3 parts (shuffled)
+const shuffled = shuffle(VOCAB);
+const P1 = shuffled.slice(0, 25);   // letter boxes
+const P2 = shuffled.slice(25, 40);  // matching (15)
+const P3_WORDS = shuffled.slice(40, 51); // 11 words for fill-in sentences → make 20 sentences reusing some
+
+/* Part 2 pool = correct 15 + 5 distractors */
+const p2Correct = P2.map(x=>x.w);
+const p2Extra   = shuffle(P1).slice(0,6).map(x=>x.w);
+const P2_POOL   = shuffle([...p2Correct, ...p2Extra]);
+
+/* Part 3 sentences — 20 sentences using the 11 Part3 words (some appear twice in different contexts) */
+// We'll use all P3_WORDS at least once, filling 20 sentences by also pulling a few from P1/P2
+const P3_POOL_WORDS = [...P3_WORDS.map(x=>x.w), ...shuffle(P1).slice(0,9).map(x=>x.w)];
+// Predefined 20 sentences – answers drawn from P3_POOL_WORDS
+// We'll match dynamically based on whichever words end up in P3
+// Instead: define sentences with fixed answers, all using words from VOCAB
+const S3_FIXED = [
+  {pre:"The stories were passed down",   post:" through many generations.",                    ans:"orally"},
+  {pre:"The tomb contained a hidden",    post:" filled with gold.",                            ans:"chamber"},
+  {pre:"The",                            post:" shows that over 10,000 people lived here.",    ans:"figure"},
+  {pre:"Ancient farmers grew",           post:" such as wheat and barley.",                    ans:"produce"},
+  {pre:"The valley began to",            post:" after the river flooded.",                     ans:"populate"},
+  {pre:"The",                            post:" of the village had lived there for centuries.",ans:"resident"},
+  {pre:"The technology was far more",    post:" than expected.",                               ans:"sophisticated"},
+  {pre:"The site dates back to a much earlier", post:".",                                      ans:"period"},
+  {pre:"Each",                           post:" has its own music and values.",                ans:"generation"},
+  {pre:"The",                            post:" of Africa changed the continent's history.",   ans:"colonisation"},
+  {pre:"The map shows every",            post:" in the region.",                               ans:"site"},
+  {pre:"She is a",                       post:" of the original settlers.",                    ans:"descendant"},
+  {pre:"The government announced the",   post:" of the old law.",                              ans:"abolition"},
+  {pre:"The museum has a valuable",      post:" from the 18th century.",                       ans:"antique"},
+  {pre:"The new",                        post:" had no farming experience.",                   ans:"tenant"},
+  {pre:"He was a respected",             post:" who wrote many books.",                        ans:"historian"},
+  {pre:"The",                            post:" leader ruled for over fifty years.",           ans:"dynasty"},
+  {pre:"Many people preferred a",        post:" to moving from place to place.",               ans:"settled life"},
+  {pre:"The ruins",                      post:"the Bronze Age.",                               ans:"date back to"},
+  {pre:"The invaders",                   post:"the land.",                                     ans:"left no trace of"},
+];
+
+/* ══════════════════ BUILD PART 1 ══════════════════ */
+function buildP1(){
+  const el=document.getElementById('v0q');
+  el.innerHTML='';
+  P1.forEach((q,i)=>{
+    const card=document.createElement('div');
+    card.className='qcard'; card.id=`p1c${i}`;
+    const words=q.w.split(' ');
+    const boxes=words.map((wd,wi)=>
+      `<div class="wgrp">${[...wd].map((_,li)=>
+        `<input class="lbox" id="lb${i}_${wi}_${li}" maxlength="1" autocomplete="off" spellcheck="false"
+          oninput="lbIn(this,${i},${wi},${li},${wd.length})"
+          onkeydown="lbBack(event,${i},${wi},${li})">`
+      ).join('')}</div>`
+    ).join('<div class="wsep"></div>');
+    card.innerHTML=`<div class="qnum">Câu ${i+1}</div>
+      <div class="qdef">${q.d}</div>
+      <div class="lrow">${boxes}</div>
+      <div class="fb" id="p1fb${i}"></div>`;
+    el.appendChild(card);
+  });
+}
+
+function lbIn(el,qi,wi,li,wlen){
+  el.value=el.value.slice(-1).toUpperCase();
+  if(el.value){
+    const next=document.getElementById(`lb${qi}_${wi}_${li+1}`) ||
+               (li===wlen-1 ? nextWordFirstBox(qi,wi) : null);
+    if(next) next.focus();
+  }
+}
+function nextWordFirstBox(qi,wi){
+  return document.getElementById(`lb${qi}_${wi+1}_0`);
+}
+function lbBack(e,qi,wi,li){
+  if(e.key==='Backspace'){
+    const el=document.getElementById(`lb${qi}_${wi}_${li}`);
+    if(!el.value){
+      const prev=li>0 ? document.getElementById(`lb${qi}_${wi}_${li-1}`) :
+                 wi>0 ? (() => {
+                   // find last box of previous word
+                   for(let l=20;l>=0;l--){
+                     const b=document.getElementById(`lb${qi}_${wi-1}_${l}`);
+                     if(b) return b;
+                   }
+                 })() : null;
+      if(prev){prev.focus();prev.value='';}
+    }
+  }
+}
+
+function checkP1(){
+  let correct=0; const wrong=[];
+  P1.forEach((q,i)=>{
+    const words=q.w.split(' ');
+    let typed='';
+    words.forEach((wd,wi)=>{
+      if(wi>0) typed+=' ';
+      [...wd].forEach((_,li)=>{
+        const b=document.getElementById(`lb${i}_${wi}_${li}`);
+        typed+=(b?b.value:'');
+      });
+    });
+    const ok=norm(typed)===norm(q.w);
+    if(ok) correct++; else wrong.push({...q, typed});
+    // colour
+    words.forEach((wd,wi)=>[...wd].forEach((_,li)=>{
+      const b=document.getElementById(`lb${i}_${wi}_${li}`);
+      if(b){b.disabled=true; b.classList.add(ok?'ok':'bad');}
+    }));
+    const fb=document.getElementById(`p1fb${i}`);
+    fb.className='fb '+(ok?'ok':'bad');
+    fb.textContent=ok?'✅ Đúng!':'❌ Sai – đáp án: '+q.w;
+    document.getElementById(`p1c${i}`).classList.add(ok?'ok-card':'bad-card');
+  });
+  return {correct, wrong};
+}
+
+/* ══════════════════ BUILD PART 2 ══════════════════ */
+function buildP2(){
+  const el=document.getElementById('v1q');
+  el.innerHTML='';
+  P2.forEach((q,i)=>{
+    const card=document.createElement('div');
+    card.className='qcard'; card.id=`p2c${i}`;
+    const opts=P2_POOL.map(w=>`<option value="${w}">${w}</option>`).join('');
+    card.innerHTML=`<div class="qnum">Câu ${i+1}</div>
+      <div class="mrow">
+        <div class="mdef">${q.d}</div>
+        <div class="marr">→</div>
+        <select class="msel" id="ms${i}"><option value="">-- Chọn từ --</option>${opts}</select>
+      </div>
+      <div class="fb" id="p2fb${i}"></div>`;
+    el.appendChild(card);
+  });
+}
+
+function checkP2(){
+  let correct=0; const wrong=[];
+  P2.forEach((q,i)=>{
+    const sel=document.getElementById(`ms${i}`);
+    sel.disabled=true;
+    const ok=sel.value===q.w;
+    if(ok) correct++; else wrong.push({...q, chosen:sel.value});
+    sel.classList.add(ok?'ok':'bad');
+    const fb=document.getElementById(`p2fb${i}`);
+    fb.className='fb '+(ok?'ok':'bad');
+    fb.textContent=ok?'✅ Đúng!':'❌ Sai – đáp án: '+q.w;
+    document.getElementById(`p2c${i}`).classList.add(ok?'ok-card':'bad-card');
+  });
+  return {correct, wrong};
+}
+
+/* ══════════════════ BUILD PART 3 ══════════════════ */
+// Resolve S3_FIXED: only keep sentences whose answer is in our shuffled vocab
+// We need 20 sentences — use S3_FIXED as base, it covers enough words
+const S3 = S3_FIXED; // 20 sentences
+const S3_BANK = [...new Set(S3.map(s=>s.ans))].sort();
+
+function buildP3(){
+  const el=document.getElementById('v2q');
+  el.innerHTML='';
+  // Bank
+  const bank=document.createElement('div'); bank.className='wbank';
+  bank.innerHTML=`<div class="wblbl">📝 Bảng từ gợi ý:</div>${S3_BANK.map(w=>`<span class="wchip">${w}</span>`).join('')}`;
+  el.appendChild(bank);
+  S3.forEach((q,i)=>{
+    const card=document.createElement('div'); card.className='qcard'; card.id=`p3c${i}`;
+    const w=q.ans.includes(' ')?'200px':'150px';
+    card.innerHTML=`<div class="qnum">Câu ${i+1}</div>
+      <div class="sline">${q.pre} <input class="tinput" id="ti${i}" style="width:${w}" autocomplete="off" spellcheck="false"> ${q.post}</div>
+      <div class="fb" id="p3fb${i}"></div>`;
+    el.appendChild(card);
+  });
+}
+
+function checkP3(){
+  let correct=0; const wrong=[];
+  S3.forEach((q,i)=>{
+    const inp=document.getElementById(`ti${i}`);
+    inp.disabled=true;
+    const ok=norm(inp.value)===norm(q.ans);
+    if(ok) correct++; else wrong.push({...q, typed:inp.value});
+    inp.classList.add(ok?'ok':'bad');
+    const fb=document.getElementById(`p3fb${i}`);
+    fb.className='fb '+(ok?'ok':'bad');
+    fb.textContent=ok?'✅ Đúng!':'❌ Sai – đáp án: '+q.ans;
+    document.getElementById(`p3c${i}`).classList.add(ok?'ok-card':'bad-card');
+  });
+  return {correct, wrong};
+}
+
+/* ══════════════════ NAV STATE ══════════════════ */
+let curView=0;
+
+function goView(i){
+  if(i===curView) return;
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(`view${i}`).classList.add('active');
+  document.getElementById('mainArea').scrollTop=0;
+  curView=i;
+  updateFooter();
+}
+
+function updateFooter(){
+  const labels=['Phần 1 / 3 – Điền từ','Phần 2 / 3 – Nối từ','Phần 3 / 3 – Điền câu'];
+  const pcts=[33,66,90];
+  document.getElementById('pinfo').textContent=labels[curView];
+  document.getElementById('pbar').style.width=pcts[curView]+'%';
+
+  const btn=document.getElementById('btnAct');
+  if(curView===0){ btn.textContent='Sang Phần 2 ➜'; btn.className='btn btn-blue'; }
+  else if(curView===1){ btn.textContent='Sang Phần 3 ➜'; btn.className='btn btn-blue'; }
+  else { btn.textContent='Nộp bài ✓'; btn.className='btn btn-green'; }
+
+  // Update tabs
+  [0,1,2].forEach(i=>{
+    const t=document.getElementById(`tab${i}`);
+    t.className='tab'+(i<curView?' done':i===curView?' active':'');
+    if(i<=curView) t.onclick=()=>goView(i);
+    else t.onclick=null;
+  });
+}
+
+let results={};
+
+function handleBtn(){
+  if(curView===0){
+    // just navigate, don't check yet
+    document.getElementById(`tab0`).className='tab done';
+    goView(1);
+  } else if(curView===1){
+    document.getElementById(`tab1`).className='tab done';
+    goView(2);
+  } else {
+    // SUBMIT — check all 3 parts
+    const r0=checkP1();
+    const r1=checkP2();
+    const r2=checkP3();
+    results={r0,r1,r2};
+    showResults(r0,r1,r2);
+  }
+}
+
+/* ══════════════════ RESULTS ══════════════════ */
+function pct(c,t){ return Math.round(c/t*100); }
+
+function showResults(r0,r1,r2){
+  const t0=P1.length, t1=P2.length, t2=S3.length;
+  const total=r0.correct+r1.correct+r2.correct;
+  const maxT=t0+t1+t2;
+  const overall=pct(total,maxT);
+
+  // Score banner
+  const sb=document.getElementById('resScore');
+  sb.textContent=`${total} / ${maxT}`;
+  sb.className='resscore '+(overall>=80?'great':overall>=60?'ok':'poor');
+  document.getElementById('resGrade').textContent=
+    overall>=90?`🌟 Xuất sắc! (${overall}%)`:
+    overall>=80?`👍 Tốt lắm! (${overall}%)`:
+    overall>=60?`📖 Khá! Cần ôn thêm (${overall}%)`:
+                `💪 Cần cố gắng hơn! (${overall}%)`;
+
+  // Per-section
+  const sg=document.getElementById('secGrid');
+  sg.innerHTML='';
+  [{lbl:'Phần 1\nĐiền từ',c:r0.correct,t:t0},{lbl:'Phần 2\nNối từ',c:r1.correct,t:t1},{lbl:'Phần 3\nĐiền câu',c:r2.correct,t:t2}]
+  .forEach(s=>{
+    const p=pct(s.c,s.t);
+    const col=p>=80?'var(--green)':p>=60?'var(--orange)':'var(--red)';
+    sg.innerHTML+=`<div class="scard"><div class="sn" style="color:${col}">${s.c}/${s.t}</div><div class="sl">${s.lbl}</div></div>`;
+  });
+
+  // Wrong review
+  const wr=document.getElementById('wrongReview');
+  wr.innerHTML='';
+  const allWrong=[
+    {title:'📝 Phần 1 – Câu sai (Điền từ)', items:r0.wrong, type:'p1'},
+    {title:'🔗 Phần 2 – Câu sai (Nối từ)',  items:r1.wrong, type:'p2'},
+    {title:'✍️ Phần 3 – Câu sai (Điền câu)',items:r2.wrong, type:'p3'},
+  ];
+
+  const totalWrong=r0.wrong.length+r1.wrong.length+r2.wrong.length;
+  if(totalWrong===0){
+    wr.innerHTML=`<div style="text-align:center;font-size:1.3em;font-weight:800;color:var(--green);padding:12px">🎉 Tất cả đều đúng! Hoàn hảo!</div>`;
+  } else {
+    wr.innerHTML=`<div class="retry-header">⚠️ Bạn có <b>${totalWrong} câu sai</b> cần ôn lại. Học thuộc các từ dưới đây nhé!</div>`;
+    allWrong.forEach(sec=>{
+      if(!sec.items.length) return;
+      const secDiv=document.createElement('div');
+      secDiv.innerHTML=`<div class="retry-sec-title">${sec.title} (${sec.items.length} câu)</div>`;
+      sec.items.forEach((item,i)=>{
+        const card=document.createElement('div');
+        card.className='qcard bad-card';
+        if(sec.type==='p1'){
+          // Rebuild letter boxes — pre-filled with correct answer, shown as red→corrected
+          const words=item.w.split(' ');
+          const boxes=words.map((wd,wi)=>
+            `<div class="wgrp">${[...wd].map((ch,li)=>
+              `<input class="lbox ok" value="${ch.toUpperCase()}" disabled>`
+            ).join('')}</div>`
+          ).join('<div class="wsep"></div>');
+          card.innerHTML=`<div class="qnum">Câu sai</div>
+            <div class="qdef">${item.d}</div>
+            <div class="lrow">${boxes}</div>
+            <div class="fb bad">❌ Bạn gõ: "${item.typed}" &nbsp;→&nbsp; <span style="color:var(--green)">✅ Đáp án đúng: ${item.w}</span></div>`;
+        } else if(sec.type==='p2'){
+          card.innerHTML=`<div class="qnum">Câu sai</div>
+            <div class="qdef">${item.d}</div>
+            <div class="fb bad">❌ Bạn chọn: <b>${item.chosen||'(bỏ trống)'}</b> &nbsp;→&nbsp; <span style="color:var(--green)">✅ Đáp án đúng: <b>${item.w}</b></span></div>`;
+        } else {
+          card.innerHTML=`<div class="qnum">Câu sai</div>
+            <div class="sline">${item.pre} <span style="color:var(--green);font-weight:900;background:#f0fdf4;padding:2px 8px;border-radius:5px">${item.ans}</span> ${item.post}</div>
+            <div class="fb bad">❌ Bạn gõ: <b>"${item.typed||'(bỏ trống)'}"</b></div>`;
+        }
+        secDiv.appendChild(card);
+      });
+      wr.appendChild(secDiv);
+    });
+  }
+
+  // Switch screens
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('resScreen').classList.add('active');
+  document.getElementById('pinfo').textContent='Kết quả';
+  document.getElementById('pbar').style.width='100%';
+  document.getElementById('btnAct').style.display='none';
+  document.querySelectorAll('.tab').forEach(t=>t.className='tab done');
+}
+
+/* ══════════════════ INIT ══════════════════ */
+buildP1(); buildP2(); buildP3();
+updateFooter();
+</script>
+</body>
+</html>
