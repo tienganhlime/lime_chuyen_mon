@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spelling Game 🎮</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFD93D;
+    --yellow-dark: #E6B800;
+    --blue: #4ECDC4;
+    --blue-dark: #2BA8A0;
+    --green: #6BCB77;
+    --green-dark: #3D9E49;
+    --coral: #FF6B6B;
+    --coral-dark: #D94444;
+    --purple: #A29BFE;
+    --purple-dark: #6C5CE7;
+    --orange: #FFA552;
+    --bg: #FFF9F0;
+    --card: #FFFFFF;
+    --text: #2D2D2D;
+    --text-soft: #6B6B6B;
+    --border: #E8E0D0;
+    --shadow: 0 4px 0 #D4C9B0;
+    --shadow-hover: 0 6px 0 #D4C9B0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Decorative BG dots */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image: radial-gradient(circle, #E0D5C5 1.5px, transparent 1.5px);
+    background-size: 32px 32px;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .page { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* ========= MENU ========= */
+  #screen-menu {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; padding: 2rem 1rem; min-height: 100vh;
+  }
+
+  .menu-hero {
+    text-align: center; margin-bottom: 2.5rem;
+  }
+  .menu-hero .trophy { font-size: 72px; display: block; margin-bottom: 0.5rem; animation: bounce 2s infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+  .menu-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+  .menu-hero h1 span { color: var(--coral); }
+  .menu-hero p { font-size: 1.1rem; color: var(--text-soft); margin-top: 0.5rem; }
+
+  .topic-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 2rem; }
+  .topic-pill {
+    padding: 8px 20px; border-radius: 100px;
+    border: 2.5px solid var(--border);
+    background: white; font-size: 1rem; font-weight: 700;
+    cursor: pointer; transition: all 0.15s;
+    color: var(--text-soft);
+    font-family: 'Nunito', sans-serif;
+  }
+  .topic-pill:hover { border-color: var(--orange); color: var(--orange); }
+  .topic-pill.active { background: var(--orange); border-color: var(--orange); color: white; }
+
+  .game-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(200px, 280px));
+    gap: 16px;
+    justify-content: center;
+  }
+
+  .game-card {
+    background: white;
+    border: 2.5px solid var(--border);
+    border-radius: 20px;
+    padding: 1.75rem 1.5rem;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .game-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+  .game-card:active { transform: translateY(0); box-shadow: none; }
+
+  .game-card .icon { font-size: 48px; margin-bottom: 10px; display: block; }
+  .game-card h3 { font-size: 1.25rem; font-weight: 800; color: var(--text); }
+  .game-card p { font-size: 0.85rem; color: var(--text-soft); margin-top: 4px; line-height: 1.4; }
+  .game-card .tag {
+    display: inline-block; margin-top: 10px;
+    padding: 3px 12px; border-radius: 100px;
+    font-size: 0.75rem; font-weight: 700;
+  }
+
+  .card-unscramble .tag { background: #FFF0E0; color: var(--orange); }
+  .card-choice .tag { background: #E0F5F4; color: var(--blue-dark); }
+  .card-fill .tag { background: #E8F5E9; color: var(--green-dark); }
+  .card-flash .tag { background: #FDE8E8; color: var(--coral-dark); }
+
+  /* ========= GAME SCREEN ========= */
+  .game-screen {
+    display: none; flex-direction: column;
+    min-height: 100vh; padding: 1.5rem;
+    max-width: 800px; margin: 0 auto; width: 100%;
+  }
+  .game-screen.active { display: flex; }
+
+  .g-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;
+  }
+  .back-btn {
+    background: white; border: 2.5px solid var(--border);
+    border-radius: 12px; padding: 8px 16px;
+    font-family: 'Nunito', sans-serif; font-weight: 700;
+    font-size: 0.95rem; cursor: pointer;
+    transition: background 0.1s;
+    box-shadow: 0 2px 0 var(--border);
+    color: var(--text-soft);
+  }
+  .back-btn:hover { background: var(--bg); }
+
+  .g-title { font-size: 1.1rem; font-weight: 800; color: var(--text); }
+  .g-score {
+    margin-left: auto;
+    background: var(--yellow); color: #7A5C00;
+    border-radius: 100px; padding: 5px 16px;
+    font-weight: 800; font-size: 0.95rem;
+    border: 2px solid var(--yellow-dark);
+  }
+
+  .progress-track {
+    height: 10px; background: #EDE5D5;
+    border-radius: 100px; margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; border-radius: 100px;
+    background: linear-gradient(90deg, var(--blue), var(--green));
+    transition: width 0.4s ease;
+  }
+
+  .game-body {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center;
+  }
+
+  .big-emoji {
+    font-size: clamp(80px, 15vw, 120px);
+    line-height: 1; margin: 0.5rem 0 1rem;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+    animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes popIn { from{transform:scale(0.5);opacity:0} to{transform:scale(1);opacity:1} }
+
+  .hint-label {
+    font-size: 0.9rem; color: var(--text-soft);
+    background: white; border: 1.5px solid var(--border);
+    padding: 4px 14px; border-radius: 100px;
+    margin-bottom: 1.5rem; font-weight: 600;
+  }
+
+  /* UNSCRAMBLE */
+  .answer-row {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    justify-content: center; min-height: 64px;
+    margin-bottom: 1rem;
+  }
+  .ans-slot {
+    width: clamp(44px,8vw,56px); height: clamp(52px,9vw,64px);
+    border: 2.5px dashed #C0B49E;
+    border-radius: 14px; display: flex;
+    align-items: center; justify-content: center;
+    font-size: clamp(18px,3vw,24px); font-weight: 800;
+    cursor: pointer; transition: all 0.15s;
+    background: white; color: var(--text);
+  }
+  .ans-slot.space-slot { border: none; width: 20px; background: transparent; }
+  .ans-slot.has-letter { border-style: solid; border-color: var(--blue); background: #E8FAFA; color: var(--blue-dark); }
+  .ans-slot.correct { border-color: var(--green); background: #E8F5E9; color: var(--green-dark); }
+  .ans-slot.wrong { border-color: var(--coral); background: #FDE8E8; color: var(--coral-dark); }
+
+  .scramble-row {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    justify-content: center; margin-bottom: 1.5rem;
+  }
+  .scram-tile {
+    width: clamp(44px,8vw,56px); height: clamp(52px,9vw,64px);
+    background: white; border: 2.5px solid var(--border);
+    border-radius: 14px; display: flex;
+    align-items: center; justify-content: center;
+    font-size: clamp(18px,3vw,24px); font-weight: 800;
+    cursor: pointer; transition: all 0.15s;
+    box-shadow: 0 3px 0 var(--border);
+    color: var(--text);
+  }
+  .scram-tile:hover { transform: translateY(-3px); box-shadow: 0 5px 0 var(--border); background: #FFF9F0; }
+  .scram-tile.used { opacity: 0.15; pointer-events: none; }
+
+  .clear-link {
+    font-size: 0.85rem; color: var(--text-soft);
+    cursor: pointer; text-decoration: underline;
+    background: none; border: none;
+    font-family: 'Nunito', sans-serif; font-weight: 600;
+  }
+
+  /* MULTIPLE CHOICE */
+  .mc-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; width: 100%; max-width: 560px;
+  }
+  .mc-btn {
+    padding: 18px 12px;
+    background: white; border: 2.5px solid var(--border);
+    border-radius: 16px; font-family: 'Nunito', sans-serif;
+    font-size: clamp(1rem, 2.5vw, 1.25rem); font-weight: 800;
+    cursor: pointer; transition: all 0.15s;
+    box-shadow: 0 3px 0 var(--border);
+    color: var(--text);
+    text-align: center;
+  }
+  .mc-btn:hover:not(.disabled) { transform: translateY(-2px); box-shadow: 0 5px 0 var(--border); background: #FFFBF5; }
+  .mc-btn.correct { background: #E8F5E9; border-color: var(--green); color: var(--green-dark); box-shadow: 0 3px 0 #3D9E49; }
+  .mc-btn.wrong { background: #FDE8E8; border-color: var(--coral); color: var(--coral-dark); box-shadow: 0 3px 0 #D94444; }
+  .mc-btn.disabled { pointer-events: none; }
+
+  /* FILL BLANKS */
+  .word-display {
+    display: flex; gap: 5px; flex-wrap: wrap;
+    justify-content: center; margin-bottom: 1.25rem;
+  }
+  .wd-char {
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 800; width: 32px; text-align: center;
+    color: var(--text);
+  }
+  .wd-char.blank { color: transparent; border-bottom: 3px solid #B0A090; }
+
+  .fill-input {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.4rem; font-weight: 700;
+    padding: 12px 24px; border-radius: 14px;
+    border: 2.5px solid var(--border);
+    background: white; text-align: center;
+    width: 260px; outline: none;
+    transition: border-color 0.15s;
+    color: var(--text);
+    box-shadow: 0 3px 0 var(--border);
+  }
+  .fill-input:focus { border-color: var(--blue); }
+  .fill-input.correct { border-color: var(--green); background: #E8F5E9; }
+  .fill-input.wrong { border-color: var(--coral); background: #FDE8E8; }
+
+  /* FLASH */
+  .flash-card {
+    width: 100%; max-width: 480px;
+    background: white; border: 2.5px solid var(--border);
+    border-radius: 24px;
+    min-height: 240px; padding: 2rem;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: transform 0.15s;
+    text-align: center;
+  }
+  .flash-card:hover { transform: translateY(-3px); }
+  .flash-front .tap-hint { font-size: 0.85rem; color: #C0B49E; margin-top: 10px; font-weight: 600; }
+  .flash-word {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 900; letter-spacing: 3px;
+    color: var(--text); margin-bottom: 8px;
+  }
+  .flash-cat { font-size: 0.9rem; color: var(--text-soft); font-weight: 600; }
+
+  .flash-btns { display: flex; gap: 12px; width: 100%; max-width: 480px; margin-top: 1rem; }
+  .flash-no {
+    flex: 1; padding: 14px;
+    background: white; border: 2.5px solid var(--coral);
+    border-radius: 14px; font-family: 'Nunito', sans-serif;
+    font-size: 1rem; font-weight: 800; cursor: pointer;
+    color: var(--coral-dark);
+    box-shadow: 0 3px 0 var(--coral);
+    transition: all 0.15s;
+  }
+  .flash-yes {
+    flex: 1; padding: 14px;
+    background: var(--green); border: 2.5px solid var(--green-dark);
+    border-radius: 14px; font-family: 'Nunito', sans-serif;
+    font-size: 1rem; font-weight: 800; cursor: pointer;
+    color: white;
+    box-shadow: 0 3px 0 var(--green-dark);
+    transition: all 0.15s;
+  }
+  .flash-no:hover { transform: translateY(-2px); }
+  .flash-yes:hover { transform: translateY(-2px); }
+
+  /* FEEDBACK */
+  .feedback-box {
+    display: none; padding: 12px 24px;
+    border-radius: 14px; font-size: 1.1rem; font-weight: 800;
+    text-align: center; margin: 0.75rem 0;
+    animation: slideUp 0.2s ease;
+  }
+  @keyframes slideUp { from{transform:translateY(8px);opacity:0} to{transform:translateY(0);opacity:1} }
+  .feedback-box.ok { background: #E8F5E9; color: var(--green-dark); border: 2px solid var(--green); }
+  .feedback-box.no { background: #FDE8E8; color: var(--coral-dark); border: 2px solid var(--coral); }
+
+  /* NEXT BUTTON */
+  .next-btn {
+    display: none; margin-top: 1rem;
+    padding: 14px 40px; border-radius: 14px;
+    background: var(--text); color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem; font-weight: 800;
+    border: none; cursor: pointer;
+    box-shadow: 0 4px 0 #111;
+    transition: all 0.15s;
+  }
+  .next-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #111; }
+  .next-btn:active { transform: translateY(0); box-shadow: 0 2px 0 #111; }
+
+  /* ========= RESULT ========= */
+  #screen-result {
+    display: none; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 100vh; padding: 2rem;
+    text-align: center;
+  }
+  #screen-result.active { display: flex; }
+  .result-card {
+    background: white; border: 2.5px solid var(--border);
+    border-radius: 28px; padding: 3rem 2.5rem;
+    max-width: 460px; width: 100%;
+    box-shadow: var(--shadow);
+  }
+  .result-trophy { font-size: 80px; margin-bottom: 0.5rem; animation: bounce 1.5s infinite; }
+  .result-big { font-size: 4rem; font-weight: 900; color: var(--text); line-height: 1; }
+  .result-sub { font-size: 1rem; color: var(--text-soft); font-weight: 600; margin: 4px 0 1.25rem; }
+  .result-msg { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 1.5rem; }
+
+  .btn-restart {
+    width: 100%; padding: 16px;
+    background: var(--coral); color: white;
+    border: 2.5px solid var(--coral-dark);
+    border-radius: 14px; font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem; font-weight: 800;
+    cursor: pointer; box-shadow: 0 4px 0 var(--coral-dark);
+    transition: all 0.15s; margin-bottom: 10px;
+  }
+  .btn-restart:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--coral-dark); }
+
+  .btn-menu {
+    width: 100%; padding: 14px;
+    background: white; color: var(--text-soft);
+    border: 2px solid var(--border);
+    border-radius: 14px; font-family: 'Nunito', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    cursor: pointer; transition: background 0.1s;
+  }
+  .btn-menu:hover { background: var(--bg); }
+
+  .stars { display: flex; justify-content: center; gap: 6px; margin: 0.75rem 0; font-size: 2rem; }
+
+  /* ========= CHECK btn ========= */
+  .check-btn {
+    margin-top: 0.75rem;
+    padding: 14px 40px; border-radius: 14px;
+    background: var(--blue); color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem; font-weight: 800;
+    border: 2.5px solid var(--blue-dark);
+    cursor: pointer; box-shadow: 0 4px 0 var(--blue-dark);
+    transition: all 0.15s;
+  }
+  .check-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--blue-dark); }
+</style>
+</head>
+<body>
+
+<!-- ====== MENU ====== -->
+<div id="screen-menu" class="page">
+  <div id="screen-menu-inner">
+    <div class="menu-hero">
+      <span class="trophy">🎮</span>
+      <h1>Spelling <span>Game!</span></h1>
+      <p>Chọn chủ đề và trò chơi bên dưới</p>
+    </div>
+
+    <div class="topic-row">
+      <button class="topic-pill active" onclick="pickTopic('all',this)">🌟 Tất cả</button>
+      <button class="topic-pill" onclick="pickTopic('outdoor',this)">🎒 Outdoor things</button>
+      <button class="topic-pill" onclick="pickTopic('food',this)">🍊 Food</button>
+      <button class="topic-pill" onclick="pickTopic('crafts',this)">🎨 Crafts</button>
+      <button class="topic-pill" onclick="pickTopic('art',this)">✂️ Art materials</button>
+    </div>
+
+    <div class="game-cards">
+      <div class="game-card card-unscramble" onclick="startGame('unscramble')">
+        <span class="icon">🔀</span>
+        <h3>Xếp chữ</h3>
+        <p>Nhấn vào các chữ cái để ghép thành từ đúng</p>
+        <span class="tag">Dễ – Trung bình</span>
+      </div>
+      <div class="game-card card-choice" onclick="startGame('choice')">
+        <span class="icon">🎯</span>
+        <h3>Chọn đáp án</h3>
+        <p>Nhìn hình, chọn cách viết đúng trong 4 đáp án</p>
+        <span class="tag">Dễ nhất</span>
+      </div>
+      <div class="game-card card-fill" onclick="startGame('fill')">
+        <span class="icon">✏️</span>
+        <h3>Điền từ</h3>
+        <p>Gõ từ vào ô trống — có gợi ý một số chữ cái</p>
+        <span class="tag">Trung bình</span>
+      </div>
+      <div class="game-card card-flash" onclick="startGame('flash')">
+        <span class="icon">⚡</span>
+        <h3>Flash cards</h3>
+        <p>Nhìn hình, đoán từ rồi lật thẻ kiểm tra</p>
+        <span class="tag">Ôn luyện</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== UNSCRAMBLE ====== -->
+<div id="screen-unscramble" class="game-screen">
+  <div class="g-header">
+    <button class="back-btn" onclick="goMenu()">← Menu</button>
+    <span class="g-title">🔀 Xếp chữ</span>
+    <span class="g-score" id="u-score">⭐ 0 / 0</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="u-prog" style="width:0%"></div></div>
+  <div class="game-body">
+    <div class="big-emoji" id="u-emoji"></div>
+    <div class="hint-label" id="u-hint"></div>
+    <div class="answer-row" id="u-slots"></div>
+    <div class="scramble-row" id="u-tiles"></div>
+    <button class="clear-link" onclick="uClear()">🔄 Xóa hết</button>
+    <div class="feedback-box" id="u-fb"></div>
+  </div>
+</div>
+
+<!-- ====== CHOICE ====== -->
+<div id="screen-choice" class="game-screen">
+  <div class="g-header">
+    <button class="back-btn" onclick="goMenu()">← Menu</button>
+    <span class="g-title">🎯 Chọn đáp án</span>
+    <span class="g-score" id="c-score">⭐ 0 / 0</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="c-prog" style="width:0%"></div></div>
+  <div class="game-body">
+    <div class="big-emoji" id="c-emoji"></div>
+    <p style="font-size:1rem;color:var(--text-soft);font-weight:600;margin-bottom:1.25rem;">Đây là gì?</p>
+    <div class="mc-grid" id="c-options"></div>
+    <div class="feedback-box" id="c-fb"></div>
+    <button class="next-btn" id="c-next" onclick="nextQ('choice')">Tiếp theo →</button>
+  </div>
+</div>
+
+<!-- ====== FILL ====== -->
+<div id="screen-fill" class="game-screen">
+  <div class="g-header">
+    <button class="back-btn" onclick="goMenu()">← Menu</button>
+    <span class="g-title">✏️ Điền từ</span>
+    <span class="g-score" id="f-score">⭐ 0 / 0</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="f-prog" style="width:0%"></div></div>
+  <div class="game-body">
+    <div class="big-emoji" id="f-emoji"></div>
+    <div class="word-display" id="f-display"></div>
+    <input class="fill-input" id="f-input" placeholder="Gõ từ vào đây…" autocomplete="off" spellcheck="false" />
+    <button class="check-btn" onclick="checkFill()">Kiểm tra ✓</button>
+    <div class="feedback-box" id="f-fb"></div>
+    <button class="next-btn" id="f-next" onclick="nextQ('fill')">Tiếp theo →</button>
+  </div>
+</div>
+
+<!-- ====== FLASH ====== -->
+<div id="screen-flash" class="game-screen">
+  <div class="g-header">
+    <button class="back-btn" onclick="goMenu()">← Menu</button>
+    <span class="g-title">⚡ Flash cards</span>
+    <span class="g-score" id="fl-score">⭐ 0 / 0</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="fl-prog" style="width:0%"></div></div>
+  <div class="game-body" style="width:100%;max-width:480px;margin:0 auto;">
+    <div class="flash-card" onclick="flipFlash()">
+      <div id="fl-front" class="flash-front">
+        <div class="big-emoji" id="fl-emoji" style="margin:0 0 0.5rem;"></div>
+        <div class="tap-hint">👆 Nhấn để xem từ</div>
+      </div>
+      <div id="fl-back" style="display:none;">
+        <div class="flash-word" id="fl-word"></div>
+        <div class="flash-cat" id="fl-cat"></div>
+      </div>
+    </div>
+    <div class="flash-btns">
+      <button class="flash-no" onclick="flashVote(false)">😅 Chưa nhớ</button>
+      <button class="flash-yes" onclick="flashVote(true)">✓ Nhớ rồi!</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== RESULT ====== -->
+<div id="screen-result">
+  <div class="result-card">
+    <div class="result-trophy" id="r-emoji"></div>
+    <div class="stars" id="r-stars"></div>
+    <div class="result-big" id="r-big"></div>
+    <div class="result-sub" id="r-sub"></div>
+    <div class="result-msg" id="r-msg"></div>
+    <button class="btn-restart" onclick="restartGame()">🔄 Chơi lại</button>
+    <button class="btn-menu" onclick="goMenu()">← Chọn trò chơi khác</button>
+  </div>
+</div>
+
+<script>
+const WORDS = [
+  {word:'backpack',emoji:'🎒',cat:'outdoor',hint:'Ba lô đi bộ'},
+  {word:'cap',emoji:'🧢',cat:'outdoor',hint:'Mũ lưỡi trai'},
+  {word:'coat',emoji:'🧥',cat:'outdoor',hint:'Áo khoác'},
+  {word:'guide book',emoji:'📖',cat:'outdoor',hint:'Sách hướng dẫn'},
+  {word:'magnifying glass',emoji:'🔍',cat:'outdoor',hint:'Kính lúp'},
+  {word:'map',emoji:'🗺️',cat:'outdoor',hint:'Bản đồ'},
+  {word:'mobile phone',emoji:'📱',cat:'outdoor',hint:'Điện thoại'},
+  {word:'notebook',emoji:'📓',cat:'outdoor',hint:'Vở ghi chép'},
+  {word:'sun cream',emoji:'🧴',cat:'outdoor',hint:'Kem chống nắng'},
+  {word:'water bottle',emoji:'💧',cat:'outdoor',hint:'Bình nước'},
+  {word:'biscuit',emoji:'🍪',cat:'food',hint:'Bánh quy'},
+  {word:'cherries',emoji:'🍒',cat:'food',hint:'Quả cherry'},
+  {word:'crisps',emoji:'🥔',cat:'food',hint:'Snack khoai tây'},
+  {word:'drink',emoji:'🧃',cat:'food',hint:'Đồ uống hộp'},
+  {word:'grapes',emoji:'🍇',cat:'food',hint:'Quả nho'},
+  {word:'orange',emoji:'🍊',cat:'food',hint:'Quả cam'},
+  {word:'badge',emoji:'📛',cat:'crafts',hint:'Huy hiệu'},
+  {word:'box',emoji:'📦',cat:'crafts',hint:'Hộp'},
+  {word:'bracelet',emoji:'📿',cat:'crafts',hint:'Vòng tay'},
+  {word:'cake',emoji:'🎂',cat:'crafts',hint:'Bánh sinh nhật'},
+  {word:'calendar',emoji:'📅',cat:'crafts',hint:'Lịch'},
+  {word:'card',emoji:'🎴',cat:'crafts',hint:'Thiệp'},
+  {word:'decorations',emoji:'🎊',cat:'crafts',hint:'Đồ trang trí'},
+  {word:'mask',emoji:'🎭',cat:'crafts',hint:'Mặt nạ'},
+  {word:'photo frame',emoji:'🖼️',cat:'crafts',hint:'Khung ảnh'},
+  {word:'puppet',emoji:'🪆',cat:'crafts',hint:'Con rối'},
+  {word:'colouring pens',emoji:'🖊️',cat:'art',hint:'Bút màu'},
+  {word:'crayons',emoji:'🖍️',cat:'art',hint:'Bút sáp'},
+  {word:'glue',emoji:'🔧',cat:'art',hint:'Keo dán'},
+  {word:'paintbrush',emoji:'🖌️',cat:'art',hint:'Cọ vẽ'},
+  {word:'paints',emoji:'🎨',cat:'art',hint:'Màu vẽ'},
+  {word:'scissors',emoji:'✂️',cat:'art',hint:'Kéo'},
+];
+
+const CATS = {outdoor:'Outdoor things',food:'Food',crafts:'Crafts',art:'Art materials'};
+
+let topic = 'all', gameType = '', words = [], idx = 0, score = 0;
+let uAns = [], uUsed = [];
+let flFlipped = false;
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function getWords(){
+  let pool = topic==='all'?[...WORDS]:WORDS.filter(w=>w.cat===topic);
+  return shuffle(pool).slice(0,10);
+}
+
+function pickTopic(t, el){
+  topic = t;
+  document.querySelectorAll('.topic-pill').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function showOnly(id){
+  document.getElementById('screen-menu').style.display='none';
+  document.querySelectorAll('.game-screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-result').style.display='none';
+  if(id==='menu'){
+    document.getElementById('screen-menu').style.display='flex';
+  } else if(id==='result'){
+    document.getElementById('screen-result').style.display='flex';
+  } else {
+    document.getElementById('screen-'+id).classList.add('active');
+  }
+}
+
+function goMenu(){ showOnly('menu'); }
+
+function startGame(type){
+  gameType = type; words = getWords(); idx = 0; score = 0;
+  showOnly(type);
+  if(type==='unscramble') loadUnscramble();
+  else if(type==='choice') loadChoice();
+  else if(type==='fill') loadFill();
+  else if(type==='flash') loadFlash();
+}
+
+function setProgress(pfx, cur, total){
+  document.getElementById(pfx+'-prog').style.width = (cur/total*100)+'%';
+  document.getElementById(pfx+'-score').textContent = '⭐ '+score+' / '+cur;
+}
+
+/* ---------- UNSCRAMBLE ---------- */
+function loadUnscramble(){
+  const w = words[idx];
+  const raw = w.word.toLowerCase();
+  uAns = raw.split('').map(c=>c===' '?' ':null);
+  uUsed = [];
+  document.getElementById('u-emoji').textContent = w.emoji;
+  document.getElementById('u-hint').textContent = '💡 '+w.hint;
+  document.getElementById('u-fb').style.display='none';
+  setProgress('u', idx, words.length);
+
+  // slots
+  const slotEl = document.getElementById('u-slots');
+  slotEl.innerHTML='';
+  raw.split('').forEach((c,i)=>{
+    const d=document.createElement('div');
+    if(c===' '){d.className='ans-slot space-slot';}
+    else{d.className='ans-slot';d.onclick=()=>uRemove(i);}
+    d.id='uslot-'+i;
+    slotEl.appendChild(d);
+  });
+
+  // scrambled tiles
+  const letters = raw.split('').filter(c=>c!==' ');
+  const scrambled = shuffle([...letters]);
+  const tilesEl = document.getElementById('u-tiles');
+  tilesEl.innerHTML='';
+  scrambled.forEach((c,si)=>{
+    const d=document.createElement('div');
+    d.className='scram-tile'; d.textContent=c; d.dataset.si=si;
+    d.onclick=()=>uAdd(c,si,d);
+    tilesEl.appendChild(d);
+  });
+}
+
+function uAdd(ch, si, el){
+  const raw = words[idx].word.toLowerCase();
+  for(let i=0;i<uAns.length;i++){
+    if(uAns[i]===null){
+      uAns[i]=ch; uUsed[si]=true;
+      el.classList.add('used');
+      const slot=document.getElementById('uslot-'+i);
+      slot.textContent=ch; slot.classList.add('has-letter'); slot.dataset.si=si;
+      break;
+    }
+  }
+  if(!uAns.includes(null)) checkUnscramble();
+}
+
+function uRemove(i){
+  if(uAns[i]===null||uAns[i]===' ') return;
+  const slot=document.getElementById('uslot-'+i);
+  const si=slot.dataset.si;
+  document.querySelectorAll('.scram-tile').forEach(t=>{if(t.dataset.si==si)t.classList.remove('used');});
+  uAns[i]=null; slot.textContent=''; slot.className='ans-slot'; slot.onclick=()=>uRemove(i);
+}
+
+function uClear(){
+  const raw = words[idx].word.toLowerCase();
+  uAns = raw.split('').map(c=>c===' '?' ':null);
+  document.querySelectorAll('.ans-slot:not(.space-slot)').forEach(s=>{s.textContent='';s.className='ans-slot';});
+  document.querySelectorAll('.scram-tile').forEach(t=>t.classList.remove('used'));
+  document.getElementById('u-fb').style.display='none';
+}
+
+function checkUnscramble(){
+  const correct = uAns.join('')===words[idx].word.toLowerCase();
+  document.querySelectorAll('.ans-slot:not(.space-slot)').forEach(s=>{
+    s.classList.remove('has-letter');
+    s.classList.add(correct?'correct':'wrong');
+  });
+  const fb = document.getElementById('u-fb');
+  fb.style.display='block';
+  if(correct){ score++; fb.className='feedback-box ok'; fb.textContent='🎉 Xuất sắc! '+words[idx].word; }
+  else { fb.className='feedback-box no'; fb.textContent='💪 Đáp án đúng: '+words[idx].word; }
+  setProgress('u', idx+1, words.length);
+  setTimeout(()=>{ idx++; if(idx>=words.length) showResult(); else loadUnscramble(); }, 1900);
+}
+
+/* ---------- CHOICE ---------- */
+function loadChoice(){
+  const w = words[idx];
+  setProgress('c', idx, words.length);
+  document.getElementById('c-emoji').textContent = w.emoji;
+  document.getElementById('c-fb').style.display='none';
+  document.getElementById('c-next').style.display='none';
+
+  const distractors = shuffle(WORDS.filter(x=>x.word!==w.word)).slice(0,3);
+  const opts = shuffle([w,...distractors]);
+  const container = document.getElementById('c-options');
+  container.innerHTML='';
+  opts.forEach(opt=>{
+    const b=document.createElement('button');
+    b.className='mc-btn'; b.textContent=opt.word;
+    b.onclick=()=>checkChoice(b, opt.word===w.word, w.word);
+    container.appendChild(b);
+  });
+}
+
+function checkChoice(el, ok, answer){
+  document.querySelectorAll('.mc-btn').forEach(b=>b.classList.add('disabled'));
+  const fb = document.getElementById('c-fb');
+  fb.style.display='block';
+  if(ok){ el.classList.add('correct'); score++; fb.className='feedback-box ok'; fb.textContent='🎉 Đúng rồi!'; }
+  else {
+    el.classList.add('wrong'); fb.className='feedback-box no'; fb.textContent='💪 Đáp án: '+answer;
+    document.querySelectorAll('.mc-btn').forEach(b=>{ if(b.textContent===answer) b.classList.add('correct'); });
+  }
+  setProgress('c', idx+1, words.length);
+  document.getElementById('c-next').style.display='block';
+}
+
+/* ---------- FILL ---------- */
+function loadFill(){
+  const w = words[idx];
+  setProgress('f', idx, words.length);
+  document.getElementById('f-emoji').textContent = w.emoji;
+  document.getElementById('f-fb').style.display='none';
+  document.getElementById('f-next').style.display='none';
+
+  const letters = w.word.split('');
+  const vis = new Set();
+  const nonSpace = letters.map((c,i)=>c!==' '?i:-1).filter(i=>i>=0);
+  const showCount = Math.max(1, Math.floor(nonSpace.length*0.45));
+  shuffle([...nonSpace]).slice(0,showCount).forEach(i=>vis.add(i));
+
+  const disp = document.getElementById('f-display');
+  disp.innerHTML='';
+  letters.forEach((c,i)=>{
+    const span=document.createElement('span');
+    span.className='wd-char'+(c!==' '&&!vis.has(i)?' blank':'');
+    span.textContent=c===' '?'\u00A0':c;
+    disp.appendChild(span);
+  });
+
+  const inp = document.getElementById('f-input');
+  inp.value=''; inp.className='fill-input'; inp.disabled=false;
+  inp.onkeydown=e=>{ if(e.key==='Enter') checkFill(); };
+  setTimeout(()=>inp.focus(), 100);
+}
+
+function checkFill(){
+  const w = words[idx];
+  const val = document.getElementById('f-input').value.trim().toLowerCase();
+  const ok = val===w.word.toLowerCase();
+  const inp = document.getElementById('f-input');
+  inp.disabled=true; inp.className='fill-input '+(ok?'correct':'wrong');
+  const fb = document.getElementById('f-fb');
+  fb.style.display='block';
+  if(ok){ score++; fb.className='feedback-box ok'; fb.textContent='🎉 Đúng rồi!'; }
+  else { fb.className='feedback-box no'; fb.textContent='💪 Đáp án: '+w.word; }
+
+  // reveal all letters
+  const disp = document.getElementById('f-display');
+  disp.innerHTML='';
+  w.word.split('').forEach(c=>{
+    const span=document.createElement('span');
+    span.className='wd-char'; span.textContent=c===' '?'\u00A0':c;
+    disp.appendChild(span);
+  });
+
+  setProgress('f', idx+1, words.length);
+  document.getElementById('f-next').style.display='block';
+}
+
+/* ---------- FLASH ---------- */
+function loadFlash(){
+  const w = words[idx];
+  flFlipped = false;
+  setProgress('fl', idx, words.length);
+  document.getElementById('fl-emoji').textContent = w.emoji;
+  document.getElementById('fl-word').textContent = w.word;
+  document.getElementById('fl-cat').textContent = CATS[w.cat]||'';
+  document.getElementById('fl-front').style.display='flex';
+  document.getElementById('fl-front').style.flexDirection='column';
+  document.getElementById('fl-front').style.alignItems='center';
+  document.getElementById('fl-back').style.display='none';
+}
+
+function flipFlash(){
+  if(flFlipped) return;
+  flFlipped=true;
+  document.getElementById('fl-front').style.display='none';
+  document.getElementById('fl-back').style.display='block';
+}
+
+function flashVote(knew){
+  if(!flFlipped){ flipFlash(); return; }
+  if(knew) score++;
+  setProgress('fl', idx+1, words.length);
+  idx++;
+  if(idx>=words.length) showResult();
+  else loadFlash();
+}
+
+/* ---------- NEXT Q ---------- */
+function nextQ(type){
+  idx++;
+  if(idx>=words.length){ showResult(); return; }
+  if(type==='choice') loadChoice();
+  else if(type==='fill') loadFill();
+}
+
+/* ---------- RESULT ---------- */
+function showResult(){
+  const total = words.length;
+  const pct = Math.round(score/total*100);
+  const emojis = pct>=90?'🏆':pct>=70?'🌟':pct>=50?'😊':'💪';
+  const msgs = pct>=90?'Xuất sắc! Em giỏi lắm! 🎉':
+               pct>=70?'Rất tốt! Cố lên nhé! 👏':
+               pct>=50?'Ổn lắm! Luyện thêm sẽ giỏi hơn!':
+               'Không sao, luyện thêm là nhớ thôi! 💪';
+  const starCount = pct>=90?3:pct>=60?2:1;
+
+  document.getElementById('r-emoji').textContent = emojis;
+  document.getElementById('r-stars').innerHTML = '⭐'.repeat(starCount) + '☆'.repeat(3-starCount);
+  document.getElementById('r-big').textContent = score+'/'+total;
+  document.getElementById('r-sub').textContent = pct+'% đúng';
+  document.getElementById('r-msg').textContent = msgs;
+  showOnly('result');
+}
+
+function restartGame(){ startGame(gameType); }
+
+// init
+document.getElementById('screen-menu').style.display='flex';
+</script>
+</body>
+</html>
