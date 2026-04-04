@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 5 – Vocab Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f0f4ff;--white:#fff;--border:#dde3f5;
+  --primary:#3b5bdb;--primary-light:#dbe4ff;
+  --green:#2f9e44;--green-light:#d3f9d8;
+  --red:#e03131;--red-light:#ffe3e3;
+  --orange:#e8590c;--orange-light:#fff4e6;
+  --purple:#7048e8;--purple-light:#f3f0ff;
+  --teal:#0c8599;--teal-light:#e3fafc;
+  --pink:#d6336c;--pink-light:#ffdeeb;
+  --yellow:#e67700;--yellow-light:#fff9db;
+  --text:#1c2040;--muted:#6c757d;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+header{background:linear-gradient(135deg,#3b5bdb,#7048e8);padding:18px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:0 4px 20px rgba(59,91,219,.25);}
+header h1{font-family:'Baloo 2',sans-serif;font-size:clamp(18px,3vw,28px);color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.2);}
+header span{font-size:clamp(12px,1.6vw,15px);color:rgba(255,255,255,.8);}
+.tab-row{display:flex;gap:4px;padding:14px 18px 0;flex-wrap:wrap;background:var(--white);border-bottom:2px solid var(--border);}
+.tab-btn{font-family:'Nunito',sans-serif;font-size:clamp(11px,1.5vw,14px);font-weight:800;padding:8px 12px;border-radius:10px 10px 0 0;border:2px solid var(--border);border-bottom:none;background:var(--bg);cursor:pointer;color:var(--muted);transition:all .15s;white-space:nowrap;}
+.tab-btn.active{background:var(--white);color:var(--primary);border-color:var(--primary);position:relative;top:2px;}
+main{padding:22px 18px 60px;max-width:880px;margin:0 auto;}
+.panel{display:none;}
+.panel.active{display:block;}
+.section-card{background:var(--white);border:2px solid var(--border);border-radius:20px;padding:26px 26px 22px;box-shadow:0 2px 16px rgba(59,91,219,.07);margin-bottom:24px;}
+.toolbar{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;align-items:center;}
+.btn{font-family:'Nunito',sans-serif;font-size:clamp(13px,1.8vw,15px);font-weight:800;padding:9px 18px;border-radius:10px;border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px;}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-primary:hover{background:#2f4ac0;transform:translateY(-1px);}
+.btn-orange{background:var(--orange);color:#fff;}
+.btn-orange:hover{background:#c94c08;}
+.btn-green{background:var(--green);color:#fff;}
+.btn-green:hover{background:#257a36;}
+.btn-purple{background:var(--purple);color:#fff;}
+.btn-purple:hover{background:#5e38c5;}
+.btn-pink{background:var(--pink);color:#fff;}
+.btn-pink:hover{background:#b22757;}
+.btn-gray{background:#e9ecef;color:var(--text);}
+.btn-gray:hover{background:#dee2e6;}
+.btn-teal{background:var(--teal);color:#fff;}
+.btn-teal:hover{background:#0a6b7a;}
+.btn-yellow{background:var(--yellow);color:#fff;}
+.btn-yellow:hover{background:#b35b00;}
+.btn-sm{font-size:clamp(12px,1.5vw,13px);padding:6px 13px;}
+.progress-bar{background:var(--border);border-radius:99px;height:9px;margin-bottom:16px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--primary),var(--teal));transition:width .4s;}
+.progress-text{display:flex;justify-content:space-between;font-size:clamp(12px,1.6vw,14px);color:var(--muted);font-weight:700;margin-bottom:5px;}
+.q-label{font-size:clamp(11px,1.4vw,13px);font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.q-label .badge{font-size:11px;padding:3px 10px;border-radius:50px;background:var(--primary-light);color:var(--primary);}
+.q-word{font-family:'Baloo 2',sans-serif;font-size:clamp(26px,5vw,50px);font-weight:800;color:var(--text);margin-bottom:4px;line-height:1.2;}
+.q-sentence{font-size:clamp(16px,2.6vw,22px);font-weight:700;line-height:1.8;margin-bottom:16px;color:var(--text);}
+.q-sentence .blank{display:inline-block;min-width:90px;border-bottom:3px solid var(--primary);color:var(--primary);text-align:center;padding:0 6px;}
+.q-hint{font-size:clamp(13px,1.7vw,15px);color:var(--muted);font-style:italic;margin-bottom:16px;}
+.q-emoji{font-size:clamp(40px,7vw,72px);margin-bottom:8px;text-align:center;display:block;}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.opt-btn{font-family:'Nunito',sans-serif;font-size:clamp(14px,2.1vw,20px);font-weight:700;padding:14px 16px;border-radius:14px;border:2.5px solid var(--border);background:#fff;cursor:pointer;transition:all .15s;text-align:left;display:flex;align-items:center;gap:8px;line-height:1.3;}
+.opt-letter{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;background:var(--primary-light);color:var(--primary);border-radius:50%;font-size:12px;flex-shrink:0;font-weight:900;}
+.opt-btn:hover:not(:disabled){border-color:var(--primary);background:var(--primary-light);}
+.opt-btn:hover:not(:disabled) .opt-letter{background:var(--primary);color:#fff;}
+.opt-btn.correct{background:var(--green-light);border-color:var(--green);color:var(--green);}
+.opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+.opt-btn.wrong{background:var(--red-light);border-color:var(--red);color:var(--red);}
+.opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+.opt-btn:disabled{cursor:default;}
+.options-1col{grid-template-columns:1fr;}
+.feedback{display:none;padding:12px 16px;border-radius:12px;font-size:clamp(13px,1.8vw,17px);font-weight:700;margin-bottom:14px;line-height:1.5;}
+.feedback.show{display:block;}
+.feedback.ok{background:var(--green-light);color:var(--green);}
+.feedback.bad{background:var(--red-light);color:var(--red);}
+.answer-box{display:none;padding:12px 16px;border-radius:12px;background:var(--yellow-light);border:2px solid var(--yellow);font-size:clamp(13px,1.8vw,17px);font-weight:700;color:var(--yellow);margin-bottom:12px;line-height:1.5;}
+.answer-box.show{display:block;}
+.next-btn{width:100%;padding:14px;border-radius:14px;border:none;font-family:'Nunito',sans-serif;font-size:clamp(15px,2.3vw,20px);font-weight:800;cursor:pointer;background:var(--primary);color:#fff;display:none;transition:all .18s;margin-top:4px;}
+.next-btn:hover{background:#2f4ac0;transform:translateY(-2px);}
+.next-btn.show{display:block;}
+.score-badge{margin-left:auto;font-size:clamp(13px,1.8vw,16px);font-weight:800;color:var(--primary);background:var(--primary-light);padding:7px 16px;border-radius:50px;white-space:nowrap;}
+.fill-input{font-family:'Nunito',sans-serif;font-size:clamp(15px,2.2vw,22px);font-weight:700;border:none;border-bottom:3px solid var(--primary);background:transparent;color:var(--primary);outline:none;min-width:110px;width:150px;text-align:center;padding:2px 6px;}
+.fill-input.correct{border-color:var(--green);color:var(--green);}
+.fill-input.wrong{border-color:var(--red);color:var(--red);}
+
+/* Word Box for fill-blanks */
+.word-bank{display:flex;flex-wrap:wrap;gap:8px;padding:14px 16px;background:var(--primary-light);border:2px solid var(--primary);border-radius:14px;margin-bottom:16px;}
+.word-chip{font-family:'Nunito',sans-serif;font-size:clamp(13px,2vw,17px);font-weight:700;padding:6px 14px;border-radius:50px;background:#fff;border:2px solid var(--primary);color:var(--primary);cursor:pointer;transition:all .15s;}
+.word-chip:hover:not(.used){background:var(--primary);color:#fff;transform:scale(1.05);}
+.word-chip.used{opacity:0.35;cursor:default;text-decoration:line-through;}
+.word-chip.selected{background:var(--primary);color:#fff;transform:scale(1.05);}
+
+/* Miss-letter: now free-type */
+.letter-type-input{font-family:'Baloo 2',sans-serif;font-size:clamp(20px,3.5vw,34px);font-weight:800;border:none;border-bottom:3px solid var(--primary);background:transparent;color:var(--primary);outline:none;text-align:center;padding:4px 8px;width:100%;max-width:320px;display:block;margin:14px auto;}
+.letter-type-input.correct{border-color:var(--green);color:var(--green);}
+.letter-type-input.wrong{border-color:var(--red);color:var(--red);}
+/* Vietnamese meaning display - large */
+.vn-big{font-family:'Baloo 2',sans-serif;font-size:clamp(28px,6vw,54px);font-weight:800;color:var(--primary);text-align:center;padding:18px 16px;background:var(--primary-light);border-radius:16px;margin-bottom:18px;line-height:1.3;}
+
+/* Error find */
+.error-sentence{font-size:clamp(16px,2.5vw,22px);font-weight:700;line-height:1.8;margin:12px 0;}
+.underline-word{cursor:pointer;border-bottom:2.5px dashed var(--muted);padding:1px 3px;border-radius:3px;transition:all .15s;}
+.underline-word:hover{background:var(--orange-light);border-color:var(--orange);}
+.underline-word.error-found{background:var(--red-light);border-color:var(--red);color:var(--red);}
+.underline-word.correct-word{background:var(--green-light);border-color:var(--green);color:var(--green);}
+
+/* Match game - Vietnamese on LEFT, English on RIGHT */
+.match-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.match-col-label{font-size:clamp(11px,1.4vw,13px);font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px;text-align:center;}
+.match-item{font-size:clamp(13px,2vw,18px);font-weight:700;padding:12px 14px;border-radius:12px;border:2.5px solid var(--border);background:#fff;cursor:pointer;transition:all .15s;text-align:center;min-height:48px;display:flex;align-items:center;justify-content:center;margin-bottom:7px;line-height:1.3;gap:6px;}
+.match-item:hover:not(.matched):not([disabled]){border-color:var(--purple);background:var(--purple-light);}
+.match-item.selected{border-color:var(--purple);background:var(--purple-light);color:var(--purple);transform:scale(1.02);}
+.match-item.matched{border-color:var(--green);background:var(--green-light);color:var(--green);cursor:default;}
+.match-item.wrong-flash{animation:shake .3s;}
+.match-num{font-size:clamp(11px,1.5vw,14px);font-weight:900;color:var(--orange);background:var(--orange-light);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+@keyframes shake{0%,100%{transform:translateX(0);}30%{transform:translateX(-8px);}70%{transform:translateX(8px);}}
+
+/* TTS */
+.tts-btn{font-family:'Nunito',sans-serif;font-size:clamp(15px,2.2vw,20px);font-weight:700;padding:12px 24px;border-radius:12px;border:none;background:var(--primary-light);color:var(--primary);cursor:pointer;display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;transition:all .18s;}
+.tts-btn:hover{background:var(--primary);color:#fff;}
+.tts-btn.speaking{background:var(--green);color:#fff;animation:pulse .8s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.04);}}
+.section-title{font-family:'Baloo 2',sans-serif;font-size:clamp(16px,2.5vw,22px);font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.streak{font-size:clamp(12px,1.6vw,14px);font-weight:800;color:var(--orange);background:var(--orange-light);padding:5px 12px;border-radius:50px;}
+
+/* TTS sub-tabs */
+.subtab-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.subtab-btn{font-family:'Nunito',sans-serif;font-size:clamp(12px,1.7vw,15px);font-weight:800;padding:7px 14px;border-radius:10px;border:2px solid var(--border);background:var(--bg);cursor:pointer;color:var(--muted);transition:all .15s;}
+.subtab-btn.active{background:var(--teal);color:#fff;border-color:var(--teal);}
+
+@media(max-width:600px){
+  .options-grid,.match-cols{grid-template-columns:1fr;}
+  main{padding:14px 10px 60px;}
+  .section-card{padding:16px 12px 14px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌿 Module 5 – Vocabulary Practice</h1>
+  <span>GRAM3 · Natural Wonders & Food and Drink</span>
+</header>
+
+<div class="tab-row" id="tabRow"></div>
+<main><div id="panelContainer"></div></main>
+
+<script>
+// ═══════════════════════════════════════════
+// VOCAB DATA
+// ═══════════════════════════════════════════
+const vocab5A = [
+  {w:"geography",vn:"địa lý",emoji:"🗺️",def:"The school subject that teaches about countries, mountains, rivers, and the world.",ex:"Hello, welcome to our ___ club.",hard:1},
+  {w:"remember",vn:"nhớ",emoji:"🧠",def:"To not forget something; to keep it in your head.",ex:"___ to bring a torch when you go to the cave.",hard:1},
+  {w:"wonder",vn:"kỳ quan",emoji:"🏔️",def:"A place or thing so beautiful and amazing that it surprises you.",ex:"Ha Long Bay is a natural ___ of Vietnam.",hard:2},
+  {w:"island",vn:"hòn đảo",emoji:"🏝️",def:"A piece of land with water all around it.",ex:"Ha Long Bay has over 1,900 ___.",hard:1},
+  {w:"scenery",vn:"phong cảnh",emoji:"🌄",def:"The beautiful things you can see in nature around you – trees, mountains, sky.",ex:"The ___ in Sa Pa is breathtaking in autumn.",hard:3},
+  {w:"charming",vn:"hữu tình / quyến rũ",emoji:"😍",def:"Very pretty and pleasant; makes you feel happy to look at it.",ex:"Ha Long Bay is ___ – beautiful and romantic.",hard:3},
+  {w:"cave",vn:"hang động",emoji:"🕳️",def:"A big dark hole in the ground or in a rock where you can walk inside.",ex:"Phong Nha is the world's largest ___.",hard:1},
+  {w:"waterfall",vn:"thác nước",emoji:"🌊",def:"A place where water falls down from a high rock into a river below.",ex:"Ban Gioc ___ is in Cao Bang province.",hard:1},
+  {w:"desert",vn:"sa mạc",emoji:"🏜️",def:"A very large, hot, and dry place with almost no rain and very little water.",ex:"They were lost in the ___ for three days.",hard:1},
+  {w:"sunscreen",vn:"kem chống nắng",emoji:"🧴",def:"A cream you put on your skin so the sun does not burn you.",ex:"Don't forget to put on ___ before going to the beach.",hard:3},
+  {w:"overnight",vn:"qua đêm",emoji:"🌙",def:"Staying somewhere from the evening until the next morning.",ex:"We stayed ___ at the camping site near the river.",hard:3},
+  {w:"plaster",vn:"băng cá nhân",emoji:"🩹",def:"A small sticky strip you put on a cut on your skin to cover and protect it.",ex:"I cut my finger on the rock – I need to put on a ___.",hard:3},
+  {w:"backpack",vn:"ba lô",emoji:"🎒",def:"A bag you wear on your back, often used for school or hiking.",ex:"I carry all my gear in my ___ when trekking.",hard:1},
+  {w:"compass",vn:"la bàn",emoji:"🧭",def:"A small round tool that always points North and helps you find your way.",ex:"Use a ___ to find the way in the forest.",hard:3},
+  {w:"sleeping bag",vn:"túi ngủ",emoji:"🛏️",def:"A big warm bag shaped like a body that you climb inside to sleep when camping.",ex:"He brought his ___ because the nights were very cold.",hard:3},
+  {w:"explore",vn:"khám phá",emoji:"🔭",def:"To go to a new place and look around to find out what is there.",ex:"I want to ___ the hidden cave at the end of the trail.",hard:2},
+  {w:"waterproof",vn:"không thấm nước",emoji:"🌧️",def:"Keeps water out; does not get wet even in the rain.",ex:"You need a ___ jacket when hiking in the rain.",hard:3},
+  {w:"necessary",vn:"cần thiết",emoji:"✅",def:"Something you really must have or do; you cannot do without it.",ex:"Bring ___ things: a torch, a map, and water.",hard:3},
+  {w:"landscape",vn:"cảnh quan",emoji:"🌅",def:"The view of a large area of land – fields, hills, rivers – that you can see from far away.",ex:"The ___ of the Red River Delta is flat and green.",hard:3},
+  {w:"camping site",vn:"khu cắm trại",emoji:"⛺",def:"An outdoor area where people can set up tents and sleep under the stars.",ex:"This ___ near the river is very popular with families.",hard:3},
+  {w:"seafood",vn:"hải sản",emoji:"🦞",def:"Food that comes from the sea, such as fish, shrimp, and crab.",ex:"You can enjoy fresh ___ on the beach in Phu Quoc.",hard:1},
+  {w:"luggage",vn:"hành lý",emoji:"🧳",def:"The bags and suitcases that you take with you when you travel.",ex:"Don't take too much ___ – just a small backpack.",hard:2},
+];
+
+const vocab5B = [
+  {w:"fish sauce",vn:"nước mắm",emoji:"🫙",def:"A salty brown liquid made from fish, used a lot in Vietnamese cooking instead of salt.",ex:"Vietnamese cooking often uses ___ instead of salt.",hard:2},
+  {w:"roast chicken",vn:"gà quay",emoji:"🍗",def:"A whole chicken cooked in a hot oven until the skin is golden and crispy.",ex:"Could we have an order of ___ and fried vegetables?",hard:2},
+  {w:"fried tofu",vn:"đậu hũ chiên",emoji:"🟡",def:"Soft white tofu cooked in hot oil until the outside becomes crispy and golden.",ex:"I'd like some ___ and spring rolls, please.",hard:1},
+  {w:"shrimp",vn:"tôm",emoji:"🦐",def:"A small pink sea animal with a curved body that people eat.",ex:"I like eating ___ cooked with garlic and butter.",hard:1},
+  {w:"mineral water",vn:"nước khoáng",emoji:"💧",def:"Water from under the ground, bottled and sold in shops; often has small bubbles.",ex:"We have juice, tea and ___ on the menu.",hard:2},
+  {w:"winter melon juice",vn:"nước ép bí đao",emoji:"🥤",def:"A cold sweet drink made from a large green vegetable called winter melon; popular in Vietnam.",ex:"Do you have ___ on the menu today?",hard:3},
+  {w:"order",vn:"gọi món",emoji:"📋",def:"To tell a waiter what food or drink you want to have.",ex:"Are you ready to ___? The waiter is waiting.",hard:1},
+  {w:"prepare for",vn:"chuẩn bị cho",emoji:"👩‍🍳",def:"To get everything ready before an event or activity.",ex:"She is ___ a big family dinner tonight.",hard:1},
+  {w:"ingredient",vn:"nguyên liệu",emoji:"🧂",def:"One food item that you use when cooking a dish, like rice, eggs, or fish sauce.",ex:"Rice noodle is the main ___ of pho.",hard:3},
+  {w:"recipe",vn:"công thức nấu ăn",emoji:"📖",def:"A list of food items and step-by-step instructions that tells you how to cook a dish.",ex:"Follow the ___ carefully or your cake will fail.",hard:3},
+  {w:"quantity",vn:"số lượng",emoji:"🔢",def:"How much or how many of something there is.",ex:"The ___ of each ingredient is written in grams.",hard:2},
+  {w:"spring rolls",vn:"chả giò",emoji:"🥢",def:"A Vietnamese snack – thin crispy rolls filled with meat and vegetables, then fried.",ex:"I like eating ___ dipped in sweet chilli sauce.",hard:2},
+  {w:"omelette",vn:"trứng rán",emoji:"🍳",def:"A simple dish made by mixing eggs and cooking them flat in a pan.",ex:"She makes an ___ with cheese for breakfast.",hard:2},
+  {w:"butter",vn:"bơ",emoji:"🧈",def:"A soft yellow food made from cream that you spread on bread or use for cooking.",ex:"I need ___ and eggs to make pancakes.",hard:1},
+  {w:"pancake",vn:"bánh rán",emoji:"🥞",def:"A flat, round, soft cake made from flour, eggs, and milk and cooked in a pan.",ex:"___ with maple syrup is my favourite Sunday breakfast.",hard:1},
+  {w:"broth",vn:"nước lèo",emoji:"🍲",def:"A light, clear soup made by boiling meat or vegetables in water for a long time.",ex:"The ___ for pho is simmered for many hours.",hard:3},
+  {w:"taste",vn:"hương vị / vị",emoji:"😋",def:"The feeling in your mouth when you eat something – sweet, salty, sour, bitter, or rich.",ex:"Pho has a very unique ___ that is hard to describe.",hard:2},
+  {w:"sticky rice",vn:"xôi",emoji:"🍚",def:"A type of rice that becomes soft and sticks together when cooked; very popular in Vietnam.",ex:"There are many kinds of ___ with different toppings.",hard:3},
+  {w:"traditional food",vn:"món ăn truyền thống",emoji:"🇻🇳",def:"A dish that people in a country have cooked and eaten for hundreds of years.",ex:"Pho is the most famous ___ of Vietnam.",hard:3},
+  {w:"eating habits",vn:"thói quen ăn uống",emoji:"🥗",def:"The things you usually eat and drink every day and how you eat them.",ex:"Write about your ___ – what do you eat every day?",hard:3},
+  {w:"eel soup",vn:"súp lươn",emoji:"🍜",def:"A warm soup made with eel, a long fish-like river animal; a famous dish from Nghe An.",ex:"___ is a famous dish from Nghe An province.",hard:3},
+  {w:"beef noodle soup",vn:"phở bò",emoji:"🍜",def:"Vietnam's most famous dish – rice noodles in a hot beef broth, served with fresh herbs.",ex:"___ is eaten for breakfast by millions of Vietnamese.",hard:2},
+  {w:"allow",vn:"cho phép",emoji:"🙋",def:"To say yes and let someone do something.",ex:"His mum doesn't ___ him to drink juice before dinner.",hard:2},
+  {w:"can",vn:"lon",emoji:"🥫",def:"A small metal container used to store food or drinks for a long time.",ex:"How many ___ of tomatoes do you need for the sauce?",hard:1},
+  {w:"teaspoon",vn:"muỗng cà phê",emoji:"🥄",def:"A small spoon, often used to measure a small amount of something in cooking.",ex:"Add one ___ of salt and stir well.",hard:2},
+  {w:"gram",vn:"gam",emoji:"⚖️",def:"A very small unit used to measure how heavy something is. 1,000 grams = 1 kilogram.",ex:"The recipe needs 200 ___ of flour.",hard:1},
+  {w:"litre",vn:"lít",emoji:"🫗",def:"A unit used to measure liquid. A large bottle of water is usually one ___.",ex:"Drink at least one ___ of water every day.",hard:1},
+  {w:"millilitre",vn:"mi-li-lít",emoji:"💉",def:"A very small unit of liquid. There are 1,000 millilitres in one litre.",ex:"Use 400 ___ of milk for this pancake batter.",hard:2},
+  {w:"slice",vn:"lát / miếng",emoji:"🔪",def:"A thin flat piece cut from food, like a slice of bread or a slice of meat.",ex:"Cut the pork into thin ___ before adding it to the broth.",hard:2},
+  {w:"stew",vn:"món hầm",emoji:"🫕",def:"A hot dish made by cooking meat and vegetables slowly in liquid for a long time.",ex:"She made a beef ___ that simmered for two hours.",hard:2},
+  {w:"boneless",vn:"không xương",emoji:"🍖",def:"Meat with no bones inside – easy to eat and cut.",ex:"Use ___ chicken thighs so the dish is easier to eat.",hard:2},
+  {w:"in a hurry",vn:"vội vàng",emoji:"🏃",def:"Moving or doing things very fast because you do not have much time.",ex:"He grabbed a bowl of pho ___ before catching the bus.",hard:2},
+  {w:"served with",vn:"ăn kèm với",emoji:"🍽️",def:"Extra food or drink that comes together with the main dish on the table.",ex:"Pho is always ___ fresh herbs, lime, and chilli.",hard:3},
+  {w:"be made mainly with",vn:"chủ yếu được làm từ",emoji:"🧑‍🍳",def:"Used to say what the most important food items in a dish are.",ex:"Pho is ___ rice noodles cooked in a rich beef broth.",hard:3},
+  {w:"be made by",vn:"được làm bằng cách",emoji:"🍳",def:"Used to explain the method or way that a food is cooked.",ex:"The broth is ___ simmering beef bones with spices for hours.",hard:3},
+  {w:"exhibition",vn:"triển lãm",emoji:"🖼️",def:"A public event where people show things for others to come and look at.",ex:"The class organised a food ___ to celebrate Vietnamese cuisine.",hard:3},
+];
+
+// ─────────────────────────────────────────────
+// FILL-BLANKS: rich contextual sentences, 12 per group
+// Each group: 12 items in a box, sentences unambiguous
+// ─────────────────────────────────────────────
+const fillGroups5A = [
+  {
+    items:[
+      {w:"scenery",vn:"phong cảnh",sentence:"The ___ in Ha Long Bay is so beautiful that many tourists come back every year."},
+      {w:"explore",vn:"khám phá",sentence:"We hired a guide to help us ___ the dark cave safely."},
+      {w:"waterfall",vn:"thác nước",sentence:"After the long hike, we finally reached the ___ and jumped into the cool water."},
+      {w:"compass",vn:"la bàn",sentence:"Without a ___, it is very easy to get lost in a thick forest."},
+      {w:"sleeping bag",vn:"túi ngủ",sentence:"It was so cold at night that I zipped my ___ all the way up."},
+      {w:"landscape",vn:"cảnh quan",sentence:"The rice-terrace ___ in Mu Cang Chai is stunning in harvest season."},
+      {w:"necessary",vn:"cần thiết",sentence:"A first-aid kit is ___ when you go trekking in the mountains."},
+      {w:"camping site",vn:"khu cắm trại",sentence:"We set up our tents at a ___ by the lake and cooked over a fire."},
+      {w:"waterproof",vn:"không thấm nước",sentence:"Buy a ___ bag so your phone stays dry when kayaking."},
+      {w:"sunscreen",vn:"kem chống nắng",sentence:"Apply ___ every two hours when you spend time on the beach."},
+      {w:"overnight",vn:"qua đêm",sentence:"We took an ___ train from Hanoi to Sapa and arrived in the morning."},
+      {w:"plaster",vn:"băng cá nhân",sentence:"She got a blister on her heel so she put a ___ on it before continuing."},
+    ]
+  },
+  {
+    items:[
+      {w:"geography",vn:"địa lý",sentence:"In ___ class, we learned that Vietnam shares borders with three countries."},
+      {w:"wonder",vn:"kỳ quan",sentence:"Ha Long Bay was named a World Natural ___ because of its amazing limestone rocks."},
+      {w:"island",vn:"hòn đảo",sentence:"Phu Quoc is the largest ___ in Vietnam, famous for its white sandy beaches."},
+      {w:"cave",vn:"hang động",sentence:"Son Doong ___ is so huge that a whole jungle grows inside it."},
+      {w:"desert",vn:"sa mạc",sentence:"The Sahara is the largest hot ___ in the world, stretching across North Africa."},
+      {w:"charming",vn:"quyến rũ",sentence:"The old town of Hoi An is ___ at night, with hundreds of colourful lanterns."},
+      {w:"remember",vn:"nhớ",sentence:"___ to pack your sleeping bag – the mountain nights are freezing!"},
+      {w:"backpack",vn:"ba lô",sentence:"She packed everything into one small ___ to avoid paying for extra luggage."},
+      {w:"seafood",vn:"hải sản",sentence:"The coastal market had fresh ___ every morning: shrimp, crab, and squid."},
+      {w:"luggage",vn:"hành lý",sentence:"The airline only allows 7 kg of carry-on ___ per passenger."},
+      {w:"explore",vn:"khám phá",sentence:"I want to ___ every cave in Phong Nha – there are over 300 of them!"},
+      {w:"overnight",vn:"qua đêm",sentence:"The tour offers an ___ stay on a traditional junk boat in Ha Long Bay."},
+    ]
+  }
+];
+
+const fillGroups5B = [
+  {
+    items:[
+      {w:"ingredient",vn:"nguyên liệu",sentence:"The most important ___ in pho broth is beef bones – without them, the soup has no flavour."},
+      {w:"recipe",vn:"công thức nấu ăn",sentence:"My grandmother wrote her spring roll ___ in a little notebook 40 years ago."},
+      {w:"broth",vn:"nước lèo",sentence:"A good pho ___ must simmer with spices for at least six hours."},
+      {w:"quantity",vn:"số lượng",sentence:"The ___ of fish sauce you add will change the whole flavour of the dish."},
+      {w:"sticky rice",vn:"xôi",sentence:"In Vietnam, ___ topped with mung bean paste is a popular breakfast street food."},
+      {w:"eating habits",vn:"thói quen ăn uống",sentence:"Doctors say our ___ have changed greatly because of fast food and busy lifestyles."},
+      {w:"traditional food",vn:"món ăn truyền thống",sentence:"Pho is not just a ___ of Vietnam – it is also a symbol of national identity."},
+      {w:"eel soup",vn:"súp lươn",sentence:"___ is a regional speciality you should try when you visit Nghe An."},
+      {w:"winter melon juice",vn:"nước ép bí đao",sentence:"On a hot day, a glass of cold ___ is very refreshing and healthy."},
+      {w:"fish sauce",vn:"nước mắm",sentence:"A dipping sauce made of ___, sugar, lime, and chilli goes perfectly with spring rolls."},
+      {w:"taste",vn:"vị",sentence:"The ___ of a good bowl of pho is both rich and delicate at the same time."},
+      {w:"beef noodle soup",vn:"phở bò",sentence:"A steaming bowl of ___ served with fresh herbs is the perfect breakfast."},
+    ]
+  },
+  {
+    items:[
+      {w:"order",vn:"gọi món",sentence:"The waiter came to our table and asked if we were ready to ___."},
+      {w:"prepare for",vn:"chuẩn bị cho",sentence:"She started to ___ the Tet feast two days before the holiday began."},
+      {w:"roast chicken",vn:"gà quay",sentence:"The restaurant is famous for its crispy ___ served with steamed rice."},
+      {w:"shrimp",vn:"tôm",sentence:"The chef grilled the giant ___ over charcoal and served it with salt and lime."},
+      {w:"mineral water",vn:"nước khoáng",sentence:"Always carry a bottle of ___ when you travel so you stay hydrated."},
+      {w:"spring rolls",vn:"chả giò",sentence:"My mum makes crispy ___ every Tet, filled with pork, glass noodles, and mushrooms."},
+      {w:"omelette",vn:"trứng rán",sentence:"He made a quick cheese ___ for breakfast because he was in a hurry."},
+      {w:"pancake",vn:"bánh rán",sentence:"Vietnamese ___ (bánh xèo) is larger and crispier than the Western version."},
+      {w:"butter",vn:"bơ",sentence:"Melt the ___ in the pan before adding the eggs so they don't stick."},
+      {w:"fried tofu",vn:"đậu hũ chiên",sentence:"___ is a popular vegetarian dish because it is crispy outside and soft inside."},
+      {w:"quantity",vn:"số lượng",sentence:"Reduce the ___ of sugar if you prefer a less sweet cake."},
+      {w:"ingredient",vn:"nguyên liệu",sentence:"Ginger is a key ___ in many Vietnamese soups because it adds warmth and aroma."},
+    ]
+  },
+  {
+    items:[
+      {w:"served with",vn:"ăn kèm với",sentence:"In Vietnam, pho is always ___ a plate of fresh herbs, bean sprouts, and lime."},
+      {w:"be made mainly with",vn:"chủ yếu được làm từ",sentence:"Banh mi is ___ a French-style baguette filled with Vietnamese ingredients."},
+      {w:"be made by",vn:"được làm bằng cách",sentence:"The rich pho broth is ___ simmering beef bones with spices for at least six hours."},
+      {w:"allow",vn:"cho phép",sentence:"The doctor does not ___ him to eat salty food because of his blood pressure."},
+      {w:"in a hurry",vn:"vội vàng",sentence:"She ate her breakfast ___ because the bus was about to leave."},
+      {w:"slice",vn:"lát / miếng",sentence:"Cut the beef into thin ___ before dropping them into the hot broth."},
+      {w:"stew",vn:"món hầm",sentence:"A vegetable ___ cooked slowly with tomatoes and beans is perfect for cold weather."},
+      {w:"boneless",vn:"không xương",sentence:"The chef used ___ chicken thighs so the children could eat without any difficulty."},
+      {w:"exhibition",vn:"triển lãm",sentence:"The school held a food ___ where students brought dishes from different countries."},
+      {w:"served with",vn:"ăn kèm với",sentence:"Grilled pork in Hoi An is ___ white rose dumplings and cao lau noodles."},
+      {w:"be made mainly with",vn:"chủ yếu được làm từ",sentence:"Com tam is ___ broken rice and is typically topped with grilled pork and a fried egg."},
+      {w:"be made by",vn:"được làm bằng cách",sentence:"Traditional fish sauce is ___ fermenting small fish with salt for 12 to 18 months."},
+    ]
+  },
+  {
+    items:[
+      {w:"teaspoon",vn:"muỗng cà phê",sentence:"Add half a ___ of fish sauce to balance the sweetness of the dipping sauce."},
+      {w:"millilitre",vn:"mi-li-lít",sentence:"The recipe calls for exactly 250 ___ of coconut milk for one serving."},
+      {w:"gram",vn:"gam",sentence:"Use 100 ___ of rice flour to make the batter for banh xeo."},
+      {w:"litre",vn:"lít",sentence:"She boiled two ___ of water to make enough broth for the whole family."},
+      {w:"can",vn:"lon",sentence:"He opened a ___ of coconut milk and poured it into the curry."},
+      {w:"allow",vn:"cho phép",sentence:"Vietnamese street food stalls ___ customers to choose their own toppings."},
+      {w:"slice",vn:"lát / miếng",sentence:"She added a ___ of lemon to her mineral water to make it more refreshing."},
+      {w:"boneless",vn:"không xương",sentence:"___ pork ribs are easier to use in spring rolls because there is no bone to work around."},
+      {w:"in a hurry",vn:"vội vàng",sentence:"Street food is popular in Vietnam because workers who are ___ can grab a bowl of pho in minutes."},
+      {w:"stew",vn:"món hầm",sentence:"Bo kho is a Vietnamese beef ___ often eaten with a baguette for breakfast."},
+      {w:"served with",vn:"ăn kèm với",sentence:"Banh xeo (sizzling cake) is ___ fresh lettuce leaves and herbs for wrapping."},
+      {w:"exhibition",vn:"triển lãm",sentence:"At the cooking ___, visitors could watch chefs prepare traditional Vietnamese dishes live."},
+    ]
+  }
+];
+
+// ─────────────────────────────────────────────
+// ERROR-SPOT: subtle, same grammatical category
+// ─────────────────────────────────────────────
+const errorItems5A = [
+  {sentence:"The <u>landscape</u> in Ha Long Bay is full of <ERR>islands</ERR> that rise sharply from the sea like towers.", wrong:"islands", right:"cave",
+   hint:"Những thứ nhọn nhô lên từ biển trong Vịnh Hạ Long là các khối đá vôi, không phải đảo – và Vịnh Hạ Long cũng nổi tiếng với hang động."},
+  {sentence:"Don't forget to pack a <ERR>compass</ERR> to protect your skin from the strong sun at the beach.", wrong:"compass", right:"sunscreen",
+   hint:"La bàn dùng để tìm đường, không phải để bảo vệ da khỏi nắng."},
+  {sentence:"Phong Nha is the world's largest <ERR>waterfall</ERR>, with a river flowing through its dark passages.", wrong:"waterfall", right:"cave",
+   hint:"Nước chảy qua đường hầm tối → đó là hang động, không phải thác nước."},
+  {sentence:"A good hiker always uses a <ERR>backpack</ERR> to navigate in the jungle when there is no phone signal.", wrong:"backpack", right:"compass",
+   hint:"Ba lô dùng để đựng đồ, không phải để xác định hướng đi."},
+  {sentence:"The <ERR>scenery</ERR> jacket kept my camera dry even when the boat splashed water on us.", wrong:"scenery", right:"waterproof",
+   hint:"Phong cảnh là danh từ – áo jacket cần tính từ mô tả chất liệu không thấm nước."},
+  {sentence:"She rolled out her <ERR>backpack</ERR> on the ground because the camping site had no beds.", wrong:"backpack", right:"sleeping bag",
+   hint:"Ba lô là túi đeo – thứ bạn trải ra để ngủ trong khi cắm trại là túi ngủ."},
+  {sentence:"We rented bicycles to <ERR>remember</ERR> the old town of Hoi An on a sunny morning.", wrong:"remember", right:"explore",
+   hint:"Thuê xe đạp để đi khám phá thành phố, không phải để nhớ lại."},
+  {sentence:"Pack light <ERR>seafood</ERR> – bring only one small bag and wear layers instead of heavy clothes.", wrong:"seafood", right:"luggage",
+   hint:"Hải sản là thức ăn, không phải hành lý mang theo chuyến đi."},
+  {sentence:"The tour guide showed us a beautiful hidden <ERR>desert</ERR> deep inside the national park.", wrong:"desert", right:"waterfall",
+   hint:"Sa mạc nằm ở vùng khô nóng, không ở trong vườn quốc gia nhiệt đới ẩm."},
+  {sentence:"You must apply <ERR>plaster</ERR> before going to the beach or your skin will burn badly.", wrong:"plaster", right:"sunscreen",
+   hint:"Băng cá nhân dùng để che vết thương, không phải để bảo vệ da khỏi nắng."},
+];
+
+const errorItems5B = [
+  {sentence:"The most important <ERR>quantity</ERR> in pho broth is beef bones – without them, the soup has no depth.", wrong:"quantity", right:"ingredient",
+   hint:"Xương bò là nguyên liệu, không phải là số lượng."},
+  {sentence:"My grandmother's pho <ERR>taste</ERR> uses star anise, cinnamon, and ginger as key spices.", wrong:"taste", right:"recipe",
+   hint:"Vị của pho không thể chứa gia vị – đó là công thức nấu ăn."},
+  {sentence:"She grilled the <ERR>shrimp</ERR> in a hot pan and served it on toast for breakfast.", wrong:"shrimp", right:"omelette",
+   hint:"Nướng vỉ trong chảo và phục vụ trên bánh mì nướng – đó là món trứng rán, không phải tôm."},
+  {sentence:"The <ERR>recipe</ERR> for this soup takes over six hours to get the deep, rich flavour.", wrong:"recipe", right:"broth",
+   hint:"Công thức nấu ăn không mất 6 tiếng để có vị ngon – thứ cần nấu lâu là nước lèo."},
+  {sentence:"Vietnamese people have healthy <ERR>traditional food</ERR>: they eat lots of vegetables, fish, and rice.", wrong:"traditional food", right:"eating habits",
+   hint:"Thói quen ăn uống là pattern hằng ngày, không phải tên món ăn."},
+  {sentence:"Add a small <ERR>recipe</ERR> of fish sauce to balance the sweetness of the dipping sauce.", wrong:"recipe", right:"quantity",
+   hint:"Công thức là tập hợp hướng dẫn; bạn thêm một lượng nhỏ (số lượng) nước mắm."},
+  {sentence:"The waiter came back three times because we couldn't decide what to <ERR>prepare for</ERR>.", wrong:"prepare for", right:"order",
+   hint:"Khi gọi đồ ăn cho bồi bàn, bạn 'gọi món', không phải 'chuẩn bị cho'."},
+  {sentence:"Xoi (sticky rice) is a <ERR>beef noodle soup</ERR> that can be sweet or savoury depending on the topping.", wrong:"beef noodle soup", right:"traditional food",
+   hint:"Xôi không phải là phở – nó là một loại món ăn truyền thống."},
+  {sentence:"This <ERR>eel soup</ERR> drink is made from winter melon and served cold – it is very popular in summer.", wrong:"eel soup", right:"winter melon juice",
+   hint:"Món lỏng lạnh làm từ bí đao là nước ép, không phải súp lươn."},
+  {sentence:"The chef followed the ___ carefully and added each <ERR>broth</ERR> in the correct order.", wrong:"broth", right:"ingredient",
+   hint:"Các nguyên liệu được thêm vào theo thứ tự, không phải nước lèo."},
+  {sentence:"Pho is <ERR>prepared for</ERR> fresh herbs, lime, and chilli – these toppings are always on the table.", wrong:"prepared for", right:"served with",
+   hint:"Các món ăn kèm đi cùng với phở – dùng 'served with', không phải 'prepared for'."},
+  {sentence:"The restaurant does not <ERR>order</ERR> children to eat spicy food – they can ask for a milder version.", wrong:"order", right:"allow",
+   hint:"'Order' là gọi món; muốn nói về quyền phép thì dùng 'allow'."},
+  {sentence:"This lamb curry is <ERR>made mainly with</ERR> slow-cooking the meat in coconut milk for two hours.", wrong:"made mainly with", right:"made by",
+   hint:"'Made mainly with' chỉ nguyên liệu; 'made by' chỉ phương pháp nấu."},
+  {sentence:"A bowl of pho is <ERR>made mainly with</ERR> fresh herbs, lime wedges, and bean sprouts on the side.", wrong:"made mainly with", right:"served with",
+   hint:"Rau thơm và chanh là thứ ăn kèm theo phở, không phải nguyên liệu tạo nên phở – dùng 'served with'."},
+  {sentence:"He was <ERR>boneless</ERR> so he skipped breakfast and ran straight to catch the school bus.", wrong:"boneless", right:"in a hurry",
+   hint:"'Boneless' mô tả thịt không xương, không dùng để nói về người vội vàng."},
+  {sentence:"The museum held an <ERR>ingredient</ERR> showing traditional cooking tools from 100 years ago.", wrong:"ingredient", right:"exhibition",
+   hint:"Nguyên liệu là thứ để nấu ăn; sự kiện trưng bày công cộng gọi là 'exhibition'."},
+];
+
+// ─────────────────────────────────────────────
+// TTS SENTENCES (for listen-and-guess open-ended + MCQ)
+// Weighted toward hard:3 words
+// ─────────────────────────────────────────────
+const ttsItems5A = [
+  {w:"scenery",      vn:"phong cảnh",     emoji:"🌄", sentence:"The scenery along the mountain trail is absolutely breathtaking."},
+  {w:"charming",     vn:"quyến rũ",       emoji:"😍", sentence:"The old fishing village is charming, with colourful boats and friendly people."},
+  {w:"overnight",    vn:"qua đêm",        emoji:"🌙", sentence:"We stayed overnight in a bamboo hut beside the waterfall."},
+  {w:"plaster",      vn:"băng cá nhân",   emoji:"🩹", sentence:"She put a plaster on her blister before continuing the hike."},
+  {w:"sunscreen",    vn:"kem chống nắng", emoji:"🧴", sentence:"Apply sunscreen every two hours to protect your skin from sunburn."},
+  {w:"compass",      vn:"la bàn",         emoji:"🧭", sentence:"Without a compass, they could not tell which direction was north."},
+  {w:"sleeping bag", vn:"túi ngủ",        emoji:"🛏️", sentence:"He zipped his sleeping bag tightly because the night was freezing."},
+  {w:"waterproof",   vn:"không thấm nước",emoji:"🌧️", sentence:"Make sure your tent is waterproof before the rainy season begins."},
+  {w:"necessary",    vn:"cần thiết",      emoji:"✅", sentence:"It is necessary to carry a map and enough water on any long hike."},
+  {w:"landscape",    vn:"cảnh quan",      emoji:"🌅", sentence:"The landscape of the Red River Delta is flat, green, and very peaceful."},
+  {w:"camping site", vn:"khu cắm trại",   emoji:"⛺", sentence:"The camping site by the river fills up quickly during the summer holidays."},
+  {w:"explore",      vn:"khám phá",       emoji:"🔭", sentence:"The children were excited to explore the hidden cave at the end of the trail."},
+  {w:"luggage",      vn:"hành lý",        emoji:"🧳", sentence:"Don't bring too much luggage – you'll need to carry everything on your back."},
+  {w:"wonder",       vn:"kỳ quan",        emoji:"🏔️", sentence:"Ha Long Bay is one of the most famous natural wonders in Southeast Asia."},
+];
+
+const ttsItems5B = [
+  {w:"ingredient",       vn:"nguyên liệu",         emoji:"🧂", sentence:"The secret ingredient in her pho is a piece of toasted ginger."},
+  {w:"recipe",           vn:"công thức nấu ăn",    emoji:"📖", sentence:"Follow this recipe exactly if you want your spring rolls to be crispy."},
+  {w:"broth",            vn:"nước lèo",             emoji:"🍲", sentence:"The broth simmered for hours until it was rich, golden, and fragrant."},
+  {w:"sticky rice",      vn:"xôi",                  emoji:"🍚", sentence:"Sticky rice topped with mung bean paste is a popular breakfast in Vietnam."},
+  {w:"eating habits",    vn:"thói quen ăn uống",   emoji:"🥗", sentence:"Good eating habits, like avoiding junk food, help you stay healthy."},
+  {w:"traditional food", vn:"món ăn truyền thống", emoji:"🇻🇳", sentence:"Traditional food like pho and banh mi has become popular all over the world."},
+  {w:"eel soup",         vn:"súp lươn",             emoji:"🍜", sentence:"Eel soup is a speciality of Nghe An and has a very unique flavour."},
+  {w:"winter melon juice",vn:"nước ép bí đao",     emoji:"🥤", sentence:"A chilled glass of winter melon juice is perfect on a hot afternoon."},
+  {w:"quantity",         vn:"số lượng",             emoji:"🔢", sentence:"The quantity of salt in this recipe is just half a teaspoon."},
+  {w:"taste",            vn:"vị",                   emoji:"😋", sentence:"The taste of pho depends entirely on the quality of the broth."},
+  {w:"fish sauce",       vn:"nước mắm",             emoji:"🫙", sentence:"A small bottle of fish sauce is essential in any Vietnamese kitchen."},
+  {w:"beef noodle soup", vn:"phở bò",               emoji:"🍜", sentence:"Beef noodle soup is the national dish of Vietnam and is eaten at any time of day."},
+  {w:"spring rolls",     vn:"chả giò",              emoji:"🥢", sentence:"Crispy spring rolls dipped in sweet chilli sauce are a favourite starter."},
+  {w:"omelette",         vn:"trứng rán",            emoji:"🍳", sentence:"She made a fluffy omelette with cheese and tomatoes for a quick dinner."},
+  {w:"served with",      vn:"ăn kèm với",            emoji:"🍽️", sentence:"Pho is always served with fresh herbs, lime wedges, and bean sprouts on the side."},
+  {w:"be made mainly with",vn:"chủ yếu được làm từ",emoji:"🧑‍🍳", sentence:"Banh cuon is made mainly with steamed rice flour and filled with minced pork and mushrooms."},
+  {w:"be made by",       vn:"được làm bằng cách",    emoji:"🍳", sentence:"The best pho broth is made by slowly simmering beef bones with ginger and star anise."},
+  {w:"allow",            vn:"cho phép",               emoji:"🙋", sentence:"The teacher does not allow students to eat or drink during the lesson."},
+  {w:"in a hurry",       vn:"vội vàng",               emoji:"🏃", sentence:"She was in a hurry so she just grabbed a banh mi on the way to school."},
+  {w:"exhibition",       vn:"triển lãm",              emoji:"🖼️", sentence:"The school organised an exhibition of traditional Vietnamese food from different regions."},
+  {w:"slice",            vn:"lát / miếng",             emoji:"🔪", sentence:"Add a few thin slices of fresh ginger to the broth to give it a warm, spicy flavour."},
+  {w:"stew",             vn:"món hầm",                emoji:"🫕", sentence:"Bo kho is a Vietnamese beef stew that is rich, warming, and perfect with a crusty baguette."},
+  {w:"boneless",         vn:"không xương",             emoji:"🍖", sentence:"Boneless chicken is much easier to cook quickly and is perfect for stir-fries."},
+];
+
+// ═══════════════════════════════════════════
+// GAME TYPE DEFINITIONS
+// ═══════════════════════════════════════════
+const gameTypes = [
+  {id:"picword",    label:"🖼️ Ảnh & Từ",       color:"teal"},
+  {id:"defpick",    label:"📖 Chọn Định Nghĩa", color:"primary"},
+  {id:"fillblanks", label:"✏️ Điền Từ",         color:"purple"},
+  {id:"missletter", label:"🔤 Điền Chữ Cái",   color:"orange"},
+  {id:"errorspot",  label:"🔍 Tìm Lỗi Sai",    color:"pink"},
+  {id:"match",      label:"🔗 Nối Cột",         color:"green"},
+  {id:"tts",        label:"🔊 Nghe & Đoán",     color:"teal"},
+];
+
+const panels = [
+  {id:"v5a",  label:"🌿 Vocab 5A", data:()=>vocab5A, fillG:fillGroups5A, errItems:errorItems5A, ttsPool:ttsItems5A},
+  {id:"v5b",  label:"🍜 Vocab 5B", data:()=>vocab5B, fillG:fillGroups5B, errItems:errorItems5B, ttsPool:ttsItems5B},
+  {id:"vmix", label:"🔀 Mix",      data:()=>[...vocab5A,...vocab5B],
+    fillG:[...fillGroups5A,...fillGroups5B], errItems:[...errorItems5A,...errorItems5B],
+    ttsPool:[...ttsItems5A,...ttsItems5B]},
+];
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+const state = {};
+panels.forEach(p=>{
+  state[p.id]={queue:[],idx:0,correct:0,wrong:0,answered:false,gameMode:"picword",
+    matchState:null,streak:0, fillGIdx:0, ttsSubMode:"open"};
+});
+
+// ═══════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function pickUnique(pool,n){
+  // Weight by difficulty: hard:3 appears 4x, hard:2 appears 2x, hard:1 appears 1x
+  const weighted=[];
+  pool.forEach(item=>{
+    const times=item.hard>=3?4:item.hard===2?2:1;
+    for(let i=0;i<times;i++) weighted.push(item);
+  });
+  const seen=new Set(),result=[];
+  for(const item of shuffle(weighted)){
+    if(!seen.has(item.w)){seen.add(item.w);result.push(item);if(result.length>=n)break;}
+  }
+  return result;
+}
+
+function getDistractors(correct,all,n=3){
+  return shuffle(all.filter(x=>x.w!==correct.w)).slice(0,n);
+}
+
+function speak(text){
+  if(!window.speechSynthesis)return;
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="en-US";u.rate=0.85;
+  window.speechSynthesis.speak(u);
+}
+
+function initQueue(pid){
+  const panel=panels.find(p=>p.id===pid);
+  const s=state[pid];
+  const all=panel.data();
+  s.queue=pickUnique(all,Math.min(12,all.length));
+  s.idx=0;s.correct=0;s.wrong=0;s.streak=0;s.answered=false;s.matchState=null;
+}
+
+// ═══════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════
+function buildTabs(){
+  const row=document.getElementById("tabRow");
+  const container=document.getElementById("panelContainer");
+  row.innerHTML="";container.innerHTML="";
+  panels.forEach((p)=>{
+    const btn=document.createElement("button");
+    btn.className="tab-btn";btn.textContent=p.label;btn.id="tab_"+p.id;
+    btn.onclick=()=>activateTab(p.id);
+    row.appendChild(btn);
+    const div=document.createElement("div");
+    div.className="panel";div.id="panel_"+p.id;
+    container.appendChild(div);
+  });
+  activateTab("v5a");
+}
+
+function activateTab(id){
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  document.getElementById("tab_"+id).classList.add("active");
+  document.getElementById("panel_"+id).classList.add("active");
+  renderPanel(id);
+}
+
+// ═══════════════════════════════════════════
+// RENDER PANEL
+// ═══════════════════════════════════════════
+function renderPanel(pid){
+  const s=state[pid];
+  if(!s.queue.length) initQueue(pid);
+  const el=document.getElementById("panel_"+pid);
+  const gtHtml=gameTypes.map(g=>`
+    <button class="btn btn-${g.color} btn-sm" style="${s.gameMode===g.id?'outline:3px solid #000;outline-offset:2px;':'opacity:0.75;'}"
+      onclick="setMode('${pid}','${g.id}')">${g.label}</button>`).join("");
+  el.innerHTML=`
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px;">
+      ${gtHtml}
+      <div class="score-badge" id="score_${pid}">${s.correct} / ${s.queue.length}</div>
+    </div>
+    <div class="section-card" id="card_${pid}">
+      <div id="qarea_${pid}"></div>
+    </div>`;
+  renderQuestion(pid);
+}
+
+function setMode(pid,mode){
+  state[pid].gameMode=mode;
+  initQueue(pid);
+  renderPanel(pid);
+}
+
+function renderQuestion(pid){
+  const s=state[pid];
+  if(s.idx>=s.queue.length&&s.gameMode!=="fillblanks"&&s.gameMode!=="errorspot"&&s.gameMode!=="match"&&s.gameMode!=="tts"){showResult(pid);return;}
+  const mode=s.gameMode;
+  if(mode==="picword") renderPicWord(pid);
+  else if(mode==="defpick") renderDefPick(pid);
+  else if(mode==="fillblanks") renderFillBlanks(pid);
+  else if(mode==="missletter") renderMissLetter(pid);
+  else if(mode==="errorspot") renderErrorSpot(pid);
+  else if(mode==="match") renderMatch(pid);
+  else if(mode==="tts") renderTTS(pid);
+}
+
+function progressHtml(pid){
+  const s=state[pid];
+  const pct=Math.round((s.idx/s.queue.length)*100);
+  return `
+    <div class="progress-text">
+      <span>Câu ${s.idx+1} / ${s.queue.length}</span>
+      <span>${s.streak>1?'🔥 '+s.streak+' liên tiếp':''}</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>`;
+}
+
+function controlBtnsHtml(pid,mode){
+  return `<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+    <button class="btn btn-yellow btn-sm" onclick="showAnswer('${pid}','${mode}')">💡 Xem đáp án</button>
+    <button class="btn btn-gray btn-sm" onclick="shuffleQ('${pid}')">🔀 Câu khác</button>
+  </div>`;
+}
+
+function showAnswer(pid,mode){
+  const s=state[pid];
+  const item=s.queue[s.idx];
+  const box=document.getElementById("ans_"+pid);
+  if(!box)return;
+  box.innerHTML=`💡 Đáp án: <strong>${item.w}</strong> = <em>${item.vn}</em>`;
+  box.classList.add("show");
+}
+
+function shuffleQ(pid){
+  const s=state[pid];
+  const panel=panels.find(p=>p.id===pid);
+  const all=panel.data();
+  const others=all.filter(x=>x.w!==s.queue[s.idx].w);
+  if(!others.length)return;
+  s.queue[s.idx]=shuffle(others)[0];
+  s.answered=false;
+  renderQuestion(pid);
+}
+
+// ─────────────────────────────────────────────
+// GAME 1: 🖼️ Picture + Emoji → Choose word
+// ─────────────────────────────────────────────
+function renderPicWord(pid){
+  const s=state[pid];
+  const item=s.queue[s.idx];
+  const panel=panels.find(p=>p.id===pid);
+  const distractors=getDistractors(item,panel.data());
+  const opts=shuffle([item,...distractors]);
+  const letters=["A","B","C","D"];
+  let html=progressHtml(pid)+`
+    <div class="q-label">🖼️ Nhìn ảnh, chọn từ đúng <span class="badge">Chọn đáp án</span></div>
+    <span class="q-emoji">${item.emoji}</span>
+    <div class="q-hint">Nghĩa tiếng Việt: <strong>${item.vn}</strong></div>
+    ${controlBtnsHtml(pid,"picword")}
+    <div class="answer-box" id="ans_${pid}"></div>
+    <div class="options-grid" id="opts_${pid}">`;
+  opts.forEach((opt,i)=>{
+    html+=`<button class="opt-btn" onclick="checkWord('${pid}','${escQ(opt.w)}','${escQ(item.w)}')">
+      <span class="opt-letter">${letters[i]}</span>${opt.w}</button>`;
+  });
+  html+=`</div><div class="feedback" id="fb_${pid}"></div>
+    <button class="next-btn" id="next_${pid}" onclick="nextQ('${pid}')">➡ Câu tiếp theo</button>`;
+  document.getElementById("qarea_"+pid).innerHTML=html;
+  document.getElementById("score_"+pid).textContent=`${s.correct} / ${s.queue.length}`;
+}
+
+// ─────────────────────────────────────────────
+// GAME 2: 📖 Definition → Choose word
+// ─────────────────────────────────────────────
+function renderDefPick(pid){
+  const s=state[pid];
+  const item=s.queue[s.idx];
+  const panel=panels.find(p=>p.id===pid);
+  const distractors=getDistractors(item,panel.data());
+  const opts=shuffle([item,...distractors]);
+  const letters=["A","B","C","D"];
+  let html=progressHtml(pid)+`
+    <div class="q-label">📖 Đọc định nghĩa, chọn từ đúng <span class="badge">Definition</span></div>
+    <div class="q-sentence" style="background:var(--primary-light);padding:14px 18px;border-radius:12px;margin-bottom:14px;color:var(--primary);">
+      "${item.def}"
+    </div>
+    ${controlBtnsHtml(pid,"defpick")}
+    <div class="answer-box" id="ans_${pid}"></div>
+    <div class="options-grid" id="opts_${pid}">`;
+  opts.forEach((opt,i)=>{
+    html+=`<button class="opt-btn" onclick="checkWord('${pid}','${escQ(opt.w)}','${escQ(item.w)}')">
+      <span class="opt-letter">${letters[i]}</span>${opt.w}</button>`;
+  });
+  html+=`</div><div class="feedback" id="fb_${pid}"></div>
+    <button class="next-btn" id="next_${pid}" onclick="nextQ('${pid}')">➡ Câu tiếp theo</button>`;
+  document.getElementById("qarea_"+pid).innerHTML=html;
+  document.getElementById("score_"+pid).textContent=`${s.correct} / ${s.queue.length}`;
+}
+
+// ─────────────────────────────────────────────
+// GAME 3: ✏️ Fill in the blank — one sentence at a time + word bank
+// ─────────────────────────────────────────────
+function renderFillBlanks(pid){
+  const s=state[pid];
+  const panel=panels.find(p=>p.id===pid);
+  const groups=panel.fillG||[];
+  if(!groups.length){renderDefPick(pid);return;}
+
+  // Init group & items if needed
+  if(!s._fillItems||s._fillItems.length===0){
+    if(s._fillGroup===undefined) s._fillGroup=0;
+    const grp=groups[s._fillGroup % groups.length];
+    s._fillItems=shuffle([...grp.items]);
+    s._fillIdx=0;
+    s._fillCorrect=0;
+    s._fillWrong=0;
+  }
+
+  const items=s._fillItems;
+  const idx=s._fillIdx||0;
+  s.answered=false;
+
+  if(idx>=items.length){
+    // Show group result
+    const total=items.length;
+    const pct=Math.round((s._fillCorrect/total)*100);
+    let emoji="😅",msg="Cần ôn thêm!";
+    if(pct>=90){emoji="🏆";msg="Xuất sắc!";}
+    else if(pct>=70){emoji="🌟";msg="Giỏi lắm!";}
+    else if(pct>=50){emoji="💪";msg="Ổn đấy, cố thêm!";}
+    document.getElementById("qarea_"+pid).innerHTML=`
+      <div style="text-align:center;padding:24px 8px;">
+        <div style="font-size:56px;margin-bottom:8px;">${emoji}</div>
+        <div style="font-family:'Baloo 2',sans-serif;font-size:clamp(20px,4vw,32px);font-weight:800;margin-bottom:6px;">${msg}</div>
+        <div style="font-size:clamp(15px,2.3vw,22px);font-weight:700;color:var(--muted);margin-bottom:18px;">${s._fillCorrect} / ${total} đúng (${pct}%)</div>
+        <button class="btn btn-primary" style="width:100%;font-size:clamp(15px,2.2vw,19px);padding:13px 24px;border-radius:14px;" onclick="nextFillGroup('${pid}')">🔄 Bộ câu mới</button>
+      </div>`;
+    document.getElementById("score_"+pid).textContent=`${s._fillCorrect}/${total}`;
+    return;
+  }
+
+  const item=items[idx];
+  // Word bank = all 12 words for this group, shuffled once
+  if(!s._fillWordBank) s._fillWordBank=shuffle(items.map(x=>x.w));
+  const wordList=s._fillWordBank;
+
+  const pct=Math.round((idx/items.length)*100);
+  const progressHtmlFill=`
+    <div class="progress-text">
+      <span>Câu ${idx+1} / ${items.length}</span>
+      <span>${(s._fillCorrect||0)} đúng · ${(s._fillWrong||0)} sai</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>`;
+
+  // Build sentence with blank slot
+  const sentParts=item.sentence.split("___");
+  const slotHtml=`<span id="fslot_${pid}" style="display:inline-block;min-width:110px;border-bottom:3px solid var(--primary);text-align:center;padding:2px 10px;cursor:pointer;color:var(--primary);font-weight:800;font-size:clamp(16px,2.4vw,22px);"
+    onclick="fillSlotClick('${pid}')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
+
+  let html=progressHtmlFill+`
+    <div class="q-label">✏️ Điền từ vào chỗ trống <span class="badge">Word Bank</span></div>
+    <div style="margin-bottom:10px;font-size:clamp(12px,1.6vw,14px);font-weight:700;color:var(--muted);">
+      📦 Chọn từ trong ô → nhấp vào chỗ trống để điền:
+    </div>
+    <div class="word-bank" id="wb_${pid}">`;
+  wordList.forEach(w=>{
+    html+=`<span class="word-chip" id="fchip_${pid}_${escId(w)}" onclick="fillSelectChip('${pid}','${escQ(w)}')">${w}</span>`;
+  });
+  html+=`</div>
+    <div style="padding:14px 18px;background:#f8f9fa;border-radius:14px;border-left:4px solid var(--primary);margin-bottom:16px;">
+      <span style="font-size:clamp(15px,2.4vw,22px);font-weight:700;line-height:2;">
+        ${sentParts[0]}${slotHtml}${sentParts[1]||""}
+      </span>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+      <button class="btn btn-primary btn-sm" onclick="checkFillOne('${pid}','${escQ(item.w)}')">✅ Kiểm tra</button>
+      <button class="btn btn-yellow btn-sm" onclick="showFillOneAnswer('${pid}','${escQ(item.w)}')">💡 Xem đáp án</button>
+      <button class="btn btn-gray btn-sm" onclick="shuffleFillOne('${pid}')">🔀 Câu khác</button>
+    </div>
+    <div class="answer-box" id="ans_${pid}"></div>
+    <div class="feedback" id="fb_${pid}"></div>
+    <button class="next-btn" id="next_${pid}" onclick="nextFillOne('${pid}')">➡ Câu tiếp theo</button>`;
+
+  document.getElementById("qarea_"+pid).innerHTML=html;
+  document.getElementById("score_"+pid).textContent=`Điền từ ${idx+1}/${items.length}`;
+  s._fillSelected=null;
+  s._fillAnswered=false;
+}
+
+function fillSelectChip(pid,word){
+  const s=state[pid];
+  if(s._fillAnswered) return;
+  // Deselect old
+  if(s._fillSelected){
+    document.getElementById("fchip_"+pid+"_"+escId(s._fillSelected))?.classList.remove("selected");
+  }
+  s._fillSelected=word;
+  document.getElementById("fchip_"+pid+"_"+escId(word))?.classList.add("selected");
+  // auto-fill the slot
+  const slot=document.getElementById("fslot_"+pid);
+  if(slot){slot.textContent=word;slot.style.color="var(--purple)";slot.style.borderColor="var(--purple)";}
+}
+
+function fillSlotClick(pid){
+  // clicking slot clears it
+  const s=state[pid];
+  if(s._fillAnswered) return;
+  if(s._fillSelected){
+    document.getElementById("fchip_"+pid+"_"+escId(s._fillSelected))?.classList.remove("selected");
+    s._fillSelected=null;
+  }
+  const slot=document.getElementById("fslot_"+pid);
+  if(slot){slot.innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";slot.style.color="var(--primary)";slot.style.borderColor="var(--primary)";}
+}
+
+function checkFillOne(pid,answer){
+  const s=state[pid];
+  if(s._fillAnswered) return;
+  const chosen=s._fillSelected;
+  if(!chosen) return;
+  s._fillAnswered=true;
+  s.answered=true;
+  const fb=document.getElementById("fb_"+pid);
+  const next=document.getElementById("next_"+pid);
+  const slot=document.getElementById("fslot_"+pid);
+  // Lock all chips
+  document.querySelectorAll(`[id^="fchip_${pid}_"]`).forEach(c=>c.style.pointerEvents="none");
+  if(chosen.toLowerCase()===answer.toLowerCase()){
+    s._fillCorrect=(s._fillCorrect||0)+1;
+    if(slot){slot.style.color="var(--green)";slot.style.borderColor="var(--green)";}
+    fb.innerHTML=`✅ Đúng! <strong>${answer}</strong>`;fb.className="feedback show ok";
+  } else {
+    s._fillWrong=(s._fillWrong||0)+1;
+    if(slot){slot.textContent=chosen;slot.style.color="var(--red)";slot.style.borderColor="var(--red)";}
+    fb.innerHTML=`❌ Sai! Đáp án đúng: <strong>${answer}</strong>`;fb.className="feedback show bad";
+  }
+  if(next) next.classList.add("show");
+}
+
+function showFillOneAnswer(pid,answer){
+  const box=document.getElementById("ans_"+pid);
+  if(box){box.innerHTML=`💡 Đáp án: <strong>${answer}</strong>`;box.classList.add("show");}
+  const slot=document.getElementById("fslot_"+pid);
+  if(slot){slot.textContent=answer;slot.style.color="var(--yellow)";slot.style.borderColor="var(--yellow)";}
+}
+
+function shuffleFillOne(pid){
+  // Replace current item with a random one from the same group
+  const s=state[pid];
+  const items=s._fillItems;
+  if(!items||items.length<2) return;
+  const others=items.filter((_,i)=>i!==s._fillIdx);
+  const picked=shuffle(others)[0];
+  s._fillItems[s._fillIdx]=picked;
+  s._fillAnswered=false;
+  s._fillSelected=null;
+  renderFillBlanks(pid);
+}
+
+function nextFillOne(pid){
+  const s=state[pid];
+  s._fillIdx=(s._fillIdx||0)+1;
+  s._fillAnswered=false;
+  s._fillSelected=null;
+  renderFillBlanks(pid);
+}
+
+function nextFillGroup(pid){
+  const s=state[pid];
+  s._fillGroup=(s._fillGroup||0)+1;
+  s._fillItems=null;
+  s._fillIdx=0;
+  s._fillCorrect=0;
+  s._fillWrong=0;
+  s._fillWordBank=null;
+  s._fillSelected=null;
+  s._fillAnswered=false;
+  renderFillBlanks(pid);
+}
+
+// ─────────────────────────────────────────────
+// GAME 4: 🔤 Miss-letter — FREE TYPE open ended
+// Show Vietnamese meaning BIG, student types English word
+// ─────────────────────────────────────────────
+function renderMissLetter(pid){
+  const s=state[pid];
+  const item=s.queue[s.idx];
+  s.answered=false;
+
+  let html=progressHtml(pid)+`
+    <div class="q-label">🔤 Đọc nghĩa tiếng Việt → Viết từ tiếng Anh <span class="badge">Tự Luận</span></div>
+    <div class="vn-big">${item.vn} ${item.emoji}</div>
+    <div style="text-align:center;margin-bottom:10px;font-size:clamp(12px,1.6vw,15px);color:var(--muted);font-weight:700;">
+      (${item.w.length} chữ cái)
+    </div>
+    <input class="letter-type-input" id="ltinp_${pid}" placeholder="Gõ từ tiếng Anh vào đây..."
+      autocomplete="off" autocorrect="off" spellcheck="false"
+      onkeydown="if(event.key==='Enter')checkLetterType('${pid}','${escQ(item.w)}')" />
+    ${controlBtnsHtml(pid,"missletter")}
+    <div class="answer-box" id="ans_${pid}"></div>
+    <div style="text-align:center;margin-bottom:10px;">
+      <button class="btn btn-primary" onclick="checkLetterType('${pid}','${escQ(item.w)}')">✅ Kiểm tra</button>
+    </div>
+    <div class="feedback" id="fb_${pid}"></div>
+    <button class="next-btn" id="next_${pid}" onclick="nextQ('${pid}')">➡ Câu tiếp theo</button>`;
+
+  document.getElementById("qarea_"+pid).innerHTML=html;
+  document.getElementById("score_"+pid).textContent=`${s.correct} / ${s.queue.length}`;
+  setTimeout(()=>document.getElementById("ltinp_"+pid)?.focus(),100);
+}
+
+function checkLetterType(pid,answer){
+  const s=state[pid];
+  if(s.answered) return;
+  const inp=document.getElementById("ltinp_"+pid);
+  if(!inp) return;
+  const val=inp.value.trim().toLowerCase();
+  const ans=answer.toLowerCase();
+  s.answered=true;
+  const fb=document.getElementById("fb_"+pid);
+  const next=document.getElementById("next_"+pid);
+  inp.disabled=true;
+  if(val===ans){
+    s.correct++;s.streak++;
+    inp.classList.add("correct");
+    fb.innerHTML=`✅ Đúng! <strong>${answer}</strong> = ${s.queue[s.idx].vn} ${s.queue[s.idx].emoji}`;
+    fb.className="feedback show ok";
+    speak(answer);
+  } else {
+    s.wrong++;s.streak=0;
+    inp.classList.add("wrong");
+    fb.innerHTML=`❌ Sai! Đáp án đúng: <strong>${answer}</strong> = ${s.queue[s.idx].vn}`;
+    fb.className="feedback show bad";
+  }
+  document.getElementById("score_"+pid).textContent=`${s.correct} / ${s.queue.length}`;
+  if(next) next.classList.add("show");
+}
+
+// ─────────────────────────────────────────────
+// GAME 5: 🔍 Error Spotting — subtle errors
+// ─────────────────────────────────────────────
+function renderErrorSpot(pid){
+  const s=state[pid];
+  const panel=panels.find(p=>p.id===pid);
+  const errPool=panel.errItems||[];
+  if(!errPool.length){renderFillBlanks(pid);return;}
+
+  if(!s._errPool||!s._errPool.length){
+    s._errPool=shuffle([...errPool]);
+    s._errIdx=0;
+  }
+  const item=s._errPool[s._errIdx % s._errPool.length];
+  s._currentErr=item;
+  s.answered=false;
+
+  // Parse sentence: <ERR>word</ERR> marks the wrong word
+  const rawSentence=item.sentence;
+  const wrongWord=item.wrong;
+
+  // Tokenize keeping <ERR> markers
+  let displaySentence=rawSentence;
+  // Build token array
+  const parts=rawSentence.split(/(<ERR>.*?<\/ERR>)/g);
+  let html=progressHtml(pid)+`
+    <div class="q-label">🔍 Tìm từ SAI trong câu và nhấn vào nó <span class="badge">Error Spotting</span></div>
+    <div style="padding:10px 14px;background:var(--orange-light);border-radius:10px;margin-bottom:12px;font-size:clamp(12px,1.6vw,14px);font-weight:700;color:var(--orange);">
+      ⚠️ Một từ trong câu bên dưới bị sai. Tìm và nhấn vào từ đó!
+    </div>
+    <div class="error-sentence" id="errsent_${pid}">`;
+
+  parts.forEach((part,pi)=>{
+    const errMatch=part.match(/^<ERR>(.*?)<\/ERR>$/);
+    if(errMatch){
+      const word=errMatch[1];
+      html+=`<span class="underline-word" id="epart_${pid}_${pi}" onclick="checkErrNew('${pid}',true,'${escQ(word)}','${escQ(item.right)}')" data-iswrong="1">${word}</span>`;
+    } else {
+      // tokenize remaining words
+      const tokens=part.split(/(\s+)/);
+      tokens.forEach((tok,ti)=>{
+        if(/^\s+$/.test(tok)){html+=tok;}
+        else if(tok){
+          html+=`<span class="underline-word" id="epart_${pid}_${pi}_${ti}" onclick="checkErrNew('${pid}',false,'${escQ(tok)}','${escQ(item.right)}')" data-iswrong="0">${tok}</span>`;
+        }
+      });
+    }
+  });
+
+  html+=`</div>
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+      <button class="btn btn-yellow btn-sm" onclick="showErrAnswer('${pid}')">💡 Xem đáp án</button>
+      <button class="btn btn-gray btn-sm" onclick="nextErrQ('${pid}')">🔀 Câu khác</button>
+    </div>
+    <div class="answer-box" id="ans_${pid}"></div>
+    <div class="feedback" id="fb_${pid}" style="margin-top:10px;"></div>
+    <button class="next-btn" id="next_${pid}" onclick="nextErrQ('${pid}')">➡ Câu tiếp theo</button>`;
+
+  document.getElementById("qarea_"+pid).innerHTML=html;
+  document.getElementById("score_"+pid).textContent=`${s.correct} / ${s._errPool.length}`;
+}
+
+function checkErrNew(pid,isWrong,clickedWord,rightWord){
+  const s=state[pid];
+  if(s.answered) return;
+  s.answered=true;
+  const fb=document.getElementById("fb_"+pid);
+  const next=document.getElementById("next_"+pid);
+  const item=s._currentErr;
+
+  // Highlight all wrong-marked spans
+  document.querySelectorAll(`[id^="epart_${pid}_"]`).forEach(sp=>{
+    if(sp.dataset.iswrong==="1") sp.classList.add("error-found");
+    sp.style.pointerEvents="none";
+  });
+
+  if(isWrong){
+    s.correct++;s.streak++;
+    fb.innerHTML=`✅ Đúng! Từ "<strong>${clickedWord}</strong>" bị sai – từ đúng phải là "<strong>${rightWord}</strong>".`;
+    fb.className="feedback show ok";
+  } else {
+    s.wrong++;s.streak=0;
+    fb.innerHTML=`❌ Sai rồi! Từ bạn chọn không phải lỗi. Từ sai là "<strong>${item.wrong}</strong>" – nên thay bằng "<strong>${item.right}</strong>".`;
+    fb.className="feedback show bad";
+  }
+  if(next) next.classList.add("show");
+}
+
+function showErrAnswer(pid){
+  const s=state[pid];
+  const item=s._currentErr;
+  if(!item) return;
+  const box=document.getElementById("ans_"+pid);
+  if(box){box.innerHTML=`💡 Từ sai: <strong>${item.wrong}</strong> → phải là <strong>${item.right}</strong>`;box.classList.add("show");}
+}
+
+function nextErrQ(pid){
+  const s=state[pid];
+  s._errIdx=(s._errIdx||0)+1;
+  s.answered=false;
+  if(s._errIdx>=s._errPool.length){
+    s._errPool=shuffle([...(panels.find(p=>p.id===pid).errItems||[])]);
+    s._errIdx=0;
+  }
+  renderErrorSpot(pid);
+}
+
+// ─────────────────────────────────────────────
+// GAME 6: 🔗 Match — Vietnamese LEFT (numbered), English RIGHT (no numbers)
+// Students see Vietnamese number → write English word
+// ─────────────────────────────────────────────
+function renderMatch(pid){
+  const s=state[pid];
+  const panel=panels.find(p=>p.id===pid);
+
+  if(!s.matchState||s.matchState.done){
+    // Weight harder words more
+    const all=panel.data();
+    const hard=all.filter(x=>x.hard>=3);
+    const med=all.filter(x=>x.hard===2);
+    const easy=all.filter(x=>x.hard<=1);
+    const weighted=[...hard,...hard,...med,...easy];
+    const items=pickUnique(weighted,6);
+    s.matchState={items,leftSel:null,rightSel:null,matched:new Set(),done:false,matchCorrect:0,matchWrong:0};
+    s.answered=false;
+  }
+
+  const ms=s.matchState;
+  // LEFT: Vietnamese with numbers, shuffled independently
+  const leftItems=shuffle(ms.items.map((x,i)=>({...x, origIdx:i})));
+  // RIGHT: English words shuffled, no numbers
+  const rightItems=shuffle(ms.items.map(x=>x.w));
+
+  // Store order for selection logic
+  ms._leftOrder=leftItems;
+  ms._rightOrder=rightItems;
+
+  let html=`
+    <div class="q-label">🔗 Nối nghĩa tiếng Việt với từ tiếng Anh <span class="badge">Matching</span></div>
+    <div style="padding:10px 14px;background:var(--green-light);border-radius:10px;margin-bottom:12px;font-size:clamp(12px,1.6vw,14px);font-weight:700;color:var(--green);">
+      ✏️ Nhấn số tiếng Việt → rồi nhấn từ tiếng Anh để nối. Khi luyện trên lớp: viết số và chép lại chữ tiếng Anh!
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+      <button class="btn btn-yellow btn-sm" onclick="showMatchAnswer('${pid}')">💡 Xem đáp án</button>
+      <button class="btn btn-gray btn-sm" onclick="resetMatch('${pid}')">🔀 Bộ câu khác</button>
+    </div>
+    <div class="answer-box" id="ans_${pid}"></div>
+    <div class="match-cols">
+      <div>
+        <div class="match-col-label">🇻🇳 Tiếng Việt (có số)</div>`;
+
+  leftItems.forEach((item,i)=>{
+    const matched=ms.matched.has(item.w);
+    const sel=ms.leftSel===i;
+    html+=`<div class="match-item${matched?' matched':''}${sel?' selected':''}" id="ml_${pid}_${i}"
+      onclick="selectLeft('${pid}',${i})">
+      <span class="match-num">${i+1}</span>${item.vn}
+    </div>`;
+  });
+
+  html+=`</div><div>
+    <div class="match-col-label">🇬🇧 Tiếng Anh</div>`;
+
+  rightItems.forEach((w,i)=>{
+    const matched=ms.matched.has(w);
+    const sel=ms.rightSel===i;
+    html+=`<div class="match-item${matched?' matched':''}${sel?' selected':''}" id="mr_${pid}_${i}"
+      onclick="selectRight('${pid}',${i})">${w}</div>`;
+  });
+
+  html+=`</div></div>
+    <div class="feedback" id="fb_${pid}" style="margin-top:10px;"></div>
+    <button class="next-btn" id="next_${pid}" onclick="resetMatch('${pid}')">🔄 Bộ câu mới</button>`;
+
+  document.getElementById("qarea_"+pid).innerHTML=html;
+  document.getElementById("score_"+pid).textContent=`${ms.matchCorrect}/${ms.items.length} đúng`;
+
+  if(ms.leftSel!==null) document.getElementById(`ml_${pid}_${ms.leftSel}`)?.classList.add("selected");
+  if(ms.rightSel!==null) document.getElementById(`mr_${pid}_${ms.rightSel}`)?.classList.add("selected");
+}
+
+function selectLeft(pid,idx){
+  const ms=state[pid].matchState;
+  if(!ms) return;
+  const item=ms._leftOrder[idx];
+  if(ms.matched.has(item.w)) return;
+  ms.leftSel=idx;
+  ms._leftWord=item.w;
+  checkMatchPair(pid);
+  renderMatch(pid);
+}
+
+function selectRight(pid,idx){
+  const ms=state[pid].matchState;
+  if(!ms) return;
+  const w=ms._rightOrder[idx];
+  if(ms.matched.has(w)) return;
+  ms.rightSel=idx;
+  ms._rightWord=w;
+  checkMatchPair(pid);
+  renderMatch(pid);
+}
+
+function checkMatchPair(pid){
+  const ms=state[pid].matchState;
+  if(!ms||ms.leftSel===null||ms.rightSel===null) return;
+  const word=ms._leftWord;
+  const rightWord=ms._rightWord;
+  const fb=document.getElementById("fb_"+pid);
+  if(word===rightWord){
+    ms.matched.add(word);
+    ms.matchCorrect++;
+    if(fb){fb.textContent=`✅ Đúng! "${word}"`;fb.className="feedback show ok";}
+    if(ms.matched.size===ms.items.length){
+      ms.done=true;
+      if(fb){fb.textContent=`🎉 Tuyệt vời! Nối đúng tất cả ${ms.items.length} cặp!`;fb.className="feedback show ok";}
+      document.getElementById("next_"+pid)?.classList.add("show");
+    }
+  } else {
+    ms.matchWrong++;
+    if(fb){fb.textContent="❌ Chưa đúng! Thử lại nhé.";fb.className="feedback show bad";}
+    const ml=document.getElementById(`ml_${pid}_${ms.leftSel}`);
+    const mr=document.getElementById(`mr_${pid}_${ms.rightSel}`);
+    if(ml){ml.classList.add("wrong-flash");setTimeout(()=>ml.classList.remove("wrong-flash"),350);}
+    if(mr){mr.classList.add("wrong-flash");setTimeout(()=>mr.classList.remove("wrong-flash"),350);}
+  }
+  ms.leftSel=null;ms.rightSel=null;ms._leftWord=null;ms._rightWord=null;
+}
+
+function showMatchAnswer(pid){
+  const ms=state[pid].matchState;
+  if(!ms) return;
+  const box=document.getElementById("ans_"+pid);
+  if(!box) return;
+  const pairs=ms._leftOrder.map((x,i)=>`<strong>${i+1}.</strong> ${x.vn} = <em>${x.w}</em>`).join(" &nbsp;|&nbsp; ");
+  box.innerHTML=`💡 Đáp án: ${pairs}`;
+  box.classList.add("show");
+}
+
+function resetMatch(pid){
+  state[pid].matchState=null;
+  renderMatch(pid);
+}
+
+// ─────────────────────────────────────────────
+// GAME 7: 🔊 Listen & Guess — 2 sub-modes
+// OPEN: type the word / MCQ: choose A B C D
+// ─────────────────────────────────────────────
+function renderTTS(pid){
+  const s=state[pid];
+  const panel=panels.find(p=>p.id===pid);
+  const ttsPool=shuffle(panel.ttsPool||panel.data());
+  if(!s._ttsPool||!s._ttsPool.length){
+    s._ttsPool=shuffle([...ttsPool]);
+    s._ttsIdx=0;
+  }
+  const item=s._ttsPool[s._ttsIdx % s._ttsPool.length];
+  s._ttsItem=item;
+  s.answered=false;
+
+  const subMode=s.ttsSubMode||"open";
+
+  let html=`
+    <div class="subtab-row">
+      <button class="subtab-btn${subMode==='open'?' active':''}" onclick="setTTSMode('${pid}','open')">✏️ Tự luận</button>
+      <button class="subtab-btn${subMode==='mcq'?' active':''}" onclick="setTTSMode('${pid}','mcq')">🔠 Trắc nghiệm</button>
+    </div>
+    <div class="q-label">🔊 Nghe câu → đoán từ còn thiếu <span class="badge">Listen & Guess</span></div>
+    <div style="text-align:center;margin:10px 0 18px;">
+      <button class="tts-btn" id="tts_${pid}" onclick="speakTTSSentence('${pid}')">
+        🔊 Bấm để nghe từ
+      </button>
+    </div>`;
+
+  // Show example sentence with blank as context (no audio for sentence)
+  const sentence=(item.sentence||item.ex||"").replace(new RegExp(item.w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i'),"<strong style='color:var(--primary);border-bottom:3px solid var(--primary);'>______</strong>");
+  html+=`<div class="q-sentence" style="background:var(--primary-light);padding:14px 18px;border-radius:12px;margin-bottom:16px;font-size:clamp(14px,2.2vw,19px);">${sentence}</div>`;
+
+  if(subMode==="open"){
+    html+=`<input class="letter-type-input" id="ttsinp_${pid}" placeholder="Gõ từ bạn vừa nghe..."
+      autocomplete="off" autocorrect="off" spellcheck="false"
+      onkeydown="if(event.key==='Enter')checkTTSOpen('${pid}','${escQ(item.w)}')" />
+      <div style="text-align:center;margin-bottom:12px;">
+        <button class="btn btn-primary" onclick="checkTTSOpen('${pid}','${escQ(item.w)}')">✅ Kiểm tra</button>
+      </div>`;
+  } else {
+    // MCQ
+    const allPool=panel.ttsPool||panel.data();
+    const distractors=shuffle(allPool.filter(x=>x.w!==item.w)).slice(0,3);
+    const opts=shuffle([item,...distractors]);
+    const letters=["A","B","C","D"];
+    html+=`<div class="options-grid" id="opts_${pid}">`;
+    opts.forEach((opt,i)=>{
+      html+=`<button class="opt-btn" onclick="checkWord('${pid}','${escQ(opt.w)}','${escQ(item.w)}')">
+        <span class="opt-letter">${letters[i]}</span>${opt.w}</button>`;
+    });
+    html+=`</div>`;
+  }
+
+  html+=`<div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+      <button class="btn btn-yellow btn-sm" onclick="showTTSAnswer('${pid}')">💡 Xem đáp án</button>
+      <button class="btn btn-gray btn-sm" onclick="nextTTSQ('${pid}')">🔀 Câu khác</button>
+    </div>
+    <div class="answer-box" id="ans_${pid}"></div>
+    <div class="feedback" id="fb_${pid}"></div>
+    <button class="next-btn" id="next_${pid}" onclick="nextTTSQ('${pid}')">➡ Câu tiếp theo</button>`;
+
+  document.getElementById("qarea_"+pid).innerHTML=html;
+  document.getElementById("score_"+pid).textContent=`${s.correct} / ${s._ttsPool.length}`;
+  setTimeout(()=>speakTTSSentence(pid),500);
+  if(subMode==="open") setTimeout(()=>document.getElementById("ttsinp_"+pid)?.focus(),100);
+}
+
+function speakTTSSentence(pid){
+  const s=state[pid];
+  const item=s._ttsItem;
+  if(!item) return;
+  // Speak only the vocabulary word (not the full sentence)
+  const btn=document.getElementById("tts_"+pid);
+  speak(item.w);
+  const dur=Math.max(1200, item.w.length*120);
+  if(btn){btn.classList.add("speaking");setTimeout(()=>btn.classList.remove("speaking"),dur);}
+}
+
+function checkTTSOpen(pid,answer){
+  const s=state[pid];
+  if(s.answered) return;
+  const inp=document.getElementById("ttsinp_"+pid);
+  if(!inp) return;
+  const val=inp.value.trim().toLowerCase();
+  const ans=answer.toLowerCase();
+  s.answered=true;
+  const fb=document.getElementById("fb_"+pid);
+  const next=document.getElementById("next_"+pid);
+  inp.disabled=true;
+  if(val===ans){
+    s.correct++;s.streak++;
+    inp.classList.add("correct");
+    fb.innerHTML=`✅ Đúng! <strong>${answer}</strong> = ${s._ttsItem.vn} ${s._ttsItem.emoji}`;
+    fb.className="feedback show ok";
+    speak(answer);
+  } else {
+    s.wrong++;s.streak=0;
+    inp.classList.add("wrong");
+    fb.innerHTML=`❌ Sai! Đáp án: <strong>${answer}</strong> = ${s._ttsItem.vn}`;
+    fb.className="feedback show bad";
+  }
+  document.getElementById("score_"+pid).textContent=`${s.correct} / ${s._ttsPool.length}`;
+  if(next) next.classList.add("show");
+}
+
+function showTTSAnswer(pid){
+  const s=state[pid];
+  const item=s._ttsItem;
+  if(!item) return;
+  const box=document.getElementById("ans_"+pid);
+  if(box){box.innerHTML=`💡 Đáp án: <strong>${item.w}</strong> = <em>${item.vn}</em> ${item.emoji}`;box.classList.add("show");}
+}
+
+function setTTSMode(pid,mode){
+  state[pid].ttsSubMode=mode;
+  state[pid].answered=false;
+  renderTTS(pid);
+}
+
+function nextTTSQ(pid){
+  const s=state[pid];
+  s._ttsIdx=(s._ttsIdx||0)+1;
+  s.answered=false;
+  const panel=panels.find(p=>p.id===pid);
+  const pool=panel.ttsPool||panel.data();
+  if(s._ttsIdx>=pool.length){
+    s._ttsPool=shuffle([...pool]);
+    s._ttsIdx=0;
+  }
+  renderTTS(pid);
+}
+
+// ═══════════════════════════════════════════
+// CHECK / NEXT (shared for MCQ games)
+// ═══════════════════════════════════════════
+function checkWord(pid,chosen,answer){
+  const s=state[pid];
+  if(s.answered) return;
+  s.answered=true;
+  const fb=document.getElementById("fb_"+pid);
+  const next=document.getElementById("next_"+pid);
+  const opts=document.querySelectorAll(`#opts_${pid} .opt-btn`);
+
+  opts.forEach(b=>{
+    b.disabled=true;
+    const txt=b.textContent.slice(1).trim();
+    if(txt===answer) b.classList.add("correct");
+    else if(txt===chosen&&chosen!==answer) b.classList.add("wrong");
+  });
+
+  const item=s._ttsItem||s.queue[s.idx];
+  if(chosen===answer){
+    s.correct++;s.streak++;
+    fb.innerHTML=`✅ Đúng! <strong>${answer}</strong> = ${item?.vn||""} ${item?.emoji||""}`;
+    fb.className="feedback show ok";
+    speak(answer);
+  } else {
+    s.wrong++;s.streak=0;
+    fb.innerHTML=`❌ Sai! Đáp án đúng: <strong>${answer}</strong> = ${item?.vn||""} ${item?.emoji||""}`;
+    fb.className="feedback show bad";
+  }
+
+  const scoreEl=document.getElementById("score_"+pid);
+  if(scoreEl) scoreEl.textContent=`${s.correct} / ${s.queue.length}`;
+  if(next) next.classList.add("show");
+}
+
+function nextQ(pid){
+  state[pid].idx++;
+  state[pid].answered=false;
+  renderQuestion(pid);
+}
+
+// ═══════════════════════════════════════════
+// RESULT SCREEN
+// ═══════════════════════════════════════════
+function showResult(pid){
+  const s=state[pid];
+  const total=s.queue.length;
+  const pct=Math.round((s.correct/total)*100);
+  let emoji="😅",msg="Cần ôn thêm nhé!";
+  if(pct>=90){emoji="🏆";msg="Xuất sắc! Tuyệt vời!";}
+  else if(pct>=70){emoji="🌟";msg="Giỏi lắm! Cố thêm tí nữa!";}
+  else if(pct>=50){emoji="💪";msg="Ổn đấy! Ôn thêm nhé!";}
+  document.getElementById("qarea_"+pid).innerHTML=`
+    <div style="text-align:center;padding:28px 8px;">
+      <div style="font-size:64px;margin-bottom:8px;">${emoji}</div>
+      <div style="font-family:'Baloo 2',sans-serif;font-size:clamp(20px,4vw,34px);font-weight:800;margin-bottom:6px;">${msg}</div>
+      <div style="font-size:clamp(16px,2.5vw,24px);font-weight:700;color:var(--muted);margin-bottom:18px;">${s.correct} / ${total} đúng (${pct}%)</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:22px;">
+        <span style="padding:8px 18px;border-radius:50px;background:var(--green-light);color:var(--green);font-weight:800;">✅ ${s.correct} đúng</span>
+        <span style="padding:8px 18px;border-radius:50px;background:var(--red-light);color:var(--red);font-weight:800;">❌ ${s.wrong} sai</span>
+      </div>
+      <button class="btn btn-primary" style="font-size:clamp(15px,2.3vw,20px);padding:14px 28px;border-radius:14px;width:100%;" onclick="restartPanel('${pid}')">🔄 Chơi lại (câu mới ngẫu nhiên)</button>
+    </div>`;
+}
+
+function restartPanel(pid){
+  initQueue(pid);
+  renderPanel(pid);
+}
+
+// ═══════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════
+function escQ(s){return (s||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'");}
+function escId(s){return (s||"").replace(/[^a-zA-Z0-9]/g,"_");}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+buildTabs();
+</script>
+</body>
+</html>
