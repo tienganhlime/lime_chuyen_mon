@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 5 — Grammar Games</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0f0f0f;
+  --coral:#ff5c3a; --coral-t:#fff1ee;
+  --amber:#f5a623; --amber-t:#fffbeb;
+  --jade:#00a878;  --jade-t:#e6faf5;
+  --sky:#3b82f6;   --sky-t:#eff6ff;
+  --violet:#7c3aed;--violet-t:#f5f0ff;
+  --rose:#e11d74;  --rose-t:#fff0f6;
+  --teal:#0891b2;  --teal-t:#ecfeff;
+  --shadow:0 8px 40px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#fafafa;color:var(--ink);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;}
+.blobs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.09;}
+.b1{width:600px;height:600px;background:var(--coral);top:-200px;left:-150px;}
+.b2{width:500px;height:500px;background:var(--sky);top:0;right:-150px;}
+.b3{width:400px;height:400px;background:var(--jade);bottom:-100px;left:20%;}
+.b4{width:300px;height:300px;background:var(--amber);bottom:80px;right:5%;}
+.b5{width:350px;height:350px;background:var(--violet);top:40%;left:5%;}
+
+/* ── TOP NAV (topics) ── */
+header{position:sticky;top:0;z-index:200;background:rgba(250,250,250,.97);backdrop-filter:blur(20px);border-bottom:2px solid #ebebeb;padding:0 16px;}
+.header-row1{display:flex;align-items:center;gap:10px;min-height:56px;flex-wrap:wrap;}
+.logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;white-space:nowrap;flex-shrink:0;}
+.logo span{color:var(--coral);}
+.topic-tabs{display:flex;gap:5px;flex-wrap:wrap;flex:1;}
+.ttab{padding:6px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:700;border:2px solid #e0e0e0;background:#fff;border-radius:100px;cursor:pointer;transition:all .18s;color:#666;white-space:nowrap;}
+.ttab:hover{border-color:var(--sky);color:var(--sky);}
+.ttab.ta{background:var(--coral);border-color:var(--coral);color:#fff;}
+.ttab.tb{background:var(--jade);border-color:var(--jade);color:#fff;}
+.ttab.tc{background:var(--violet);border-color:var(--violet);color:#fff;}
+.ttab.td{background:var(--teal);border-color:var(--teal);color:#fff;}
+.ttab.te{background:var(--amber);border-color:var(--amber);color:#fff;}
+.prog{font-size:.9rem;font-weight:800;color:#bbb;white-space:nowrap;margin-left:auto;}
+
+/* ── SUB-NAV (exercises) ── */
+.sub-nav{display:flex;gap:5px;flex-wrap:wrap;padding:8px 16px 10px;border-top:1px solid #efefef;background:rgba(250,250,250,.97);}
+.stab{padding:4px 11px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.73rem;font-weight:700;border:2px solid #e0e0e0;background:#fff;border-radius:100px;cursor:pointer;transition:all .16s;color:#888;white-space:nowrap;}
+.stab:hover{border-color:var(--sky);color:var(--sky);}
+.stab.active{color:#fff;}
+.sub-a .stab.active{background:var(--coral);border-color:var(--coral);}
+.sub-b .stab.active{background:var(--jade);border-color:var(--jade);}
+.sub-c .stab.active{background:var(--violet);border-color:var(--violet);}
+.sub-d .stab.active{background:var(--teal);border-color:var(--teal);}
+.sub-e .stab.active{background:var(--amber);border-color:var(--amber);}
+
+main{flex:1;position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;padding:24px 16px 48px;}
+.card{width:100%;max-width:900px;background:#fff;border:2.5px solid #e8e8e8;border-radius:28px;box-shadow:var(--shadow);padding:36px 44px 32px;position:relative;overflow:hidden;animation:cardIn .34s cubic-bezier(.22,.9,.36,1) both;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;}
+.ca::before{background:linear-gradient(90deg,var(--coral),var(--amber));}
+.cb::before{background:linear-gradient(90deg,var(--jade),var(--sky));}
+.cc::before{background:linear-gradient(90deg,var(--violet),var(--rose));}
+.cd::before{background:linear-gradient(90deg,var(--teal),var(--jade));}
+.ce::before{background:linear-gradient(90deg,var(--amber),var(--coral));}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.985);}to{opacity:1;transform:none;}}
+
+.lbl{display:inline-flex;align-items:center;padding:5px 14px;border-radius:100px;font-size:.72rem;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;margin-bottom:14px;}
+.la{background:var(--coral-t);color:var(--coral);border:1.5px solid #ffc4b8;}
+.lb{background:var(--jade-t);color:var(--jade);border:1.5px solid #9fe8d5;}
+.lc{background:var(--violet-t);color:var(--violet);border:1.5px solid #d4b8ff;}
+.ld{background:var(--teal-t);color:var(--teal);border:1.5px solid #a5e1ef;}
+.le{background:var(--amber-t);color:#9a640a;border:1.5px solid #f5c77a;}
+.ex-ref{font-size:.75rem;font-weight:700;color:#bbb;letter-spacing:.5px;margin-bottom:6px;}
+.qnum{font-size:.85rem;font-weight:700;color:#bbb;margin-bottom:8px;}
+.score-badge{display:inline-block;background:var(--jade-t);color:var(--jade);border:1.5px solid #9fe8d5;border-radius:100px;padding:3px 12px;font-size:.8rem;font-weight:700;margin-left:10px;}
+.hint{display:inline-flex;align-items:center;gap:6px;background:var(--amber-t);border:1.5px solid #f5c77a;color:#9a640a;border-radius:10px;padding:6px 14px;font-size:.88rem;font-weight:600;margin-bottom:14px;}
+
+/* MCQ */
+.mcq-q{font-size:1.5rem;font-weight:700;line-height:1.7;margin-bottom:18px;}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.opt{padding:13px 18px;background:#fafafa;border:2.5px solid #e8e8e8;border-radius:13px;font-size:1rem;font-weight:600;cursor:pointer;transition:all .16s;text-align:left;}
+.opt:hover{border-color:var(--sky);background:var(--sky-t);transform:translateY(-1px);}
+.opt.correct{background:var(--jade-t)!important;border-color:var(--jade)!important;color:var(--jade)!important;}
+.opt.wrong{background:var(--rose-t)!important;border-color:var(--rose)!important;color:var(--rose)!important;}
+.opt.disabled{pointer-events:none;}
+
+/* FILL */
+.fill-s{font-size:1.5rem;font-weight:700;line-height:1.8;margin-bottom:14px;}
+.fill-in{display:inline-block;border:none;border-bottom:3px solid #ccc;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:1.35rem;font-weight:700;width:160px;text-align:center;outline:none;padding:2px 6px;transition:border-color .2s;color:var(--sky);}
+.fill-in:focus{border-color:var(--sky);}
+.fill-in.ok{border-color:var(--jade);color:var(--jade);}
+.fill-in.bad{border-color:var(--rose);color:var(--rose);}
+.ans-pill{display:inline-block;background:var(--coral-t);border:2px solid var(--coral);border-radius:100px;padding:3px 16px;color:transparent;font-size:1rem;font-weight:800;transition:color .3s;margin-top:8px;}
+.ans-pill.show{color:var(--coral);}
+.word-box{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;padding:12px 16px;background:var(--sky-t);border:2px solid #bfdbfe;border-radius:14px;}
+.word-box-lbl{width:100%;font-size:.78rem;font-weight:800;color:var(--sky);letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px;}
+.wb-chip{padding:6px 14px;background:#fff;border:2px solid var(--sky);border-radius:100px;font-size:1rem;font-weight:700;color:var(--sky);cursor:pointer;transition:all .15s;}
+.wb-chip:hover{background:var(--sky);color:#fff;transform:translateY(-1px);}
+.wb-chip.wb-used{opacity:.35;pointer-events:none;text-decoration:line-through;}
+
+/* ERROR */
+.err-s{font-size:1.5rem;font-weight:700;line-height:1.8;margin-bottom:14px;}
+.err-span{border-bottom:3px dotted #aaa;border-radius:4px;padding:0 4px;transition:all .3s;}
+.err-span.rev{background:var(--rose-t);border-bottom:3px solid var(--rose);color:var(--rose);text-decoration:line-through;}
+.fix-span{display:inline-block;background:var(--jade-t);border:2px solid var(--jade);border-radius:8px;padding:2px 12px;color:transparent;font-weight:800;font-size:1.35rem;transition:color .3s;margin-left:4px;}
+.fix-span.rev{color:var(--jade);}
+.fix-row{margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.fix-lbl{font-size:.95rem;font-weight:700;color:#999;}
+
+/* SCRAMBLE */
+.word-bank{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:20px;}
+.chip{padding:8px 16px;background:var(--violet-t);border:2.5px solid var(--violet);border-radius:100px;font-size:1.1rem;font-weight:700;color:var(--violet);cursor:pointer;transition:all .16s;user-select:none;}
+.chip:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(124,58,237,.18);}
+.chip.used{opacity:.3;pointer-events:none;}
+.built{min-height:56px;border:2.5px dashed #d4d4d4;border-radius:14px;padding:12px 16px;font-size:1.25rem;font-weight:700;color:var(--ink);margin-bottom:12px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
+.bw{padding:5px 11px;background:var(--violet-t);border:2px solid var(--violet);border-radius:7px;color:var(--violet);font-size:1.1rem;font-weight:700;cursor:pointer;}
+.bw:hover{background:#ddd0ff;}
+.ans-line{font-size:1.25rem;font-weight:800;color:transparent;border-radius:12px;padding:11px 16px;background:var(--jade-t);border:2px solid var(--jade);transition:color .3s;margin-top:8px;}
+.ans-line.show{color:var(--jade);}
+.chk-res{margin-top:10px;font-size:.95rem;font-weight:700;padding:8px 14px;border-radius:11px;display:none;}
+.chk-res.ok{background:var(--jade-t);color:var(--jade);display:block;}
+.chk-res.no{background:var(--rose-t);color:var(--rose);display:block;}
+
+/* EXPLAIN */
+.why{margin-top:14px;background:#f7f7f7;border:2px solid #e8e8e8;border-radius:13px;padding:13px 18px;font-size:.97rem;font-weight:600;color:transparent;line-height:1.6;transition:color .3s;}
+.why.show{color:#3a3a3a;}
+
+/* CONTROLS */
+.ctrl{display:flex;gap:9px;margin-top:22px;flex-wrap:wrap;align-items:center;}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.95rem;font-weight:700;border-radius:100px;cursor:pointer;border:2.5px solid transparent;transition:all .16s;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 5px 18px rgba(0,0,0,.11);}
+.btn:active{transform:none;}
+.b-rev{background:var(--sky);color:#fff;border-color:var(--sky);}
+.b-nxt{background:var(--jade);color:#fff;border-color:var(--jade);}
+.b-chk{background:var(--violet);color:#fff;border-color:var(--violet);}
+.b-clr{background:#fff;color:#666;border-color:#ccc;}
+.b-rst{background:var(--coral);color:#fff;border-color:var(--coral);}
+.b-shuf{background:var(--amber);color:#fff;border-color:var(--amber);}
+
+/* FINISH */
+.finish{text-align:center;padding:36px 16px;}
+.f-emoji{font-size:3.8rem;display:block;margin-bottom:12px;}
+.f-title{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:900;margin-bottom:8px;}
+.f-sub{font-size:1.05rem;color:#999;font-weight:600;}
+.f-score{font-size:1.45rem;font-weight:800;color:var(--jade);margin-top:14px;}
+
+@media(max-width:620px){
+  .card{padding:22px 16px 20px;}
+  .opts{grid-template-columns:1fr;}
+  .mcq-q,.fill-s,.err-s{font-size:1.15rem;}
+}
+</style>
+</head>
+<body>
+<div class="blobs">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div><div class="blob b5"></div>
+</div>
+
+<header>
+  <div class="header-row1">
+    <div class="logo">Module 5 <span>Games</span></div>
+    <div class="topic-tabs" id="topicTabs"></div>
+    <div class="prog" id="prog">1 / 1</div>
+  </div>
+  <div class="sub-nav" id="subNav"></div>
+</header>
+
+<main>
+  <div class="card ca" id="card">
+    <div id="qa"></div>
+    <div class="ctrl" id="ctrl"></div>
+  </div>
+</main>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// DATA — organised by TOPIC → EXERCISE
+// ══════════════════════════════════════════════════════════
+
+const TOPICS = [
+  {
+    id:'noun', label:'🔤 Danh từ C/U', color:'a',
+    exercises:[
+      {
+        id:'ex2', label:'Ex2 – Nhận biết C/U',
+        questions:[
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"record" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:0,ex:'✅ "Record" (đĩa nhạc, hồ sơ) = đếm được (C). Có thể nói: a record, two records.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"money" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:1,ex:'✅ "Money" = U. Không nói "a money" hay "moneys". Đúng: some money, a lot of money.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"tree" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:0,ex:'✅ "Tree" = đếm được (C). a tree, three trees, many trees.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"furniture" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:1,ex:'✅ "Furniture" = U. Sai: a furniture, furnitures. Đúng: some furniture, a piece of furniture.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"evidence" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:1,ex:'✅ "Evidence" (bằng chứng) = U. Đúng: some evidence, a piece of evidence.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"TV set" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:0,ex:'✅ "TV set" = C. Có thể nói: a TV set, two TV sets.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"happiness" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:1,ex:'✅ "Happiness" = U. Danh từ trừu tượng. Tương tự: sadness, safety, knowledge, music.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"safety" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:1,ex:'✅ "Safety" = U. Danh từ trừu tượng thường không đếm được.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"bottle" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:0,ex:'✅ "Bottle" = C. a bottle, two bottles. "a bottle of water" dùng bottle để đếm nước.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"bread" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:1,ex:'✅ "Bread" = U. Sai: a bread, breads. Đúng: some bread, a loaf of bread.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"knowledge" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:1,ex:'✅ "Knowledge" = U. Đúng: some knowledge, a lot of knowledge.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"wall" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:0,ex:'✅ "Wall" = C. a wall, two walls.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"advice" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:1,ex:'✅ "Advice" = U. Sai: an advice, advices. Đúng: some advice, a piece of advice.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"baggage" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:1,ex:'✅ "Baggage" = U. Giống "luggage". Đúng: some baggage, a piece of baggage.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"information" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:1,ex:'✅ "Information" = U. Sai: an information. Đúng: some information, a piece of information.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"window" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:0,ex:'✅ "Window" = C. a window, two windows.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"music" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:1,ex:'✅ "Music" = U. Danh từ nghệ thuật/khái niệm.'},
+          {type:'mcq',ref:'Danh từ · Ex2 – tr.4',q:'"boat" là danh từ loại nào?',opts:['Đếm được (C)','Không đếm được (U)'],c:0,ex:'✅ "Boat" = C. a boat, two boats.'},
+        ]
+      },
+      {
+        id:'ex5', label:'Ex5 – Chọn đáp án đúng',
+        questions:[
+          {type:'mcq',ref:'Danh từ · Ex5 – tr.5',q:'If you want to hear the news, you can read ___.', opts:['paper','a paper'],c:1,ex:'✅ "A paper" = một tờ báo (C). "Paper" không mạo từ = chất liệu giấy (U).'},
+          {type:'mcq',ref:'Danh từ · Ex5 – tr.5',q:"I want to write letters but I haven't got ___ to write on.",opts:['a paper','any paper'],c:1,ex:'✅ "Paper" = giấy (U) → "any paper" trong câu phủ định.'},
+          {type:'mcq',ref:'Danh từ · Ex5 – tr.5',q:'There was ___ on inside the house.',opts:['light','a light'],c:1,ex:'✅ "A light" = một ngọn đèn cụ thể (C). "Light" = ánh sáng (U).'},
+          {type:'mcq',ref:'Danh từ · Ex5 – tr.5',q:'___ comes from the sun.',opts:['Light','A light'],c:0,ex:'✅ "Light" (ánh sáng tự nhiên) = U.'},
+          {type:'mcq',ref:'Danh từ · Ex5 – tr.5',q:"I was in a hurry. I didn't have ___ for breakfast.",opts:['time','a time'],c:0,ex:'✅ "Time" = U → "didn\'t have time".'},
+          {type:'mcq',ref:'Danh từ · Ex5 – tr.5',q:'"Did you enjoy your holiday?" – "Yes, we had ___ ."',opts:['wonderful time','a wonderful time'],c:1,ex:'✅ "Have a wonderful time" = cụm cố định dùng "a".'},
+          {type:'mcq',ref:'Danh từ · Ex5 – tr.5',q:'Sue was helpful. She gave us some very useful ___.',opts:['advice','advices'],c:0,ex:'✅ "Advice" = U → không thêm -s. Đúng: some useful advice / a piece of advice.'},
+          {type:'mcq',ref:'Danh từ · Ex5 – tr.5',q:'We had ___ while we were on holiday.',opts:['very bad weather','a very bad weather'],c:0,ex:'✅ "Weather" = U → không dùng "a weather".'},
+          {type:'mcq',ref:'Danh từ · Ex5 – tr.5',q:'We were very unfortunate. We had ___.',opts:['bad luck','a bad luck'],c:0,ex:'✅ "Luck" = U → không dùng "a luck".'},
+          {type:'mcq',ref:'Danh từ · Ex5 – tr.5',q:"It's very difficult to find ___ at the moment.",opts:['a work','a job'],c:1,ex:'✅ "Work" = U. "Job" = C (việc làm cụ thể). Đúng: find a job.'},
+          {type:'mcq',ref:'Danh từ · Ex5 – tr.5',q:'I had to buy ___ because I wanted to make sandwiches.',opts:['a bread','some bread'],c:1,ex:'✅ "Bread" = U → không dùng "a bread". Đúng: some bread / a loaf of bread.'},
+          {type:'mcq',ref:'Danh từ · Ex5 – tr.5',q:'Bad news ___ make people happy.',opts:["don't","doesn't"],c:1,ex:'✅ "News" trông như số nhiều nhưng là U → "doesn\'t".'},
+          {type:'mcq',ref:'Danh từ · Ex5 – tr.5',q:'___ too long. You should have ___ cut.',opts:['Your hair is / it','Your hairs are / them'],c:0,ex:'✅ "Hair" thường dùng số ít U → "your hair is too long" / "have it cut".'},
+        ]
+      },
+      {
+        id:'ex12', label:'Ex12 – Chữa lỗi sai',
+        questions:[
+          {type:'error',ref:'Danh từ · Ex12 – tr.9',s:'There are <err>cattles</err> in the fields.',fix:'cattle',ex:'✅ "Cattle" = U, không có dạng số nhiều. Sai: "cattles". Đúng: There is some cattle...'},
+          {type:'error',ref:'Danh từ · Ex12 – tr.9',s:"I haven't heard <err>some</err> news about the accidents.",fix:'any',ex:"✅ Câu phủ định (\"haven't heard\") → \"any\", không dùng \"some\"."},
+          {type:'error',ref:'Danh từ · Ex12 – tr.9',s:'Can you lend me your <err>scissor</err>?',fix:'scissors',ex:'✅ "Scissors" luôn số nhiều. Đúng: "your scissors / a pair of scissors".'},
+          {type:'error',ref:'Danh từ · Ex12 – tr.9',s:'Two young <err>ladys</err> have just walked out of the restaurant.',fix:'ladies',ex:'✅ Phụ âm + y → đổi y thành -ies: lady → ladies.'},
+          {type:'error',ref:'Danh từ · Ex12 – tr.9',s:'My sister bought me a new pair of <err>trouser</err>.',fix:'trousers',ex:'✅ "Trousers" = luôn số nhiều. Đúng: a pair of trousers.'},
+          {type:'error',ref:'Danh từ · Ex12 – tr.9',s:'Many people never show <err>some</err> anger.',fix:'any',ex:'✅ "Never show" = phủ định → "any". Many people never show any anger.'},
+          {type:'error',ref:'Danh từ · Ex12 – tr.9',s:'How much <err>any</err> milk will you have for breakfast?',fix:'(xóa "any")',ex:'✅ "How much milk" đã đúng rồi. Không cần thêm "any". Sửa: How much milk will you have?'},
+          {type:'error',ref:'Danh từ · Ex12 – tr.9',s:'I want to buy some new <err>cloth</err>.',fix:'clothes',ex:'✅ "Clothes" (quần áo) = luôn số nhiều. "Cloth" = vải (chất liệu). Hai từ khác nghĩa!'},
+          {type:'error',ref:'Danh từ · Ex12 – tr.9',s:'How <err>many</err> money did you borrow from your brother?',fix:'much',ex:'✅ "Money" = U → "How much money?" Quy tắc: much + U, many + C.'},
+        ]
+      },
+    ]
+  },
+  {
+    id:'quant', label:'📦 Lượng từ', color:'b',
+    exercises:[
+      {
+        id:'ex3', label:'Ex3 – a / an / x',
+        questions:[
+          {type:'fill',ref:'Số lượng · Ex3 – tr.4',bank:['a','an','x'],s:'My mother needs ___ information about the flights.',a:'x',ex:'✅ "Information" = U → không dùng "a/an". Không cần mạo từ (x).'},
+          {type:'fill',ref:'Số lượng · Ex3 – tr.4',bank:['a','an','x'],s:"I'd like ___ apple and ___ grapefruit, please.",a:'an / a',ex:'✅ "Apple" /æ/ nguyên âm → "an apple". "Grapefruit" /g/ phụ âm → "a grapefruit".'},
+          {type:'fill',ref:'Số lượng · Ex3 – tr.4',bank:['a','an','x'],s:'Do you have ___ umbrella?',a:'an',ex:'✅ "Umbrella" /ʌ/ nguyên âm → "an umbrella". Dựa theo ÂM THANH.'},
+          {type:'fill',ref:'Số lượng · Ex3 – tr.4',bank:['a','an','x'],s:"They've bought ___ very expensive car.",a:'a',ex:'✅ "Very" /v/ phụ âm → "a very expensive car".'},
+          {type:'fill',ref:'Số lượng · Ex3 – tr.4',bank:['a','an','x'],s:'Did you drink ___ wine yesterday?',a:'x',ex:'✅ "Wine" = U → không dùng "a/an". [x] wine (hoặc any wine).'},
+          {type:'fill',ref:'Số lượng · Ex3 – tr.4',bank:['a','an','x'],s:'I had ___ bread and ___ cheese for breakfast.',a:'x / x',ex:'✅ "Bread" và "cheese" đều U → không dùng "a/an".'},
+          {type:'fill',ref:'Số lượng · Ex3 – tr.4',bank:['a','an','x'],s:'I never have ___ eggs for dinner.',a:'x',ex:'✅ "Eggs" = số nhiều → không dùng "a/an".'},
+          {type:'fill',ref:'Số lượng · Ex3 – tr.4',bank:['a','an','x'],s:'There is ___ piece of cake in the fridge.',a:'a',ex:'✅ "Piece" /p/ phụ âm → "a piece of cake".'},
+        ]
+      },
+      {
+        id:'ex4', label:'Ex4 – a/an/some/any',
+        questions:[
+          {type:'fill',ref:'Số lượng · Ex4 – tr.4',bank:['a','an','some','any'],s:'Have you got ___ potatoes?',a:'any',ex:'✅ Câu hỏi + C số nhiều → "any". some = khẳng định, any = phủ định/câu hỏi.'},
+          {type:'fill',ref:'Số lượng · Ex4 – tr.4',bank:['a','an','some','any'],s:"I'd like ___ bread, and ___ piece of cheese, please.",a:'some / a',ex:"✅ \"I'd like\" (đề nghị lịch sự) → \"some bread\". \"Piece\" = C → \"a piece\"."},
+          {type:'fill',ref:'Số lượng · Ex4 – tr.4',bank:['a','an','some','any'],s:"Here are ___ cereals, but there isn't ___ milk.",a:'some / any',ex:'✅ Khẳng định → "some cereals". Phủ định → "any milk".'},
+          {type:'fill',ref:'Số lượng · Ex4 – tr.4',bank:['a','an','some','any'],s:'Would you like ___ beer or would you prefer ___ bottle of Coke?',a:'some / a',ex:'✅ Câu mời → "some beer". "Bottle" = C → "a bottle".'},
+          {type:'fill',ref:'Số lượng · Ex4 – tr.4',bank:['a','an','some','any'],s:"There aren't ___ bananas, but there is ___ apple and ___ grapes.",a:'any / an / some',ex:'✅ Phủ định → "any". Apple /æ/ → "an". Grapes số nhiều → "some".'},
+          {type:'fill',ref:'Số lượng · Ex4 – tr.4',bank:['a','an','some','any'],s:'I want ___ jam and ___ butter for my toast.',a:'some / some',ex:'✅ "Jam" và "butter" = U, khẳng định → "some".'},
+          {type:'fill',ref:'Số lượng · Ex4 – tr.4',bank:['a','an','some','any'],s:'Would you like ___ coffee, Mrs. Phuong?',a:'some',ex:'✅ Câu mời (dù là câu hỏi) → "some".'},
+          {type:'fill',ref:'Số lượng · Ex4 – tr.4',bank:['a','an','some','any'],s:'There is ___ orange in the box.',a:'an',ex:'✅ "Orange" = C, /ɒ/ nguyên âm → "an orange".'},
+          {type:'fill',ref:'Số lượng · Ex4 – tr.4',bank:['a','an','some','any'],s:'We have ___ rice and fish for lunch.',a:'some',ex:'✅ "Rice" = U, khẳng định → "some rice".'},
+        ]
+      },
+      {
+        id:'ex6', label:'Ex6 – some/any/no',
+        questions:[
+          {type:'fill',ref:'Số lượng · Ex6 – tr.5',bank:['some','any','no','x'],s:'Our pets are causing ___ damages in the house.',a:'some',ex:'✅ Câu khẳng định → "some damages".'},
+          {type:'fill',ref:'Số lượng · Ex6 – tr.5',bank:['some','any','no','x'],s:"Today, we don't have ___ wooden boards.",a:'any',ex:"✅ Câu phủ định (\"don't have\") → \"any\"."},
+          {type:'fill',ref:'Số lượng · Ex6 – tr.5',bank:['some','any','no','x'],s:"She's poor, she has ___ food to eat for tonight.",a:'no',ex:'✅ "No food" = không có (nhấn mạnh hoàn toàn). Tương đương: doesn\'t have any food.'},
+          {type:'fill',ref:'Số lượng · Ex6 – tr.5',bank:['some','any','no','x'],s:"I would like to buy ___ clothes but I don't have enough money.",a:'some',ex:'✅ "Would like to buy" (muốn mua) → "some clothes".'},
+          {type:'fill',ref:'Số lượng · Ex6 – tr.5',bank:['some','any','no','x'],s:'Mum and Dad eat ___ sweets when they are bored.',a:'some',ex:'✅ Câu khẳng định (thói quen) → "some sweets".'},
+        ]
+      },
+      {
+        id:'ex7', label:'Ex7 – How much/many',
+        questions:[
+          {type:'fill',ref:'Số lượng · Ex7 – tr.5',bank:['How much','How many'],s:'___ grams of sugar per day should we consume?',a:'How much',ex:'✅ "Sugar" = U → "How much sugar?" (dù có "grams" đứng sau).'},
+          {type:'fill',ref:'Số lượng · Ex7 – tr.5',bank:['How much','How many'],s:'___ bread do we need?',a:'How much',ex:'✅ "Bread" = U → "How much bread do we need?"'},
+          {type:'fill',ref:'Số lượng · Ex7 – tr.5',bank:['How much','How many'],s:'___ coffee do you drink in a day?',a:'How much',ex:'✅ "Coffee" = U → "How much coffee do you drink?"'},
+          {type:'fill',ref:'Số lượng · Ex7 – tr.5',bank:['How much','How many'],s:'___ steaks do you want?',a:'How many',ex:'✅ "Steaks" = C → "How many steaks?"'},
+          {type:'fill',ref:'Số lượng · Ex7 – tr.5',bank:['How much','How many'],s:'___ meat do we need for the barbecue tonight?',a:'How much',ex:'✅ "Meat" = U → "How much meat?"'},
+          {type:'fill',ref:'Số lượng · Ex7 – tr.5',bank:['How much','How many'],s:'___ bottles of orange juice have you had today?',a:'How many',ex:'✅ "Bottles" = C → "How many bottles?" Danh từ chính là bottles.'},
+          {type:'fill',ref:'Số lượng · Ex7 – tr.5',bank:['How much','How many'],s:'___ hamburgers did he eat?',a:'How many',ex:'✅ "Hamburgers" = C → "How many hamburgers?"'},
+          {type:'fill',ref:'Số lượng · Ex7 – tr.5',bank:['How much','How many'],s:'___ potatoes are there in the basket?',a:'How many',ex:'✅ "Potatoes" = C → "How many potatoes?"'},
+        ]
+      },
+      {
+        id:'ex9', label:'Ex9 – few/a few/little/a little',
+        questions:[
+          {type:'fill',ref:'Số lượng · Ex9 – tr.6',bank:['few','a few','little','a little'],s:'She has ___ money to spend as she is unemployed.',a:'little',ex:'✅ "Money" = U → "little" (không đủ, tiêu cực).'},
+          {type:'fill',ref:'Số lượng · Ex9 – tr.6',bank:['few','a few','little','a little'],s:"I can't wait for you. I've got ___ time.",a:'little',ex:'✅ "Time" = U → "little time" (rất ít, tiêu cực). Đang vội.'},
+          {type:'fill',ref:'Số lượng · Ex9 – tr.6',bank:['few','a few','little','a little'],s:"I've got ___ books and I'll buy some more.",a:'a few',ex:'✅ "Books" = C → "a few" = một vài, vẫn còn → tích cực.'},
+          {type:'fill',ref:'Số lượng · Ex9 – tr.6',bank:['few','a few','little','a little'],s:'Julien has got ___ friends and they meet on Saturdays.',a:'a few',ex:'✅ "Friends" = C → "a few friends" (đủ gặp nhau cuối tuần, tích cực).'},
+          {type:'fill',ref:'Số lượng · Ex9 – tr.6',bank:['few','a few','little','a little'],s:"There is ___ food left. We'd better not be hungry then!",a:'little',ex:'✅ "Food" = U → "little food" (rất ít, cảnh báo, tiêu cực).'},
+          {type:'fill',ref:'Số lượng · Ex9 – tr.6',bank:['few','a few','little','a little'],s:'There are ___ people at the cinema as the movie is not very good.',a:'few',ex:'✅ "People" = C → "few people" (rất ít, tiêu cực). Phim không hay.'},
+          {type:'fill',ref:'Số lượng · Ex9 – tr.6',bank:['few','a few','little','a little'],s:'I have got ___ magazines. I prefer books.',a:'few',ex:'✅ "Magazines" = C → "few magazines" (rất ít, thờ ơ, tiêu cực).'},
+          {type:'fill',ref:'Số lượng · Ex9 – tr.6',bank:['few','a few','little','a little'],s:'There is ___ paella in the fridge if you are hungry.',a:'a little',ex:'✅ "Paella" = U → "a little paella" (còn một ít, đủ ăn, tích cực).'},
+          {type:'fill',ref:'Số lượng · Ex9 – tr.6',bank:['few','a few','little','a little'],s:'"Were you surprised?" "___ ."',a:'A little',ex:'✅ "A little" = hơi/một chút. Dùng để trả lời ngắn.'},
+          {type:'fill',ref:'Số lượng · Ex9 – tr.6',bank:['few','a few','little','a little'],s:"They've already been to Spain ___ times.",a:'a few',ex:'✅ "Times" = C → "a few times" (vài lần, tích cực).'},
+          {type:'fill',ref:'Số lượng · Ex9 – tr.6',bank:['few','a few','little','a little'],s:"This boy isn't very popular. He's got very ___ friends.",a:'few',ex:'✅ "Friends" = C → "few friends" (rất ít, tiêu cực).'},
+          {type:'fill',ref:'Số lượng · Ex9 – tr.6',bank:['few','a few','little','a little'],s:'They live in a very small flat because they have ___ money.',a:'little',ex:'✅ "Money" = U → "little money" (rất ít tiền, tiêu cực).'},
+        ]
+      },
+      {
+        id:'ex11', label:'Ex11 – Trắc nghiệm tổng hợp',
+        questions:[
+          {type:'mcq',ref:'Số lượng · Ex11 – tr.7',q:'I have ___ cold water. Do you want me to share it with you?',opts:['few','a few','little','a little'],c:3,ex:'✅ "Water" = U → "a little". "A little" = có một ít, đủ chia sẻ → tích cực.'},
+          {type:'mcq',ref:'Số lượng · Ex11 – tr.7',q:'My father has ___ wonderful friends. He never feels lonely.',opts:['little','few','a few','a little'],c:2,ex:'✅ "Friends" = C → "a few" (vài bạn tuyệt vời, tích cực).'},
+          {type:'mcq',ref:'Số lượng · Ex11 – tr.7',q:'Her grandfather has ___ information about computer. He can rarely use it.',opts:['a few','little','a little','few'],c:1,ex:'✅ "Information" = U → "little" (rất ít, tiêu cực).'},
+          {type:'mcq',ref:'Số lượng · Ex11 – tr.7',q:'There are ___ doctors in her village. They really need to have more.',opts:['a little','a few','little','few'],c:3,ex:'✅ "Doctors" = C → "few" (rất ít, tiêu cực). Làng cần thêm bác sĩ.'},
+          {type:'mcq',ref:'Số lượng · Ex11 – tr.7',q:'Her boyfriend has got ___ time. They can meet each other at the weekend.',opts:['a few','little','a little','few'],c:2,ex:'✅ "Time" = U → "a little" (đủ gặp nhau, tích cực).'},
+          {type:'mcq',ref:'Số lượng · Ex11 – tr.7',q:'Nick never does ___ work. He is a very lazy boy.',opts:['many','any','some','much'],c:1,ex:'✅ "Never does" = phủ định → "any work".'},
+          {type:'mcq',ref:'Số lượng · Ex11 – tr.7',q:"Could you lend me fifty dollars? – No, I haven't got ___ money.",opts:['any','many','some','much'],c:0,ex:'✅ "Haven\'t got" = phủ định → "any money".'},
+          {type:'mcq',ref:'Số lượng · Ex11 – tr.7',q:'She has had as ___ success as her brother.',opts:['much','many','any','some'],c:0,ex:'✅ "Success" = U → "much success".'},
+          {type:'mcq',ref:'Số lượng · Ex11 – tr.7',q:"I bought ___ bread, but I didn't buy any butter. I forgot!",opts:['any','some','many','much'],c:1,ex:'✅ "I bought" = khẳng định → "some bread".'},
+          {type:'mcq',ref:'Số lượng · Ex11 – tr.7',q:'She is a warm girl. She has so ___ friends.',opts:['some','much','many','any'],c:2,ex:'✅ "Friends" = C → "many friends". So many friends = rất nhiều bạn bè.'},
+        ]
+      },
+    ]
+  },
+  {
+    id:'must', label:'⚠️ Must / Mustn\'t', color:'c',
+    exercises:[
+      {
+        id:'ex1m', label:'Ex1 – Trắc nghiệm',
+        questions:[
+          {type:'mcq',ref:'Must · Ex1 – tr.10',q:'You ___ be late for school.',opts:['must',"mustn't"],c:1,ex:'✅ Đi học trễ = bị cấm → "mustn\'t". must = bắt buộc phải, mustn\'t = bắt buộc KHÔNG được.'},
+          {type:'mcq',ref:'Must · Ex1 – tr.10',q:'You ___ eat fruit and vegetables.',opts:['must',"mustn't"],c:0,ex:'✅ Ăn rau củ tốt → bắt buộc → "must".'},
+          {type:'mcq',ref:'Must · Ex1 – tr.10',q:'You ___ eat fast food too often.',opts:['must',"mustn't"],c:1,ex:'✅ Ăn đồ nhanh nhiều = có hại → "mustn\'t".'},
+          {type:'mcq',ref:'Must · Ex1 – tr.10',q:'You ___ do your homework.',opts:['must',"mustn't"],c:0,ex:'✅ Làm bài tập = bắt buộc → "must".'},
+          {type:'mcq',ref:'Must · Ex1 – tr.10',q:'You ___ watch TV a lot.',opts:['must',"mustn't"],c:1,ex:'✅ Xem TV nhiều = không tốt → "mustn\'t".'},
+          {type:'mcq',ref:'Must · Ex1 – tr.10',q:'You ___ put litter in the bin.',opts:['must',"mustn't"],c:0,ex:'✅ Bỏ rác đúng nơi = bắt buộc → "must".'},
+          {type:'mcq',ref:'Must · Ex1 – tr.10',q:'We ___ be polite to our teachers.',opts:['must',"mustn't"],c:0,ex:'✅ Lịch sự với thầy cô = bắt buộc → "must".'},
+          {type:'mcq',ref:'Must · Ex1 – tr.10',q:'We ___ talk loudly in the library.',opts:['must',"mustn't"],c:1,ex:'✅ Nói to trong thư viện = bị cấm → "mustn\'t".'},
+        ]
+      },
+      {
+        id:'ex2m', label:'Ex2 – Điền must/mustn\'t',
+        questions:[
+          {type:'fill',ref:'Must · Ex2 – tr.10',bank:['must',"mustn't"],s:'She is ill, so she ___ see the doctor.',a:'must',ex:'✅ Bị ốm → cần đi bác sĩ. S + must + V nguyên thể (không chia).'},
+          {type:'fill',ref:'Must · Ex2 – tr.10',bank:['must',"mustn't"],s:'It is raining. You ___ take your umbrella.',a:'must',ex:'✅ Trời mưa → cần mang ô.'},
+          {type:'fill',ref:'Must · Ex2 – tr.10',bank:['must',"mustn't"],s:'You ___ throw litter on the stairs.',a:"mustn't",ex:"✅ Vứt rác trên cầu thang = bị cấm → \"mustn't\"."},
+          {type:'fill',ref:'Must · Ex2 – tr.10',bank:['must',"mustn't"],s:'This is a secret. You ___ tell anybody.',a:"mustn't",ex:"✅ Đây là bí mật → cấm kể cho ai."},
+          {type:'fill',ref:'Must · Ex2 – tr.10',bank:['must',"mustn't"],s:'You ___ make noise in the library.',a:"mustn't",ex:"✅ Thư viện cần yên tĩnh → cấm gây tiếng ồn."},
+          {type:'fill',ref:'Must · Ex2 – tr.10',bank:['must',"mustn't"],s:'We ___ hurry or we will miss the bus.',a:'must',ex:'✅ Sợ lỡ xe → cần phải vội.'},
+          {type:'fill',ref:'Must · Ex2 – tr.10',bank:['must',"mustn't"],s:'The baby is sleeping. You ___ shout.',a:"mustn't",ex:"✅ Em bé đang ngủ → cấm la hét."},
+          {type:'fill',ref:'Must · Ex2 – tr.10',bank:['must',"mustn't"],s:'You ___ be friendly to everybody.',a:'must',ex:"✅ Thân thiện với mọi người = cần thiết → \"must\"."},
+          {type:'fill',ref:'Must · Ex2 – tr.10',bank:['must',"mustn't"],s:'They ___ walk on the grass.',a:"mustn't",ex:"✅ Biển báo cấm đi lên cỏ → \"mustn't\"."},
+          {type:'fill',ref:'Must · Ex2 – tr.10',bank:['must',"mustn't"],s:'You ___ light fires in the forest.',a:"mustn't",ex:"✅ Đốt lửa trong rừng rất nguy hiểm → cấm."},
+          {type:'fill',ref:'Must · Ex2 – tr.10',bank:['must',"mustn't"],s:"It's late. You ___ make so much noise.",a:"mustn't",ex:"✅ Đã muộn → cấm gây ồn ào."},
+          {type:'fill',ref:'Must · Ex2 – tr.10',bank:['must',"mustn't"],s:"We ___ be home by 9 o'clock. The film starts at 9:15.",a:'must',ex:'✅ Phim bắt đầu lúc 9:15 → cần về nhà trước 9h.'},
+          {type:'fill',ref:'Must · Ex2 – tr.10',bank:['must',"mustn't"],s:'You ___ do your homework.',a:'must',ex:"✅ Làm bài tập = bắt buộc → \"must\"."},
+          {type:'fill',ref:'Must · Ex2 – tr.10',bank:['must',"mustn't"],s:'I ___ finish this essay today. It has to be handed in by tomorrow.',a:'must',ex:'✅ Hạn nộp ngày mai → cần hoàn thành hôm nay.'},
+          {type:'fill',ref:'Must · Ex2 – tr.11',bank:['must',"mustn't"],s:'This is a dangerous tour. Children ___ be accompanied by an adult.',a:'must',ex:'✅ Tour nguy hiểm → trẻ em bắt buộc có người lớn đi cùng.'},
+          {type:'fill',ref:'Must · Ex2 – tr.11',bank:['must',"mustn't"],s:'You ___ play with fire.',a:"mustn't",ex:"✅ Chơi với lửa rất nguy hiểm → cấm tuyệt đối."},
+        ]
+      },
+      {
+        id:'ex3m', label:'Ex3 – Sắp xếp câu',
+        questions:[
+          {type:'scramble',ref:'Must · Ex3 – tr.11',words:['She','must','go','to','the','doctor.'],ans:'She must go to the doctor.',ex:"✅ Cấu trúc: S + must + V nguyên thể. Không nói \"must to go\" hay \"must goes\"."},
+          {type:'scramble',ref:'Must · Ex3 – tr.11',words:['You',"mustn't",'shout.'],ans:"You mustn't shout.",ex:"✅ Cấu trúc phủ định: S + mustn't + V nguyên thể."},
+          {type:'scramble',ref:'Must · Ex3 – tr.11',words:['You',"mustn't",'tell','the','others.'],ans:"You mustn't tell the others.",ex:"✅ Đây là bí mật → cấm kể cho người khác."},
+          {type:'scramble',ref:'Must · Ex3 – tr.11',words:['We',"mustn't",'park','here.'],ans:"We mustn't park here.",ex:"✅ Biển báo \"NO PARKING\" → cấm đậu xe."},
+          {type:'scramble',ref:'Must · Ex3 – tr.11',words:['He',"mustn't",'smoke','in','this','area.'],ans:"He mustn't smoke in this area.",ex:"✅ Khu vực cấm hút thuốc → \"mustn't smoke\"."},
+          {type:'scramble',ref:'Must · Ex3 – tr.11',words:['We','must','stop.'],ans:'We must stop.',ex:'✅ Biển báo "STOP" → bắt buộc phải dừng lại.'},
+        ]
+      },
+      {
+        id:'ex4m', label:'Ex4 – True/False',
+        questions:[
+          {type:'mcq',ref:'Must · Ex4 – tr.11',q:'"You must wash your hands before lunch." Câu này đúng hay sai?',opts:['Đúng (True)','Sai (False)'],c:0,ex:'✅ TRUE – Rửa tay trước bữa ăn là đúng và cần làm.'},
+          {type:'mcq',ref:'Must · Ex4 – tr.11',q:'"You mustn\'t listen to your parents." Câu này đúng hay sai?',opts:['Đúng (True)','Sai (False)'],c:1,ex:'✅ FALSE – Chúng ta NÊN nghe lời cha mẹ.'},
+          {type:'mcq',ref:'Must · Ex4 – tr.11',q:'"You must take a shower every day." Câu này đúng hay sai?',opts:['Đúng (True)','Sai (False)'],c:0,ex:'✅ TRUE – Tắm hàng ngày là cần thiết.'},
+          {type:'mcq',ref:'Must · Ex4 – tr.11',q:'"You mustn\'t eat fruit and vegetables every day." Đúng hay sai?',opts:['Đúng (True)','Sai (False)'],c:1,ex:'✅ FALSE – Ngược lại, chúng ta NÊN ăn rau củ quả hàng ngày.'},
+          {type:'mcq',ref:'Must · Ex4 – tr.11',q:'"You mustn\'t fight in the playground." Đúng hay sai?',opts:['Đúng (True)','Sai (False)'],c:0,ex:'✅ TRUE – Không được đánh nhau trong sân chơi.'},
+          {type:'mcq',ref:'Must · Ex4 – tr.11',q:'"You mustn\'t be late." Đúng hay sai?',opts:['Đúng (True)','Sai (False)'],c:0,ex:'✅ TRUE – Không được đến trễ.'},
+        ]
+      },
+    ]
+  },
+  {
+    id:'nature', label:'🌏 Kỳ quan thiên nhiên', color:'d',
+    exercises:[
+      {
+        id:'ex7n', label:'Ex7 – Trắc nghiệm',
+        questions:[
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.15',q:'Tra Co beach is ___ beach in Viet Nam.',opts:['long','longer','longest','the longest'],c:3,ex:'✅ So sánh nhất → "the longest beach". Tra Co là bãi biển dài nhất VN.'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.15',q:'Mount Everest is the highest mountain ___ the world.',opts:['in','on','at','of'],c:0,ex:'✅ "in the world / in Vietnam / in Asia" – dùng "in" với khu vực lớn.'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.15',q:'The islands in Ha Long Bay are named ___ things around us.',opts:['in','after','with','at'],c:1,ex:'✅ "Named after" = được đặt tên theo.'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.15',q:"It is often rainy in Hue, ___ remember to bring an umbrella.",opts:['but','or','so','must'],c:2,ex:'✅ "So" = vì vậy/do đó (chỉ kết quả).'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.15',q:'"Do you finish packing?" – "Yes. All my things are in my ___"',opts:['back','backpack','back pack','plaster'],c:1,ex:'✅ "Backpack" = ba lô (viết liền).'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.15',q:"Ha Long Bay is Vietnam's ___ wonder.",opts:['most beautiful natural','most natural beautiful','the most beautiful natural','the most natural beautiful'],c:0,ex:"✅ Không dùng \"the\" sau sở hữu cách (Vietnam's)."},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.15',q:'___ is a large thick bag for sleeping in when camping.',opts:['A sleeping bag','A sleep bag','A sleepy bag','A bag for sleeping'],c:0,ex:'✅ "Sleeping bag" = túi ngủ (cụm từ cố định).'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.15',q:"If we had a ___, we wouldn't get lost.",opts:['backpack','ruler','compass','painkiller'],c:2,ex:'✅ "Compass" = la bàn (chỉ hướng).'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.16',q:'You ___ travel alone to the mountain. Always go in a group.',opts:['must',"mustn't",'do',"don't"],c:1,ex:'✅ Đi núi một mình nguy hiểm → cấm.'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.16',q:'You ___ take a lot of warm clothes when you go to Sa Pa in winter.',opts:['must',"mustn't",'can',"can't"],c:0,ex:'✅ Sa Pa mùa đông rất lạnh → bắt buộc mang áo ấm.'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.16',q:'Ba Be Lake is the largest ___ lake in Viet Nam.',opts:['fresh','freshwater','water','mount'],c:1,ex:'✅ "Freshwater lake" = hồ nước ngọt (cụm từ ghép cố định).'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.16',q:'Fansipan is the highest ___ in Vietnam.',opts:['mountain range','natural wonder','mountain','nature'],c:2,ex:'✅ "Mountain" = ngọn núi. Fansipan (3.143m) là ngọn núi cao nhất VN.'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.16',q:'Ha Long Bay is the number one ___ in Viet Nam.',opts:['nature wonder','natural wonder','wonderful nature','wonder nature'],c:1,ex:'✅ "Natural wonder" = kỳ quan thiên nhiên.'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.16',q:"You ___ be late for school. It's against the school regulations.",opts:['must',"mustn't",'can',"can't"],c:1,ex:'✅ Đi học trễ vi phạm quy định → cấm.'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.16',q:'Bring some ___ in case you have a headache or so.',opts:['backpack','map','compass','painkillers'],c:3,ex:'✅ "Painkillers" = thuốc giảm đau.'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.16',q:'A ___ helps you see things at night.',opts:['sleeping bag','sun cream','torch','sun hat'],c:2,ex:'✅ "Torch" = đèn pin.'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.16',q:"We won't cut anything, so these ___ are not necessary.",opts:['walking boots','scissors','travel items','plasters'],c:1,ex:'✅ "Scissors" = kéo (dùng để cắt).'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.16',q:"I don't know where to go now. Pass me the ___, please.",opts:['backpack','map','sleeping bag','sun hat'],c:1,ex:'✅ "Map" = bản đồ.'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.16',q:'It can be very dark inside a ___.',opts:['coat','cave','beach','coast'],c:1,ex:'✅ "Cave" = hang động (rất tối bên trong).'},
+          {type:'mcq',ref:'Kỳ quan · Ex7 – tr.16',q:'Co To is a(n) ___ in Quang Ninh Province.',opts:['forest','rainforest','island','freshwater lake'],c:2,ex:'✅ Cô Tô là một hòn đảo (island) ở Quảng Ninh.'},
+        ]
+      },
+      {
+        id:'ex8n', label:'Ex8 – Điền đồ dùng du lịch',
+        questions:[
+          {type:'fill',ref:'Kỳ quan · Ex8 – tr.17',bank:['sleeping bag','tent','torch','sun-cream','walking boots','compass'],s:'A ___ is a warm bag that you sleep in, especially when camping.',a:'sleeping bag',ex:'✅ Sleeping bag = túi ngủ. Dùng khi cắm trại.'},
+          {type:'fill',ref:'Kỳ quan · Ex8 – tr.17',bank:['sleeping bag','tent','torch','sun-cream','walking boots','compass'],s:'A ___ is a temporary shelter you use when you go camping.',a:'tent',ex:'✅ Tent = lều. "Set up a tent" = dựng lều.'},
+          {type:'fill',ref:'Kỳ quan · Ex8 – tr.17',bank:['sleeping bag','tent','torch','sun-cream','walking boots','compass'],s:"Don't shine your ___ straight into my eyes!",a:'torch',ex:'✅ Torch = đèn pin.'},
+          {type:'fill',ref:'Kỳ quan · Ex8 – tr.17',bank:['sleeping bag','tent','torch','sun-cream','walking boots','compass'],s:'You should put ___ on your skin to protect it from the harmful effects of the sun.',a:'sun-cream',ex:'✅ Sun-cream = kem chống nắng.'},
+          {type:'fill',ref:'Kỳ quan · Ex8 – tr.17',bank:['sleeping bag','tent','torch','sun-cream','walking boots','compass'],s:'We are going hiking this weekend, so I need a new pair of ___.',a:'walking boots',ex:'✅ Walking boots = giày leo núi/đi bộ đường dài.'},
+          {type:'fill',ref:'Kỳ quan · Ex8 – tr.17',bank:['sleeping bag','tent','torch','sun-cream','walking boots','compass'],s:'A ___ shows you which direction is north.',a:'compass',ex:'✅ Compass = la bàn (chỉ hướng Bắc).'},
+        ]
+      },
+      {
+        id:'ex9n', label:'Ex9 – Chữa lỗi sai',
+        questions:[
+          {type:'error',ref:'Kỳ quan · Ex9 – tr.17',s:'Ha Long Bay is (A) <err>the more</err> (B) beautiful natural (C) wonder of (D) Viet Nam.',fix:'the most',ex:'✅ So sánh nhất → "the most". "More" = so sánh hơn, "most" = so sánh nhất.'},
+          {type:'error',ref:'Kỳ quan · Ex9 – tr.17',s:'Trang often <err>go</err> camping with her family once a month.',fix:'goes',ex:'✅ Chủ ngữ số ít (Trang = she) + hiện tại đơn → thêm -s/-es: "goes".'},
+          {type:'error',ref:'Kỳ quan · Ex9 – tr.17',s:'How <err>many</err> is that pack of milk?',fix:'much',ex:'✅ "Milk" = U → "How much". Đúng: How much is that pack of milk?'},
+        ]
+      },
+    ]
+  },
+  {
+    id:'food', label:'🍜 Ẩm thực', color:'e',
+    exercises:[
+      {
+        id:'ex10f', label:'Ex10 – How much/many & giá',
+        questions:[
+          {type:'mcq',ref:'Ẩm thực · Ex10 – tr.8',q:'___ beef does she want?',opts:['How much','How many','How','How long'],c:0,ex:'✅ "Beef" = U → "How much beef?"'},
+          {type:'mcq',ref:'Ẩm thực · Ex10 – tr.8',q:'___ apples do you want?',opts:['How often','How many','How much','How'],c:1,ex:'✅ "Apples" = C → "How many apples?"'},
+          {type:'mcq',ref:'Ẩm thực · Ex10 – tr.8',q:'___ oranges do you want? - A dozen.',opts:['How much','How many','How','What'],c:1,ex:'✅ "Oranges" = C → "How many?" A dozen = một tá (12).'},
+          {type:'mcq',ref:'Ẩm thực · Ex10 – tr.8',q:'There are ___ things to do here.',opts:['many','much','a lot','little'],c:0,ex:'✅ "Things" = C → "many things".'},
+          {type:'mcq',ref:'Ẩm thực · Ex10 – tr.8',q:"We haven't got ___ time.",opts:['much','a lot','many','some'],c:0,ex:'✅ "Time" = U + phủ định → "much time".'},
+          {type:'mcq',ref:'Ẩm thực · Ex10 – tr.8',q:'How much rice does she ___?',opts:['want','wants','wanting','to want'],c:0,ex:'✅ Sau "does" → V nguyên thể: "want".'},
+          {type:'mcq',ref:'Ẩm thực · Ex10 – tr.8',q:'How ___ apples are there on the table?',opts:['many','much','some','any'],c:0,ex:'✅ "Apples" = C → "How many apples".'},
+          {type:'mcq',ref:'Ẩm thực · Ex10 – tr.8',q:'How ___ does the T-shirt cost?',opts:['many','much','some','any'],c:1,ex:'✅ Hỏi giá tiền → "How much".'},
+          {type:'mcq',ref:'Ẩm thực · Ex10 – tr.8',q:'How much ___ the shoes?',opts:['do','does','are','is'],c:0,ex:'✅ "The shoes" = số nhiều → "do".'},
+          {type:'mcq',ref:'Ẩm thực · Ex10 – tr.8',q:'___ much is a loaf of bread?',opts:['What','Where','When','How'],c:3,ex:'✅ Hỏi giá → "How much is a loaf of bread?"'},
+          {type:'mcq',ref:'Ẩm thực · Ex10 – tr.8',q:'How ___ glasses of water do you drink in the morning?',opts:['many','much','some','any'],c:0,ex:'✅ "Glasses" = C → "How many glasses?"'},
+          {type:'mcq',ref:'Ẩm thực · Ex10 – tr.8',q:'This dictionary ___ 90,000 dong.',opts:['cost','costs','is costing','costing'],c:1,ex:'✅ Chủ ngữ số ít + hiện tại đơn → "costs".'},
+          {type:'mcq',ref:'Ẩm thực · Ex10 – tr.8',q:'How much water ___ there in the glass?',opts:['be','am','is','are'],c:2,ex:'✅ "Water" = U → số ít → "is".'},
+          {type:'mcq',ref:'Ẩm thực · Ex10 – tr.8',q:'How much ___ a kilo of rice?',opts:['be','am','is','are'],c:2,ex:'✅ "A kilo of rice" = số ít → "is".'},
+          {type:'mcq',ref:'Ẩm thực · Ex10 – tr.8',q:'___ books are there on the shelf?',opts:['Where','What','How much','How many'],c:3,ex:'✅ "Books" = C → "How many books?"'},
+        ]
+      },
+      {
+        id:'ex11f', label:'Ex11 – some/any/much/many',
+        questions:[
+          {type:'mcq',ref:'Ẩm thực · Ex11 – tr.7',q:'Is there ___ beer in the fridge?',opts:['any','some','many','few'],c:0,ex:'✅ Câu hỏi thông thường → "any". Câu mời thì dùng "some".'},
+          {type:'mcq',ref:'Ẩm thực · Ex11 – tr.7',q:'How much ___ do you need?',opts:['bananas','oranges','eggs','sugar'],c:3,ex:'✅ "How much" + U → "sugar". Bananas/oranges/eggs = C → "How many".'},
+          {type:'mcq',ref:'Ẩm thực · Ex11 – tr.7',q:"Children shouldn't eat too ___ sweet things.",opts:['many','much','a lot of','little'],c:0,ex:"✅ \"Sweet things\" = C số nhiều → \"too many sweet things\"."},
+          {type:'mcq',ref:'Ẩm thực · Ex11 – tr.7',q:'Add ___ salt to the soup, please.',opts:['few','a little','may','too much'],c:1,ex:'✅ "Salt" = U, cần một ít → "a little salt" (vừa đủ, tích cực).'},
+          {type:'mcq',ref:'Ẩm thực · Ex11 – tr.7',q:'Stop, please. That is ___ coffee.',opts:['a little','a few','too much','too many'],c:2,ex:'✅ "Coffee" = U → "too much coffee". Đang rót quá nhiều → "Stop!"'},
+          {type:'mcq',ref:'Ẩm thực · Ex11 – tr.7',q:'I ate ___ ice cream so I felt sick.',opts:['too much','too a lot of','plenty','so many'],c:0,ex:'✅ "Ice cream" = U → "too much ice cream". "Too a lot of" không tồn tại.'},
+        ]
+      },
+      {
+        id:'ex13f', label:'Ex13 – Từ vựng & ngữ pháp ẩm thực',
+        questions:[
+          {type:'mcq',ref:'Ẩm thực · Ex13 – tr.27',q:'Can you tell me ___ this dish?',opts:['to cook','how to cook','cooking','how to cooking'],c:1,ex:'✅ "Tell me how to cook" – cấu trúc: tell + O + how to + V nguyên thể.'},
+          {type:'mcq',ref:'Ẩm thực · Ex13 – tr.27',q:'What do I need to cook an omelette?',opts:['food','material','menu','ingredients'],c:3,ex:'✅ "Ingredients" = nguyên liệu nấu ăn.'},
+          {type:'mcq',ref:'Ẩm thực · Ex13 – tr.27',q:"What is your ___ dish for breakfast? – It's beef noodle soup.",opts:['favourite','most','best','liking'],c:0,ex:'✅ "Favourite dish" = món ăn yêu thích.'},
+          {type:'mcq',ref:'Ẩm thực · Ex13 – tr.27',q:'Cakes in Viet Nam are made ___ butter, eggs, and flour.',opts:['in','from','of','by'],c:1,ex:'✅ "Made from" = làm từ (nguyên liệu thay đổi hình dạng sau chế biến).'},
+          {type:'mcq',ref:'Ẩm thực · Ex13 – tr.27',q:"Lan's brother is a ___, working at the Metropolitan Restaurant.",opts:['cooker','cooking','chief','chef'],c:3,ex:'✅ "Chef" = đầu bếp. "Cooker" = thiết bị bếp.'},
+          {type:'mcq',ref:'Ẩm thực · Ex13 – tr.27',q:'The eel soup that your father has just cooked tastes very ___.',opts:['well','best','healthy','delicious'],c:3,ex:'✅ Sau "taste" (động từ nối) → tính từ: "delicious". Sai: "tastes well".'},
+          {type:'mcq',ref:'Ẩm thực · Ex13 – tr.27',q:"There isn't ___ for dinner, so I have to go to the market.",opts:['some left','any leaning','some leaving','any left'],c:3,ex:'✅ "Any left" = còn lại (phủ định). "There isn\'t any left."'},
+          {type:'mcq',ref:'Ẩm thực · Ex13 – tr.27',q:'A ___ is a small meal that you eat when you are in a hurry.',opts:['snack','fast food','breakfast','lunch'],c:0,ex:'✅ "Snack" = đồ ăn nhẹ. "Fast food" = thức ăn nhanh (tại nhà hàng).'},
+        ]
+      },
+      {
+        id:'ex24f', label:'Ex24 – Sắp xếp câu',
+        questions:[
+          {type:'scramble',ref:'Ẩm thực · Ex13/24 – tr.27/35',words:["I'd",'like','a','cup','of','coffee','with','two','spoonfuls','of','sugar,','please!'],ans:"I'd like a cup of coffee with two spoonfuls of sugar, please!",ex:"✅ \"I'd like\" = I would like (đặt hàng lịch sự). \"Two spoonfuls of sugar\" = hai thìa đường."},
+          {type:'scramble',ref:'Ẩm thực · Ex13/24 – tr.27/35',words:['You','can','have','some','bread','and','butter','if','you','are','hungry.'],ans:'You can have some bread and butter if you are hungry.',ex:'✅ "Some" dùng trong câu khẳng định. "If you are hungry" = câu điều kiện.'},
+          {type:'scramble',ref:'Ẩm thực · Ex24 – tr.35',words:['Can','you','tell','me','how','to','cook','Hue','beef','noodles,','please?'],ans:'Can you tell me how to cook Hue beef noodles, please?',ex:'✅ Cấu trúc: Can you tell me + how to + V?'},
+          {type:'scramble',ref:'Ẩm thực · Ex24 – tr.36',words:['Most','Vietnamese','people','have','three','meals','a','day.'],ans:'Most Vietnamese people have three meals a day.',ex:'✅ "Three meals a day" = ba bữa mỗi ngày. "Most Vietnamese people" = hầu hết người Việt Nam.'},
+        ]
+      },
+    ]
+  },
+];
+
+// ── MIX topic (all questions shuffled) ──
+const MIX_TOPIC = {
+  id:'mix', label:'🎲 Ôn tập tổng hợp', color:'a',
+  exercises:[
+    {
+      id:'mix_all', label:'Tất cả câu hỏi',
+      questions: (() => {
+        const all = [];
+        TOPICS.forEach(t => t.exercises.forEach(ex => ex.questions.forEach(q => all.push({...q}))));
+        for(let i=all.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[all[i],all[j]]=[all[j],all[i]];}
+        return all;
+      })()
+    }
+  ]
+};
+
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+let curTopicIdx = 0;
+let curExIdx    = 0;
+let qi = 0, score = 0, builtWords = [];
+let curQuestions = [];  // working copy
+
+const allTopics = [...TOPICS, MIX_TOPIC];
+
+// ══════════════════════════════════════════════════════════
+// BUILD NAV
+// ══════════════════════════════════════════════════════════
+function buildNav(){
+  const tt = document.getElementById('topicTabs');
+  tt.innerHTML = '';
+  allTopics.forEach((t,ti)=>{
+    const btn = document.createElement('button');
+    btn.className = 'ttab' + (ti===curTopicIdx ? ' t'+t.color : '');
+    btn.textContent = t.label;
+    btn.onclick = () => { curTopicIdx=ti; curExIdx=0; startExercise(); };
+    tt.appendChild(btn);
+  });
+
+  const sn = document.getElementById('subNav');
+  sn.className = 'sub-nav sub-'+allTopics[curTopicIdx].color;
+  sn.innerHTML = '';
+  const exs = allTopics[curTopicIdx].exercises;
+  exs.forEach((ex,ei)=>{
+    const btn = document.createElement('button');
+    btn.className = 'stab' + (ei===curExIdx ? ' active' : '');
+    btn.textContent = ex.label;
+    btn.onclick = () => { curExIdx=ei; startExercise(); };
+    sn.appendChild(btn);
+  });
+
+  // update card colour stripe
+  document.getElementById('card').className = 'card c'+allTopics[curTopicIdx].color;
+}
+
+// ══════════════════════════════════════════════════════════
+// START / RENDER
+// ══════════════════════════════════════════════════════════
+function startExercise(){
+  const t = allTopics[curTopicIdx];
+  // for mix, re-shuffle each time
+  if(t.id === 'mix'){
+    const all = [];
+    TOPICS.forEach(tp => tp.exercises.forEach(ex => ex.questions.forEach(q => all.push({...q}))));
+    for(let i=all.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[all[i],all[j]]=[all[j],all[i]];}
+    t.exercises[0].questions = all;
+  }
+  curQuestions = [...t.exercises[curExIdx].questions];
+  qi=0; score=0; builtWords=[];
+  buildNav();
+  render();
+}
+
+function shuffleNow(){
+  for(let i=curQuestions.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[curQuestions[i],curQuestions[j]]=[curQuestions[j],curQuestions[i]];}
+  qi=0; score=0; builtWords=[];
+  render();
+}
+
+function render(){
+  const tc = allTopics[curTopicIdx].color;
+  document.getElementById('prog').textContent = (qi+1)+'/'+curQuestions.length;
+  const qa=document.getElementById('qa'), ctrl=document.getElementById('ctrl');
+  qa.innerHTML=''; ctrl.innerHTML='';
+  builtWords=[];
+  const q = curQuestions[qi];
+
+  const top=document.createElement('div');
+  top.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;';
+  top.innerHTML=`<span class="lbl l${tc}">${allTopics[curTopicIdx].label}</span><span class="score-badge">✅ ${score}/${qi}</span>`;
+  qa.appendChild(top);
+
+  if(q.ref){const r=document.createElement('div');r.className='ex-ref';r.textContent='📄 '+q.ref;qa.appendChild(r);}
+  const qn=document.createElement('div');qn.className='qnum';qn.textContent='Câu '+(qi+1)+' / '+curQuestions.length;qa.appendChild(qn);
+
+  if(q.type==='mcq')renderMCQ(q,qa,ctrl,tc);
+  else if(q.type==='fill')renderFill(q,qa,ctrl,tc);
+  else if(q.type==='error')renderError(q,qa,ctrl);
+  else if(q.type==='scramble')renderScramble(q,qa,ctrl);
+}
+
+// ══════════════════════════════════════════════════════════
+// RENDERERS (unchanged logic, only colour-aware)
+// ══════════════════════════════════════════════════════════
+function renderMCQ(q,qa,ctrl,tc){
+  const qd=document.createElement('div');qd.className='mcq-q';qd.textContent=q.q;qa.appendChild(qd);
+  const og=document.createElement('div');og.className='opts';
+  let ans=false;
+  const reveal=(clicked)=>{
+    if(ans)return;ans=true;
+    og.querySelectorAll('.opt').forEach((btn,j)=>{
+      btn.classList.add('disabled');
+      if(j===q.c)btn.classList.add('correct');
+      else if(clicked!==undefined&&j===clicked&&clicked!==q.c)btn.classList.add('wrong');
+    });
+    if(clicked===q.c)score++;
+    addWhy(q.ex,qa);
+    ctrl.innerHTML='';ctrl.appendChild(mkb('Tiếp theo →','btn b-nxt',next));
+  };
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');b.className='opt';
+    b.innerHTML=`<b style="margin-right:7px">${'ABCD'[i]}.</b>${o}`;
+    b.onclick=()=>reveal(i);og.appendChild(b);
+  });
+  qa.appendChild(og);
+  ctrl.appendChild(mkb('👁 Xem đáp án','btn b-rev',()=>reveal(undefined)));
+  ctrl.appendChild(mkb('🔀 Tráo câu','btn b-shuf',shuffleNow));
+}
+
+function renderFill(q,qa,ctrl){
+  let inp;
+  if(q.bank){
+    const wb=document.createElement('div');wb.className='word-box';
+    const wbl=document.createElement('div');wbl.className='word-box-lbl';wbl.textContent='📦 Chọn từ điền vào chỗ trống:';wb.appendChild(wbl);
+    const chips=[];
+    q.bank.forEach(w=>{
+      const ch=document.createElement('span');ch.className='wb-chip';ch.textContent=w;
+      ch.onclick=()=>{
+        if(ch.classList.contains('wb-used'))return;
+        inp.value=w;inp.focus();
+        chips.forEach(c=>c.classList.remove('wb-used'));
+        ch.classList.add('wb-used');
+      };
+      chips.push(ch);wb.appendChild(ch);
+    });
+    qa.appendChild(wb);
+  }
+  const parts=q.s.split('___');
+  const sd=document.createElement('div');sd.className='fill-s';
+  inp=document.createElement('input');inp.className='fill-in';inp.type='text';inp.placeholder='...';inp.autocomplete='off';
+  if(q.a&&q.a.length>8)inp.style.width='220px';
+  sd.appendChild(document.createTextNode(parts[0]));sd.appendChild(inp);
+  if(parts[1])sd.appendChild(document.createTextNode(parts[1]));
+  qa.appendChild(sd);
+  const ar=document.createElement('div');ar.style.marginTop='10px';
+  ar.innerHTML='<span style="font-weight:700;color:#bbb;font-size:.9rem;">Đáp án: </span>';
+  const ap=document.createElement('span');ap.className='ans-pill';ap.textContent=q.a;ar.appendChild(ap);qa.appendChild(ar);
+  const wy=document.createElement('div');wy.className='why';wy.textContent=q.ex;qa.appendChild(wy);
+  let done=false;
+  const check=()=>{
+    if(done)return;done=true;
+    const v=inp.value.trim().toLowerCase(),c=q.a.toLowerCase();
+    inp.classList.add(v===c||c.includes(v)&&v.length>1?'ok':'bad');
+    if(v===c)score++;
+    ap.classList.add('show');wy.classList.add('show');
+    ctrl.innerHTML='';ctrl.appendChild(mkb('Tiếp theo →','btn b-nxt',next));
+  };
+  inp.onkeydown=e=>{if(e.key==='Enter')check();};
+  ctrl.appendChild(mkb('✓ Kiểm tra','btn b-chk',check));
+  ctrl.appendChild(mkb('👁 Xem đáp án','btn b-rev',()=>{done=true;ap.classList.add('show');wy.classList.add('show');ctrl.innerHTML='';ctrl.appendChild(mkb('Tiếp theo →','btn b-nxt',next));}));
+  ctrl.appendChild(mkb('🔀 Tráo câu','btn b-shuf',shuffleNow));
+  inp.focus();
+}
+
+function renderError(q,qa,ctrl){
+  const ht=document.createElement('div');ht.className='hint';
+  ht.textContent='🐛 Câu sau có 1 lỗi sai — tìm và cho biết phải sửa thành gì';qa.appendChild(ht);
+  const sd=document.createElement('div');sd.className='err-s';
+  sd.innerHTML=q.s.replace(/<err>(.*?)<\/err>/g,'<span class="err-span" id="espan">$1</span>');
+  qa.appendChild(sd);
+  const fr=document.createElement('div');fr.className='fix-row';
+  fr.innerHTML='<span class="fix-lbl">Sửa thành:</span>';
+  const fs=document.createElement('span');fs.className='fix-span';fs.id='fspan';
+  fs.textContent=q.fix;fr.appendChild(fs);qa.appendChild(fr);
+  const wy=document.createElement('div');wy.className='why';wy.textContent=q.ex;qa.appendChild(wy);
+  ctrl.appendChild(mkb('👁 Xem đáp án','btn b-rev',()=>{
+    document.getElementById('espan').classList.add('rev');
+    document.getElementById('fspan').classList.add('rev');
+    wy.classList.add('show');
+    ctrl.innerHTML='';ctrl.appendChild(mkb('Tiếp theo →','btn b-nxt',next));
+  }));
+  ctrl.appendChild(mkb('🔀 Tráo câu','btn b-shuf',shuffleNow));
+  ctrl.appendChild(mkb('Tiếp theo →','btn b-nxt',next));
+}
+
+function renderScramble(q,qa,ctrl){
+  const ht=document.createElement('div');ht.className='hint';
+  ht.textContent='💡 Nhấn các từ theo thứ tự đúng · Nhấn từ đã chọn để bỏ';qa.appendChild(ht);
+  const pm=document.createElement('div');pm.style.cssText='font-size:.85rem;font-weight:700;color:#888;margin-bottom:12px;';
+  pm.textContent='SẮP XẾP THÀNH CÂU ĐÚNG:';qa.appendChild(pm);
+  const built=document.createElement('div');built.className='built';built.id='built';
+  built.innerHTML='<span style="color:#ccc;font-size:.9rem;font-weight:600;">Câu của bạn sẽ hiện ở đây…</span>';
+  qa.appendChild(built);
+  const shuffled=[...q.words].sort(()=>Math.random()-.5);
+  const bank=document.createElement('div');bank.className='word-bank';
+  shuffled.forEach(w=>{
+    const ch=document.createElement('button');ch.className='chip';ch.textContent=w;
+    ch.onclick=()=>{if(ch.classList.contains('used'))return;ch.classList.add('used');builtWords.push({w,chip:ch});rebuildBuilt(built);};
+    bank.appendChild(ch);
+  });
+  qa.appendChild(bank);
+  const al=document.createElement('div');al.className='ans-line';al.id='aline';al.textContent=q.ans;qa.appendChild(al);
+  const cr=document.createElement('div');cr.className='chk-res';cr.id='cres';qa.appendChild(cr);
+  const wy=document.createElement('div');wy.className='why';wy.id='swy';wy.textContent=q.ex;qa.appendChild(wy);
+  ctrl.appendChild(mkb('✓ Kiểm tra','btn b-chk',()=>{
+    const att=builtWords.map(x=>x.w).join(' ').replace(/[,.!?]/g,'').toLowerCase().trim();
+    const cor=q.ans.replace(/[,.!?]/g,'').toLowerCase().trim();
+    const cr=document.getElementById('cres');
+    if(att===cor){cr.className='chk-res ok';cr.textContent='✅ Chính xác! Xuất sắc!';score++;document.getElementById('swy').classList.add('show');ctrl.innerHTML='';ctrl.appendChild(mkb('Tiếp theo →','btn b-nxt',next));}
+    else{cr.className='chk-res no';cr.textContent='❌ Chưa đúng — thử lại hoặc xem đáp án nhé.';}
+  }));
+  ctrl.appendChild(mkb('Xóa','btn b-clr',()=>{builtWords=[];render();}));
+  ctrl.appendChild(mkb('👁 Xem đáp án','btn b-rev',()=>{document.getElementById('aline').classList.add('show');document.getElementById('swy').classList.add('show');ctrl.innerHTML='';ctrl.appendChild(mkb('Tiếp theo →','btn b-nxt',next));}));
+  ctrl.appendChild(mkb('🔀 Tráo câu','btn b-shuf',shuffleNow));
+}
+
+function rebuildBuilt(built){
+  built.innerHTML='';
+  if(!builtWords.length){built.innerHTML='<span style="color:#ccc;font-size:.9rem;font-weight:600;">Câu của bạn sẽ hiện ở đây…</span>';return;}
+  builtWords.forEach((item,i)=>{
+    const bw=document.createElement('span');bw.className='bw';bw.textContent=item.w;
+    bw.onclick=()=>{item.chip.classList.remove('used');builtWords.splice(i,1);rebuildBuilt(built);};
+    built.appendChild(bw);
+  });
+}
+
+function addWhy(text,qa){
+  const w=document.createElement('div');w.className='why';w.textContent=text;w.style.marginTop='16px';qa.appendChild(w);
+  setTimeout(()=>w.classList.add('show'),40);
+}
+
+function next(){
+  builtWords=[];
+  if(qi<curQuestions.length-1){qi++;render();}
+  else{
+    const pct=Math.round(score/curQuestions.length*100);
+    const e=pct>=80?'🎉':pct>=60?'👍':'💪';
+    const m=pct>=80?'Xuất sắc!':pct>=60?'Khá tốt! Ôn thêm nhé!':'Cần ôn tập thêm!';
+    document.getElementById('qa').innerHTML=`<div class="finish"><span class="f-emoji">${e}</span><div class="f-title">${allTopics[curTopicIdx].exercises[curExIdx].label}</div><div class="f-sub">${m}</div><div class="f-score">Điểm: ${score} / ${curQuestions.length} (${pct}%)</div></div>`;
+    const ctrl=document.getElementById('ctrl');ctrl.innerHTML='';
+    ctrl.appendChild(mkb('↩ Làm lại','btn b-rst',()=>{curQuestions=[...allTopics[curTopicIdx].exercises[curExIdx].questions];qi=0;score=0;builtWords=[];render();}));
+    ctrl.appendChild(mkb('🔀 Tráo & làm lại','btn b-shuf',shuffleNow));
+  }
+}
+
+function mkb(t,c,f){const b=document.createElement('button');b.className=c;b.innerHTML=t;b.onclick=f;return b;}
+
+// INIT
+startExercise();
+</script>
+</body>
+</html>
