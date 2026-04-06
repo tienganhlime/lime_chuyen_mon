@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Present Tenses — Bài Tập</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0f0f0f;
+  --coral:#ff5c3a; --coral-t:#fff1ee;
+  --amber:#f5a623; --amber-t:#fffbeb;
+  --jade:#00a878;  --jade-t:#e6faf5;
+  --sky:#3b82f6;   --sky-t:#eff6ff;
+  --violet:#7c3aed;--violet-t:#f5f0ff;
+  --rose:#e11d74;  --rose-t:#fff0f6;
+  --shadow:0 8px 40px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:var(--ink);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;}
+
+/* blobs */
+.blobs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.13;}
+.b1{width:500px;height:500px;background:var(--coral);top:-150px;left:-100px;}
+.b2{width:400px;height:400px;background:var(--sky);top:30px;right:-120px;}
+.b3{width:360px;height:360px;background:var(--jade);bottom:-100px;left:22%;}
+.b4{width:280px;height:280px;background:var(--amber);bottom:50px;right:4%;}
+
+/* header */
+header{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);backdrop-filter:blur(18px);border-bottom:2px solid #f0f0f0;padding:0 36px;display:flex;align-items:center;justify-content:space-between;height:70px;gap:16px;}
+.logo{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;white-space:nowrap;}
+.logo span{color:var(--coral);}
+.tabs{display:flex;gap:6px;}
+.tab{padding:8px 20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.92rem;font-weight:700;border:2px solid #e0e0e0;background:#fff;border-radius:100px;cursor:pointer;transition:all .18s;color:#666;}
+.tab:hover{border-color:var(--sky);color:var(--sky);}
+.tab.g1{background:var(--coral);border-color:var(--coral);color:#fff;}
+.tab.g2{background:var(--jade);border-color:var(--jade);color:#fff;}
+.tab.g3{background:var(--violet);border-color:var(--violet);color:#fff;}
+.prog{font-size:.95rem;font-weight:800;color:#bbb;white-space:nowrap;min-width:70px;text-align:right;}
+
+/* main */
+main{flex:1;position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px 40px;}
+
+/* card */
+.card{width:100%;max-width:980px;background:#fff;border:2.5px solid #ececec;border-radius:28px;box-shadow:var(--shadow);padding:44px 52px 38px;position:relative;overflow:hidden;animation:cardIn .36s cubic-bezier(.22,.9,.36,1) both;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:7px;}
+.card.g1::before{background:linear-gradient(90deg,var(--coral),var(--amber));}
+.card.g2::before{background:linear-gradient(90deg,var(--jade),var(--sky));}
+.card.g3::before{background:linear-gradient(90deg,var(--violet),var(--rose));}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.98);}to{opacity:1;transform:none;}}
+
+/* label */
+.lbl{display:inline-flex;align-items:center;padding:7px 18px;border-radius:100px;font-size:.85rem;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:20px;margin-top:6px;}
+.lbl1{background:var(--coral-t);color:var(--coral);border:1.5px solid #ffc4b8;}
+.lbl2a{background:var(--jade-t);color:var(--jade);border:1.5px solid #9fe8d5;}
+.lbl2b{background:var(--sky-t);color:var(--sky);border:1.5px solid #b3d4ff;}
+.lbl3{background:var(--violet-t);color:var(--violet);border:1.5px solid #d4b8ff;}
+
+.qnum{font-size:1.05rem;font-weight:700;color:#bbb;margin-bottom:12px;}
+
+/* hint bar */
+.hint{display:inline-flex;align-items:center;gap:6px;background:var(--amber-t);border:1.5px solid #f5c77a;color:#9a640a;border-radius:10px;padding:8px 18px;font-size:1.05rem;font-weight:600;margin-bottom:20px;}
+
+/* ── GAME 1: chia động từ ── */
+.g1-sentence{font-size:2.1rem;font-weight:700;line-height:1.8;margin-bottom:14px;}
+.g1-blank{display:inline-block;border-bottom:3px solid var(--ink);min-width:200px;padding:2px 12px;color:transparent;font-style:italic;font-weight:800;transition:color .3s,border-color .3s;vertical-align:bottom;}
+.g1-blank.revealed{color:var(--sky);border-color:var(--sky);}
+.g1-hint-word{font-size:1.6rem;font-weight:700;color:#aaa;font-style:italic;}
+.why-box{margin-top:16px;background:#fafafa;border:2px solid #ececec;border-radius:14px;padding:16px 22px;font-size:1.15rem;font-weight:600;color:transparent;line-height:1.6;transition:color .3s;}
+.why-box.revealed{color:#444;}
+
+/* ── GAME 2: phát âm / trọng âm ── */
+.mc-sentence{font-size:2.1rem;font-weight:700;line-height:1.7;margin-bottom:20px;}
+.mc-options{display:flex;flex-direction:column;gap:14px;margin-bottom:20px;}
+.mc-opt{display:flex;align-items:center;gap:16px;padding:16px 24px;border:2.5px solid #e0e0e0;border-radius:16px;font-size:1.6rem;font-weight:700;cursor:pointer;transition:all .2s;background:#fff;}
+.mc-opt:hover{border-color:var(--sky);background:var(--sky-t);}
+.mc-opt .opt-letter{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:#f0f0f0;font-size:1.1rem;font-weight:800;flex-shrink:0;}
+.mc-opt .opt-word{flex:1;}
+.mc-opt.correct{border-color:var(--jade);background:var(--jade-t);}
+.mc-opt.correct .opt-letter{background:var(--jade);color:#fff;}
+.mc-opt.wrong{border-color:var(--rose);background:var(--rose-t);}
+.mc-opt.wrong .opt-letter{background:var(--rose);color:#fff;}
+.mc-opt.disabled{pointer-events:none;}
+.mc-why{margin-top:10px;background:#fafafa;border:2px solid #ececec;border-radius:14px;padding:16px 22px;font-size:1.15rem;font-weight:600;color:transparent;line-height:1.6;transition:color .3s;}
+.mc-why.revealed{color:#444;}
+
+/* sub-tabs */
+.sub-tabs{display:flex;gap:8px;margin-bottom:24px;}
+.sub-tab{padding:8px 20px;font-size:.92rem;font-weight:700;border:2px solid #e0e0e0;background:#fff;border-radius:100px;cursor:pointer;transition:all .18s;color:#666;}
+.sub-tab.active{background:var(--jade);border-color:var(--jade);color:#fff;}
+
+/* ── GAME 3: tìm lỗi sai ── */
+.bug-sentence{font-size:2.1rem;font-weight:700;line-height:1.75;margin-bottom:20px;}
+.bug-err{display:inline;background:var(--rose-t);border-bottom:3px solid var(--rose);color:inherit;border-radius:4px;padding:0 6px;transition:background .3s,color .3s;}
+.bug-err.revealed{background:var(--rose-t);color:var(--rose);text-decoration:line-through;}
+.bug-fix{display:inline-block;background:var(--jade-t);border:2px solid var(--jade);border-radius:10px;padding:2px 16px;color:transparent;font-weight:800;font-size:2rem;transition:color .3s;margin-left:8px;}
+.bug-fix.revealed{color:var(--jade);}
+.bug-why{margin-top:16px;background:#fafafa;border:2px solid #ececec;border-radius:14px;padding:16px 22px;font-size:1.15rem;font-weight:600;color:transparent;line-height:1.6;transition:color .3s;}
+.bug-why.revealed{color:#444;}
+
+/* controls */
+.controls{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap;align-items:center;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;font-family:'Plus Jakarta Sans',sans-serif;font-size:1.1rem;font-weight:700;border-radius:100px;cursor:pointer;border:2.5px solid transparent;transition:all .18s;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(0,0,0,.12);}
+.btn:active{transform:none;}
+.btn-reveal{background:var(--sky);color:#fff;border-color:var(--sky);}
+.btn-next{background:var(--jade);color:#fff;border-color:var(--jade);}
+.btn-check{background:var(--violet);color:#fff;border-color:var(--violet);}
+.btn-clear{background:#fff;color:#666;border-color:#ccc;}
+.btn-restart{background:var(--violet);color:#fff;border-color:var(--violet);}
+
+/* finish */
+.finish{text-align:center;padding:40px 20px;}
+.finish-emoji{font-size:4rem;display:block;margin-bottom:14px;}
+.finish-title{font-family:'Fraunces',serif;font-size:3rem;font-weight:900;margin-bottom:10px;}
+.finish-sub{font-size:1.3rem;color:#999;font-weight:600;}
+
+@media(max-width:700px){
+  .card{padding:28px 22px 24px;}
+  header{padding:0 16px;}
+  .g1-sentence,.mc-sentence,.bug-sentence{font-size:1.55rem;}
+  .mc-opt{font-size:1.3rem;padding:13px 18px;}
+  .tab{padding:7px 13px;font-size:.82rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="blobs">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+</div>
+
+<header>
+  <div class="logo">Present Tenses <span>Practice</span></div>
+  <div class="tabs">
+    <button class="tab g1" id="t1" onclick="goGame(1)">✍️ Chia ĐT</button>
+    <button class="tab"    id="t2" onclick="goGame(2)">🔊 Phát Âm</button>
+    <button class="tab"    id="t3" onclick="goGame(3)">🐛 Lỗi Sai</button>
+  </div>
+  <div class="prog" id="prog">1 / 26</div>
+</header>
+
+<main>
+  <div class="card g1" id="card">
+    <div id="qa"></div>
+    <div class="controls" id="ctrl"></div>
+  </div>
+</main>
+
+<script>
+// ══════════════════════════════════════════════
+// GAME 1 DATA — Chia động từ (sorted easy → hard)
+// ══════════════════════════════════════════════
+const G1 = [
+  // Easy — Simple tenses only
+  { blanks:[{hint:"rise",ans:"rises"},{hint:"set",ans:"sets"}], full:"The sun __(rise)__ in the east and __(set)__ in the west.", why:"Sự thật hiển nhiên → Present Simple. Chủ ngữ 'the sun' (số ít) → thêm -s: rises, sets." },
+  { blanks:[{hint:"not believe",ans:"don't believe"},{hint:"tell",ans:"told"}], full:"I __(not believe)__ this story! Who __(tell)__ you this?", why:"'don't believe' = stative verb (cảm xúc) → Present Simple. 'told' = hành động trong quá khứ → Past Simple." },
+  { blanks:[{hint:"not usually drive",ans:"doesn't usually drive"},{hint:"drive",ans:"drove"},{hint:"rain",ans:"was raining"}], full:"My dad __(not usually drive)__ to work, but yesterday he __(drive)__ because it __(rain)__ heavily.", why:"Thói quen → Present Simple. Hành động cụ thể hôm qua → Past Simple. Hoàn cảnh nền → Past Continuous." },
+  { blanks:[{hint:"read",ans:"reads"},{hint:"read",ans:"read"},{hint:"feel",ans:"felt"}], full:"Every evening my mum __(read)__ to my little sister, but last night my dad __(read)__ to her because my mum __(feel)__ very tired.", why:"'every evening' = thói quen → Present Simple. 'last night' = Past Simple x2." },
+  { blanks:[{hint:"not remember",ans:"doesn't remember"},{hint:"put",ans:"put"}], full:"She __(not remember)__ where she __(put)__ her keys yesterday.", why:"'not remember' = stative → Present Simple. 'put yesterday' = Past Simple (put bất quy tắc)." },
+  // Medium — mix of stative vs dynamic
+  { blanks:[{hint:"not believe",ans:"don't believe"},{hint:"tell",ans:"told"}], full:"I __(not believe)__ this story! Who __(tell)__ you this?", skip:true },
+  { blanks:[{hint:"knock",ans:"is knocking"},{hint:"open",ans:"opened"}], full:"Listen! Someone __(knock)__ on the door. I __(open)__ it just a moment ago but there was nobody there.", why:"'Listen!' = hành động đang xảy ra → Present Continuous. 'a moment ago' = Past Simple." },
+  { blanks:[{hint:"look",ans:"looks"},{hint:"smile",ans:"smiled"}], full:"He __(look)__ very angry right now, but yesterday he __(smile)__ at everyone all day.", why:"'look' ở đây là stative (trạng thái trông có vẻ) → Present Simple. 'smiled all day' = Past Simple." },
+  { blanks:[{hint:"know",ans:"knows"},{hint:"not want",ans:"doesn't want"}], full:"Right now, she __(know)__ the answer but she __(not want)__ to say it out loud.", why:"'know' và 'want' là stative verbs → KHÔNG dùng Continuous dù có 'right now'." },
+  { blanks:[{hint:"see",ans:"see"},{hint:"get",ans:"is getting"}], full:"I __(see)__ what you mean now. This problem __(get)__ more serious every day.", why:"'see' = stative (hiểu) → Present Simple. 'get more serious' = quá trình đang diễn ra → Present Continuous." },
+  { blanks:[{hint:"seem",ans:"seem"},{hint:"promise",ans:"promised"}], full:"The children __(seem)__ very excited right now. Their teacher __(promise)__ them a pizza party last Friday.", why:"'seem' = stative → Present Simple. 'last Friday' → Past Simple." },
+  { blanks:[{hint:"stare",ans:"is staring"},{hint:"not understand",ans:"doesn't understand"}], full:"She __(stare)__ at the screen right now because she __(not understand)__ the instructions.", why:"'stare' = hành động có chủ ý đang diễn ra → Present Continuous. 'not understand' = stative → Present Simple." },
+  { blanks:[{hint:"not think",ans:"don't think"},{hint:"think",ans:"are you thinking"}], full:"I __(not think)__ this is a good idea. What __(you / think)__ about right now?", why:"Câu 1: 'think' = stative (ý kiến) → Present Simple. Câu 2: 'think about' = hành động (đang suy nghĩ về điều gì) → Present Continuous." },
+  { blanks:[{hint:"not have",ans:"didn't have"},{hint:"attend",ans:"were attending"}], full:"We __(not have)__ any lessons on that day because the teachers __(attend)__ a training course.", why:"Sự việc quá khứ → Past Simple. Hoàn cảnh nền → Past Continuous." },
+  // Medium-Hard — taste/smell/appear as stative vs dynamic
+  { blanks:[{hint:"taste",ans:"tasted"},{hint:"add",ans:"added"},{hint:"taste",ans:"tastes"}], full:"He __(taste)__ the soup carefully and then __(add)__ more salt. Now it __(taste)__ perfect.", why:"'taste' (nếm) = hành động → Past Simple x2. 'taste' (có vị) = stative → Present Simple." },
+  { blanks:[{hint:"sleep",ans:"is sleeping"},{hint:"cry",ans:"cried"}], full:"The baby __(sleep)__ right now, so please be quiet. She __(cry)__ for two hours last night!", why:"'right now' = Present Continuous. 'last night' = Past Simple." },
+  { blanks:[{hint:"enjoy",ans:"Did you enjoy"},{hint:"sound",ans:"sounded"}], full:"__ you __(enjoy)__ the concert? Yes! The singer __(sound)__ amazing.", why:"Hỏi về quá khứ → Past Simple. 'sounded' = stative quá khứ → Past Simple." },
+  { blanks:[{hint:"wear",ans:"is wearing"},{hint:"stand",ans:"was standing"},{hint:"arrive",ans:"arrived"}], full:"Look! That man __(wear)__ a very funny hat. He __(stand)__ there when we __(arrive)__ too.", why:"'Look!' hiện tại → Present Continuous. Hoàn cảnh quá khứ → Past Continuous. Hành động quá khứ → Past Simple." },
+  { blanks:[{hint:"not like",ans:"doesn't like"},{hint:"read",ans:"is reading"}], full:"My grandfather __(not like)__ loud music. Right now he __(read)__ quietly in his room.", why:"'not like' = stative → Present Simple. 'right now' + action → Present Continuous." },
+  { blanks:[{hint:"appear",ans:"appears"},{hint:"appear",ans:"appeared"}], full:"She always __(appear)__ calm in class, but yesterday she __(appear)__ very nervous during the presentation.", why:"'appear' = linking verb (trông có vẻ) → stative. 'always' → Present Simple; 'yesterday' → Past Simple." },
+  // Hard — complex mixed sentences
+  { blanks:[{hint:"think",ans:"am thinking"},{hint:"say",ans:"said"},{hint:"be",ans:"were"}], full:"I __(think)__ about what you __(say)__ yesterday. You __(be)__ right.", why:"'think about' = hành động đang diễn ra → Present Continuous. 'said yesterday' → Past Simple. 'were right' = trạng thái quá khứ → Past Simple." },
+  { blanks:[{hint:"not belong",ans:"doesn't belong"},{hint:"sit",ans:"has been sitting"}], full:"The dog __(not belong)__ to us. It __(sit)__ outside our gate since this morning.", why:"'belong' = stative → Present Simple. 'since this morning' + trạng thái vẫn đang tiếp diễn → Present Perfect Continuous." },
+  { blanks:[{hint:"look",ans:"are you looking"},{hint:"look",ans:"am looking"},{hint:"look",ans:"looks"}], full:"What __ you __(look)__ at? – I __(look)__ at that strange cloud. It __(look)__ like a dragon!", why:"'look at' (nhìn vào) = hành động → Continuous x2. 'look like' (trông giống) = stative → Present Simple." },
+  { blanks:[{hint:"have",ans:"had"},{hint:"dance",ans:"were dancing"},{hint:"laugh",ans:"laughing"}], full:"They __(have)__ a great time at the party last night. Everyone __(dance)__ and __(laugh)__ the whole evening.", why:"'last night' → Past Simple. 'the whole evening' = hoạt động diễn ra suốt thời gian → Past Continuous." },
+  { blanks:[{hint:"feel",ans:"am feeling"},{hint:"put on",ans:"am putting on"},{hint:"not feel",ans:"wasn't feeling"}], full:"Right now I __(feel)__ a bit cold, so I __(put on)__ my jacket. I __(not feel)__ well earlier either.", why:"'feel' (cảm thấy tạm thời) = dùng Continuous được. 'put on' = hành động → Present Continuous. 'earlier' = Past Continuous." },
+  { blanks:[{hint:"not want",ans:"doesn't want"},{hint:"finish",ans:"is finishing"}], full:"She __(not want)__ to go outside because she __(finish)__ an important project right now.", why:"'not want' = stative → Present Simple. 'finish right now' = đang hoàn thành → Present Continuous." },
+];
+
+// Remove the duplicate skip entry
+const G1_FINAL = G1.filter(q => !q.skip);
+
+// ══════════════════════════════════════════════
+// GAME 2 DATA — Phát âm & Trọng âm
+// ══════════════════════════════════════════════
+const G2A = [
+  // Pronunciation (easy first)
+  { q:"Choose the word with DIFFERENT pronunciation of the underlined part:", opts:["A. worked","B. played","C. watched","D. stopped"], ans:1, why:"'played' → /d/. 'worked', 'watched', 'stopped' → /t/ (sau phụ âm vô thanh)." },
+  { q:"Choose the word with DIFFERENT pronunciation:", opts:["A. runs","B. sits","C. gets","D. kicks"], ans:0, why:"'runs' → /z/. 'sits', 'gets', 'kicks' → /s/ (sau phụ âm vô thanh)." },
+  { q:"Choose the word with DIFFERENT pronunciation:", opts:["A. lived","B. listened","C. played","D. walked"], ans:3, why:"'walked' → /t/. 'lived', 'listened', 'played' → /d/ (sau nguyên âm hoặc phụ âm hữu thanh)." },
+  { q:"Choose the word with DIFFERENT pronunciation:", opts:["A. roofs","B. goes","C. tapes","D. likes"], ans:1, why:"'goes' → /z/. 'roofs', 'tapes', 'likes' → /s/ (sau phụ âm vô thanh)." },
+  { q:"Choose the word with DIFFERENT pronunciation of the vowel:", opts:["A. faster","B. later","C. water","D. father"], ans:1, why:"'later' có âm /eɪ/ (dài). 'faster', 'water', 'father' có âm /ɑː/ hoặc /æ/." },
+  { q:"Choose the word with DIFFERENT pronunciation:", opts:["A. studying","B. typing","C. buying","D. flying"], ans:1, why:"'typing' có âm /aɪ/. 'studying', 'buying', 'flying' → âm /ɪ/ trong đuôi -ing không đổi, nhưng 'typing' khác về nguyên âm gốc /aɪ/ vs /ɪ/." },
+  { q:"Choose the word with DIFFERENT pronunciation:", opts:["A. better","B. letter","C. prefer","D. September"], ans:2, why:"'prefer' → /ɜː/ (nhấn vần 2). 'better', 'letter', 'September' → /ə/ (âm không nhấn)." },
+  { q:"Choose the word with DIFFERENT pronunciation:", opts:["A. slowly","B. happy","C. really","D. apply"], ans:3, why:"'apply' → /aɪ/ (âm /aɪ/ nhấn). 'slowly', 'happy', 'really' → đuôi -ly/-y đọc /i/ không nhấn." },
+];
+
+const G2B = [
+  // Stress (medium difficulty)
+  { q:"Choose the word with DIFFERENT stress pattern:", opts:["A. prefer","B. enjoy","C. study","D. apply"], ans:2, why:"'study' → nhấn âm tiết 1 (STU-dy). 'prefer', 'enjoy', 'apply' → nhấn âm tiết 2." },
+  { q:"Choose the word with DIFFERENT stress pattern:", opts:["A. finish","B. study","C. become","D. practice"], ans:2, why:"'become' → nhấn âm tiết 2 (be-COME). 'finish', 'study', 'practice' → nhấn âm tiết 1." },
+  { q:"Choose the word with DIFFERENT stress pattern:", opts:["A. nervous","B. complete","C. famous","D. useful"], ans:1, why:"'complete' → nhấn âm tiết 2 (com-PLETE). 'nervous', 'famous', 'useful' → nhấn âm tiết 1." },
+  { q:"Choose the word with DIFFERENT stress pattern:", opts:["A. faster","B. prepare","C. lucky","D. heavy"], ans:1, why:"'prepare' → nhấn âm tiết 2 (pre-PARE). 'faster', 'lucky', 'heavy' → nhấn âm tiết 1." },
+  { q:"Choose the word with DIFFERENT stress pattern:", opts:["A. beautiful","B. carefully","C. exciting","D. quietly"], ans:2, why:"'exciting' → nhấn âm tiết 2 (ex-CI-ting). 'beautiful', 'carefully', 'quietly' → nhấn âm tiết 1." },
+  { q:"Choose the word with DIFFERENT stress pattern:", opts:["A. carefully","B. exactly","C. recently","D. quietly"], ans:1, why:"'exactly' → nhấn âm tiết 2 (ex-ACT-ly). 'carefully', 'recently', 'quietly' → nhấn âm tiết 1." },
+];
+
+// ══════════════════════════════════════════════
+// GAME 3 DATA — Tìm lỗi sai (sorted easy → hard)
+// ══════════════════════════════════════════════
+const G3 = [
+  // Easy — clear stative verb errors
+  { before:"Water ", err:"is boiling", fix:"boils", after:" at 100 degrees Celsius, so we use it to make tea.", why:"Sự thật khoa học → Present Simple. 'boil' ở đây là sự thật tự nhiên, không phải hành động đang xảy ra." },
+  { before:"I ", err:"am not believing", fix:"don't believe", after:" what he just said. It sounds completely wrong.", why:"'believe' là stative verb (tin tưởng) → KHÔNG dùng Continuous. Dùng Present Simple: don't believe." },
+  { before:"She ", err:"is seeming", fix:"seems", after:" very tired today. She worked late every night last week.", why:"'seem' là stative verb → KHÔNG dùng Continuous. Dùng Present Simple: seems." },
+  { before:"Right now she ", err:"is knowing", fix:"knows", after:" the answer because the teacher just explained it.", why:"'know' là stative verb → không dùng Continuous dù có 'right now'. Dùng Present Simple: knows." },
+  { before:"I ", err:"am thinking", fix:"think", after:" this is a terrible idea. Can we please try something different?", why:"'think' ở đây = ý kiến/quan điểm → stative → Present Simple: think." },
+  // Medium
+  { before:"Look! The cat is sitting on the roof. It ", err:"is sitting", fix:"sits", after:" there every afternoon.", why:"Hành động lặp đi lặp lại ('every afternoon') → Present Simple. Chỉ câu đầu (Look!) mới dùng Continuous." },
+  { before:'"What ', err:"are you thinking", fix:"do you think", after:' about this idea?" – "I think it\'s quite interesting."', why:"'think about this idea' = hỏi ý kiến → stative → Present Simple: do you think. Không phải hành động suy nghĩ cụ thể." },
+  { before:"He tasted the sauce carefully, added some pepper, and now it ", err:"is tasting", fix:"tastes", after:" great.", why:"'taste' (có vị) = stative → Present Simple: tastes. Chỉ 'taste' (nếm thử) mới dùng được Continuous." },
+  { before:"My little brother always cries when he watches scary movies, but last night he didn't cry at all. He ", err:"is watching", fix:"was watching", after:" a funny cartoon instead.", why:"'last night' → quá khứ. Đây là hoàn cảnh nền → Past Continuous: was watching." },
+  { before:"She doesn't want to go out right now because she ", err:"is not understanding", fix:"doesn't understand", after:" the homework yet.", why:"'understand' là stative verb → Present Simple: doesn't understand. Không dùng Continuous." },
+  // Hard — nuanced cases
+  { before:"They ", err:"were having", fix:"had", after:" a big house in the countryside, but they sold it two years ago.", why:"'have' = sở hữu (stative) → Past Simple: had. Không dùng Past Continuous cho stative verbs." },
+  { before:"Right now I ", err:"think", fix:"am thinking", after:" about everything you said, and I believe you are right.", why:"'think about' + 'right now' = hành động suy nghĩ cụ thể đang diễn ra → Present Continuous. Khác với 'think' = ý kiến." },
+  { before:"The soup ", err:"is smelling", fix:"smells", after:" burnt. I think someone forgot to turn off the stove.", why:"'smell' (có mùi) = stative → Present Simple: smells. 'smell' chỉ dùng Continuous khi = chủ động ngửi (sniff)." },
+  { before:"She ", err:"is feeling", fix:"feels", after:" that this job is too difficult for her, so she is thinking of quitting.", why:"'feel that...' (nhận thấy/suy nghĩ rằng) = stative → Present Simple: feels. 'thinking of' đúng vì = cân nhắc hành động." },
+  { before:"He ", err:"smells", fix:"is smelling", after:" the coffee every morning before he drinks it — it helps him wake up.", why:"Câu này 'smell' = hành động chủ động ngửi (sniff) → Present Continuous hoặc Simple đều được, nhưng câu gốc dùng Simple → ĐÚNG. Lỗi là: câu này thực ra ĐÚNG — không có lỗi về ngữ pháp với 'smells' ở nghĩa thói quen.", correct:true },
+];
+
+// Filter out the "correct" sentence (no error) - it would confuse students
+const G3_FINAL = G3.filter(q => !q.correct);
+
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+let game=1, qi=0, g2sub='a', revealed=false, mcAnswered=false;
+
+// ══════════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════════
+function goGame(n){
+  game=n; qi=0; g2sub='a'; revealed=false; mcAnswered=false;
+  ['t1','t2','t3'].forEach((id,i)=>{
+    const t=document.getElementById(id);
+    t.className='tab'+(i+1===n?` g${n}`:'');
+  });
+  document.getElementById('card').className=`card g${n}`;
+  render();
+}
+
+function totalQ(){
+  if(game===1) return G1_FINAL.length;
+  if(game===2) return g2sub==='a'? G2A.length : G2B.length;
+  return G3_FINAL.length;
+}
+
+function render(){
+  revealed=false; mcAnswered=false;
+  const qa=document.getElementById('qa');
+  const ctrl=document.getElementById('ctrl');
+  qa.innerHTML=''; ctrl.innerHTML='';
+  document.getElementById('prog').textContent=`${qi+1} / ${totalQ()}`;
+  if(game===1) renderG1(qa,ctrl);
+  else if(game===2) renderG2(qa,ctrl);
+  else renderG3(qa,ctrl);
+}
+
+// ══════════════════════════════════════════════
+// GAME 1 — Chia động từ
+// ══════════════════════════════════════════════
+function renderG1(qa,ctrl){
+  const q=G1_FINAL[qi];
+
+  qa.innerHTML=`<div class="lbl lbl1">✍️ Bài 1 — Chia Động Từ</div>
+    <div class="hint">💡 Chia động từ trong ngoặc cho đúng thì</div>
+    <div class="qnum">Câu ${qi+1} / ${G1_FINAL.length}</div>`;
+
+  // Build sentence with blanks
+  const sd=document.createElement('div'); sd.className='g1-sentence';
+  let html=q.full;
+  q.blanks.forEach((b,i)=>{
+    const placeholder=`__(${b.hint})__`;
+    html=html.replace(placeholder,
+      `<span class="g1-blank" id="b${i}">${b.ans}</span>`+
+      `<span class="g1-hint-word"> (${b.hint})</span>`
+    );
+  });
+  sd.innerHTML=html;
+  qa.appendChild(sd);
+
+  const wb=document.createElement('div'); wb.className='why-box'; wb.id='whybox';
+  wb.textContent=q.why; qa.appendChild(wb);
+
+  ctrl.appendChild(mk('👁 Hiện Đáp Án','btn btn-reveal',()=>{
+    q.blanks.forEach((_,i)=>{
+      const el=document.getElementById('b'+i);
+      if(el) el.classList.add('revealed');
+    });
+    document.getElementById('whybox').classList.add('revealed');
+    ctrl.innerHTML=''; ctrl.appendChild(mk('Câu Tiếp →','btn btn-next',next));
+  }));
+  ctrl.appendChild(mk('Câu Tiếp →','btn btn-next',next));
+}
+
+// ══════════════════════════════════════════════
+// GAME 2 — Phát âm / Trọng âm
+// ══════════════════════════════════════════════
+function renderG2(qa,ctrl){
+  qa.innerHTML=`<div class="lbl lbl${g2sub==='a'?'2a':'2b'}">🔊 Bài 2${g2sub==='b'?' — Trọng Âm':' — Phát Âm'}</div>`;
+
+  // sub-tabs
+  const st=document.createElement('div'); st.className='sub-tabs';
+  [['a','🔤 Phát Âm'],['b','🎵 Trọng Âm']].forEach(([key,lbl])=>{
+    const s=document.createElement('button'); s.className='sub-tab'+(g2sub===key?' active':'');
+    s.textContent=lbl;
+    s.onclick=()=>{ g2sub=key; qi=0; render(); };
+    st.appendChild(s);
+  });
+  qa.appendChild(st);
+
+  const arr = g2sub==='a'? G2A : G2B;
+  const q=arr[qi];
+
+  const qs=document.createElement('div'); qs.className='mc-sentence'; qs.textContent=q.q; qa.appendChild(qs);
+  const qnum=document.createElement('div'); qnum.className='qnum'; qnum.textContent=`Câu ${qi+1} / ${arr.length}`; qa.insertBefore(qnum, qs);
+
+  const opts=document.createElement('div'); opts.className='mc-options';
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('div'); btn.className='mc-opt';
+    btn.innerHTML=`<span class="opt-letter">${['A','B','C','D'][i]}</span><span class="opt-word">${opt.replace(/^[A-D]\.\s*/,'')}</span>`;
+    btn.onclick=()=>answerMC(i, q.ans, arr, qa, ctrl);
+    opts.appendChild(btn);
+  });
+  qa.appendChild(opts);
+
+  const wy=document.createElement('div'); wy.className='mc-why'; wy.id='mcwhy'; wy.textContent=q.why; qa.appendChild(wy);
+
+  ctrl.appendChild(mk('👁 Hiện Đáp Án','btn btn-reveal',()=>{
+    showMCAnswer(q.ans, qa);
+    document.getElementById('mcwhy').classList.add('revealed');
+    ctrl.innerHTML=''; ctrl.appendChild(mk('Câu Tiếp →','btn btn-next',next));
+  }));
+  ctrl.appendChild(mk('Câu Tiếp →','btn btn-next',next));
+}
+
+function answerMC(chosen, correct, arr, qa, ctrl){
+  if(mcAnswered) return;
+  mcAnswered=true;
+  showMCAnswer(correct, qa, chosen);
+  document.getElementById('mcwhy').classList.add('revealed');
+  ctrl.innerHTML=''; ctrl.appendChild(mk('Câu Tiếp →','btn btn-next',next));
+}
+
+function showMCAnswer(correct, qa, chosen){
+  const optEls=qa.querySelectorAll('.mc-opt');
+  optEls.forEach((el,i)=>{
+    el.classList.add('disabled');
+    if(i===correct) el.classList.add('correct');
+    else if(chosen!==undefined && i===chosen) el.classList.add('wrong');
+  });
+}
+
+// ══════════════════════════════════════════════
+// GAME 3 — Tìm lỗi sai
+// ══════════════════════════════════════════════
+function renderG3(qa,ctrl){
+  const q=G3_FINAL[qi];
+
+  qa.innerHTML=`<div class="lbl lbl3">🐛 Bài 3 — Tìm & Sửa Lỗi</div>
+    <div class="hint">💡 Tìm lỗi sai trong câu — sửa lại cho đúng</div>
+    <div class="qnum">Câu ${qi+1} / ${G3_FINAL.length}</div>`;
+
+  const sd=document.createElement('div'); sd.className='bug-sentence';
+  sd.innerHTML= q.before
+    +`<span class="bug-err" id="berr">${q.err}</span>`
+    +`<span class="bug-fix" id="bfix"> → ${q.fix}</span>`
+    +q.after;
+  qa.appendChild(sd);
+
+  const wy=document.createElement('div'); wy.className='bug-why'; wy.id='bwhy'; wy.textContent=q.why; qa.appendChild(wy);
+
+  ctrl.appendChild(mk('👁 Hiện Đáp Án','btn btn-reveal',()=>{
+    document.getElementById('berr').classList.add('revealed');
+    document.getElementById('bfix').classList.add('revealed');
+    document.getElementById('bwhy').classList.add('revealed');
+    ctrl.innerHTML=''; ctrl.appendChild(mk('Câu Tiếp →','btn btn-next',next));
+  }));
+  ctrl.appendChild(mk('Câu Tiếp →','btn btn-next',next));
+}
+
+// ══════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════
+function next(){
+  revealed=false; mcAnswered=false;
+  const total=totalQ();
+  if(qi<total-1){ qi++; render(); }
+  else finish();
+}
+
+function finish(){
+  const names=['✍️ Bài 1 — Chia Động Từ','🔊 Bài 2 — Phát Âm & Trọng Âm','🐛 Bài 3 — Tìm Lỗi Sai'];
+  document.getElementById('qa').innerHTML=`
+    <div class="finish">
+      <span class="finish-emoji">🎉</span>
+      <div class="finish-title">${names[game-1]} Hoàn Thành!</div>
+      <div class="finish-sub">Làm tốt lắm — đã xong tất cả các câu!</div>
+    </div>`;
+  document.getElementById('ctrl').innerHTML='';
+  document.getElementById('ctrl').appendChild(mk('↩ Làm Lại','btn btn-restart',()=>{ qi=0; render(); }));
+}
+
+function mk(t,c,f){ const b=document.createElement('button'); b.className=c; b.innerHTML=t; b.onclick=f; return b; }
+
+render();
+</script>
+</body>
+</html>
