@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOEFL Junior Speaking – Parts 3 & 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --p3: #2563EB;
+  --p3-light: #EFF6FF;
+  --p3-mid: #BFDBFE;
+  --p4: #059669;
+  --p4-light: #ECFDF5;
+  --p4-mid: #A7F3D0;
+  --orange: #D97706;
+  --orange-light: #FFFBEB;
+  --red: #DC2626;
+  --bg: #F1F5F9;
+  --white: #FFFFFF;
+  --gray-50: #F8FAFC;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-400: #94A3B8;
+  --gray-500: #64748B;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1E293B;
+  --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+  --r: 14px;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--gray-800);
+  min-height: 100vh;
+}
+
+/* ─── HEADER ─── */
+.app-header {
+  background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+.app-logo {
+  width: 42px; height: 42px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+.app-title {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 40px;
+  color: white;
+  line-height: 1.1;
+}
+.app-subtitle { font-size: 24px; color: rgba(255,255,255,0.7); margin-top: 1px; }
+
+/* ─── MAIN TABS ─── */
+.main-tabs {
+  display: flex;
+  gap: 0;
+  padding: 20px 24px 0;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.main-tab {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  background: rgba(255,255,255,0.5);
+  color: var(--gray-500);
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  cursor: pointer;
+  border-radius: 12px 12px 0 0;
+  transition: all 0.2s;
+  border-bottom: 3px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.main-tab:hover { background: rgba(255,255,255,0.8); }
+.main-tab.active {
+  background: white;
+  color: var(--gray-800);
+  border-bottom-color: transparent;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+}
+.main-tab.p3.active { color: var(--p3); }
+.main-tab.p4.active { color: var(--p4); }
+.tab-badge {
+  font-size: 22px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 800;
+}
+.p3 .tab-badge { background: var(--p3-light); color: var(--p3); }
+.p4 .tab-badge { background: var(--p4-light); color: var(--p4); }
+
+/* ─── CONTENT AREA ─── */
+.content-area {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 0 0 16px 16px;
+  min-height: 70vh;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ─── SUB TABS ─── */
+.sub-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 16px 20px 0;
+  border-bottom: 2px solid var(--gray-100);
+}
+.sub-tab {
+  padding: 8px 18px;
+  border: none;
+  background: transparent;
+  color: var(--gray-500);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 27px;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.15s;
+  margin-bottom: -2px;
+}
+.sub-tab:hover { color: var(--gray-700); background: var(--gray-50); }
+.sub-tab.active { color: var(--p3); border-bottom-color: var(--p3); }
+.p4-panel .sub-tab.active { color: var(--p4); border-bottom-color: var(--p4); }
+
+.sub-panel { display: none; padding: 24px 24px 32px; }
+.sub-panel.active { display: block; }
+
+/* ─── GUIDE CONTENT ─── */
+.guide-section { margin-bottom: 24px; }
+.guide-title {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 34px;
+  color: var(--gray-800);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.info-box {
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 28px;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+.info-box.blue { background: var(--p3-light); border: 1px solid var(--p3-mid); }
+.info-box.green { background: var(--p4-light); border: 1px solid var(--p4-mid); }
+.info-box.orange { background: var(--orange-light); border: 1px solid #FDE68A; }
+.info-box strong { font-weight: 800; }
+
+.steps-list { display: flex; flex-direction: column; gap: 10px; }
+.step-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--gray-50);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.step-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800; font-size: 26px;
+  color: white; flex-shrink: 0;
+}
+.step-dot.blue { background: var(--p3); }
+.step-dot.green { background: var(--p4); }
+.step-body strong { font-weight: 800; font-size: 28px; display: block; margin-bottom: 2px; }
+.step-body span { font-size: 26px; color: var(--gray-600); }
+
+.template-box {
+  background: #F8F4FF;
+  border: 1.5px solid #C4B5FD;
+  border-radius: 12px;
+  padding: 16px 18px;
+  font-size: 28px;
+  line-height: 1.9;
+  margin: 10px 0;
+}
+.fill-in {
+  display: inline-block;
+  background: #7C3AED;
+  color: white;
+  border-radius: 6px;
+  padding: 1px 8px;
+  font-size: 24px;
+  font-weight: 800;
+  font-family: 'Baloo 2', sans-serif;
+  white-space: nowrap;
+}
+.connector-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.chip {
+  background: var(--p3-light);
+  border: 1px solid var(--p3-mid);
+  color: #1D4ED8;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 25px;
+  font-weight: 700;
+}
+.chip.green { background: var(--p4-light); border-color: var(--p4-mid); color: #065F46; }
+
+.note-sketch {
+  background: white;
+  border: 1.5px dashed var(--gray-300, #D1D5DB);
+  border-radius: 12px;
+  padding: 16px 18px;
+  font-size: 27px;
+  color: var(--gray-600);
+  line-height: 2;
+  font-family: 'Nunito', sans-serif;
+}
+.note-sketch .hint { font-size: 23px; color: var(--gray-400); font-style: italic; }
+
+/* ─── PRACTICE PANEL ─── */
+.practice-container { max-width: 720px; margin: 0 auto; }
+
+/* Stage system */
+.stage { display: none; }
+.stage.active { display: block; }
+
+/* Generate button */
+.generate-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px;
+  background: linear-gradient(135deg, #EFF6FF, #F0FDF4);
+  border: 2px dashed var(--p3-mid);
+  border-radius: 16px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s;
+  text-align: center;
+}
+.generate-btn:hover { border-color: var(--p3); background: var(--p3-light); }
+.generate-btn .gen-icon { font-size: 80px; }
+.generate-btn .gen-title {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 36px;
+  color: var(--p3);
+}
+.generate-btn .gen-sub { font-size: 27px; color: var(--gray-500); }
+
+.p4-panel .generate-btn { border-color: var(--p4-mid); }
+.p4-panel .generate-btn:hover { border-color: var(--p4); background: var(--p4-light); }
+.p4-panel .generate-btn .gen-title { color: var(--p4); }
+
+/* Topic selector */
+.topic-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.topic-btn {
+  padding: 10px 8px;
+  border: 2px solid var(--gray-200);
+  border-radius: 10px;
+  background: white;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 25px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+  color: var(--gray-700);
+  line-height: 1.3;
+}
+.topic-btn:hover { border-color: var(--p3); color: var(--p3); background: var(--p3-light); }
+.topic-btn.selected { border-color: var(--p3); background: var(--p3-light); color: var(--p3); }
+.p4-panel .topic-btn:hover,
+.p4-panel .topic-btn.selected { border-color: var(--p4); color: var(--p4); background: var(--p4-light); }
+
+/* Loading */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px;
+  color: var(--gray-500);
+  font-size: 28px;
+}
+.spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--gray-200);
+  border-top-color: var(--p3);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.p4-panel .spinner { border-top-color: var(--p4); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Listening stage */
+.listen-card {
+  background: #0F172A;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.listen-card-header {
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.listen-card-header .topic-label {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  color: rgba(255,255,255,0.7);
+}
+.listen-card-header .topic-name {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  color: white;
+}
+
+/* Image display for Part 4 */
+.talk-image-area {
+  padding: 0 18px 18px;
+  display: flex;
+  justify-content: center;
+}
+.talk-image {
+  max-width: 380px;
+  width: 100%;
+  border-radius: 10px;
+  background: #1E293B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  overflow: hidden;
+}
+.image-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,0.4);
+  font-size: 26px;
+  padding: 32px;
+}
+.image-placeholder .img-icon { font-size: 96px; }
+
+/* Audio player */
+.audio-player {
+  background: white;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  border: 1.5px solid var(--gray-200);
+}
+.audio-title {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--gray-700);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.play-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border: none;
+  background: var(--p3);
+  color: white;
+  border-radius: 10px;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  cursor: pointer;
+  transition: all 0.15s;
+  width: 100%;
+  justify-content: center;
+}
+.play-btn:hover { background: #1D4ED8; }
+.play-btn:disabled { background: var(--gray-300); cursor: not-allowed; }
+.p4-panel .play-btn { background: var(--p4); }
+.p4-panel .play-btn:hover { background: #047857; }
+.play-btn .btn-icon { font-size: 36px; }
+
+.audio-status {
+  margin-top: 8px;
+  font-size: 25px;
+  color: var(--gray-400);
+  text-align: center;
+  min-height: 18px;
+}
+.audio-status.playing { color: var(--p3); font-weight: 700; }
+.audio-status.done { color: var(--p4); font-weight: 700; }
+
+/* Note area */
+.note-area-label {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--gray-700);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.note-textarea {
+  width: 100%;
+  min-height: 130px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 28px;
+  line-height: 1.8;
+  color: var(--gray-800);
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s;
+  background: white;
+}
+.note-textarea:focus { border-color: var(--p3); }
+.p4-panel .note-textarea:focus { border-color: var(--p4); }
+.note-hint {
+  font-size: 24px;
+  color: var(--gray-400);
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.action-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+.btn-primary {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  background: var(--p3);
+  color: white;
+  border-radius: 10px;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 30px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-primary:hover { background: #1D4ED8; transform: translateY(-1px); }
+.btn-primary:disabled { background: var(--gray-300); cursor: not-allowed; transform: none; }
+.p4-panel .btn-primary { background: var(--p4); }
+.p4-panel .btn-primary:hover { background: #047857; }
+
+.btn-secondary {
+  padding: 12px 16px;
+  border: 2px solid var(--gray-200);
+  background: white;
+  color: var(--gray-600);
+  border-radius: 10px;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-secondary:hover { border-color: var(--gray-400); color: var(--gray-800); }
+
+/* Prep & Record stage */
+.timer-display {
+  background: #0F172A;
+  border-radius: 16px;
+  padding: 28px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.timer-phase {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 26px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.timer-phase.prep { color: var(--orange); }
+.timer-phase.rec { color: #F87171; }
+.timer-clock {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 104px;
+  color: white;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+.timer-bar-wrap {
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  height: 8px;
+  margin-top: 14px;
+  overflow: hidden;
+}
+.timer-bar {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 1s linear;
+}
+.timer-bar.prep { background: var(--orange); }
+.timer-bar.rec { background: #F87171; }
+
+.prompt-card {
+  background: var(--p3-light);
+  border: 1.5px solid var(--p3-mid);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  font-size: 28px;
+  line-height: 1.7;
+}
+.p4-panel .prompt-card { background: var(--p4-light); border-color: var(--p4-mid); }
+.prompt-label {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--p3);
+  margin-bottom: 8px;
+}
+.p4-panel .prompt-label { color: var(--p4); }
+.prompt-question { font-weight: 700; font-size: 30px; color: var(--gray-800); margin-bottom: 8px; }
+.prompt-bullets { list-style: disc; padding-left: 18px; color: var(--gray-700); font-size: 28px; }
+.prompt-bullets li { margin: 3px 0; }
+
+.notes-review {
+  background: var(--gray-50);
+  border: 1.5px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 27px;
+  color: var(--gray-700);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  max-height: 120px;
+  overflow-y: auto;
+  margin-bottom: 16px;
+}
+.notes-review-label {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.rec-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 8px;
+  font-size: 26px;
+  color: var(--gray-500);
+}
+.rec-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--gray-300);
+}
+.rec-dot.active {
+  background: #F87171;
+  animation: pulse 1s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Sample answer */
+.sample-answer-card {
+  background: white;
+  border-radius: 12px;
+  border: 1.5px solid var(--gray-200);
+  overflow: hidden;
+  margin-top: 16px;
+}
+.sample-answer-header {
+  padding: 12px 16px;
+  background: var(--p3-light);
+  border-bottom: 1px solid var(--p3-mid);
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 26px;
+  color: var(--p3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.p4-panel .sample-answer-header { background: var(--p4-light); border-color: var(--p4-mid); color: var(--p4); }
+.sample-answer-body {
+  padding: 14px 16px;
+  font-size: 27px;
+  line-height: 1.8;
+  color: var(--gray-700);
+  display: none;
+}
+.sample-answer-body.open { display: block; }
+.hl { background: #FEF08A; border-radius: 3px; padding: 0 2px; font-weight: 600; }
+
+.try-again-btn {
+  width: 100%;
+  padding: 14px;
+  border: 2px dashed var(--gray-300);
+  background: white;
+  border-radius: 12px;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 30px;
+  color: var(--gray-500);
+  cursor: pointer;
+  margin-top: 12px;
+  transition: all 0.2s;
+}
+.try-again-btn:hover { border-color: var(--p3); color: var(--p3); }
+.p4-panel .try-again-btn:hover { border-color: var(--p4); color: var(--p4); }
+
+/* ─── MISC ─── */
+.divider { border: none; border-top: 1.5px dashed var(--gray-200); margin: 18px 0; }
+.mt8 { margin-top: 8px; }
+.mt12 { margin-top: 12px; }
+.mt16 { margin-top: 16px; }
+
+.section-h {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 30px;
+  color: var(--gray-700);
+  margin: 16px 0 8px;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="app-header">
+  <div class="app-logo">🎤</div>
+  <div>
+    <div class="app-title">TOEFL Junior Speaking</div>
+    <div class="app-subtitle">Parts 3 & 4 — Self-Study Practice</div>
+  </div>
+</div>
+
+<!-- API KEY BAR -->
+<div id="api-key-bar" style="background:#1E3A8A;padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+  <span style="color:rgba(255,255,255,0.85);font-family:'Nunito',sans-serif;font-size:22px;font-weight:700;white-space:nowrap;">🔑 Anthropic API Key:</span>
+  <input id="api-key-input" type="password" placeholder="sk-ant-..." style="flex:1;min-width:200px;padding:8px 14px;border-radius:8px;border:none;font-family:'Nunito',sans-serif;font-size:20px;outline:none;background:rgba(255,255,255,0.12);color:white;" />
+  <button onclick="saveApiKey()" style="padding:8px 18px;background:#2563EB;border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:20px;cursor:pointer;">Save</button>
+  <span id="api-key-status" style="color:rgba(255,255,255,0.6);font-size:20px;font-family:'Nunito',sans-serif;"></span>
+</div>
+
+<!-- MAIN TABS -->
+<div class="main-tabs">
+  <button class="main-tab p3 active" onclick="switchMain('p3')">
+    ⚡ Part 3 <span class="tab-badge">Non-academic</span>
+  </button>
+  <button class="main-tab p4" onclick="switchMain('p4')">
+    🎓 Part 4 <span class="tab-badge" style="background:var(--p4-light);color:var(--p4)">Academic</span>
+  </button>
+</div>
+
+<!-- CONTENT -->
+<div class="content-area">
+
+  <!-- ══════════ PART 3 ══════════ -->
+  <div class="tab-panel active" id="panel-p3">
+    <div class="sub-tabs">
+      <button class="sub-tab active" onclick="switchSub('p3','guide')">📖 Guide</button>
+      <button class="sub-tab" onclick="switchSub('p3','practice')">🎯 Practice</button>
+    </div>
+
+    <!-- GUIDE -->
+    <div class="sub-panel active" id="p3-guide">
+      <div class="guide-section">
+        <div class="guide-title">🎯 What is Part 3?</div>
+        <div class="info-box blue">
+          You hear a short conversation — between students, or a teacher and students — about everyday school life. Then you are asked to <strong>retell the conversation</strong> to a friend who was absent.
+        </div>
+        <div class="info-box orange">
+          ⏱️ <strong>45 seconds</strong> to prepare → <strong>1 minute</strong> to speak
+        </div>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">📝 Note-taking: use a blank sheet of paper</div>
+        <p style="font-size:13.5px;color:var(--gray-600);margin-bottom:10px">In the real test you only get blank paper. The topic changes every time — so learn to make your own notes, not fill in a fixed table. Here's how:</p>
+        <div class="note-sketch">
+          <div class="hint">👇 Write like this — key words only, not full sentences</div>
+          <br>
+          <strong>Who's talking?</strong> → e.g. <em>Teacher + 2 students</em><br>
+          <strong>Main news / task:</strong> → e.g. <em>field trip – Nat. Museum – Fri</em><br>
+          <strong>Details:</strong> → e.g. <em>bring: notebook + pencils / sketch 3 exhibits</em><br>
+          <strong>Q&A:</strong> → e.g. <em>Q: pairs? → No, individual</em><br>
+          <strong>⭐ Key action for absent friend:</strong> → e.g. <em>leave 8:30, wear comfy shoes, due Mon</em>
+        </div>
+        <div class="info-box blue mt12">
+          💡 <strong>Tip:</strong> Write words + arrows. Example: <em>paper → torn, not crumpled → dry</em>. You're making a map, not a transcript!
+        </div>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">🗣️ Speaking template</div>
+        <div class="template-box">
+          <em>"Hey [name], you missed class — let me fill you in."</em><br>
+          <em>"The teacher told us that</em> <span class="fill-in">MAIN TASK</span>."<br>
+          <em>"She also explained that</em> <span class="fill-in">HOW / DETAILS</span>."<br>
+          <em>"[A student] asked about</em> <span class="fill-in">QUESTION</span>, <em>and the teacher said</em> <span class="fill-in">ANSWER</span>."<br>
+          <em>"It's due</em> <span class="fill-in">DEADLINE</span>, <em>so make sure you</em> <span class="fill-in">ACTION</span>."<br>
+          <em>"Oh, and one more thing —</em> <span class="fill-in">EXTRA DETAIL</span>."
+        </div>
+        <div class="connector-chips">
+          <span class="chip">She also said…</span>
+          <span class="chip">On top of that…</span>
+          <span class="chip">The reason is…</span>
+          <span class="chip">So that means…</span>
+          <span class="chip">One student asked…</span>
+          <span class="chip">Oh, and…</span>
+        </div>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">🏆 Score 4 vs Score 2</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="info-box" style="background:#FEF2F2;border-color:#FECACA">
+            <strong style="color:#DC2626">❌ Score 2</strong><br>
+            <em>"Teacher say homework. Chapter six. Ten question. Wednesday."</em>
+          </div>
+          <div class="info-box" style="background:#F0FDF4;border-color:#A7F3D0">
+            <strong style="color:#059669">✅ Score 4</strong><br>
+            <em>"The teacher told us to read Chapter 6 and answer ten questions in full sentences. It's due Wednesday."</em>
+          </div>
+        </div>
+        <div class="info-box blue mt8">The difference: Score 4 uses <strong>full sentences and connector words</strong>. Score 2 just lists words.</div>
+      </div>
+    </div>
+
+    <!-- PRACTICE -->
+    <div class="sub-panel" id="p3-practice">
+      <div class="practice-container" id="p3-practice-container">
+
+        <!-- STAGE 0: Pick topic -->
+        <div class="stage active" id="p3-stage-0">
+          <div class="section-h">Choose a conversation type:</div>
+          <div class="topic-selector" id="p3-topics">
+            <button class="topic-btn" data-topic="homework">📚 Homework assignment</button>
+            <button class="topic-btn" data-topic="trip">🚌 School trip / outing</button>
+            <button class="topic-btn" data-topic="project">🔬 Class project</button>
+            <button class="topic-btn" data-topic="club">🏃 Club / activity</button>
+            <button class="topic-btn" data-topic="announcement">📢 School announcement</button>
+            <button class="topic-btn selected" data-topic="random">🎲 Surprise me!</button>
+          </div>
+          <button class="btn-primary mt16" onclick="generateP3()">✨ Generate conversation</button>
+        </div>
+
+        <!-- STAGE 1: Loading -->
+        <div class="stage" id="p3-stage-1">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <div>Creating a new conversation for you…</div>
+          </div>
+        </div>
+
+        <!-- STAGE 2: Listen + Notes -->
+        <div class="stage" id="p3-stage-2">
+          <div class="listen-card">
+            <div class="listen-card-header">
+              <div>
+                <div class="topic-label">PART 3 — Non-academic Listen–Speak</div>
+                <div class="topic-name" id="p3-topic-name">Loading…</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="audio-player">
+            <div class="audio-title">🎧 Step 1 — Listen to the conversation</div>
+            <button class="play-btn" id="p3-play-btn" onclick="playP3Audio()">
+              <span class="btn-icon">▶</span> Play conversation
+            </button>
+            <div class="audio-status" id="p3-audio-status">Press Play to listen. You can play it once!</div>
+          </div>
+
+          <div>
+            <div class="note-area-label">📝 Step 2 — Take notes (key words only!)</div>
+            <textarea class="note-textarea" id="p3-notes" placeholder="Write key words as you listen…&#10;&#10;Who's talking? →&#10;Main task / news →&#10;Details →&#10;Q&A →&#10;⭐ What friend needs to know →"></textarea>
+            <div class="note-hint">📌 Only short keywords — no full sentences. e.g. "library – Tue – bring worksheet"</div>
+          </div>
+
+          <div class="action-row">
+            <button class="btn-secondary" onclick="resetP3()">↩ New question</button>
+            <button class="btn-primary" id="p3-next-btn" onclick="startP3Prep()">📝 I'm ready — Start 45s prep →</button>
+          </div>
+        </div>
+
+        <!-- STAGE 3: Prep + Record -->
+        <div class="stage" id="p3-stage-3">
+          <div class="timer-display">
+            <div class="timer-phase prep" id="p3-timer-phase">PREPARATION TIME</div>
+            <div class="timer-clock" id="p3-timer-clock">00:45</div>
+            <div class="timer-bar-wrap">
+              <div class="timer-bar prep" id="p3-timer-bar" style="width:100%"></div>
+            </div>
+          </div>
+
+          <div class="prompt-card">
+            <div class="prompt-label">🎤 Your task</div>
+            <div class="prompt-question" id="p3-prompt-question">Loading…</div>
+          </div>
+
+          <div>
+            <div class="notes-review-label">Your notes:</div>
+            <div class="notes-review" id="p3-notes-review"></div>
+          </div>
+
+          <div class="rec-indicator">
+            <div class="rec-dot" id="p3-rec-dot"></div>
+            <span id="p3-rec-label">Preparing…</span>
+          </div>
+        </div>
+
+        <!-- STAGE 4: Review -->
+        <div class="stage" id="p3-stage-4">
+          <div class="info-box" style="background:#F0FDF4;border-color:#A7F3D0;margin-bottom:16px">
+            <strong style="color:#059669">✅ Recording done!</strong> How did it go? Check the sample answer below.
+          </div>
+
+          <div class="prompt-card">
+            <div class="prompt-label">The task was:</div>
+            <div class="prompt-question" id="p3-review-prompt"></div>
+          </div>
+
+          <div class="sample-answer-card">
+            <div class="sample-answer-header" onclick="toggleSample('p3')">
+              💡 See a sample Score-4 response <span id="p3-sample-arrow">▼ Show</span>
+            </div>
+            <div class="sample-answer-body" id="p3-sample-body"></div>
+          </div>
+
+          <button class="try-again-btn" onclick="resetP3()">🔄 Try another conversation</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ PART 4 ══════════ -->
+  <div class="tab-panel" id="panel-p4">
+    <div class="sub-tabs p4-panel" style="border-bottom:2px solid var(--gray-100)">
+      <button class="sub-tab active" style="color:var(--p4);border-bottom-color:var(--p4)" onclick="switchSub('p4','guide')" id="p4-guide-tab">📖 Guide</button>
+      <button class="sub-tab" onclick="switchSub('p4','practice')" id="p4-practice-tab">🎯 Practice</button>
+    </div>
+
+    <!-- GUIDE -->
+    <div class="sub-panel active p4-panel" id="p4-guide">
+      <div class="guide-section">
+        <div class="guide-title">🎯 What is Part 4?</div>
+        <div class="info-box green">
+          You hear a teacher explain an academic topic (science, nature, history…). While listening, you <strong>see pictures or a video</strong> on screen to help you understand. Then you are asked to <strong>summarize the talk</strong>.
+        </div>
+        <div class="info-box orange">
+          ⏱️ <strong>45 seconds</strong> to prepare → <strong>1 minute</strong> to speak
+        </div>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">📝 Note-taking on blank paper</div>
+        <div class="note-sketch">
+          <div class="hint">👇 Sketch this shape — adapt it to whatever you hear</div>
+          <br>
+          <strong>TOPIC:</strong> ___________________________<br><br>
+          <strong>Point 1:</strong> _____ → detail: _____<br>
+          <strong>Point 2:</strong> _____ → detail: _____<br>
+          <strong>Point 3:</strong> _____ → detail: _____ (if there is one)<br><br>
+          <strong>⭐ Conclusion / why it matters:</strong> _______
+        </div>
+        <div class="info-box green mt12">
+          💡 <strong>Look at the picture</strong> while listening — it gives you the vocabulary! If you see a frog life cycle diagram, the words you need are right there.
+        </div>
+      </div>
+
+      <div class="guide-section">
+        <div class="guide-title">🗣️ Speaking template</div>
+        <div class="template-box">
+          <em>"In this talk, the teacher explained</em> <span class="fill-in">TOPIC</span>."<br>
+          <em>"First, she said that</em> <span class="fill-in">POINT 1</span>."<br>
+          <em>"She also pointed out that</em> <span class="fill-in">POINT 2</span>."<br>
+          <em>"In addition,</em> <span class="fill-in">POINT 3</span>." <em style="font-size:24px;color:#888">(if you have one)</em><br>
+          <em>"Overall,</em> <span class="fill-in">CONCLUSION / WHY IT MATTERS</span>."
+        </div>
+        <div class="connector-chips">
+          <span class="chip green">First…</span>
+          <span class="chip green">She also explained…</span>
+          <span class="chip green">This means that…</span>
+          <span class="chip green">As a result…</span>
+          <span class="chip green">For example…</span>
+          <span class="chip green">Overall…</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRACTICE -->
+    <div class="sub-panel p4-panel" id="p4-practice">
+      <div class="practice-container" id="p4-practice-container">
+
+        <!-- STAGE 0 -->
+        <div class="stage active" id="p4-stage-0">
+          <div class="section-h">Choose a topic area:</div>
+          <div class="topic-selector p4-panel" id="p4-topics">
+            <button class="topic-btn" data-topic="life_cycle">🐸 Animal life cycles</button>
+            <button class="topic-btn" data-topic="plants">🌱 Plants & nature</button>
+            <button class="topic-btn" data-topic="weather">⛅ Weather & water</button>
+            <button class="topic-btn" data-topic="environment">♻️ Environment</button>
+            <button class="topic-btn" data-topic="human_body">🫀 Human body</button>
+            <button class="topic-btn selected" data-topic="random">🎲 Surprise me!</button>
+          </div>
+          <button class="btn-primary mt16" style="background:var(--p4)" onclick="generateP4()">✨ Generate talk</button>
+        </div>
+
+        <!-- STAGE 1 -->
+        <div class="stage" id="p4-stage-1">
+          <div class="loading-state">
+            <div class="spinner" style="border-top-color:var(--p4)"></div>
+            <div>Creating a new academic talk for you…</div>
+          </div>
+        </div>
+
+        <!-- STAGE 2 -->
+        <div class="stage" id="p4-stage-2">
+          <div class="listen-card" style="background:#064E3B">
+            <div class="listen-card-header">
+              <div>
+                <div class="topic-label">PART 4 — Academic Listen–Speak</div>
+                <div class="topic-name" id="p4-topic-name">Loading…</div>
+              </div>
+            </div>
+            <div class="talk-image-area">
+              <div class="talk-image" id="p4-image-area">
+                <div class="image-placeholder" id="p4-image-placeholder">
+                  <div class="img-icon">🖼️</div>
+                  <div>Visual will appear during the talk</div>
+                </div>
+                <div id="p4-image-content" style="display:none;width:100%;text-align:center;padding:16px;font-size:60px;min-height:160px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="audio-player">
+            <div class="audio-title">🎧 Step 1 — Listen to the teacher's talk (look at the pictures above!)</div>
+            <button class="play-btn" id="p4-play-btn" onclick="playP4Audio()" style="background:var(--p4)">
+              <span class="btn-icon">▶</span> Play talk
+            </button>
+            <div class="audio-status" id="p4-audio-status">Press Play to listen. You can play it once!</div>
+          </div>
+
+          <div>
+            <div class="note-area-label">📝 Step 2 — Take notes (key words only!)</div>
+            <textarea class="note-textarea" id="p4-notes" placeholder="Write key words as you listen…&#10;&#10;Topic →&#10;Point 1 →&#10;Point 2 →&#10;Point 3 →&#10;⭐ Conclusion / why it matters →"></textarea>
+            <div class="note-hint">📌 Look at the picture while writing — it helps you spell the words!</div>
+          </div>
+
+          <div class="action-row">
+            <button class="btn-secondary" onclick="resetP4()">↩ New question</button>
+            <button class="btn-primary" id="p4-next-btn" onclick="startP4Prep()" style="background:var(--p4)">📝 I'm ready — Start 45s prep →</button>
+          </div>
+        </div>
+
+        <!-- STAGE 3 -->
+        <div class="stage" id="p4-stage-3">
+          <div class="timer-display">
+            <div class="timer-phase prep" id="p4-timer-phase">PREPARATION TIME</div>
+            <div class="timer-clock" id="p4-timer-clock">00:45</div>
+            <div class="timer-bar-wrap">
+              <div class="timer-bar prep" id="p4-timer-bar" style="width:100%"></div>
+            </div>
+          </div>
+
+          <div class="prompt-card" style="background:var(--p4-light);border-color:var(--p4-mid)">
+            <div class="prompt-label" style="color:var(--p4)">🎤 Your task</div>
+            <div class="prompt-question" id="p4-prompt-question">Loading…</div>
+            <ul class="prompt-bullets" id="p4-prompt-bullets" style="margin-top:8px"></ul>
+          </div>
+
+          <div>
+            <div class="notes-review-label">Your notes:</div>
+            <div class="notes-review" id="p4-notes-review"></div>
+          </div>
+
+          <div class="rec-indicator">
+            <div class="rec-dot" id="p4-rec-dot"></div>
+            <span id="p4-rec-label">Preparing…</span>
+          </div>
+        </div>
+
+        <!-- STAGE 4 -->
+        <div class="stage" id="p4-stage-4">
+          <div class="info-box" style="background:#F0FDF4;border-color:#A7F3D0;margin-bottom:16px">
+            <strong style="color:#059669">✅ Recording done!</strong> Check the sample answer below to see how well you covered the key points.
+          </div>
+
+          <div class="prompt-card" style="background:var(--p4-light);border-color:var(--p4-mid)">
+            <div class="prompt-label" style="color:var(--p4)">The task was:</div>
+            <div class="prompt-question" id="p4-review-prompt"></div>
+          </div>
+
+          <div class="sample-answer-card">
+            <div class="sample-answer-header" style="background:var(--p4-light);border-color:var(--p4-mid);color:var(--p4)" onclick="toggleSample('p4')">
+              💡 See a sample Score-4 response <span id="p4-sample-arrow">▼ Show</span>
+            </div>
+            <div class="sample-answer-body" id="p4-sample-body"></div>
+          </div>
+
+          <button class="try-again-btn" style="--hover-color:var(--p4)" onclick="resetP4()">🔄 Try another talk</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ─── STATE ───
+const state = {
+  p3: { topic: 'random', data: null, audioPlayed: false, intervalId: null },
+  p4: { topic: 'random', data: null, audioPlayed: false, intervalId: null }
+};
+
+// ─── API KEY ───
+let apiKey = localStorage.getItem('anthropic_api_key') || '';
+if (apiKey) {
+  document.getElementById('api-key-input').value = apiKey;
+  document.getElementById('api-key-status').textContent = '✅ Key loaded';
+}
+function saveApiKey() {
+  apiKey = document.getElementById('api-key-input').value.trim();
+  if (apiKey) {
+    localStorage.setItem('anthropic_api_key', apiKey);
+    document.getElementById('api-key-status').textContent = '✅ Saved!';
+    setTimeout(() => document.getElementById('api-key-status').textContent = '', 3000);
+  } else {
+    document.getElementById('api-key-status').textContent = '❌ Please enter a key';
+  }
+}
+
+// ─── TAB SWITCHING ───
+function switchMain(part) {
+  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.main-tab.${part}`).classList.add('active');
+  document.getElementById(`panel-${part}`).classList.add('active');
+}
+
+function switchSub(part, sub) {
+  const panel = document.getElementById(`panel-${part}`);
+  panel.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+  panel.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  const clickedTab = [...panel.querySelectorAll('.sub-tab')].find(t => t.onclick.toString().includes(sub));
+  if (clickedTab) clickedTab.classList.add('active');
+  document.getElementById(`${part}-${sub}`).classList.add('active');
+}
+
+// ─── TOPIC SELECTION ───
+document.querySelectorAll('#p3-topics .topic-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#p3-topics .topic-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    state.p3.topic = btn.dataset.topic;
+  });
+});
+document.querySelectorAll('#p4-topics .topic-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#p4-topics .topic-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    state.p4.topic = btn.dataset.topic;
+  });
+});
+
+// ─── STAGE NAVIGATION ───
+function showStage(part, n) {
+  document.querySelectorAll(`[id^="${part}-stage-"]`).forEach(s => s.classList.remove('active'));
+  document.getElementById(`${part}-stage-${n}`).classList.add('active');
+}
+
+// ─── GENERATE CONTENT VIA CLAUDE API ───
+async function generateP3() {
+  const topicMap = {
+    homework: 'a teacher assigning homework with specific instructions',
+    trip: 'a school trip or field trip being announced',
+    project: 'a class project being explained',
+    club: 'a school club or after-school activity',
+    announcement: 'a school announcement about an event or change',
+    random: 'any realistic school scenario'
+  };
+  const chosenTopic = topicMap[state.p3.topic] || topicMap.random;
+
+  showStage('p3', 1);
+
+  const prompt = `Generate a TOEFL Junior Speaking Part 3 (Non-academic Listen-Speak) practice question.
+
+Topic type: ${chosenTopic}
+CEFR level: B1-B2 (suitable for TOEFL Junior — intermediate vocabulary, clear grammar, not too simple but not advanced)
+
+Return ONLY a JSON object (no markdown, no explanation) with this exact structure:
+{
+  "topicName": "short label for the conversation topic (max 6 words)",
+  "dialogue": "A realistic school conversation (200-250 words). Use 2-3 speakers: a teacher and/or students. Format as: Speaker1: text\\nSpeaker2: text\\n etc. Include a main announcement/task, at least 2 details, and 1-2 student questions with answers. Use B1-B2 vocabulary (e.g. discuss, organize, suggest, remind, permission, available, assignment, participate).",
+  "promptQuestion": "A clear task question like: 'Your friend missed class today. Tell your friend what happened in class.'",
+  "sampleResponse": "A Score-4 level spoken response (120-140 words) at B1-B2 level using connector words (She also said, On top of that, One student asked, Oh and one more thing) and full sentences. Use <hl> tags around the connector words."
+}`;
+
+  if (!apiKey) {
+    alert('Please enter your Anthropic API key at the top of the page first.');
+    showStage('p3', 0);
+    return;
+  }
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content.map(c => c.text || '').join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+    state.p3.data = parsed;
+    state.p3.audioPlayed = false;
+    document.getElementById('p3-topic-name').textContent = parsed.topicName;
+    document.getElementById('p3-notes').value = '';
+    document.getElementById('p3-play-btn').disabled = false;
+    document.getElementById('p3-audio-status').textContent = 'Press Play to listen. You can play it once!';
+    document.getElementById('p3-audio-status').className = 'audio-status';
+    showStage('p3', 2);
+  } catch(e) {
+    alert('Error generating content. Please try again.');
+    showStage('p3', 0);
+  }
+}
+
+async function generateP4() {
+  const topicMap = {
+    life_cycle: 'an animal life cycle (like frogs, butterflies, or salmon)',
+    plants: 'how plants grow, photosynthesize, or adapt',
+    weather: 'weather phenomena like rain, clouds, or seasons',
+    environment: 'environmental topics like recycling, ecosystems, or pollution',
+    human_body: 'a human body system or function',
+    random: 'any interesting science topic suitable for middle school'
+  };
+  const chosenTopic = topicMap[state.p4.topic] || topicMap.random;
+
+  showStage('p4', 1);
+
+  const prompt = `Generate a TOEFL Junior Speaking Part 4 (Academic Listen-Speak) practice question.
+
+Topic type: ${chosenTopic}
+CEFR level: B1-B2 (suitable for TOEFL Junior — use clear academic vocabulary appropriate for middle school students, not too technical)
+
+Return ONLY a JSON object (no markdown, no explanation) with this exact structure:
+{
+  "topicName": "short topic label (max 5 words)",
+  "imageEmojis": ["emoji1", "emoji2", "emoji3", "emoji4"],
+  "imageCaption": "short description of what the visuals show (max 10 words)",
+  "talkScript": "A teacher's academic talk (200-240 words) at B1-B2 level. Start with 'Today we're going to talk about...' Include: topic introduction, 2-3 clear points each with a detail or example, and a brief conclusion about why it matters. Use vocabulary like: process, stage, develop, produce, release, absorb, protect, energy, environment.",
+  "promptQuestion": "The exam question, e.g.: 'Talk about [topic]. What happens at each stage? Include as many details as you can.'",
+  "promptBullets": ["bullet point 1", "bullet point 2", "bullet point 3"],
+  "sampleResponse": "A Score-4 spoken response (130-150 words) at B1-B2 level using academic connectors (First, She also explained, Another important point, As a result, Overall). Use <hl> tags around the connector phrases."
+}`;
+
+  if (!apiKey) {
+    alert('Please enter your Anthropic API key at the top of the page first.');
+    showStage('p4', 0);
+    return;
+  }
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content.map(c => c.text || '').join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+    state.p4.data = parsed;
+    state.p4.audioPlayed = false;
+
+    document.getElementById('p4-topic-name').textContent = parsed.topicName;
+    document.getElementById('p4-notes').value = '';
+    document.getElementById('p4-play-btn').disabled = false;
+    document.getElementById('p4-audio-status').textContent = 'Press Play to listen. Look at the pictures!';
+    document.getElementById('p4-audio-status').className = 'audio-status';
+
+    // Show images
+    const imgContent = document.getElementById('p4-image-content');
+    const imgPlaceholder = document.getElementById('p4-image-placeholder');
+    if (parsed.imageEmojis && parsed.imageEmojis.length) {
+      imgContent.innerHTML = parsed.imageEmojis.map(e =>
+        `<div style="background:rgba(255,255,255,0.1);border-radius:12px;padding:12px 16px;font-size:52px;min-width:80px;text-align:center">${e}</div>`
+      ).join('') + (parsed.imageCaption ? `<div style="width:100%;color:rgba(255,255,255,0.6);font-size:24px;margin-top:8px;font-family:Nunito">${parsed.imageCaption}</div>` : '');
+      imgPlaceholder.style.display = 'none';
+      imgContent.style.display = 'flex';
+    }
+
+    showStage('p4', 2);
+  } catch(e) {
+    alert('Error generating content. Please try again.');
+    showStage('p4', 0);
+  }
+}
+
+// ─── TEXT-TO-SPEECH ───
+function speak(text, onEnd) {
+  if (!window.speechSynthesis) { onEnd && onEnd(); return; }
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.rate = 0.88;
+  utt.pitch = 1;
+  utt.lang = 'en-US';
+  // Try to pick a natural voice
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Samantha') || v.name.includes('Karen') || v.name.includes('Daniel') || v.name.includes('Google') || v.name.includes('Natural')));
+  if (preferred) utt.voice = preferred;
+  utt.onend = onEnd || null;
+  window.speechSynthesis.speak(utt);
+}
+
+function playP3Audio() {
+  if (state.p3.audioPlayed || !state.p3.data) return;
+  const btn = document.getElementById('p3-play-btn');
+  const status = document.getElementById('p3-audio-status');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="btn-icon">⏸</span> Playing…';
+  status.textContent = '🎧 Listening…';
+  status.className = 'audio-status playing';
+  state.p3.audioPlayed = true;
+
+  // Format dialogue for TTS
+  const lines = state.p3.data.dialogue.split('\n').filter(l => l.trim());
+  const ttsText = lines.map(l => {
+    const colonIdx = l.indexOf(':');
+    if (colonIdx > -1) return l.slice(colonIdx + 1).trim();
+    return l;
+  }).join(' ... ');
+
+  speak(ttsText, () => {
+    btn.innerHTML = '<span class="btn-icon">✅</span> Played (once)';
+    status.textContent = '✅ Done! Now take notes and click Ready when you\'re done.';
+    status.className = 'audio-status done';
+  });
+}
+
+function playP4Audio() {
+  if (state.p4.audioPlayed || !state.p4.data) return;
+  const btn = document.getElementById('p4-play-btn');
+  const status = document.getElementById('p4-audio-status');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="btn-icon">⏸</span> Playing…';
+  status.textContent = '🎧 Listening… look at the pictures!';
+  status.className = 'audio-status playing';
+  state.p4.audioPlayed = true;
+
+  speak(state.p4.data.talkScript, () => {
+    btn.innerHTML = '<span class="btn-icon">✅</span> Played (once)';
+    status.textContent = '✅ Done! Now take notes and click Ready when you\'re done.';
+    status.className = 'audio-status done';
+  });
+}
+
+// Load voices early
+if (window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+}
+
+// ─── TIMER ───
+function runTimer(part, totalSecs, phase, onComplete) {
+  let remaining = totalSecs;
+  const clockEl = document.getElementById(`${part}-timer-clock`);
+  const barEl = document.getElementById(`${part}-timer-bar`);
+  const phaseEl = document.getElementById(`${part}-timer-phase`);
+  const dotEl = document.getElementById(`${part}-rec-dot`);
+  const labelEl = document.getElementById(`${part}-rec-label`);
+
+  phaseEl.textContent = phase === 'prep' ? 'PREPARATION TIME' : '🔴 RECORDING — SPEAK NOW';
+  phaseEl.className = `timer-phase ${phase}`;
+  barEl.className = `timer-bar ${phase}`;
+  barEl.style.width = '100%';
+
+  if (phase === 'rec') {
+    dotEl.classList.add('active');
+    labelEl.textContent = '🔴 Recording — speak now!';
+  } else {
+    dotEl.classList.remove('active');
+    labelEl.textContent = 'Preparing — organize your notes…';
+  }
+
+  const update = () => {
+    const m = Math.floor(remaining / 60).toString().padStart(2, '0');
+    const s = (remaining % 60).toString().padStart(2, '0');
+    clockEl.textContent = `${m}:${s}`;
+    barEl.style.width = `${(remaining / totalSecs) * 100}%`;
+    if (remaining <= 0) {
+      clearInterval(state[part].intervalId);
+      onComplete();
+    }
+    remaining--;
+  };
+  update();
+  state[part].intervalId = setInterval(update, 1000);
+}
+
+function startP3Prep() {
+  const notes = document.getElementById('p3-notes').value;
+  document.getElementById('p3-notes-review').textContent = notes || '(no notes)';
+  document.getElementById('p3-prompt-question').textContent = state.p3.data.promptQuestion;
+  document.getElementById('p3-review-prompt').textContent = state.p3.data.promptQuestion;
+  showStage('p3', 3);
+
+  runTimer('p3', 45, 'prep', () => {
+    runTimer('p3', 60, 'rec', () => {
+      document.getElementById('p3-rec-dot').classList.remove('active');
+      document.getElementById('p3-rec-label').textContent = 'Time\'s up!';
+      document.getElementById('p3-timer-clock').textContent = '00:00';
+
+      // Format sample response
+      const raw = state.p3.data.sampleResponse;
+      document.getElementById('p3-sample-body').innerHTML = raw.replace(/<hl>(.*?)<\/hl>/g, '<span class="hl">$1</span>');
+      showStage('p3', 4);
+    });
+  });
+}
+
+function startP4Prep() {
+  const notes = document.getElementById('p4-notes').value;
+  document.getElementById('p4-notes-review').textContent = notes || '(no notes)';
+  document.getElementById('p4-prompt-question').textContent = state.p4.data.promptQuestion;
+  document.getElementById('p4-review-prompt').textContent = state.p4.data.promptQuestion;
+
+  const bulletsEl = document.getElementById('p4-prompt-bullets');
+  bulletsEl.innerHTML = '';
+  if (state.p4.data.promptBullets) {
+    state.p4.data.promptBullets.forEach(b => {
+      const li = document.createElement('li');
+      li.textContent = b;
+      bulletsEl.appendChild(li);
+    });
+  }
+
+  showStage('p4', 3);
+  runTimer('p4', 45, 'prep', () => {
+    runTimer('p4', 60, 'rec', () => {
+      document.getElementById('p4-rec-dot').classList.remove('active');
+      document.getElementById('p4-rec-label').textContent = 'Time\'s up!';
+      document.getElementById('p4-timer-clock').textContent = '00:00';
+
+      const raw = state.p4.data.sampleResponse;
+      document.getElementById('p4-sample-body').innerHTML = raw.replace(/<hl>(.*?)<\/hl>/g, '<span class="hl">$1</span>');
+      showStage('p4', 4);
+    });
+  });
+}
+
+// ─── RESET ───
+function resetP3() {
+  if (state.p3.intervalId) clearInterval(state.p3.intervalId);
+  window.speechSynthesis && window.speechSynthesis.cancel();
+  state.p3.data = null;
+  state.p3.audioPlayed = false;
+  document.getElementById('p3-sample-body').classList.remove('open');
+  document.getElementById('p3-sample-arrow').textContent = '▼ Show';
+  showStage('p3', 0);
+}
+
+function resetP4() {
+  if (state.p4.intervalId) clearInterval(state.p4.intervalId);
+  window.speechSynthesis && window.speechSynthesis.cancel();
+  state.p4.data = null;
+  state.p4.audioPlayed = false;
+  document.getElementById('p4-sample-body').classList.remove('open');
+  document.getElementById('p4-sample-arrow').textContent = '▼ Show';
+  document.getElementById('p4-image-placeholder').style.display = 'flex';
+  document.getElementById('p4-image-content').style.display = 'none';
+  showStage('p4', 0);
+}
+
+// ─── TOGGLE SAMPLE ───
+function toggleSample(part) {
+  const body = document.getElementById(`${part}-sample-body`);
+  const arrow = document.getElementById(`${part}-sample-arrow`);
+  body.classList.toggle('open');
+  arrow.textContent = body.classList.contains('open') ? '▲ Hide' : '▼ Show';
+}
+</script>
+</body>
+</html>
