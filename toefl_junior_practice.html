@@ -69,8 +69,8 @@ body {
 .main-tabs {
   display: flex;
   gap: 0;
-  padding: 20px 24px 0;
-  max-width: 900px;
+  padding: 20px 16px 0;
+  max-width: 100%;
   margin: 0 auto;
 }
 .main-tab {
@@ -111,8 +111,8 @@ body {
 
 /* ─── CONTENT AREA ─── */
 .content-area {
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0 16px;
   background: white;
   border-radius: 0 0 16px 16px;
   min-height: 70vh;
@@ -148,7 +148,7 @@ body {
 .sub-tab.active { color: var(--p3); border-bottom-color: var(--p3); }
 .p4-panel .sub-tab.active { color: var(--p4); border-bottom-color: var(--p4); }
 
-.sub-panel { display: none; padding: 24px 24px 32px; }
+.sub-panel { display: none; padding: 28px 32px 40px; }
 .sub-panel.active { display: block; }
 
 /* ─── GUIDE CONTENT ─── */
@@ -239,7 +239,7 @@ body {
 .note-sketch .hint { font-size: 23px; color: var(--gray-400); font-style: italic; }
 
 /* ─── PRACTICE PANEL ─── */
-.practice-container { max-width: 720px; margin: 0 auto; }
+.practice-container { max-width: 100%; margin: 0; }
 
 /* Stage system */
 .stage { display: none; }
@@ -685,14 +685,6 @@ body {
   </div>
 </div>
 
-<!-- API KEY BAR -->
-<div id="api-key-bar" style="background:#1E3A8A;padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-  <span style="color:rgba(255,255,255,0.85);font-family:'Nunito',sans-serif;font-size:22px;font-weight:700;white-space:nowrap;">🔑 Anthropic API Key:</span>
-  <input id="api-key-input" type="password" placeholder="sk-ant-..." style="flex:1;min-width:200px;padding:8px 14px;border-radius:8px;border:none;font-family:'Nunito',sans-serif;font-size:20px;outline:none;background:rgba(255,255,255,0.12);color:white;" />
-  <button onclick="saveApiKey()" style="padding:8px 18px;background:#2563EB;border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:20px;cursor:pointer;">Save</button>
-  <span id="api-key-status" style="color:rgba(255,255,255,0.6);font-size:20px;font-family:'Nunito',sans-serif;"></span>
-</div>
-
 <!-- MAIN TABS -->
 <div class="main-tabs">
   <button class="main-tab p3 active" onclick="switchMain('p3')">
@@ -1068,21 +1060,24 @@ const state = {
   p4: { topic: 'random', data: null, audioPlayed: false, intervalId: null }
 };
 
-// ─── API KEY ───
-let apiKey = localStorage.getItem('anthropic_api_key') || '';
-if (apiKey) {
-  document.getElementById('api-key-input').value = apiKey;
-  document.getElementById('api-key-status').textContent = '✅ Key loaded';
-}
-function saveApiKey() {
-  apiKey = document.getElementById('api-key-input').value.trim();
-  if (apiKey) {
-    localStorage.setItem('anthropic_api_key', apiKey);
-    document.getElementById('api-key-status').textContent = '✅ Saved!';
-    setTimeout(() => document.getElementById('api-key-status').textContent = '', 3000);
-  } else {
-    document.getElementById('api-key-status').textContent = '❌ Please enter a key';
-  }
+// ─── PROXY (Google Apps Script) ───
+const PROXY_URL = 'https://script.google.com/macros/s/AKfycbyz6yQZx1IsG2w9Uk90634jrCgqdAEWlAoRcbmSHv4NvZtdQ2CjRcip7G23fxlUSC0Z/exec';
+
+async function callClaude(prompt) {
+  const res = await fetch(PROXY_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  const text = data.content.map(c => c.text || '').join('');
+  const clean = text.replace(/```json|```/g, '').trim();
+  return JSON.parse(clean);
 }
 
 // ─── TAB SWITCHING ───
@@ -1151,31 +1146,8 @@ Return ONLY a JSON object (no markdown, no explanation) with this exact structur
   "sampleResponse": "A Score-4 level spoken response (120-140 words) at B1-B2 level using connector words (She also said, On top of that, One student asked, Oh and one more thing) and full sentences. Use <hl> tags around the connector words."
 }`;
 
-  if (!apiKey) {
-    alert('Please enter your Anthropic API key at the top of the page first.');
-    showStage('p3', 0);
-    return;
-  }
-
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    const data = await res.json();
-    const text = data.content.map(c => c.text || '').join('');
-    const clean = text.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(clean);
+    const parsed = await callClaude(prompt);
     state.p3.data = parsed;
     state.p3.audioPlayed = false;
     document.getElementById('p3-topic-name').textContent = parsed.topicName;
@@ -1219,31 +1191,8 @@ Return ONLY a JSON object (no markdown, no explanation) with this exact structur
   "sampleResponse": "A Score-4 spoken response (130-150 words) at B1-B2 level using academic connectors (First, She also explained, Another important point, As a result, Overall). Use <hl> tags around the connector phrases."
 }`;
 
-  if (!apiKey) {
-    alert('Please enter your Anthropic API key at the top of the page first.');
-    showStage('p4', 0);
-    return;
-  }
-
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    const data = await res.json();
-    const text = data.content.map(c => c.text || '').join('');
-    const clean = text.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(clean);
+    const parsed = await callClaude(prompt);
     state.p4.data = parsed;
     state.p4.audioPlayed = false;
 
