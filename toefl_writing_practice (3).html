@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOEFL Junior – Writing Tasks 3 & 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#2563EB;--blue-light:#EFF6FF;--blue-mid:#BFDBFE;
+  --green:#059669;--green-light:#ECFDF5;--green-mid:#A7F3D0;
+  --purple:#7C3AED;--purple-light:#F5F3FF;--purple-mid:#C4B5FD;
+  --orange:#D97706;--orange-light:#FFFBEB;--orange-mid:#FDE68A;
+  --red:#DC2626;--red-light:#FEF2F2;--red-mid:#FECACA;
+  --bg:#F1F5F9;
+  --g50:#F8FAFC;--g100:#F1F5F9;--g200:#E2E8F0;--g300:#CBD5E1;
+  --g400:#94A3B8;--g500:#64748B;--g600:#475569;--g700:#334155;--g800:#1E293B;
+  --shadow:0 2px 8px rgba(0,0,0,.08);--shadow-md:0 4px 16px rgba(0,0,0,.1);
+  --r:14px;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--g800);min-height:100vh}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#1E3A8A,#2563EB);padding:16px 24px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.header-logo{width:44px;height:44px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.header-text{}
+.header-title{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:22px;color:#fff;line-height:1.1}
+.header-sub{font-size:13px;color:rgba(255,255,255,.7);margin-top:2px}
+
+/* MAIN TABS */
+.main-tabs{display:flex;gap:0;padding:20px 16px 0;max-width:960px;margin:0 auto}
+.main-tab{flex:1;padding:12px 20px;border:none;background:rgba(255,255,255,.5);color:var(--g500);font-family:'Baloo 2',sans-serif;font-weight:700;font-size:15px;cursor:pointer;border-radius:12px 12px 0 0;transition:all .2s;border-bottom:3px solid transparent;display:flex;align-items:center;justify-content:center;gap:8px}
+.main-tab:hover{background:rgba(255,255,255,.8)}
+.main-tab.active{background:#fff;color:var(--g800);box-shadow:0 -2px 8px rgba(0,0,0,.06)}
+.main-tab.t3.active{color:var(--blue)}
+.main-tab.t4.active{color:var(--green)}
+.tab-badge{font-size:12px;padding:2px 8px;border-radius:10px;font-weight:800}
+.t3 .tab-badge{background:var(--blue-light);color:var(--blue)}
+.t4 .tab-badge{background:var(--green-light);color:var(--green)}
+
+/* CONTENT */
+.content-area{max-width:960px;margin:0 auto 32px;background:#fff;border-radius:0 0 16px 16px;min-height:70vh;box-shadow:var(--shadow-md);overflow:hidden}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* SUB TABS */
+.sub-tabs{display:flex;gap:4px;padding:16px 20px 0;border-bottom:2px solid var(--g100)}
+.sub-tab{padding:8px 18px;border:none;background:transparent;color:var(--g500);font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;cursor:pointer;border-radius:8px 8px 0 0;border-bottom:2.5px solid transparent;transition:all .15s;margin-bottom:-2px}
+.sub-tab:hover{color:var(--g700);background:var(--g50)}
+.sub-tab.t3-active{color:var(--blue);border-bottom-color:var(--blue)}
+.sub-tab.t4-active{color:var(--green);border-bottom-color:var(--green)}
+.sub-panel{display:none;padding:24px 28px 40px}.sub-panel.active{display:block}
+
+/* INFO BOXES */
+.info-box{border-radius:12px;padding:14px 18px;font-size:14px;line-height:1.7;margin-bottom:12px}
+.info-box.blue{background:var(--blue-light);border:1px solid var(--blue-mid)}
+.info-box.green{background:var(--green-light);border:1px solid var(--green-mid)}
+.info-box.orange{background:var(--orange-light);border:1px solid var(--orange-mid)}
+.info-box.red{background:var(--red-light);border:1px solid var(--red-mid)}
+.info-box.purple{background:var(--purple-light);border:1px solid var(--purple-mid)}
+.info-box strong{font-weight:800}
+
+/* GUIDE */
+.guide-title{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:17px;color:var(--g800);margin-bottom:10px;margin-top:20px;display:flex;align-items:center;gap:8px}
+.guide-title:first-child{margin-top:0}
+
+.template-box{background:#F8F4FF;border:1.5px solid var(--purple-mid);border-radius:12px;padding:16px 18px;font-size:14px;line-height:2;margin:10px 0}
+.fill-in{display:inline-block;background:var(--purple);color:#fff;border-radius:6px;padding:1px 8px;font-size:12px;font-weight:800;font-family:'Baloo 2',sans-serif;white-space:nowrap}
+
+.note-template{background:#fff;border:2px dashed var(--g300);border-radius:12px;padding:16px 18px;font-size:13.5px;line-height:2.2;font-family:'Courier New',monospace;color:var(--g700)}
+.note-template .label{color:var(--blue);font-weight:800;font-family:'Nunito',sans-serif;font-size:13px}
+.note-template .hint{color:var(--g400);font-size:12px;font-family:'Nunito',sans-serif;font-style:italic}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{background:var(--blue-light);border:1px solid var(--blue-mid);color:#1D4ED8;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700}
+.chip.green{background:var(--green-light);border-color:var(--green-mid);color:#065F46}
+.chip.purple{background:var(--purple-light);border-color:var(--purple-mid);color:#5B21B6}
+
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.score-card{border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.6}
+.score-card .sc-title{font-weight:800;font-size:13.5px;margin-bottom:4px}
+
+.steps-list{display:flex;flex-direction:column;gap:8px;margin:8px 0}
+.step-item{display:flex;gap:12px;align-items:flex-start;background:var(--g50);border-radius:10px;padding:10px 14px}
+.step-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:13px;color:#fff;flex-shrink:0}
+.step-num.blue{background:var(--blue)}.step-num.green{background:var(--green)}
+.step-body strong{font-weight:800;font-size:14px;display:block;margin-bottom:1px}
+.step-body span{font-size:13px;color:var(--g600)}
+
+/* STAGES */
+.stage{display:none}.stage.active{display:block}
+
+/* TOPIC SELECTOR */
+.section-h{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:15px;color:var(--g700);margin-bottom:10px}
+.topic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.topic-btn{padding:10px 8px;border:2px solid var(--g200);border-radius:10px;background:#fff;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;text-align:center;transition:all .15s;color:var(--g700);line-height:1.3}
+.topic-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+.topic-btn.sel{border-color:var(--blue);background:var(--blue-light);color:var(--blue)}
+.t4-panel .topic-btn:hover,.t4-panel .topic-btn.sel{border-color:var(--green);color:var(--green);background:var(--green-light)}
+
+/* BUTTONS */
+.btn-primary{padding:12px 28px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:15px;cursor:pointer;transition:all .15s}
+.btn-primary:hover{background:#1D4ED8;transform:translateY(-1px)}
+.btn-primary.green{background:var(--green)}.btn-primary.green:hover{background:#047857}
+.btn-secondary{padding:10px 20px;background:#fff;color:var(--g600);border:2px solid var(--g200);border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .15s}
+.btn-secondary:hover{border-color:var(--g400);color:var(--g800)}
+.btn-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px}
+
+/* LOADING */
+.loading-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:60px 20px;color:var(--g500);font-size:15px}
+.spinner{width:40px;height:40px;border:4px solid var(--g200);border-top:4px solid var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner.green{border-top-color:var(--green)}
+
+/* LISTEN CARD */
+.listen-card{background:linear-gradient(135deg,#1E3A8A,#2563EB);border-radius:14px;padding:18px 20px;color:#fff;margin-bottom:16px}
+.listen-card.green{background:linear-gradient(135deg,#064E3B,#059669)}
+.listen-card-label{font-size:12px;color:rgba(255,255,255,.65);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px}
+.listen-card-title{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:20px}
+.emoji-area{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.emoji-card{background:rgba(255,255,255,.12);border-radius:10px;padding:10px 14px;font-size:40px;min-width:70px;text-align:center}
+.emoji-caption{width:100%;color:rgba(255,255,255,.6);font-size:12px;margin-top:4px;font-family:'Nunito',sans-serif}
+
+/* AUDIO PLAYER */
+.audio-player{background:var(--g50);border:1px solid var(--g200);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+.audio-title{font-size:14px;font-weight:700;color:var(--g700);margin-bottom:10px}
+.play-btn{display:flex;align-items:center;gap:8px;padding:10px 20px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .15s}
+.play-btn:hover:not(:disabled){background:#1D4ED8}
+.play-btn:disabled{opacity:.6;cursor:not-allowed}
+.play-btn.green{background:var(--green)}.play-btn.green:hover:not(:disabled){background:#047857}
+.audio-status{font-size:13px;color:var(--g500);margin-top:8px}
+.audio-status.playing{color:var(--blue);font-weight:700}
+.audio-status.done{color:var(--green);font-weight:700}
+
+/* NOTES AREA */
+.note-label{font-size:14px;font-weight:700;color:var(--g700);margin-bottom:6px}
+.note-hint{font-size:12px;color:var(--g400);margin-top:6px;font-style:italic}
+.note-textarea{width:100%;height:140px;border:2px solid var(--g200);border-radius:10px;padding:12px 14px;font-family:'Nunito',sans-serif;font-size:14px;resize:vertical;line-height:1.7;transition:border-color .15s}
+.note-textarea:focus{outline:none;border-color:var(--blue)}
+
+/* WRITE AREA */
+.write-area-wrap{position:relative}
+.write-textarea{width:100%;height:220px;border:2px solid var(--g200);border-radius:10px;padding:14px;font-family:'Nunito',sans-serif;font-size:14.5px;resize:vertical;line-height:1.8;transition:border-color .15s}
+.write-textarea:focus{outline:none;border-color:var(--blue)}
+.word-count-bar{display:flex;align-items:center;justify-content:space-between;margin-top:6px;font-size:12.5px;color:var(--g500)}
+.word-count-num{font-weight:800;font-size:14px}
+.word-count-num.ok{color:var(--green)}.word-count-num.low{color:var(--orange)}.word-count-num.over{color:var(--red)}
+.wc-range{background:var(--g200);border-radius:6px;height:6px;flex:1;margin:0 10px;overflow:hidden}
+.wc-fill{height:100%;border-radius:6px;background:var(--g400);transition:width .3s,background .3s}
+
+/* TIMER */
+.timer-display{background:var(--g800);border-radius:14px;padding:20px;text-align:center;margin-bottom:16px;color:#fff}
+.timer-phase{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;color:rgba(255,255,255,.7);margin-bottom:6px}
+.timer-clock{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:48px;line-height:1}
+.timer-bar-wrap{background:rgba(255,255,255,.15);border-radius:6px;height:8px;margin-top:12px;overflow:hidden}
+.timer-bar{height:100%;border-radius:6px;transition:width .5s linear,background .5s}
+.timer-bar.write{background:#34D399}
+.timer-bar.warn{background:#F59E0B}
+
+/* PROMPT CARD */
+.prompt-card{background:var(--g50);border:1.5px solid var(--g200);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+.prompt-label{font-size:12px;font-weight:700;color:var(--g500);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.prompt-question{font-size:15px;font-weight:700;color:var(--g800);line-height:1.6}
+.prompt-bullets{margin-top:8px;padding-left:18px;font-size:13.5px;color:var(--g600);line-height:1.8}
+
+/* NOTES REVIEW */
+.notes-review-label{font-size:13px;font-weight:700;color:var(--g500);margin-bottom:4px}
+.notes-review{background:var(--g50);border:1px dashed var(--g300);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--g700);line-height:1.8;min-height:50px;white-space:pre-wrap;margin-bottom:16px}
+
+/* FEEDBACK */
+.feedback-card{border-radius:14px;overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow)}
+.feedback-header{padding:14px 18px;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:16px;display:flex;align-items:center;gap:10px}
+.feedback-header.blue{background:var(--blue);color:#fff}
+.feedback-header.green{background:var(--green);color:#fff}
+.feedback-body{padding:16px 18px;background:#fff;border:1px solid var(--g200);border-top:none;border-radius:0 0 14px 14px}
+
+.score-display{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.score-item{background:var(--g50);border:1px solid var(--g200);border-radius:10px;padding:10px;text-align:center}
+.score-item .si-label{font-size:11px;color:var(--g500);font-weight:700;margin-bottom:4px;line-height:1.3}
+.score-item .si-score{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:22px}
+.score-item .si-score.s4{color:var(--green)}.score-item .si-score.s3{color:var(--blue)}.score-item .si-score.s2{color:var(--orange)}.score-item .si-score.s1{color:var(--red)}
+.score-item .si-max{font-size:11px;color:var(--g400)}
+
+.feedback-section{margin-bottom:14px}
+.feedback-section-title{font-weight:800;font-size:13.5px;color:var(--g800);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.feedback-text{font-size:13.5px;color:var(--g600);line-height:1.7}
+.corrected-box{background:var(--green-light);border:1px solid var(--green-mid);border-radius:10px;padding:12px 14px;font-size:13.5px;line-height:1.8;color:var(--g800);margin-top:8px}
+.corrected-box .corr-label{font-weight:800;color:var(--green);font-size:12px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.sample-toggle{background:var(--g50);border:1px solid var(--g200);border-radius:10px;overflow:hidden;margin-top:10px}
+.sample-toggle-header{padding:10px 14px;cursor:pointer;font-weight:700;font-size:13.5px;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.sample-toggle-header:hover{background:var(--g100)}
+.sample-toggle-body{display:none;padding:12px 14px;font-size:13.5px;line-height:1.8;color:var(--g700);border-top:1px solid var(--g200)}
+.sample-toggle-body.open{display:block}
+.hl{background:#FDE68A;color:#92400E;border-radius:4px;padding:1px 4px;font-weight:700}
+
+.try-again-btn{display:flex;align-items:center;gap:8px;padding:12px 24px;background:var(--g50);border:2px solid var(--g200);border-radius:10px;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:15px;color:var(--g700);cursor:pointer;transition:all .15s;margin-top:8px}
+.try-again-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+
+/* overall score big */
+.big-score{background:linear-gradient(135deg,#1E3A8A,#2563EB);border-radius:14px;padding:20px;text-align:center;color:#fff;margin-bottom:16px}
+.big-score.green{background:linear-gradient(135deg,#064E3B,#059669)}
+.big-score-num{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:52px;line-height:1}
+.big-score-label{font-size:13px;color:rgba(255,255,255,.75);margin-top:4px}
+.big-score-band{display:inline-block;background:rgba(255,255,255,.2);border-radius:20px;padding:4px 14px;font-size:13px;font-weight:700;margin-top:8px}
+
+/* OPINION image area */
+.opinion-image-area{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.opinion-emoji-big{font-size:48px;background:var(--blue-light);border-radius:12px;padding:12px 16px;text-align:center;border:1px solid var(--blue-mid)}
+
+/* TASK 3 opinion card */
+.opinion-card{background:linear-gradient(135deg,#1E3A8A,#2563EB);border-radius:14px;padding:18px 20px;color:#fff;margin-bottom:16px}
+.opinion-instruction{font-size:13px;color:rgba(255,255,255,.75);line-height:1.7;margin-bottom:10px}
+.opinion-question{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:17px;line-height:1.5}
+
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}
+
+/* ── LARGE TEXT & TIGHT LAYOUT ── */
+html{font-size:120%}
+body{font-size:18px}
+.main-tabs{max-width:100%;padding:16px 8px 0}
+.content-area{max-width:100%;margin:0 0 24px;border-radius:0}
+.sub-panel{padding:20px 16px 40px}
+.info-box{font-size:17px;line-height:1.75}
+.guide-title{font-size:22px;margin-top:24px}
+.template-box{font-size:18px;line-height:2.1}
+.fill-in{font-size:15px}
+.note-template{font-size:17px;line-height:2.4}
+.note-template .label{font-size:17px}
+.note-template .hint{font-size:15px}
+.chip{font-size:16px;padding:6px 16px}
+.score-card{font-size:16px}
+.score-card .sc-title{font-size:17px}
+.step-body strong{font-size:18px}
+.step-body span{font-size:16px}
+.step-num{width:34px;height:34px;font-size:16px}
+.section-h{font-size:20px}
+.topic-btn{font-size:17px;padding:14px 10px}
+.btn-primary{font-size:19px;padding:14px 32px}
+.btn-secondary{font-size:17px;padding:12px 24px}
+.main-tab{font-size:19px}
+.tab-badge{font-size:14px}
+.sub-tab{font-size:17px;padding:10px 22px}
+.note-label{font-size:18px}
+.note-hint{font-size:15px}
+.note-textarea{font-size:18px;height:160px}
+.write-textarea{font-size:18px;height:260px}
+.word-count-bar{font-size:16px}
+.word-count-num{font-size:18px}
+.timer-clock{font-size:60px}
+.timer-phase{font-size:16px}
+.prompt-label{font-size:15px}
+.prompt-question{font-size:20px}
+.prompt-bullets{font-size:17px}
+.notes-review-label{font-size:16px}
+.notes-review{font-size:17px}
+.feedback-header{font-size:20px}
+.feedback-section-title{font-size:17px}
+.feedback-text{font-size:17px;line-height:1.8}
+.corrected-box{font-size:17px}
+.corrected-box .corr-label{font-size:15px}
+.sample-toggle-header{font-size:17px}
+.sample-toggle-body{font-size:17px}
+.score-item .si-label{font-size:14px}
+.score-item .si-score{font-size:28px}
+.score-item .si-max{font-size:14px}
+.big-score-num{font-size:64px}
+.big-score-label{font-size:17px}
+.big-score-band{font-size:16px}
+.try-again-btn{font-size:19px}
+.listen-card-label{font-size:15px}
+.listen-card-title{font-size:24px}
+.audio-title{font-size:18px}
+.play-btn{font-size:18px;padding:12px 24px}
+.audio-status{font-size:16px}
+.opinion-instruction{font-size:17px}
+.opinion-question{font-size:22px}
+.header-title{font-size:26px}
+.header-sub{font-size:16px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">✍️</div>
+  <div class="header-text">
+    <div class="header-title">TOEFL Junior — Writing Practice</div>
+    <div class="header-sub">Task 3: Opinion &nbsp;|&nbsp; Task 4: Listen-Write &nbsp;·&nbsp; AI Grading & Feedback</div>
+  </div>
+</div>
+
+<div class="main-tabs">
+  <button class="main-tab t3 active" onclick="switchMain('t3')">
+    ✍️ Task 3 <span class="tab-badge">Opinion</span>
+  </button>
+  <button class="main-tab t4" onclick="switchMain('t4')">
+    🎧 Task 4 <span class="tab-badge">Listen-Write</span>
+  </button>
+</div>
+
+<div class="content-area">
+
+<!-- ══════════ TASK 3 ══════════ -->
+<div class="tab-panel active" id="panel-t3">
+  <div class="sub-tabs">
+    <button class="sub-tab t3-active" onclick="switchSub('t3','guide')" id="t3-guide-tab">📖 Guide</button>
+    <button class="sub-tab" onclick="switchSub('t3','practice')" id="t3-practice-tab">🎯 Practice</button>
+  </div>
+
+  <!-- T3 GUIDE -->
+  <div class="sub-panel active" id="t3-guide">
+
+    <div class="guide-title">🎯 What is Task 3 (Opinion)?</div>
+    <div class="info-box blue">
+      You read a topic/question, then write <strong>1 paragraph (100–150 words)</strong> expressing your opinion with reasons and examples. You have <strong>10 minutes</strong>.
+    </div>
+    <div class="info-box orange">
+      ⚠️ <strong>Important — this is NOT an essay!</strong> Unlike FCE where you write 4–5 paragraphs, Task 3 is just <strong>ONE paragraph</strong>. Your introduction and conclusion are single sentences inside that paragraph.
+    </div>
+
+    <div class="guide-title">📊 How it's scored (4 criteria)</div>
+    <div class="score-grid">
+      <div class="score-card" style="background:var(--blue-light);border:1px solid var(--blue-mid)">
+        <div class="sc-title" style="color:var(--blue)">1️⃣ Clear Opinion</div>
+        Is your position clearly stated at the start? Do you stay consistent throughout?
+      </div>
+      <div class="score-card" style="background:var(--green-light);border:1px solid var(--green-mid)">
+        <div class="sc-title" style="color:var(--green)">2️⃣ Relevant Reasons</div>
+        Are your reasons logical and directly related to the question?
+      </div>
+      <div class="score-card" style="background:var(--purple-light);border:1px solid var(--purple-mid)">
+        <div class="sc-title" style="color:var(--purple)">3️⃣ Development</div>
+        Do you give a <em>specific example</em> for each reason — not just general statements?
+      </div>
+      <div class="score-card" style="background:var(--orange-light);border:1px solid var(--orange-mid)">
+        <div class="sc-title" style="color:var(--orange)">4️⃣ Language</div>
+        Correct grammar, good spelling, connector words, 100–150 words.
+      </div>
+    </div>
+
+    <div class="guide-title">🏗️ The 7-sentence template — use this every time</div>
+    <div class="template-box">
+      <strong>Sentence 1 — Opinion (choose a side):</strong><br>
+      "I think/believe that <span class="fill-in">restate topic + your position</span>."<br><br>
+      <strong>Sentence 2 — Reason 1:</strong><br>
+      "The first reason is that <span class="fill-in">reason 1</span>."<br><br>
+      <strong>Sentence 3 — Example for Reason 1:</strong><br>
+      "For example, <span class="fill-in">concrete example from school/daily life</span>."<br><br>
+      <strong>Sentence 4 — Reason 2:</strong><br>
+      "Another reason is that <span class="fill-in">reason 2</span>."<br><br>
+      <strong>Sentence 5 — Example for Reason 2:</strong><br>
+      "For instance, <span class="fill-in">concrete example</span>."<br><br>
+      <strong>Sentence 6 — Counter + Dismiss (optional but scores higher):</strong><br>
+      "Some people think that <span class="fill-in">opposite view</span>, but <span class="fill-in">why your side is still correct</span>."<br><br>
+      <strong>Sentence 7 — Conclusion:</strong><br>
+      "For these reasons, I believe that <span class="fill-in">restate opinion in different words</span>."
+    </div>
+
+    <div class="guide-title">⚡ Key differences from FCE essay</div>
+    <div class="info-box purple">
+      <strong>FCE:</strong> 4–5 paragraphs, balanced discussion, 140–190 words, formal<br>
+      <strong>Task 3:</strong> 1 paragraph only, clearly take 1 side, 100–150 words, semi-formal<br><br>
+      👉 <strong>Don't do:</strong> write separate paragraphs, write "On the one hand / on the other hand" as a balanced argument, exceed 150 words.<br>
+      👉 <strong>Do:</strong> state your side clearly in sentence 1, give 2 focused reasons with real examples.
+    </div>
+
+    <div class="guide-title">🎯 Strategy for picking a side</div>
+    <div class="info-box blue">
+      Pick the side where you can think of <strong>2 specific examples right away</strong> — not the side you actually agree with. You have 10 minutes, so choose whatever's easier to write fast.
+    </div>
+
+    <div class="guide-title">✅ Connector words to use</div>
+    <div class="chips">
+      <span class="chip">The first reason is…</span>
+      <span class="chip">Another reason is…</span>
+      <span class="chip">For example,</span>
+      <span class="chip">For instance,</span>
+      <span class="chip">In addition,</span>
+      <span class="chip">However,</span>
+      <span class="chip">Some people think… but…</span>
+      <span class="chip">For these reasons,</span>
+    </div>
+
+    <div class="guide-title">❌ vs ✅ — What good development looks like</div>
+    <div class="score-grid">
+      <div class="score-card" style="background:var(--red-light);border:1px solid var(--red-mid)">
+        <div class="sc-title" style="color:var(--red)">❌ Too vague (loses points)</div>
+        "Mobile phones are useful for students because they can look things up."
+      </div>
+      <div class="score-card" style="background:var(--green-light);border:1px solid var(--green-mid)">
+        <div class="sc-title" style="color:var(--green)">✅ Specific example (scores high)</div>
+        "For example, during self-study a student can look up the meaning of an unfamiliar word without interrupting the teacher."
+      </div>
+    </div>
+
+  </div><!-- end t3-guide -->
+
+  <!-- T3 PRACTICE -->
+  <div class="sub-panel" id="t3-practice">
+    <div id="t3-practice-container">
+
+      <!-- STAGE 0: Pick topic -->
+      <div class="stage active" id="t3-stage-0">
+        <div class="section-h">Choose a topic type:</div>
+        <div class="topic-grid" id="t3-topics">
+          <button class="topic-btn" data-topic="school_rules">📋 School rules</button>
+          <button class="topic-btn" data-topic="technology">📱 Technology in school</button>
+          <button class="topic-btn" data-topic="environment">🌿 Environment & habits</button>
+          <button class="topic-btn" data-topic="social">👥 Social / friendship</button>
+          <button class="topic-btn" data-topic="hobbies">🎨 Hobbies & activities</button>
+          <button class="topic-btn sel" data-topic="random">🎲 Surprise me!</button>
+        </div>
+        <button class="btn-primary" onclick="generateT3()">✨ Generate opinion question</button>
+      </div>
+
+      <!-- STAGE 1: Loading -->
+      <div class="stage" id="t3-stage-1">
+        <div class="loading-state"><div class="spinner"></div>Generating a new question for you…</div>
+      </div>
+
+      <!-- STAGE 2: Write -->
+      <div class="stage" id="t3-stage-2">
+        <div class="timer-display">
+          <div class="timer-phase" id="t3-timer-phase">WRITING TIME</div>
+          <div class="timer-clock" id="t3-timer-clock">10:00</div>
+          <div class="timer-bar-wrap"><div class="timer-bar write" id="t3-timer-bar" style="width:100%"></div></div>
+        </div>
+
+        <div class="opinion-card">
+          <div class="opinion-instruction">Now you will write a paragraph expressing your opinion on a topic. You have <strong>10 minutes</strong> to plan and write your response. Be sure to include reasons and examples. Write in complete sentences. Your paragraph should be between <strong>100 and 150 words</strong>.</div>
+          <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
+            <div id="t3-emoji-area" style="font-size:36px;background:rgba(255,255,255,.15);border-radius:10px;padding:8px 12px"></div>
+            <div class="opinion-question" id="t3-question">Loading…</div>
+          </div>
+        </div>
+
+        <div class="note-label">✍️ Write your paragraph here:</div>
+        <div class="write-area-wrap">
+          <textarea class="write-textarea" id="t3-essay" placeholder="I think that…" oninput="updateWordCount('t3')"></textarea>
+        </div>
+        <div class="word-count-bar">
+          <span>Word count: <span class="word-count-num low" id="t3-wc">0</span></span>
+          <div class="wc-range"><div class="wc-fill" id="t3-wc-bar" style="width:0%"></div></div>
+          <span style="color:var(--g400)">Target: 100–150 words</span>
+        </div>
+
+        <div class="btn-row mt16">
+          <button class="btn-secondary" onclick="resetT3()">↩ New question</button>
+          <button class="btn-primary" onclick="submitT3()">📤 Submit & Get AI Feedback →</button>
+        </div>
+      </div>
+
+      <!-- STAGE 3: Grading -->
+      <div class="stage" id="t3-stage-3">
+        <div class="loading-state"><div class="spinner"></div>AI is reading and grading your essay…</div>
+      </div>
+
+      <!-- STAGE 4: Feedback -->
+      <div class="stage" id="t3-stage-4">
+        <div class="big-score">
+          <div class="big-score-num" id="t3-total-score">–</div>
+          <div class="big-score-label">Overall Score (out of 16)</div>
+          <div class="big-score-band" id="t3-band">–</div>
+        </div>
+
+        <div class="score-display">
+          <div class="score-item"><div class="si-label">Clear Opinion</div><div class="si-score" id="t3-s1">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item"><div class="si-label">Relevant Reasons</div><div class="si-score" id="t3-s2">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item"><div class="si-label">Development</div><div class="si-score" id="t3-s3">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item"><div class="si-label">Language</div><div class="si-score" id="t3-s4">–</div><div class="si-max">/ 4</div></div>
+        </div>
+
+        <div class="feedback-card">
+          <div class="feedback-header blue">💬 Detailed Feedback</div>
+          <div class="feedback-body" id="t3-feedback-body">
+            <div class="feedback-section">
+              <div class="feedback-section-title">✅ What you did well</div>
+              <div class="feedback-text" id="t3-strengths"></div>
+            </div>
+            <div class="feedback-section">
+              <div class="feedback-section-title">📈 What to improve</div>
+              <div class="feedback-text" id="t3-improvements"></div>
+            </div>
+            <div class="feedback-section">
+              <div class="feedback-section-title">🔧 Level 1 — Corrected version (B1–B2)</div>
+              <div class="corrected-box"><div class="corr-label">✏️ Grammar &amp; spelling fixed, voice kept</div><div id="t3-corrected"></div></div>
+            </div>
+            <div class="feedback-section">
+              <div class="feedback-section-title">🚀 Level 2 — C1 / FCE-quality upgrade</div>
+              <div class="corrected-box" style="background:var(--purple-light);border-color:var(--purple-mid)"><div class="corr-label" style="color:var(--purple)">⬆️ Same ideas, elevated to C1 level</div><div id="t3-upgraded"></div></div>
+            </div>
+            <div class="sample-toggle">
+              <div class="sample-toggle-header" onclick="toggleSample('t3')">
+                💡 See a model Score-4 answer <span id="t3-sample-arrow">▼ Show</span>
+              </div>
+              <div class="sample-toggle-body" id="t3-sample-body"></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="try-again-btn" onclick="resetT3()">🔄 Try another question</button>
+      </div>
+
+    </div>
+  </div>
+</div><!-- end panel-t3 -->
+
+
+<!-- ══════════ TASK 4 ══════════ -->
+<div class="tab-panel" id="panel-t4">
+  <div class="sub-tabs t4-panel">
+    <button class="sub-tab t4-active" onclick="switchSub('t4','guide')" id="t4-guide-tab">📖 Guide</button>
+    <button class="sub-tab" onclick="switchSub('t4','practice')" id="t4-practice-tab">🎯 Practice</button>
+  </div>
+
+  <!-- T4 GUIDE -->
+  <div class="sub-panel active" id="t4-guide">
+
+    <div class="guide-title">🎯 What is Task 4 (Listen-Write)?</div>
+    <div class="info-box green">
+      You listen to a teacher's talk (social studies, science, geography…) <strong>once only</strong>. While listening you take notes. Then you write a paragraph explaining what you heard. You have <strong>10 minutes</strong>.
+    </div>
+    <div class="info-box orange">
+      ⚠️ <strong>Key challenge:</strong> The question appears <em>after</em> you listen — but it almost always asks for <strong>reasons / causes / how something works</strong>. So take notes on the WHY and HOW while listening.
+    </div>
+
+    <div class="guide-title">📊 How it's scored (same 4 criteria)</div>
+    <div class="score-grid">
+      <div class="score-card" style="background:var(--blue-light);border:1px solid var(--blue-mid)">
+        <div class="sc-title" style="color:var(--blue)">1️⃣ Topic Sentence</div>
+        Does your first sentence clearly state what the talk was about?
+      </div>
+      <div class="score-card" style="background:var(--green-light);border:1px solid var(--green-mid)">
+        <div class="sc-title" style="color:var(--green)">2️⃣ Main Points</div>
+        Did you include 2–3 main points from the talk?
+      </div>
+      <div class="score-card" style="background:var(--purple-light);border:1px solid var(--purple-mid)">
+        <div class="sc-title" style="color:var(--purple)">3️⃣ Details / Numbers</div>
+        Did you use specific facts, numbers, or names from the audio?
+      </div>
+      <div class="score-card" style="background:var(--orange-light);border:1px solid var(--orange-mid)">
+        <div class="sc-title" style="color:var(--orange)">4️⃣ Language</div>
+        Correct grammar, connector words, well-structured sentences.
+      </div>
+    </div>
+
+    <div class="guide-title">📝 Note-taking template — draw this on paper BEFORE audio starts</div>
+    <div class="note-template">
+      <span class="label">TOPIC:</span> _________________________________<br><br>
+      <span class="label">WHY / HOW 1:</span> _____________________________<br>
+      &nbsp;&nbsp;&nbsp;→ detail / number: _______________________<br><br>
+      <span class="label">WHY / HOW 2:</span> _____________________________<br>
+      &nbsp;&nbsp;&nbsp;→ detail / number: _______________________<br><br>
+      <span class="label">WHY / HOW 3</span> <span class="hint">(if mentioned):</span> _______________<br>
+      &nbsp;&nbsp;&nbsp;→ detail / number: _______________________<br><br>
+      <span class="label">RESULT / SO WHAT:</span> _____________________
+    </div>
+
+    <div class="guide-title">🔑 5 note-taking rules</div>
+    <div class="steps-list">
+      <div class="step-item">
+        <div class="step-num green">1</div>
+        <div class="step-body">
+          <strong>⭐ MOST IMPORTANT: Listen with 100% focus to the FIRST 2 sentences</strong>
+          <span>The teacher ALWAYS states the topic + structure in the opening. This is your whole "map" — if you miss it, you're lost for the entire talk.<br><br>
+          🎧 Example — you hear: <em>"Today we are going to talk about why the rainforest receives so much rain. There are three main reasons for this."</em><br>
+          ✅ Note: <strong>TOPIC = rainforest rain → 3 reasons</strong><br><br>
+          🎧 Another example: <em>"In today's lesson, I'll explain how the human heart pumps blood around the body."</em><br>
+          ✅ Note: <strong>TOPIC = heart → how pumps blood</strong><br><br>
+          Now you know exactly what to listen for: 3 reasons (or "how it works"). Every sentence after becomes easier to organise.</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num green">2</div>
+        <div class="step-body">
+          <strong>Keywords only — never full sentences</strong>
+          <span>Your hand cannot keep up with speech. Drop grammar words entirely — only keep content words.<br><br>
+          ❌ "The eastern side of the island gets a lot of rain because of the trade winds"<br>
+          ✅ "East side → lots rain ← trade winds"<br><br>
+          ❌ "Monarch butterflies travel approximately 4,500 kilometres every year"<br>
+          ✅ "Monarch butterfly → 4,500 km/yr"</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num green">3</div>
+        <div class="step-body">
+          <strong>Numbers & proper nouns — write IMMEDIATELY, even if you miss what comes next</strong>
+          <span>Numbers and names cannot be guessed. The moment you hear one, stop everything and write it.<br><br>
+          🎧 "…with temperatures reaching minus 60 degrees Celsius…" → write <strong>−60°C</strong> NOW<br>
+          🎧 "…called the Amazon Basin, which covers 7 million square kilometres…" → write <strong>Amazon = 7M km²</strong> NOW<br>
+          🎧 "…a process known as photosynthesis, which produces glucose…" → write <strong>photosynthesis → glucose</strong> NOW<br><br>
+          Missing one number in your notes = losing a whole point on the "Details" criterion.</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num green">4</div>
+        <div class="step-body">
+          <strong>Use symbols & abbreviations — build your own system</strong>
+          <span>The more automatic your symbols, the faster you write. Suggested shortcuts:<br><br>
+          → = causes / leads to &nbsp;·&nbsp; ← = because of &nbsp;·&nbsp; ↑ = increase &nbsp;·&nbsp; ↓ = decrease<br>
+          bc = because &nbsp;·&nbsp; eg = for example &nbsp;·&nbsp; ∴ = therefore &nbsp;·&nbsp; ≈ = approximately<br>
+          w/ = with &nbsp;·&nbsp; w/o = without &nbsp;·&nbsp; info = information &nbsp;·&nbsp; env = environment<br><br>
+          Example talk sentence: <em>"As a result, polar bears have developed thick fur to survive."</em><br>
+          ✅ Note: "∴ polar bear → thick fur → survive"</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num green">5</div>
+        <div class="step-body">
+          <strong>Missed something? Write "?" and keep going immediately</strong>
+          <span>Stopping to think costs you the NEXT sentence too. The moment you fall behind, write "?" and move on.<br><br>
+          ❌ Wrong: you heard "…absorbs 97% of…" but missed what — you pause to guess → miss point 3 entirely<br>
+          ✅ Right: write "absorbs 97% ?" and immediately listen for the next point<br><br>
+          A note that says "WHY 2 → ocean absorbs 97% ?" is still useful when writing. A blank is not.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="guide-title">🗒️ See it in action — full note example (Coral Reefs)</div>
+    <div class="note-template">
+      <span class="label">You HEAR:</span> <span class="hint">"Today we're going to discuss how coral reefs are formed. There are mainly two stages."</span><br>
+      <span class="label">You WRITE:</span> TOPIC = coral reefs → how formed → <strong>2 stages</strong><br><br>
+      <span class="label">You HEAR:</span> <span class="hint">"In the first stage, tiny animals called polyps attach to hard surfaces on the ocean floor. Each polyp is only about one millimetre wide."</span><br>
+      <span class="label">You WRITE:</span> Stage 1: polyps → attach to hard surface · size = 1mm<br><br>
+      <span class="label">You HEAR:</span> <span class="hint">"Over hundreds of years, millions of polyps build up layers of calcium carbonate — the same material as chalk — creating the reef structure."</span><br>
+      <span class="label">You WRITE:</span> Stage 2: millions polyps → calcium carbonate (=chalk) → reef · 100s yrs<br><br>
+      <span class="label">RESULT:</span> 3 details you can use in writing: polyps, 1mm, calcium carbonate/chalk
+    </div>
+
+    <div class="guide-title">🗒️ Full note example 2 — Monarch Butterfly Migration</div>
+    <div class="note-template">
+      <span class="label">You HEAR:</span> <span class="hint">"Today I want to explain why monarch butterflies migrate every year. There are three key reasons they make this long journey."</span><br>
+      <span class="label">You WRITE:</span> TOPIC = monarch butterfly → <strong>WHY migrate → 3 reasons</strong> ← write this IMMEDIATELY<br><br>
+      <span class="label">You HEAR:</span> <span class="hint">"The first reason is temperature. Monarch butterflies cannot survive temperatures below 0 degrees Celsius. In winter, their home in Canada becomes too cold."</span><br>
+      <span class="label">You WRITE:</span> R1: temp · &lt;0°C → Canada too cold winter<br><br>
+      <span class="label">You HEAR:</span> <span class="hint">"The second reason is food supply. Milkweed plants — the only thing monarchs eat — die off in northern areas during autumn."</span><br>
+      <span class="label">You WRITE:</span> R2: food · milkweed (only food) → dies autumn north<br><br>
+      <span class="label">You HEAR:</span> <span class="hint">"Finally, monarch butterflies travel approximately 4,500 kilometres to reach their winter home in the mountains of central Mexico, where they gather in groups of millions."</span><br>
+      <span class="label">You WRITE:</span> R3: dest = Mexico mountains · 4,500km · millions gather<br><br>
+      <span class="label">RESULT:</span> ✅ 4 specific details captured: 0°C, milkweed, 4,500km, Mexico mountains
+    </div>
+
+    <div class="guide-title">🗒️ Full note example 3 — The Water Cycle</div>
+    <div class="note-template">
+      <span class="label">You HEAR:</span> <span class="hint">"In today's class we'll look at how the water cycle works. It has four main stages."</span><br>
+      <span class="label">You WRITE:</span> TOPIC = water cycle → how works → <strong>4 stages</strong><br><br>
+      <span class="label">You HEAR:</span> <span class="hint">"Stage one is evaporation. Heat from the sun causes water from oceans, lakes, and rivers to turn into water vapour and rise into the atmosphere."</span><br>
+      <span class="label">You WRITE:</span> S1: evaporation · sun heat → water → vapour → rise<br><br>
+      <span class="label">You HEAR:</span> <span class="hint">"In stage two, called condensation, the vapour cools as it rises and forms clouds made of tiny water droplets."</span><br>
+      <span class="label">You WRITE:</span> S2: condensation · vapour cools → clouds (tiny droplets)<br><br>
+      <span class="label">You HEAR:</span> <span class="hint">"Stage three is precipitation — when droplets become too heavy, they fall as rain or snow."</span><br>
+      <span class="label">You WRITE:</span> S3: precipitation · too heavy → rain/snow<br><br>
+      <span class="label">You HEAR:</span> <span class="hint">"Finally, in stage four, water collects in rivers and flows back to the ocean, completing the cycle. This process takes between days and thousands of years depending on where the water ends up."</span><br>
+      <span class="label">You WRITE:</span> S4: collection · rivers → ocean · cycle complete · time = days–1000s yrs<br><br>
+      <span class="label">RESULT:</span> ✅ Perfect: all 4 stages + key vocabulary (evaporation, condensation, precipitation) captured
+    </div>
+
+    <div class="guide-title">❌ vs ✅ — Bad notes vs Good notes (same audio)</div>
+    <div class="score-grid">
+      <div class="score-card" style="background:var(--red-light);border:1px solid var(--red-mid)">
+        <div class="sc-title" style="color:var(--red)">❌ Bad notes — too slow, too long</div>
+        <em>Audio: "Monarch butterflies travel approximately 4,500 kilometres to central Mexico."</em><br><br>
+        Student writes: "The butterflies travel a very long distance to the south every year in winter."<br><br>
+        → ❌ No number (4,500 km) · No name (Mexico) · Written like an essay sentence · Hand couldn't keep up with audio
+      </div>
+      <div class="score-card" style="background:var(--green-light);border:1px solid var(--green-mid)">
+        <div class="sc-title" style="color:var(--green)">✅ Good notes — fast, specific</div>
+        <em>Audio: "Monarch butterflies travel approximately 4,500 kilometres to central Mexico."</em><br><br>
+        Student writes: "→ Mexico · ≈4,500km"<br><br>
+        → ✅ Key number saved · Destination saved · Written in 2 seconds · Can rebuild the full sentence during writing time
+      </div>
+    </div>
+
+    <div class="guide-title">🚦 Teacher transition signals — these tell you a new point is coming!</div>
+    <div class="info-box green">
+      <strong>Train your ear to catch these phrases:</strong> When you hear them, start a new line in your notes immediately.<br><br>
+      📢 <strong>"The first reason is…"</strong> → R1:<br>
+      📢 <strong>"Another reason / The second reason…"</strong> → R2:<br>
+      📢 <strong>"In addition / Furthermore / Also…"</strong> → R3:<br>
+      📢 <strong>"For example / For instance…"</strong> → eg: (write the example detail!)<br>
+      📢 <strong>"This means that / As a result…"</strong> → ∴ (consequence/result)<br>
+      📢 <strong>"Now let's look at… / Moving on…"</strong> → new section starting<br>
+      📢 <strong>"Finally / In conclusion…"</strong> → last point — don't miss it!<br><br>
+      💡 <strong>Pro tip:</strong> In TOEFL Junior, the teacher ALWAYS uses clear transition language. These phrases are free gifts — they tell you exactly when to start writing a new line.
+    </div>
+
+    <div class="guide-title">🏗️ The 7–9 sentence writing template</div>
+    <div class="template-box">
+      <strong>Sentence 1 — Topic sentence:</strong><br>
+      "<span class="fill-in">TOPIC</span> is/are <span class="fill-in">brief description of what the talk explained</span>."<br><br>
+      <strong>Sentences 2–3 — Point 1 (main reason/point + detail):</strong><br>
+      "The first reason is that <span class="fill-in">Point 1</span>. For example/This means that <span class="fill-in">detail or number</span>."<br><br>
+      <strong>Sentences 4–5 — Point 2:</strong><br>
+      "On the other hand / Another reason is that <span class="fill-in">Point 2</span>. <span class="fill-in">detail or number</span>."<br><br>
+      <strong>Sentences 6–7 — Point 3 (if you have it):</strong><br>
+      "In addition, <span class="fill-in">Point 3</span>. <span class="fill-in">detail</span>."<br><br>
+      <strong>Sentences 8–9 — Conclusion:</strong><br>
+      "In conclusion, the differences/process/causes are mainly due to <span class="fill-in">root cause</span>, which <span class="fill-in">result</span>."
+    </div>
+
+    <div class="guide-title">✅ Connector words for Task 4</div>
+    <div class="chips">
+      <span class="chip green">The first reason is…</span>
+      <span class="chip green">This means that…</span>
+      <span class="chip green">On the other hand,</span>
+      <span class="chip green">Another reason is…</span>
+      <span class="chip green">For example,</span>
+      <span class="chip green">As a result,</span>
+      <span class="chip green">In addition,</span>
+      <span class="chip green">In conclusion,</span>
+    </div>
+
+  </div><!-- end t4-guide -->
+
+  <!-- T4 PRACTICE -->
+  <div class="sub-panel t4-panel" id="t4-practice">
+    <div id="t4-practice-container">
+
+      <!-- STAGE 0 -->
+      <div class="stage active" id="t4-stage-0">
+        <div class="section-h">Choose a topic area:</div>
+        <div class="topic-grid t4-panel" id="t4-topics">
+          <button class="topic-btn" data-topic="geography">🌍 Geography & nature</button>
+          <button class="topic-btn" data-topic="animals">🐾 Animals & life cycles</button>
+          <button class="topic-btn" data-topic="weather">⛅ Weather & water</button>
+          <button class="topic-btn" data-topic="environment">♻️ Environment</button>
+          <button class="topic-btn" data-topic="science">🔬 Science & body</button>
+          <button class="topic-btn sel" data-topic="random">🎲 Surprise me!</button>
+        </div>
+        <button class="btn-primary green" onclick="generateT4()">✨ Generate talk</button>
+      </div>
+
+      <!-- STAGE 1 -->
+      <div class="stage" id="t4-stage-1">
+        <div class="loading-state"><div class="spinner green"></div>Creating a new academic talk for you…</div>
+      </div>
+
+      <!-- STAGE 2: Listen & Note -->
+      <div class="stage" id="t4-stage-2">
+        <div class="listen-card green">
+          <div class="listen-card-label">Task 4 — Listen-Write</div>
+          <div class="listen-card-title" id="t4-topic-name">Loading…</div>
+          <div class="emoji-area" id="t4-emoji-area"></div>
+        </div>
+
+        <div class="audio-player">
+          <div class="audio-title">🎧 Step 1 — Listen to the teacher's talk (look at the pictures above!)</div>
+          <button class="play-btn green" id="t4-play-btn" onclick="playT4Audio()">
+            <span>▶</span> Play talk
+          </button>
+          <div class="audio-status" id="t4-audio-status">Press Play to listen. You can play it <strong>once only</strong>!</div>
+        </div>
+
+        <div>
+          <div class="note-label">📝 Step 2 — Take notes (keywords only!)</div>
+          <textarea class="note-textarea" id="t4-notes" placeholder="TOPIC →&#10;&#10;WHY/HOW 1 →&#10;  → detail/number:&#10;&#10;WHY/HOW 2 →&#10;  → detail/number:&#10;&#10;WHY/HOW 3 →&#10;  → detail/number:&#10;&#10;RESULT →"></textarea>
+          <div class="note-hint">📌 Look at the pictures while writing — they show the vocabulary! Short keywords only, not sentences.</div>
+        </div>
+
+        <div class="btn-row mt16">
+          <button class="btn-secondary" onclick="resetT4()">↩ New topic</button>
+          <button class="btn-primary green" id="t4-next-btn" onclick="startT4Write()">✍️ I'm ready — Start writing (10 min) →</button>
+        </div>
+      </div>
+
+      <!-- STAGE 3: Write -->
+      <div class="stage" id="t4-stage-3">
+        <div class="timer-display">
+          <div class="timer-phase" id="t4-timer-phase">WRITING TIME</div>
+          <div class="timer-clock" id="t4-timer-clock">10:00</div>
+          <div class="timer-bar-wrap"><div class="timer-bar write" id="t4-timer-bar" style="width:100%"></div></div>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-label">Your task</div>
+          <div class="prompt-question" id="t4-prompt-question">Loading…</div>
+        </div>
+
+        <div>
+          <div class="notes-review-label">Your notes:</div>
+          <div class="notes-review" id="t4-notes-review"></div>
+        </div>
+
+        <div class="note-label">✍️ Write your paragraph here:</div>
+        <textarea class="write-textarea" id="t4-essay" placeholder="Write your paragraph here…" oninput="updateWordCount('t4')"></textarea>
+        <div class="word-count-bar">
+          <span>Word count: <span class="word-count-num low" id="t4-wc">0</span></span>
+          <div class="wc-range"><div class="wc-fill" id="t4-wc-bar" style="width:0%"></div></div>
+          <span style="color:var(--g400)">Target: 7–9 sentences</span>
+        </div>
+
+        <div class="btn-row mt16">
+          <button class="btn-primary green" onclick="submitT4()">📤 Submit & Get AI Feedback →</button>
+        </div>
+      </div>
+
+      <!-- STAGE 4: Grading -->
+      <div class="stage" id="t4-stage-4">
+        <div class="loading-state"><div class="spinner green"></div>AI is reading and grading your essay…</div>
+      </div>
+
+      <!-- STAGE 5: Feedback -->
+      <div class="stage" id="t4-stage-5">
+        <div class="big-score green">
+          <div class="big-score-num" id="t4-total-score">–</div>
+          <div class="big-score-label">Overall Score (out of 16)</div>
+          <div class="big-score-band" id="t4-band">–</div>
+        </div>
+
+        <div class="score-display">
+          <div class="score-item"><div class="si-label">Topic Sentence</div><div class="si-score" id="t4-s1">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item"><div class="si-label">Main Points</div><div class="si-score" id="t4-s2">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item"><div class="si-label">Details / Numbers</div><div class="si-score" id="t4-s3">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item"><div class="si-label">Language</div><div class="si-score" id="t4-s4">–</div><div class="si-max">/ 4</div></div>
+        </div>
+
+        <div class="feedback-card">
+          <div class="feedback-header green">💬 Detailed Feedback</div>
+          <div class="feedback-body" id="t4-feedback-body">
+            <div class="feedback-section">
+              <div class="feedback-section-title">✅ What you did well</div>
+              <div class="feedback-text" id="t4-strengths"></div>
+            </div>
+            <div class="feedback-section">
+              <div class="feedback-section-title">📈 What to improve</div>
+              <div class="feedback-text" id="t4-improvements"></div>
+            </div>
+            <div class="feedback-section">
+              <div class="feedback-section-title">🔧 Level 1 — Corrected version (B1–B2)</div>
+              <div class="corrected-box"><div class="corr-label">✏️ Grammar &amp; missing facts added, voice kept</div><div id="t4-corrected"></div></div>
+            </div>
+            <div class="feedback-section">
+              <div class="feedback-section-title">🚀 Level 2 — C1 / FCE-quality upgrade</div>
+              <div class="corrected-box" style="background:var(--purple-light);border-color:var(--purple-mid)"><div class="corr-label" style="color:var(--purple)">⬆️ Same content, elevated to C1 level</div><div id="t4-upgraded"></div></div>
+            </div>
+            <div class="sample-toggle">
+              <div class="sample-toggle-header" onclick="toggleSample('t4')">
+                💡 See a model Score-4 answer <span id="t4-sample-arrow">▼ Show</span>
+              </div>
+              <div class="sample-toggle-body" id="t4-sample-body"></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="try-again-btn" onclick="resetT4()">🔄 Try another topic</button>
+      </div>
+
+    </div>
+  </div>
+</div><!-- end panel-t4 -->
+
+</div><!-- content-area -->
+
+<script>
+// ══════════════════════════════════════════════
+// CONFIG — same proxy as your speaking app
+// ══════════════════════════════════════════════
+const PROXY_URL = 'https://script.google.com/macros/s/AKfycbyz6yQZx1IsG2w9Uk90634jrCgqdAEWlAoRcbmSHv4NvZtdQ2CjRcip7G23fxlUSC0Z/exec';
+
+async function callClaude(prompt, maxTokens = 1200) {
+  const res = await fetch(PROXY_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: maxTokens,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  const text = data.content.map(c => c.text || '').join('');
+  const clean = text.replace(/```json[\s\S]*?```|```/g, '').trim();
+  return JSON.parse(clean);
+}
+
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+const state = {
+  t3: { topic: 'random', data: null, timerId: null },
+  t4: { topic: 'random', data: null, audioPlayed: false, timerId: null }
+};
+
+// ══════════════════════════════════════════════
+// TAB SWITCHING
+// ══════════════════════════════════════════════
+function switchMain(part) {
+  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.main-tab.${part}`).classList.add('active');
+  document.getElementById(`panel-${part}`).classList.add('active');
+}
+
+function switchSub(part, sub) {
+  const panel = document.getElementById(`panel-${part}`);
+  panel.querySelectorAll('.sub-tab').forEach(t => {
+    t.classList.remove('t3-active','t4-active');
+  });
+  panel.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  const activeClass = part === 't3' ? 't3-active' : 't4-active';
+  const tabs = panel.querySelectorAll('.sub-tab');
+  const idx = sub === 'guide' ? 0 : 1;
+  tabs[idx].classList.add(activeClass);
+  document.getElementById(`${part}-${sub}`).classList.add('active');
+}
+
+// ══════════════════════════════════════════════
+// TOPIC SELECTION
+// ══════════════════════════════════════════════
+document.querySelectorAll('#t3-topics .topic-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#t3-topics .topic-btn').forEach(b => b.classList.remove('sel'));
+    btn.classList.add('sel');
+    state.t3.topic = btn.dataset.topic;
+  });
+});
+document.querySelectorAll('#t4-topics .topic-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#t4-topics .topic-btn').forEach(b => b.classList.remove('sel'));
+    btn.classList.add('sel');
+    state.t4.topic = btn.dataset.topic;
+  });
+});
+
+// ══════════════════════════════════════════════
+// STAGE HELPERS
+// ══════════════════════════════════════════════
+function showStage(part, n) {
+  document.querySelectorAll(`[id^="${part}-stage-"]`).forEach(s => s.classList.remove('active'));
+  document.getElementById(`${part}-stage-${n}`).classList.add('active');
+}
+
+// ══════════════════════════════════════════════
+// WORD COUNT
+// ══════════════════════════════════════════════
+function updateWordCount(part) {
+  const text = document.getElementById(`${part}-essay`).value.trim();
+  const count = text === '' ? 0 : text.split(/\s+/).length;
+  const el = document.getElementById(`${part}-wc`);
+  const bar = document.getElementById(`${part}-wc-bar`);
+  el.textContent = count;
+  el.className = 'word-count-num ' + (count < 80 ? 'low' : count <= 160 ? 'ok' : 'over');
+  const pct = Math.min((count / 150) * 100, 100);
+  bar.style.width = pct + '%';
+  bar.style.background = count < 80 ? 'var(--orange)' : count <= 160 ? 'var(--green)' : 'var(--red)';
+}
+
+// ══════════════════════════════════════════════
+// TIMER
+// ══════════════════════════════════════════════
+function startTimer(part, totalSecs, onWarning, onEnd) {
+  let remaining = totalSecs;
+  const clockEl = document.getElementById(`${part}-timer-clock`);
+  const barEl = document.getElementById(`${part}-timer-bar`);
+  const phaseEl = document.getElementById(`${part}-timer-phase`);
+
+  const update = () => {
+    const m = Math.floor(remaining / 60).toString().padStart(2,'0');
+    const s = (remaining % 60).toString().padStart(2,'0');
+    clockEl.textContent = `${m}:${s}`;
+    barEl.style.width = `${(remaining / totalSecs) * 100}%`;
+    if (remaining <= 120 && remaining > 0) {
+      barEl.style.background = 'var(--orange)';
+      phaseEl.textContent = '⚠️ TIME RUNNING OUT';
+    }
+    if (remaining <= 0) {
+      clearInterval(state[part].timerId);
+      clockEl.textContent = '00:00';
+      phaseEl.textContent = '⏱️ TIME IS UP';
+      barEl.style.width = '0%';
+      onEnd && onEnd();
+    }
+    remaining--;
+  };
+  update();
+  state[part].timerId = setInterval(update, 1000);
+}
+
+// ══════════════════════════════════════════════
+// TTS
+// ══════════════════════════════════════════════
+function speak(text, onEnd) {
+  if (!window.speechSynthesis) { onEnd && onEnd(); return; }
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.rate = 0.88; utt.pitch = 1; utt.lang = 'en-US';
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v => v.lang.startsWith('en') && (
+    v.name.includes('Samantha') || v.name.includes('Karen') ||
+    v.name.includes('Daniel') || v.name.includes('Google') || v.name.includes('Natural')
+  ));
+  if (preferred) utt.voice = preferred;
+  utt.onend = onEnd || null;
+  window.speechSynthesis.speak(utt);
+}
+if (window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+}
+
+// ══════════════════════════════════════════════
+// SCORE COLOR CLASS
+// ══════════════════════════════════════════════
+function scoreClass(n) {
+  if (n >= 4) return 's4';
+  if (n >= 3) return 's3';
+  if (n >= 2) return 's2';
+  return 's1';
+}
+
+function bandLabel(total) {
+  if (total >= 14) return '🌟 Excellent — Target Score Achieved!';
+  if (total >= 11) return '✅ Good — Minor improvements needed';
+  if (total >= 8)  return '📈 Fair — Focus on development & details';
+  return '📚 Keep practicing — Use the template!';
+}
+
+// ══════════════════════════════════════════════
+// ══════ TASK 3 LOGIC ══════
+// ══════════════════════════════════════════════
+async function generateT3() {
+  const topicMap = {
+    school_rules: 'a school rule or policy (uniform, phone ban, homework, etc)',
+    technology: 'technology use for students (tablets, internet, AI tools, etc)',
+    environment: 'an environmental habit or action students can take',
+    social: 'friendship, teamwork, or social behavior at school',
+    hobbies: 'hobbies, sports, or after-school activities',
+    random: 'any topic suitable for a TOEFL Junior opinion paragraph'
+  };
+  const chosen = topicMap[state.t3.topic] || topicMap.random;
+  showStage('t3', 1);
+
+  const prompt = `Generate a TOEFL Junior Writing Task 3 (Opinion) practice question.
+
+Topic area: ${chosen}
+Level: B1-B2 (TOEFL Junior)
+
+Return ONLY valid JSON (no markdown fences) with this exact structure:
+{
+  "emojis": "2-3 relevant emojis representing the topic",
+  "question": "A clear opinion question in the format 'Some people think X. Others think Y. What do you think?' — one sentence presenting two sides. Keep it school-appropriate, 25-40 words.",
+  "modelAnswer": "A model 7-sentence Score-4 answer (120-140 words) following this structure: 1) opinion statement, 2) first reason, 3) specific school-life example for reason 1, 4) second reason, 5) specific example for reason 2, 6) brief counter + dismissal, 7) conclusion. Use connector words: The first reason is, Another reason is, For example, For instance, Some people think, For these reasons. Mark connector words with <hl>tag</hl>."
+}`;
+
+  try {
+    const parsed = await callClaude(prompt);
+    state.t3.data = parsed;
+    document.getElementById('t3-emoji-area').textContent = parsed.emojis || '';
+    document.getElementById('t3-question').textContent = parsed.question;
+    document.getElementById('t3-essay').value = '';
+    updateWordCount('t3');
+    if (state.t3.timerId) clearInterval(state.t3.timerId);
+    showStage('t3', 2);
+    startTimer('t3', 600, null, null);
+  } catch(e) {
+    alert('Error generating question. Please try again.\n' + e.message);
+    showStage('t3', 0);
+  }
+}
+
+async function submitT3() {
+  const essay = document.getElementById('t3-essay').value.trim();
+  if (!essay || essay.split(/\s+/).length < 30) {
+    alert('Please write at least a few sentences before submitting!');
+    return;
+  }
+  if (state.t3.timerId) clearInterval(state.t3.timerId);
+  showStage('t3', 3);
+
+  const question = state.t3.data.question;
+  const wordCount = essay.split(/\s+/).length;
+
+  const prompt = `You are an ETS-certified TOEFL Junior Writing examiner AND a Cambridge FCE/C1 writing coach. Grade the following student essay for Writing Task 3 (Opinion paragraph), then provide two levels of rewrite.
+
+QUESTION: "${question}"
+
+STUDENT ESSAY (${wordCount} words):
+"${essay}"
+
+Score each criterion from 1-4 using TOEFL Junior rubric standards:
+1. Clear Opinion (1-4): Is position clearly stated at start? Consistent throughout?
+2. Relevant Reasons (1-4): Are reasons logical and directly related to question?
+3. Development (1-4): Are there specific examples, not just general statements?
+4. Language (1-4): Grammar, spelling, connectors, sentence variety, word count (100-150 is ideal)?
+
+Return ONLY valid JSON (no markdown fences):
+{
+  "score1": number,
+  "score2": number,
+  "score3": number,
+  "score4": number,
+  "strengths": "2-3 specific things the student did well. Be encouraging and concrete. Quote actual phrases from their essay.",
+  "improvements": "2-3 specific, actionable improvements with concrete suggestions. For each weakness, quote the student original sentence AND show a better version. Format: Original: ... / Better: ... / Why: ...",
+  "corrected": "LEVEL 1 - Corrected (B1-B2): Fix all grammar/spelling/punctuation errors. Replace vague words with more precise ones. Add one missing connector where natural. Keep the student own ideas, structure and voice. 100-150 words.",
+  "upgraded": "LEVEL 2 - C1/FCE upgrade: Rewrite the same ideas at C1 level. Use: (a) a more sophisticated opener instead of I think that; (b) at least one complex structure such as a relative clause, participle clause, or conditional; (c) two precise vocabulary upgrades marked as [UPGRADE: old to new]; (d) a counter-argument with concession using While some may argue...; (e) a stronger conclusion. 120-150 words. End with one line: Key upgrades: listing the 3-4 main changes made.",
+  "modelAnswer": "A perfect Score-4 model answer for this question at C1/FCE level (125-140 words, 7 sentences). Mark connector words and advanced phrases with <hl>tags</hl>."
+}`;
+
+  try {
+    const result = await callClaude(prompt, 1500);
+    const total = result.score1 + result.score2 + result.score3 + result.score4;
+
+    document.getElementById('t3-total-score').textContent = total;
+    document.getElementById('t3-band').textContent = bandLabel(total);
+
+    ['1','2','3','4'].forEach(n => {
+      const el = document.getElementById(`t3-s${n}`);
+      el.textContent = result[`score${n}`];
+      el.className = 'si-score ' + scoreClass(result[`score${n}`]);
+    });
+
+    document.getElementById('t3-strengths').innerHTML = result.strengths.replace(/\n/g,'<br>');
+    document.getElementById('t3-improvements').innerHTML = result.improvements.replace(/\n/g,'<br>');
+    document.getElementById('t3-corrected').innerHTML = result.corrected.replace(/\n/g,'<br>');
+    document.getElementById('t3-upgraded').innerHTML = (result.upgraded || '').replace(/\n/g,'<br>').replace(/\[UPGRADE: (.*?)\]/g,'<span style="background:#FDE68A;color:#92400E;border-radius:4px;padding:1px 5px;font-weight:700;font-size:12px;">⬆ $1</span>');
+    document.getElementById('t3-sample-body').innerHTML = (result.modelAnswer || '').replace(/<hl>(.*?)<\/hl>/g,'<span class="hl">$1</span>').replace(/\n/g,'<br>');
+
+    showStage('t3', 4);
+  } catch(e) {
+    alert('Error getting feedback. Please try again.\n' + e.message);
+    showStage('t3', 2);
+  }
+}
+
+function resetT3() {
+  if (state.t3.timerId) clearInterval(state.t3.timerId);
+  state.t3.data = null;
+  document.getElementById('t3-sample-body').classList.remove('open');
+  document.getElementById('t3-sample-arrow').textContent = '▼ Show';
+  showStage('t3', 0);
+}
+
+// ══════════════════════════════════════════════
+// ══════ TASK 4 LOGIC ══════
+// ══════════════════════════════════════════════
+async function generateT4() {
+  const topicMap = {
+    geography: 'geography phenomena like mountains, rivers, or rainfall patterns',
+    animals: 'an animal life cycle or adaptation',
+    weather: 'weather systems, water cycle, or climate phenomena',
+    environment: 'environmental topics like ecosystems, pollution, or conservation',
+    science: 'human body systems or basic science processes',
+    random: 'any interesting social studies or science topic for middle school'
+  };
+  const chosen = topicMap[state.t4.topic] || topicMap.random;
+  showStage('t4', 1);
+
+  const prompt = `Generate a TOEFL Junior Writing Task 4 (Listen-Write) practice exercise.
+
+Topic type: ${chosen}
+Level: B1-B2 (TOEFL Junior)
+
+Return ONLY valid JSON (no markdown fences):
+{
+  "topicName": "Short topic label, max 5 words",
+  "imageEmojis": ["emoji1", "emoji2", "emoji3", "emoji4"],
+  "imageCaption": "What the visuals represent, max 8 words",
+  "talkScript": "A teacher's academic talk, 200-230 words. Start: 'Today we are going to talk about...'. Include: clear topic intro (1-2 sentences), Point 1 with a specific number or fact, Point 2 with a specific number or fact, Point 3 if natural, brief conclusion. Use B1-B2 vocabulary. Speak as if to a class.",
+  "promptQuestion": "The exam question shown AFTER listening. Format: 'Write a paragraph that explains [topic]. Be sure to include as many details as possible. Write in complete sentences.'",
+  "modelAnswer": "A model 8-sentence Score-4 written paragraph (130-150 words) using the template: topic sentence, point 1 + detail/number, point 2 + detail/number, point 3 + detail if available, conclusion. Mark connector phrases with <hl>tags</hl>."
+}`;
+
+  try {
+    const parsed = await callClaude(prompt);
+    state.t4.data = parsed;
+    state.t4.audioPlayed = false;
+
+    document.getElementById('t4-topic-name').textContent = parsed.topicName;
+    document.getElementById('t4-notes').value = '';
+
+    const emojiArea = document.getElementById('t4-emoji-area');
+    emojiArea.innerHTML = '';
+    if (parsed.imageEmojis) {
+      parsed.imageEmojis.forEach(e => {
+        const card = document.createElement('div');
+        card.className = 'emoji-card';
+        card.textContent = e;
+        emojiArea.appendChild(card);
+      });
+      if (parsed.imageCaption) {
+        const cap = document.createElement('div');
+        cap.className = 'emoji-caption';
+        cap.textContent = parsed.imageCaption;
+        emojiArea.appendChild(cap);
+      }
+    }
+
+    const playBtn = document.getElementById('t4-play-btn');
+    playBtn.disabled = false;
+    playBtn.innerHTML = '<span>▶</span> Play talk';
+    document.getElementById('t4-audio-status').textContent = 'Press Play to listen. You can play it once only!';
+    document.getElementById('t4-audio-status').className = 'audio-status';
+
+    showStage('t4', 2);
+  } catch(e) {
+    alert('Error generating content. Please try again.\n' + e.message);
+    showStage('t4', 0);
+  }
+}
+
+function playT4Audio() {
+  if (state.t4.audioPlayed || !state.t4.data) return;
+  const btn = document.getElementById('t4-play-btn');
+  const status = document.getElementById('t4-audio-status');
+  btn.disabled = true;
+  btn.innerHTML = '<span>⏸</span> Playing…';
+  status.textContent = '🎧 Listening… look at the pictures!';
+  status.className = 'audio-status playing';
+  state.t4.audioPlayed = true;
+
+  speak(state.t4.data.talkScript, () => {
+    btn.innerHTML = '<span>✅</span> Played (once only)';
+    status.textContent = '✅ Done! Take your notes, then click Ready when finished.';
+    status.className = 'audio-status done';
+  });
+}
+
+function startT4Write() {
+  const notes = document.getElementById('t4-notes').value;
+  document.getElementById('t4-notes-review').textContent = notes || '(no notes taken)';
+  document.getElementById('t4-prompt-question').textContent = state.t4.data.promptQuestion;
+  document.getElementById('t4-essay').value = '';
+  updateWordCount('t4');
+  if (state.t4.timerId) clearInterval(state.t4.timerId);
+  showStage('t4', 3);
+  startTimer('t4', 600, null, null);
+}
+
+async function submitT4() {
+  const essay = document.getElementById('t4-essay').value.trim();
+  if (!essay || essay.split(/\s+/).length < 20) {
+    alert('Please write at least a few sentences before submitting!');
+    return;
+  }
+  if (state.t4.timerId) clearInterval(state.t4.timerId);
+  showStage('t4', 4);
+
+  const talkScript = state.t4.data.talkScript;
+  const prompt_q = state.t4.data.promptQuestion;
+  const wordCount = essay.split(/\s+/).length;
+
+  const prompt = `You are an ETS-certified TOEFL Junior Writing examiner AND a Cambridge FCE/C1 writing coach. Grade the following student response for Writing Task 4 (Listen-Write paragraph), then provide two levels of rewrite.
+
+THE ORIGINAL TALK THE STUDENT LISTENED TO:
+"${talkScript}"
+
+EXAM QUESTION: "${prompt_q}"
+
+STUDENT RESPONSE (${wordCount} words):
+"${essay}"
+
+Score each criterion from 1-4:
+1. Topic Sentence (1-4): Does the first sentence clearly introduce what the talk was about?
+2. Main Points (1-4): Did the student include 2-3 main points from the talk?
+3. Details / Numbers (1-4): Did the student use specific facts, numbers, or names from the audio?
+4. Language (1-4): Grammar, spelling, connector words, sentence variety?
+
+Return ONLY valid JSON (no markdown fences):
+{
+  "score1": number,
+  "score2": number,
+  "score3": number,
+  "score4": number,
+  "strengths": "2-3 specific things done well. Be encouraging. Quote actual phrases from the essay.",
+  "improvements": "2-3 specific, actionable improvements. For each issue, quote the student original sentence AND show a better version. Format: Original: ... / Better: ... / Why: ... Also list any key facts from the talk that were missed entirely.",
+  "corrected": "LEVEL 1 - Corrected (B1-B2): Fix all grammar/spelling errors AND insert any missing key facts from the original talk. Keep the student voice. 100-150 words.",
+  "upgraded": "LEVEL 2 - C1/FCE upgrade: Rewrite the same content at C1 level. Use: (a) a more academic topic sentence structure; (b) at least one complex sentence with a subordinate clause; (c) two vocabulary upgrades marked as [UPGRADE: old to new]; (d) varied connectors beyond just firstly/secondly; (e) a concluding sentence that draws an inference or implication, not just a summary. 120-150 words. End with one line: Key upgrades: listing the 3-4 main changes made.",
+  "modelAnswer": "A perfect Score-4 model paragraph for this task at C1/FCE level using all key info from the talk (130-150 words). Mark connector phrases and advanced language with <hl>tags</hl>."
+}`;
+
+  try {
+    const result = await callClaude(prompt, 1500);
+    const total = result.score1 + result.score2 + result.score3 + result.score4;
+
+    document.getElementById('t4-total-score').textContent = total;
+    document.getElementById('t4-band').textContent = bandLabel(total);
+
+    ['1','2','3','4'].forEach(n => {
+      const el = document.getElementById(`t4-s${n}`);
+      el.textContent = result[`score${n}`];
+      el.className = 'si-score ' + scoreClass(result[`score${n}`]);
+    });
+
+    document.getElementById('t4-strengths').innerHTML = result.strengths.replace(/\n/g,'<br>');
+    document.getElementById('t4-improvements').innerHTML = result.improvements.replace(/\n/g,'<br>');
+    document.getElementById('t4-corrected').innerHTML = result.corrected.replace(/\n/g,'<br>');
+    document.getElementById('t4-upgraded').innerHTML = (result.upgraded || '').replace(/\n/g,'<br>').replace(/\[UPGRADE: (.*?)\]/g,'<span style="background:#FDE68A;color:#92400E;border-radius:4px;padding:1px 5px;font-weight:700;font-size:12px;">⬆ $1</span>');
+    document.getElementById('t4-sample-body').innerHTML = (result.modelAnswer || '').replace(/<hl>(.*?)<\/hl>/g,'<span class="hl">$1</span>').replace(/\n/g,'<br>');
+
+    showStage('t4', 5);
+  } catch(e) {
+    alert('Error getting feedback. Please try again.\n' + e.message);
+    showStage('t4', 3);
+  }
+}
+
+function resetT4() {
+  if (state.t4.timerId) clearInterval(state.t4.timerId);
+  window.speechSynthesis && window.speechSynthesis.cancel();
+  state.t4.data = null;
+  state.t4.audioPlayed = false;
+  document.getElementById('t4-sample-body').classList.remove('open');
+  document.getElementById('t4-sample-arrow').textContent = '▼ Show';
+  showStage('t4', 0);
+}
+
+// ══════════════════════════════════════════════
+// TOGGLE SAMPLE
+// ══════════════════════════════════════════════
+function toggleSample(part) {
+  const body = document.getElementById(`${part}-sample-body`);
+  const arrow = document.getElementById(`${part}-sample-arrow`);
+  body.classList.toggle('open');
+  arrow.textContent = body.classList.contains('open') ? '▲ Hide' : '▼ Show';
+}
+</script>
+</body>
+</html>
