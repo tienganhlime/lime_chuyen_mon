@@ -456,19 +456,34 @@ body{font-size:18px}
 
       <!-- STAGE 4: Feedback -->
       <div class="stage" id="t3-stage-4">
+        <!-- TOEFL Score -->
         <div class="big-score">
+          <div style="font-size:13px;color:rgba(255,255,255,.7);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">TOEFL Junior Score</div>
           <div class="big-score-num" id="t3-total-score">–</div>
-          <div class="big-score-label">Overall Score (out of 16)</div>
+          <div class="big-score-label">Overall Score (out of 20)</div>
           <div class="big-score-band" id="t3-band">–</div>
+        </div>
+
+        <!-- C1 Potential Score -->
+        <div id="t3-c1-block" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);border-radius:14px;padding:16px 20px;margin-bottom:16px;color:#fff;display:flex;align-items:center;gap:16px">
+          <div style="text-align:center;flex-shrink:0">
+            <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:48px;line-height:1" id="t3-c1-score">–</div>
+            <div style="font-size:12px;opacity:.75;margin-top:2px">/ 5</div>
+          </div>
+          <div style="flex:1">
+            <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:15px;margin-bottom:6px">🏆 C1 Potential Score</div>
+            <div style="font-size:13px;opacity:.85;line-height:1.6" id="t3-c1-verdict">–</div>
+          </div>
         </div>
 
         <div id="t3-task-alert" style="display:none;background:#FEF2F2;border:2px solid #FECACA;border-radius:12px;padding:14px 18px;font-size:17px;line-height:1.7;margin-bottom:16px;color:#991B1B;"></div>
 
-        <div class="score-display">
+        <div class="score-display" style="grid-template-columns:repeat(5,1fr)">
           <div class="score-item"><div class="si-label">Task Response</div><div class="si-score" id="t3-s1">–</div><div class="si-max">/ 4</div></div>
           <div class="score-item"><div class="si-label">Clear Opinion</div><div class="si-score" id="t3-s2">–</div><div class="si-max">/ 4</div></div>
           <div class="score-item"><div class="si-label">Development</div><div class="si-score" id="t3-s3">–</div><div class="si-max">/ 4</div></div>
           <div class="score-item"><div class="si-label">Language</div><div class="si-score" id="t3-s4">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item" style="border-color:var(--purple-mid);background:var(--purple-light)"><div class="si-label" style="color:var(--purple)">Argument Depth</div><div class="si-score" id="t3-s5" style="color:var(--purple)">–</div><div class="si-max">/ 4</div></div>
         </div>
 
         <div class="feedback-card">
@@ -488,7 +503,11 @@ body{font-size:18px}
             </div>
             <div class="feedback-section">
               <div class="feedback-section-title">🚀 Level 2 — C1 / FCE-quality upgrade</div>
-              <div class="corrected-box" style="background:var(--purple-light);border-color:var(--purple-mid)"><div class="corr-label" style="color:var(--purple)">⬆️ Same ideas, elevated to C1 level</div><div id="t3-upgraded"></div></div>
+              <div class="corrected-box" style="background:var(--purple-light);border-color:var(--purple-mid)">
+                <div class="corr-label" style="color:var(--purple)">⬆️ Same ideas, elevated to C1 level</div>
+                <div id="t3-upgraded"></div>
+                <div id="t3-c1-checklist" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--purple-mid)"></div>
+              </div>
             </div>
             <div class="sample-toggle">
               <div class="sample-toggle-header" onclick="toggleSample('t3')">
@@ -803,19 +822,34 @@ body{font-size:18px}
 
       <!-- STAGE 5: Feedback -->
       <div class="stage" id="t4-stage-5">
+        <!-- TOEFL Score -->
         <div class="big-score green">
+          <div style="font-size:13px;color:rgba(255,255,255,.7);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">TOEFL Junior Score</div>
           <div class="big-score-num" id="t4-total-score">–</div>
-          <div class="big-score-label">Overall Score (out of 16)</div>
+          <div class="big-score-label">Overall Score (out of 20)</div>
           <div class="big-score-band" id="t4-band">–</div>
+        </div>
+
+        <!-- C1 Potential Score -->
+        <div id="t4-c1-block" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);border-radius:14px;padding:16px 20px;margin-bottom:16px;color:#fff;display:flex;align-items:center;gap:16px">
+          <div style="text-align:center;flex-shrink:0">
+            <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:48px;line-height:1" id="t4-c1-score">–</div>
+            <div style="font-size:12px;opacity:.75;margin-top:2px">/ 5</div>
+          </div>
+          <div style="flex:1">
+            <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:15px;margin-bottom:6px">🏆 C1 Potential Score</div>
+            <div style="font-size:13px;opacity:.85;line-height:1.6" id="t4-c1-verdict">–</div>
+          </div>
         </div>
 
         <div id="t4-task-alert" style="display:none;background:#FEF2F2;border:2px solid #FECACA;border-radius:12px;padding:14px 18px;font-size:17px;line-height:1.7;margin-bottom:16px;color:#991B1B;"></div>
 
-        <div class="score-display">
+        <div class="score-display" style="grid-template-columns:repeat(5,1fr)">
           <div class="score-item"><div class="si-label">Task Response</div><div class="si-score" id="t4-s1">–</div><div class="si-max">/ 4</div></div>
           <div class="score-item"><div class="si-label">Main Points</div><div class="si-score" id="t4-s2">–</div><div class="si-max">/ 4</div></div>
           <div class="score-item"><div class="si-label">Details / Numbers</div><div class="si-score" id="t4-s3">–</div><div class="si-max">/ 4</div></div>
           <div class="score-item"><div class="si-label">Language</div><div class="si-score" id="t4-s4">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item" style="border-color:var(--green-mid);background:var(--green-light)"><div class="si-label" style="color:var(--green)">Completeness</div><div class="si-score" id="t4-s5" style="color:var(--green)">–</div><div class="si-max">/ 4</div></div>
         </div>
 
         <div class="feedback-card">
@@ -835,7 +869,11 @@ body{font-size:18px}
             </div>
             <div class="feedback-section">
               <div class="feedback-section-title">🚀 Level 2 — C1 / FCE-quality upgrade</div>
-              <div class="corrected-box" style="background:var(--purple-light);border-color:var(--purple-mid)"><div class="corr-label" style="color:var(--purple)">⬆️ Same content, elevated to C1 level</div><div id="t4-upgraded"></div></div>
+              <div class="corrected-box" style="background:var(--purple-light);border-color:var(--purple-mid)">
+                <div class="corr-label" style="color:var(--purple)">⬆️ Same content, elevated to C1 level</div>
+                <div id="t4-upgraded"></div>
+                <div id="t4-c1-checklist" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--purple-mid)"></div>
+              </div>
             </div>
             <div class="sample-toggle">
               <div class="sample-toggle-header" onclick="toggleSample('t4')">
@@ -1015,9 +1053,9 @@ function scoreClass(n) {
 }
 
 function bandLabel(total) {
-  if (total >= 14) return '🌟 Excellent — Target Score Achieved!';
-  if (total >= 11) return '✅ Good — Minor improvements needed';
-  if (total >= 8)  return '📈 Fair — Focus on development & details';
+  if (total >= 18) return '🌟 Excellent — B2+ / Competition Ready!';
+  if (total >= 15) return '✅ Strong B2 — Minor improvements needed';
+  if (total >= 11) return '📈 B1–B2 — Focus on completeness & depth';
   return '📚 Keep practicing — Use the template!';
 }
 
@@ -1076,22 +1114,41 @@ async function submitT3() {
   const question = state.t3.data.question;
   const wordCount = essay.split(/\s+/).length;
 
-  const prompt = `You are an ETS-certified TOEFL Junior Writing examiner AND a Cambridge FCE/C1 writing coach. Grade the following student essay for Writing Task 3 (Opinion paragraph), then provide two levels of rewrite.
+  const prompt = `You are an ETS-certified TOEFL Junior Writing examiner AND a Cambridge C1/FCE writing coach training a student for a national competition. Your goal: give the most rigorous, competition-level feedback possible.
 
 QUESTION: "${question}"
 
 STUDENT ESSAY (${wordCount} words):
 "${essay}"
 
-Score each criterion from 1-4 using TOEFL Junior rubric standards:
+━━━ PART A: TOEFL JUNIOR SCORING (5 criteria, 1-4 each = 20 total) ━━━
 
-⚠️ CRITERION 0 — TASK RESPONSE CHECK (do this FIRST before scoring anything):
-Ask yourself: Does this essay actually answer the question asked? Does the student take a clear side on THIS specific topic? If the essay is off-topic, completely ignores the question, or gives only vague statements unrelated to the prompt, set score0 = 1 and explain clearly. If the essay attempts to answer but is incomplete, score0 = 2. If it answers but lacks depth, score0 = 3. Full on-topic with both reasons clearly tied to the question = 4.
+Score each criterion strictly:
 
-1. Task Response (1-4): Does the essay directly answer THIS question? Does the student clearly take one side? Are BOTH reasons logically connected to the specific question asked — not just generic statements that could apply to any topic? Score 1 if off-topic or ignores the question. Score 2 if partially on-topic. Score 3 if on-topic but one reason is weak/generic. Score 4 if fully on-topic with 2 specific, question-relevant reasons.
-2. Clear Opinion (1-4): Is position clearly stated at start? Is it maintained consistently throughout?
-3. Development (1-4): Are there specific concrete examples for each reason — not just general statements?
-4. Language (1-4): Grammar, spelling, connectors, sentence variety, word count (100-150 is ideal)?
+1. Task Response (1-4): Does the essay directly answer THIS specific question? Does the student clearly take ONE side? Are BOTH reasons logically connected to THIS question — not generic statements usable for any topic? 1=off-topic. 2=partially on-topic. 3=on-topic but one reason is weak/generic. 4=fully on-topic, both reasons question-specific.
+
+2. Clear Opinion (1-4): Is the position stated explicitly in sentence 1? Is it maintained with NO contradictions throughout? 1=no clear position. 2=vague. 3=clear but wobbles. 4=crystal clear and consistent.
+
+3. Development (1-4): Does EACH reason have a SPECIFIC, CONCRETE example — not just a general claim? 1=no examples. 2=one vague example. 3=examples present but one is generic. 4=both reasons have vivid, specific school-life examples.
+
+4. Language (1-4): Grammar accuracy, spelling, connector variety, sentence complexity, word count (100-150 ideal). 1=frequent errors blocking meaning. 2=several errors. 3=minor errors only. 4=accurate throughout with varied structures.
+
+5. Argument Depth (1-4) — NEW: Does the student go BEYOND stating a reason to explain WHY it matters or what it leads to? Is there a counter-argument acknowledged and dismissed? Does the conclusion add a new insight rather than just repeat? 1=flat restatement of topic only. 2=reasons stated but no explanation of impact. 3=some depth in one reason. 4=both reasons developed with clear impact/consequence + counter dismissed + insightful conclusion.
+
+━━━ PART B: C1 POTENTIAL SCORE (1-5, separate from TOEFL score) ━━━
+
+Assess independently of TOEFL score. Check for C1 markers:
+- Nominalization: e.g. "the introduction of X" instead of "X was introduced"
+- Hedging: e.g. "This would appear to suggest…", "It could be argued that…"
+- Concession: "While some may argue X, the evidence suggests…"
+- Lexical precision: domain-specific or nuanced word choices vs vague words
+- Syntactic complexity: relative clauses, participle clauses, conditionals, inversion
+- Inferential conclusion: draws a broader implication, not just "so I think X is better"
+
+c1Score: 1=no C1 markers at all (pure B1). 2=1 marker present. 3=2-3 markers. 4=3-4 markers used correctly. 5=4+ markers, reads like a genuine C1 writer.
+c1Verdict: One sentence verdict + what specific C1 feature is closest to breaking through (e.g. "Strong B2 — one more complex clause structure away from C1").
+
+━━━ PART C: FEEDBACK & REWRITES ━━━
 
 Return ONLY valid JSON (no markdown fences):
 {
@@ -1099,26 +1156,37 @@ Return ONLY valid JSON (no markdown fences):
   "score2": number,
   "score3": number,
   "score4": number,
-  "taskResponseAlert": "If score1 is 1 or 2, write a clear warning here explaining what part of the question was missed or misunderstood, and what the student should have written about instead. If score1 is 3-4, write empty string.",
-  "strengths": "2-3 specific things the student did well. Be encouraging and concrete. Quote actual phrases from their essay.",
-  "improvements": "2-3 specific, actionable improvements with concrete suggestions. For each weakness, quote the student original sentence AND show a better version. Format: Original: ... / Better: ... / Why: ...",
-  "corrected": "LEVEL 1 - Corrected (B1-B2): Fix all grammar/spelling/punctuation errors. Replace vague words with more precise ones. Add one missing connector where natural. Keep the student own ideas, structure and voice. 100-150 words.",
-  "upgraded": "LEVEL 2 - C1/FCE upgrade: Rewrite the same ideas at C1 level. Use: (a) a more sophisticated opener instead of I think that; (b) at least one complex structure such as a relative clause, participle clause, or conditional; (c) two precise vocabulary upgrades marked as [UPGRADE: old to new]; (d) a counter-argument with concession using While some may argue...; (e) a stronger conclusion. 120-150 words. End with one line: Key upgrades: listing the 3-4 main changes made.",
-  "modelAnswer": "A perfect Score-4 model answer for this question at C1/FCE level (125-140 words, 7 sentences). Mark connector words and advanced phrases with <hl>tags</hl>."
+  "score5": number,
+  "c1Score": number,
+  "c1Verdict": "one-sentence verdict on C1 potential",
+  "taskResponseAlert": "If score1 is 1 or 2: explain exactly what was missed. If 3-4: empty string.",
+  "strengths": "2-3 specific strengths. Quote exact phrases from the essay. Mention any C1 features already present.",
+  "improvements": "3 specific improvements. For each: Original: [quote] / Better: [rewrite] / Why: [explanation]. Include one note about the highest-impact C1 upgrade for this specific essay.",
+  "corrected": "LEVEL 1 — B1/B2 corrected: Fix all errors. Replace any vague words with precise ones. Add one connector where missing. Keep student voice and structure. 100-150 words.",
+  "upgraded": "LEVEL 2 — C1/FCE upgrade of the SAME essay: (a) Replace opener with a sophisticated structure e.g. nominal clause 'That X can Y is widely acknowledged'; (b) Use ONE nominalization e.g. 'the implementation of X' — mark as [NOM]; (c) Add hedging e.g. 'It could be argued' or 'This would suggest' — mark as [HEDGE]; (d) Rewrite ONE reason using a relative or participle clause — mark as [SYNTAX]; (e) Upgrade TWO vocabulary items — mark as [UPGRADE: old→new]; (f) Add concession 'While some may argue X, this overlooks…'; (g) End with an inferential conclusion drawing a broader implication. 130-150 words.",
+  "c1Checklist": "List exactly which C1 features appear in the upgraded version. Format each as: ✦ [FEATURE NAME]: quote the exact upgraded phrase. Include: Nominalization, Hedging, Concession, Syntax upgrade, Vocabulary upgrade x2, Inferential conclusion.",
+  "modelAnswer": "A perfect Score-4 model answer at C1 level (125-140 words, 7 sentences). Mark ALL connector words with <hl>tags</hl> AND all C1 features with <c1>tags</c1>."
 }`;
 
   try {
-    const result = await callClaude(prompt, 1500);
-    const total = result.score1 + result.score2 + result.score3 + result.score4;
+    const result = await callClaude(prompt, 2000);
+    const total = result.score1 + result.score2 + result.score3 + result.score4 + result.score5;
 
     document.getElementById('t3-total-score').textContent = total;
     document.getElementById('t3-band').textContent = bandLabel(total);
 
-    ['1','2','3','4'].forEach(n => {
+    ['1','2','3','4','5'].forEach(n => {
       const el = document.getElementById(`t3-s${n}`);
       el.textContent = result[`score${n}`];
       el.className = 'si-score ' + scoreClass(result[`score${n}`]);
     });
+
+    // C1 Potential Score
+    const c1Score = result.c1Score || 0;
+    document.getElementById('t3-c1-score').textContent = c1Score;
+    document.getElementById('t3-c1-verdict').textContent = result.c1Verdict || '';
+    const c1Colors = ['','#EF4444','#F97316','#EAB308','#22C55E','#7C3AED'];
+    document.getElementById('t3-c1-block').style.background = `linear-gradient(135deg, #4C1D95, ${c1Colors[c1Score] || '#7C3AED'})`;
 
     // Show task response alert if off-topic
     const alertBox = document.getElementById('t3-task-alert');
@@ -1132,8 +1200,23 @@ Return ONLY valid JSON (no markdown fences):
     document.getElementById('t3-strengths').innerHTML = result.strengths.replace(/\n/g,'<br>');
     document.getElementById('t3-improvements').innerHTML = result.improvements.replace(/\n/g,'<br>');
     document.getElementById('t3-corrected').innerHTML = result.corrected.replace(/\n/g,'<br>');
-    document.getElementById('t3-upgraded').innerHTML = (result.upgraded || '').replace(/\n/g,'<br>').replace(/\[UPGRADE: (.*?)\]/g,'<span style="background:#FDE68A;color:#92400E;border-radius:4px;padding:1px 5px;font-weight:700;font-size:12px;">⬆ $1</span>');
-    document.getElementById('t3-sample-body').innerHTML = (result.modelAnswer || '').replace(/<hl>(.*?)<\/hl>/g,'<span class="hl">$1</span>').replace(/\n/g,'<br>');
+    document.getElementById('t3-upgraded').innerHTML = (result.upgraded || '').replace(/\n/g,'<br>')
+      .replace(/\[UPGRADE: (.*?)\]/g,'<span style="background:#FDE68A;color:#92400E;border-radius:4px;padding:1px 5px;font-weight:700;font-size:12px;">⬆ $1</span>')
+      .replace(/\[NOM\]/g,'<span style="background:#DBEAFE;color:#1D4ED8;border-radius:4px;padding:1px 5px;font-weight:700;font-size:11px;">NOM</span>')
+      .replace(/\[HEDGE\]/g,'<span style="background:#D1FAE5;color:#065F46;border-radius:4px;padding:1px 5px;font-weight:700;font-size:11px;">HEDGE</span>')
+      .replace(/\[SYNTAX\]/g,'<span style="background:#EDE9FE;color:#5B21B6;border-radius:4px;padding:1px 5px;font-weight:700;font-size:11px;">SYNTAX</span>');
+
+    // C1 Checklist
+    if (result.c1Checklist) {
+      document.getElementById('t3-c1-checklist').innerHTML =
+        '<div style="font-weight:800;font-size:13px;color:#5B21B6;margin-bottom:8px;">📋 C1 Features Used in This Upgrade:</div>' +
+        result.c1Checklist.replace(/\n/g,'<br>').replace(/✦/g,'<span style="color:#7C3AED;font-weight:800;">✦</span>');
+    }
+
+    document.getElementById('t3-sample-body').innerHTML = (result.modelAnswer || '')
+      .replace(/<hl>(.*?)<\/hl>/g,'<span class="hl">$1</span>')
+      .replace(/<c1>(.*?)<\/c1>/g,'<span style="background:#EDE9FE;color:#5B21B6;border-radius:4px;padding:1px 4px;font-weight:700;">$1</span>')
+      .replace(/\n/g,'<br>');
 
     showStage('t3', 4);
   } catch(e) {
@@ -1259,7 +1342,7 @@ async function submitT4() {
   const prompt_q = state.t4.data.promptQuestion;
   const wordCount = essay.split(/\s+/).length;
 
-  const prompt = `You are an ETS-certified TOEFL Junior Writing examiner AND a Cambridge FCE/C1 writing coach. Grade the following student response for Writing Task 4 (Listen-Write paragraph), then provide two levels of rewrite.
+  const prompt = `You are an ETS-certified TOEFL Junior Writing examiner AND a Cambridge C1/FCE writing coach training a student for a national competition. Your goal: give the most rigorous, competition-level feedback possible.
 
 THE ORIGINAL TALK THE STUDENT LISTENED TO:
 "${talkScript}"
@@ -1269,15 +1352,32 @@ EXAM QUESTION: "${prompt_q}"
 STUDENT RESPONSE (${wordCount} words):
 "${essay}"
 
-Score each criterion from 1-4:
+━━━ PART A: TOEFL JUNIOR SCORING (5 criteria, 1-4 each = 20 total) ━━━
 
-⚠️ CRITERION 1 — TASK RESPONSE (do this FIRST):
-Compare the student essay against BOTH the original talk AND the exam question. Ask: Did the student write about what the talk actually said? Did they answer the specific question asked? A student who writes generally about the topic without using content from the talk scores 1-2. A student who answers the question using actual information from the talk scores 3-4.
+1. Task Response (1-4): Compare against BOTH the talk AND the question. Does the student answer the specific question using actual content from the talk? 1=ignores talk/question. 2=partially addresses but misses key points. 3=answers with some talk content but misses 1+ major point. 4=directly answers using main talk points.
 
-1. Task Response (1-4): Does the essay answer the exam question using content from the talk? Score 1 = completely ignores the talk or question. Score 2 = partially addresses the question but misses key points from the talk. Score 3 = answers the question with some talk content but misses 1+ major point. Score 4 = directly answers the question using the main points from the talk.
-2. Main Points (1-4): Did the student include 2-3 main points accurately from the talk?
-3. Details / Numbers (1-4): Did the student use specific facts, numbers, or names from the audio?
-4. Language (1-4): Grammar, spelling, connector words, sentence variety?
+2. Main Points (1-4): Did the student include the 2-3 main points from the talk accurately? 1=0-1 point captured. 2=1 point partially. 3=2 points but one inaccurate. 4=all main points captured accurately.
+
+3. Details / Numbers (1-4): Did the student use specific facts, numbers, names, or technical terms from the audio? 1=no specifics. 2=1 specific detail. 3=2 specific details. 4=3+ specific details/numbers used correctly.
+
+4. Language (1-4): Grammar, spelling, connector words, sentence variety, paragraph structure. 1=frequent errors. 2=several errors. 3=minor errors. 4=accurate and varied.
+
+5. Completeness (1-4) — NEW (this is the B1 vs B2 differentiator): What percentage of the talk's content is captured? Did the student omit any major point? 1=only 1 point from talk, major omissions. 2=about half the talk covered. 3=most content covered, 1 notable omission. 4=virtually complete — all main ideas + most supporting details conveyed, almost no omissions (matches B2 descriptor).
+
+━━━ PART B: C1 POTENTIAL SCORE (1-5, separate from TOEFL score) ━━━
+
+Assess independently of TOEFL score. Check for C1 markers:
+- Nominalization: "the migration of X" vs "X migrates"
+- Academic hedging: "This suggests that…", "It appears that…", "Evidence indicates…"
+- Synthesis: connecting two points with a cause-effect or contrast structure beyond simple connectors
+- Lexical precision: technical/academic vocabulary vs vague words (e.g. "accumulate" vs "build up")
+- Syntactic complexity: embedded clauses, passive voice used strategically, non-finite clauses
+- Inferential conclusion: draws a wider implication beyond summarizing the talk
+
+c1Score: 1=no C1 markers (pure B1). 2=1 marker. 3=2-3 markers. 4=3-4 markers used correctly. 5=4+ markers, reads like a genuine C1 academic writer.
+c1Verdict: One sentence verdict + the specific C1 feature the student is closest to unlocking.
+
+━━━ PART C: FEEDBACK & REWRITES ━━━
 
 Return ONLY valid JSON (no markdown fences):
 {
@@ -1285,26 +1385,37 @@ Return ONLY valid JSON (no markdown fences):
   "score2": number,
   "score3": number,
   "score4": number,
-  "taskResponseAlert": "If score1 is 1 or 2: clearly explain what the student wrote about vs. what the talk/question actually required. List 1-2 specific points from the talk that were completely ignored. If score1 is 3-4: write empty string.",
-  "strengths": "2-3 specific things done well. Be encouraging. Quote actual phrases from the essay.",
-  "improvements": "2-3 specific, actionable improvements. For each issue, quote the student original sentence AND show a better version. Format: Original: ... / Better: ... / Why: ... Also list any key facts from the talk that were missed entirely.",
-  "corrected": "LEVEL 1 - Corrected (B1-B2): Fix all grammar/spelling errors AND insert any missing key facts from the original talk. Keep the student voice. 100-150 words.",
-  "upgraded": "LEVEL 2 - C1/FCE upgrade: Rewrite the same content at C1 level. Use: (a) a more academic topic sentence structure; (b) at least one complex sentence with a subordinate clause; (c) two vocabulary upgrades marked as [UPGRADE: old to new]; (d) varied connectors beyond just firstly/secondly; (e) a concluding sentence that draws an inference or implication, not just a summary. 120-150 words. End with one line: Key upgrades: listing the 3-4 main changes made.",
-  "modelAnswer": "A perfect Score-4 model paragraph for this task at C1/FCE level using all key info from the talk (130-150 words). Mark connector phrases and advanced language with <hl>tags</hl>."
+  "score5": number,
+  "c1Score": number,
+  "c1Verdict": "one-sentence verdict on C1 potential",
+  "taskResponseAlert": "If score1 is 1 or 2: list 1-2 specific points from the talk that were completely ignored. If 3-4: empty string.",
+  "strengths": "2-3 specific things done well. Quote exact phrases. Note any C1 feature already present.",
+  "improvements": "3 specific improvements. For each: Original: [quote] / Better: [rewrite] / Why: [explanation]. Include: list any key facts/numbers from the talk that were missed entirely. End with highest-impact C1 upgrade for this specific essay.",
+  "corrected": "LEVEL 1 — B1/B2 corrected: Fix all grammar/spelling errors AND insert any key facts from the talk that were missing. Keep student voice. 110-150 words.",
+  "upgraded": "LEVEL 2 — C1 upgrade of the SAME content: (a) Replace topic sentence with an academic nominal structure e.g. 'The talk examines how X...' or 'X can be understood as...'; (b) Use ONE nominalization — mark as [NOM]; (c) Add academic hedging 'Evidence from the talk suggests…' or 'This implies that…' — mark as [HEDGE]; (d) Rewrite a body sentence using a non-finite or embedded clause — mark as [SYNTAX]; (e) Upgrade TWO vocabulary items to academic/technical level — mark as [UPGRADE: old→new]; (f) Add a synthesis connector showing cause-effect or contrast beyond firstly/secondly; (g) Concluding sentence draws an implication or significance beyond restating the content. 130-150 words.",
+  "c1Checklist": "List exactly which C1 features appear in the upgraded version. Format each as: ✦ [FEATURE NAME]: quote the exact upgraded phrase. Include: Nominalization, Hedging, Synthesis connector, Syntax upgrade, Vocabulary upgrade x2, Inferential conclusion.",
+  "modelAnswer": "A perfect Score-4 model paragraph at C1 level using ALL key info from the talk (130-150 words). Mark connector phrases with <hl>tags</hl> AND all C1 features with <c1>tags</c1>."
 }`;
 
   try {
-    const result = await callClaude(prompt, 1500);
-    const total = result.score1 + result.score2 + result.score3 + result.score4;
+    const result = await callClaude(prompt, 2000);
+    const total = result.score1 + result.score2 + result.score3 + result.score4 + result.score5;
 
     document.getElementById('t4-total-score').textContent = total;
     document.getElementById('t4-band').textContent = bandLabel(total);
 
-    ['1','2','3','4'].forEach(n => {
+    ['1','2','3','4','5'].forEach(n => {
       const el = document.getElementById(`t4-s${n}`);
       el.textContent = result[`score${n}`];
       el.className = 'si-score ' + scoreClass(result[`score${n}`]);
     });
+
+    // C1 Potential Score
+    const c1Score = result.c1Score || 0;
+    document.getElementById('t4-c1-score').textContent = c1Score;
+    document.getElementById('t4-c1-verdict').textContent = result.c1Verdict || '';
+    const c1Colors = ['','#EF4444','#F97316','#EAB308','#22C55E','#7C3AED'];
+    document.getElementById('t4-c1-block').style.background = `linear-gradient(135deg, #4C1D95, ${c1Colors[c1Score] || '#7C3AED'})`;
 
     // Show task response alert if off-topic
     const alertBox = document.getElementById('t4-task-alert');
@@ -1318,8 +1429,23 @@ Return ONLY valid JSON (no markdown fences):
     document.getElementById('t4-strengths').innerHTML = result.strengths.replace(/\n/g,'<br>');
     document.getElementById('t4-improvements').innerHTML = result.improvements.replace(/\n/g,'<br>');
     document.getElementById('t4-corrected').innerHTML = result.corrected.replace(/\n/g,'<br>');
-    document.getElementById('t4-upgraded').innerHTML = (result.upgraded || '').replace(/\n/g,'<br>').replace(/\[UPGRADE: (.*?)\]/g,'<span style="background:#FDE68A;color:#92400E;border-radius:4px;padding:1px 5px;font-weight:700;font-size:12px;">⬆ $1</span>');
-    document.getElementById('t4-sample-body').innerHTML = (result.modelAnswer || '').replace(/<hl>(.*?)<\/hl>/g,'<span class="hl">$1</span>').replace(/\n/g,'<br>');
+    document.getElementById('t4-upgraded').innerHTML = (result.upgraded || '').replace(/\n/g,'<br>')
+      .replace(/\[UPGRADE: (.*?)\]/g,'<span style="background:#FDE68A;color:#92400E;border-radius:4px;padding:1px 5px;font-weight:700;font-size:12px;">⬆ $1</span>')
+      .replace(/\[NOM\]/g,'<span style="background:#DBEAFE;color:#1D4ED8;border-radius:4px;padding:1px 5px;font-weight:700;font-size:11px;">NOM</span>')
+      .replace(/\[HEDGE\]/g,'<span style="background:#D1FAE5;color:#065F46;border-radius:4px;padding:1px 5px;font-weight:700;font-size:11px;">HEDGE</span>')
+      .replace(/\[SYNTAX\]/g,'<span style="background:#EDE9FE;color:#5B21B6;border-radius:4px;padding:1px 5px;font-weight:700;font-size:11px;">SYNTAX</span>');
+
+    // C1 Checklist
+    if (result.c1Checklist) {
+      document.getElementById('t4-c1-checklist').innerHTML =
+        '<div style="font-weight:800;font-size:13px;color:#5B21B6;margin-bottom:8px;">📋 C1 Features Used in This Upgrade:</div>' +
+        result.c1Checklist.replace(/\n/g,'<br>').replace(/✦/g,'<span style="color:#7C3AED;font-weight:800;">✦</span>');
+    }
+
+    document.getElementById('t4-sample-body').innerHTML = (result.modelAnswer || '')
+      .replace(/<hl>(.*?)<\/hl>/g,'<span class="hl">$1</span>')
+      .replace(/<c1>(.*?)<\/c1>/g,'<span style="background:#EDE9FE;color:#5B21B6;border-radius:4px;padding:1px 4px;font-weight:700;">$1</span>')
+      .replace(/\n/g,'<br>');
 
     showStage('t4', 5);
   } catch(e) {
@@ -1371,9 +1497,14 @@ function downloadResult(part) {
   const s2 = document.getElementById(`${part}-s2`)?.textContent || '–';
   const s3 = document.getElementById(`${part}-s3`)?.textContent || '–';
   const s4 = document.getElementById(`${part}-s4`)?.textContent || '–';
+  const s5 = document.getElementById(`${part}-s5`)?.textContent || '–';
   const criteriaLabels = isT3
-    ? ['Task Response', 'Clear Opinion', 'Development', 'Language']
-    : ['Task Response', 'Main Points', 'Details / Numbers', 'Language'];
+    ? ['Task Response', 'Clear Opinion', 'Development', 'Language', 'Argument Depth']
+    : ['Task Response', 'Main Points', 'Details / Numbers', 'Language', 'Completeness'];
+
+  const c1Score = document.getElementById(`${part}-c1-score`)?.textContent || '–';
+  const c1Verdict = document.getElementById(`${part}-c1-verdict`)?.textContent || '';
+  const c1Checklist = document.getElementById(`${part}-c1-checklist`)?.innerText || '';
 
   const taskAlert = document.getElementById(`${part}-task-alert`)?.style.display !== 'none'
     ? document.getElementById(`${part}-task-alert`)?.innerText || '' : '';
@@ -1465,13 +1596,29 @@ ${!isT3?'.question-box{background:#ECFDF5;border-color:#A7F3D0}':''}
     <div class="section-title">💬 3. Nhận xét chi tiết</div>
 
     <div class="big-score-row">
+      <div style="font-size:12px;opacity:.7;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">TOEFL Junior Score</div>
       <div class="big-num">${totalScore}</div>
-      <div style="font-size:13px;opacity:.75;margin-top:2px">Tổng điểm (/ 16)</div>
+      <div style="font-size:13px;opacity:.75;margin-top:2px">Tổng điểm (/ 20)</div>
       <div class="band">${band}</div>
     </div>
 
-    <div class="score-row">
-      ${[s1,s2,s3,s4].map((s,i)=>`<div class="score-cell"><div class="label">${criteriaLabels[i]}</div><div class="num ${scoreClassStr(s)}">${s}</div><div class="max">/ 4</div></div>`).join('')}
+    <div style="background:linear-gradient(135deg,#4C1D95,#7C3AED);border-radius:12px;padding:16px 20px;margin-bottom:16px;color:#fff;display:flex;align-items:center;gap:16px">
+      <div style="text-align:center;flex-shrink:0">
+        <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:44px;line-height:1">${c1Score}</div>
+        <div style="font-size:12px;opacity:.75">/ 5</div>
+      </div>
+      <div>
+        <div style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:15px;margin-bottom:4px">🏆 C1 Potential Score</div>
+        <div style="font-size:13px;opacity:.85;line-height:1.6">${escapeHtml(c1Verdict)}</div>
+      </div>
+    </div>
+
+    <div class="score-row" style="grid-template-columns:repeat(5,1fr)">
+      ${[s1,s2,s3,s4,s5].map((s,i)=>`<div class="score-cell" ${i===4?'style="border-color:'+(isT3?'#C4B5FD;background:#F5F3FF':'#A7F3D0;background:#ECFDF5')+'"':''}>
+        <div class="label" ${i===4?'style="color:'+(isT3?'#7C3AED':'#059669')+'"':''}>${criteriaLabels[i]}</div>
+        <div class="num ${scoreClassStr(s)}">${s}</div>
+        <div class="max">/ 4</div>
+      </div>`).join('')}
     </div>
 
     ${taskAlert ? `<div class="alert-box">⚠️ <strong>Task Response Warning:</strong> ${escapeHtml(taskAlert)}</div>` : ''}
@@ -1494,7 +1641,14 @@ ${!isT3?'.question-box{background:#ECFDF5;border-color:#A7F3D0}':''}
   <!-- 4. GỢI Ý UPGRADE C1 FCE -->
   <div class="section t4">
     <div class="section-title">🚀 4. Gợi ý nâng cấp lên C1 / FCE</div>
-    <div class="upgraded-box"><div class="corr-label p">⬆️ Cùng ý tưởng, nâng lên trình độ C1</div>${escapeHtml(upgraded).replace(/\n/g,'<br>').replace(/⬆ (.*?)(?=<|$)/g,'<span class="upgrade-tag">⬆ $1</span>')}</div>
+    <div class="upgraded-box">
+      <div class="corr-label p">⬆️ Cùng ý tưởng, nâng lên trình độ C1</div>
+      ${escapeHtml(upgraded).replace(/\n/g,'<br>').replace(/⬆ (.*?)(?=<|$)/g,'<span class="upgrade-tag">⬆ $1</span>')}
+    </div>
+    ${c1Checklist ? `<div style="margin-top:14px;background:#F5F3FF;border:1px solid #C4B5FD;border-radius:10px;padding:14px 18px;font-size:13px;line-height:1.9">
+      <div style="font-weight:800;color:#5B21B6;margin-bottom:8px;">📋 C1 Features trong bài nâng cấp:</div>
+      ${escapeHtml(c1Checklist).replace(/\n/g,'<br>')}
+    </div>` : ''}
     ${modelAnswer ? `<div style="margin-top:14px;font-size:13px;font-weight:800;color:#475569;margin-bottom:6px">💡 Bài mẫu đạt điểm tối đa (Score 4 / C1):</div><div class="model-box">${escapeHtml(modelAnswer).replace(/\n/g,'<br>')}</div>` : ''}
   </div>
 
