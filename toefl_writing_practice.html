@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -317,24 +317,27 @@ body{font-size:18px}
       ⚠️ <strong>Important — this is NOT an essay!</strong> Unlike FCE where you write 4–5 paragraphs, Task 3 is just <strong>ONE paragraph</strong>. Your introduction and conclusion are single sentences inside that paragraph.
     </div>
 
-    <div class="guide-title">📊 How it's scored (4 criteria)</div>
+    <div class="guide-title">📊 How it's scored — Official ETS Rubric (0–4)</div>
     <div class="score-grid">
+      <div class="score-card" style="background:var(--green-light);border:2px solid var(--green-mid)">
+        <div class="sc-title" style="color:var(--green)">🌟 Score 4 — Target!</div>
+        Clear position + specific supporting details/examples · Well organized & coherent · Good vocabulary variety · Varied sentence structure · Minor errors only (don't affect meaning)
+      </div>
       <div class="score-card" style="background:var(--blue-light);border:1px solid var(--blue-mid)">
-        <div class="sc-title" style="color:var(--blue)">1️⃣ Clear Opinion</div>
-        Is your position clearly stated at the start? Do you stay consistent throughout?
-      </div>
-      <div class="score-card" style="background:var(--green-light);border:1px solid var(--green-mid)">
-        <div class="sc-title" style="color:var(--green)">2️⃣ Relevant Reasons</div>
-        Are your reasons logical and directly related to the question?
-      </div>
-      <div class="score-card" style="background:var(--purple-light);border:1px solid var(--purple-mid)">
-        <div class="sc-title" style="color:var(--purple)">3️⃣ Development</div>
-        Do you give a <em>specific example</em> for each reason — not just general statements?
+        <div class="sc-title" style="color:var(--blue)">✅ Score 3</div>
+        Clear position + support (but may be incomplete) · Generally organized, occasional clarity lapses · Some vocabulary & sentence variety · Some errors (occasionally affect meaning)
       </div>
       <div class="score-card" style="background:var(--orange-light);border:1px solid var(--orange-mid)">
-        <div class="sc-title" style="color:var(--orange)">4️⃣ Language</div>
-        Correct grammar, good spelling, connector words, 100–150 words.
+        <div class="sc-title" style="color:var(--orange)">📈 Score 2</div>
+        Position stated but support is inadequate OR position only implied · Connections unclear/missing · Little vocabulary variety, simple/repetitive sentences · Errors frequently affect meaning
       </div>
+      <div class="score-card" style="background:var(--red-light);border:1px solid var(--red-mid)">
+        <div class="sc-title" style="color:var(--red)">📚 Score 1</div>
+        No clear position OR incoherent support · Unorganized · Very limited vocabulary used incorrectly · Mostly incorrect sentence structures · Many errors seriously affect meaning
+      </div>
+    </div>
+    <div class="info-box blue" style="margin-top:8px">
+      💡 <strong>The 2 key things that separate Score 3 from Score 4:</strong> (1) <strong>Specific examples</strong> — not general claims, but real/named situations; (2) <strong>Lexical variation</strong> — don't repeat the same words, show you know synonyms and connectors.
     </div>
 
     <div class="guide-title">🏗️ The 7-sentence template — use this every time</div>
@@ -458,9 +461,9 @@ body{font-size:18px}
       <div class="stage" id="t3-stage-4">
         <!-- TOEFL Score -->
         <div class="big-score">
-          <div style="font-size:13px;color:rgba(255,255,255,.7);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">TOEFL Junior Score</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.7);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">TOEFL Junior Score — Task 3</div>
           <div class="big-score-num" id="t3-total-score">–</div>
-          <div class="big-score-label">Overall Score (out of 20)</div>
+          <div class="big-score-label">ETS Score (out of 4) — Official rubric scale</div>
           <div class="big-score-band" id="t3-band">–</div>
         </div>
 
@@ -479,11 +482,11 @@ body{font-size:18px}
         <div id="t3-task-alert" style="display:none;background:#FEF2F2;border:2px solid #FECACA;border-radius:12px;padding:14px 18px;font-size:17px;line-height:1.7;margin-bottom:16px;color:#991B1B;"></div>
 
         <div class="score-display" style="grid-template-columns:repeat(5,1fr)">
-          <div class="score-item"><div class="si-label">Task Response</div><div class="si-score" id="t3-s1">–</div><div class="si-max">/ 4</div></div>
-          <div class="score-item"><div class="si-label">Clear Opinion</div><div class="si-score" id="t3-s2">–</div><div class="si-max">/ 4</div></div>
-          <div class="score-item"><div class="si-label">Development</div><div class="si-score" id="t3-s3">–</div><div class="si-max">/ 4</div></div>
-          <div class="score-item"><div class="si-label">Language</div><div class="si-score" id="t3-s4">–</div><div class="si-max">/ 4</div></div>
-          <div class="score-item" style="border-color:var(--purple-mid);background:var(--purple-light)"><div class="si-label" style="color:var(--purple)">Argument Depth</div><div class="si-score" id="t3-s5" style="color:var(--purple)">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item" style="border-color:var(--blue-mid);background:var(--blue-light)"><div class="si-label" style="color:var(--blue);font-weight:800">ETS Score</div><div class="si-score" id="t3-s1">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item"><div class="si-label">D1: Position</div><div class="si-score" id="t3-s2">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item"><div class="si-label">D2: Development</div><div class="si-score" id="t3-s3">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item"><div class="si-label">D3: Organization</div><div class="si-score" id="t3-s4">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item"><div class="si-label">D4: Language</div><div class="si-score" id="t3-s5">–</div><div class="si-max">/ 4</div></div>
         </div>
 
         <div class="feedback-card">
@@ -545,24 +548,27 @@ body{font-size:18px}
       ⚠️ <strong>Key challenge:</strong> The question appears <em>after</em> you listen — but it almost always asks for <strong>reasons / causes / how something works</strong>. So take notes on the WHY and HOW while listening.
     </div>
 
-    <div class="guide-title">📊 How it's scored (same 4 criteria)</div>
+    <div class="guide-title">📊 How it's scored — Official ETS Rubric (0–4)</div>
     <div class="score-grid">
+      <div class="score-card" style="background:var(--green-light);border:2px solid var(--green-mid)">
+        <div class="sc-title" style="color:var(--green)">🌟 Score 4 — Target!</div>
+        Accurately provides ALL key points · Uses relevant supporting details from the talk · Well organized & coherent · Shows lexical variation · Varied sentence structure · Minor errors only (don't affect meaning)
+      </div>
       <div class="score-card" style="background:var(--blue-light);border:1px solid var(--blue-mid)">
-        <div class="sc-title" style="color:var(--blue)">1️⃣ Topic Sentence</div>
-        Does your first sentence clearly state what the talk was about?
-      </div>
-      <div class="score-card" style="background:var(--green-light);border:1px solid var(--green-mid)">
-        <div class="sc-title" style="color:var(--green)">2️⃣ Main Points</div>
-        Did you include 2–3 main points from the talk?
-      </div>
-      <div class="score-card" style="background:var(--purple-light);border:1px solid var(--purple-mid)">
-        <div class="sc-title" style="color:var(--purple)">3️⃣ Details / Numbers</div>
-        Did you use specific facts, numbers, or names from the audio?
+        <div class="sc-title" style="color:var(--blue)">✅ Score 3</div>
+        Accurately provides MOST key points · Some supporting details from the talk · Generally organized, occasional clarity lapses · Some lexical & sentence variety · Some errors (occasionally affect meaning)
       </div>
       <div class="score-card" style="background:var(--orange-light);border:1px solid var(--orange-mid)">
-        <div class="sc-title" style="color:var(--orange)">4️⃣ Language</div>
-        Correct grammar, connector words, well-structured sentences.
+        <div class="sc-title" style="color:var(--orange)">📈 Score 2</div>
+        Only SOME accurate content · Minimal or no supporting details · Connections between ideas unclear/missing · Little vocabulary variety, simple sentences · Errors frequently affect meaning
       </div>
+      <div class="score-card" style="background:var(--red-light);border:1px solid var(--red-mid)">
+        <div class="sc-title" style="color:var(--red)">📚 Score 1</div>
+        Minimal or NO content from key points · No details beyond the visuals · Incoherent · Extremely limited vocabulary · Mostly incorrect sentence structures · Many errors seriously affect meaning
+      </div>
+    </div>
+    <div class="info-box green" style="margin-top:8px">
+      💡 <strong>The 2 key things that separate Score 3 from Score 4:</strong> (1) <strong>ALL key points captured</strong> — not just 2 out of 3; (2) <strong>Specific details & numbers</strong> — don't just name a point, include the exact figure or fact the teacher mentioned.
     </div>
 
     <div class="guide-title">📝 Note-taking template — draw this on paper BEFORE audio starts</div>
@@ -824,9 +830,9 @@ body{font-size:18px}
       <div class="stage" id="t4-stage-5">
         <!-- TOEFL Score -->
         <div class="big-score green">
-          <div style="font-size:13px;color:rgba(255,255,255,.7);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">TOEFL Junior Score</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.7);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">TOEFL Junior Score — Task 4</div>
           <div class="big-score-num" id="t4-total-score">–</div>
-          <div class="big-score-label">Overall Score (out of 20)</div>
+          <div class="big-score-label">ETS Score (out of 4) — Official rubric scale</div>
           <div class="big-score-band" id="t4-band">–</div>
         </div>
 
@@ -845,11 +851,11 @@ body{font-size:18px}
         <div id="t4-task-alert" style="display:none;background:#FEF2F2;border:2px solid #FECACA;border-radius:12px;padding:14px 18px;font-size:17px;line-height:1.7;margin-bottom:16px;color:#991B1B;"></div>
 
         <div class="score-display" style="grid-template-columns:repeat(5,1fr)">
-          <div class="score-item"><div class="si-label">Task Response</div><div class="si-score" id="t4-s1">–</div><div class="si-max">/ 4</div></div>
-          <div class="score-item"><div class="si-label">Main Points</div><div class="si-score" id="t4-s2">–</div><div class="si-max">/ 4</div></div>
-          <div class="score-item"><div class="si-label">Details / Numbers</div><div class="si-score" id="t4-s3">–</div><div class="si-max">/ 4</div></div>
-          <div class="score-item"><div class="si-label">Language</div><div class="si-score" id="t4-s4">–</div><div class="si-max">/ 4</div></div>
-          <div class="score-item" style="border-color:var(--green-mid);background:var(--green-light)"><div class="si-label" style="color:var(--green)">Completeness</div><div class="si-score" id="t4-s5" style="color:var(--green)">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item" style="border-color:var(--green-mid);background:var(--green-light)"><div class="si-label" style="color:var(--green);font-weight:800">ETS Score</div><div class="si-score" id="t4-s1">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item"><div class="si-label">D1: Key Points</div><div class="si-score" id="t4-s2">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item"><div class="si-label">D2: Details</div><div class="si-score" id="t4-s3">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item"><div class="si-label">D3: Organization</div><div class="si-score" id="t4-s4">–</div><div class="si-max">/ 4</div></div>
+          <div class="score-item"><div class="si-label">D4: Language</div><div class="si-score" id="t4-s5">–</div><div class="si-max">/ 4</div></div>
         </div>
 
         <div class="feedback-card">
@@ -1059,16 +1065,32 @@ function bandLabel(total) {
   return '📚 Keep practicing — Use the template!';
 }
 
+function bandLabelT3(score) {
+  if (score === 4) return '🌟 Score 4 — Excellent! Competition Ready';
+  if (score === 3) return '✅ Score 3 — Strong B2, minor improvements needed';
+  if (score === 2) return '📈 Score 2 — B1 level, needs more development';
+  if (score === 1) return '📚 Score 1 — Keep practicing with the template';
+  return '⚪ Score 0 — Off-topic or blank';
+}
+
+function bandLabelT4(score) {
+  if (score === 4) return '🌟 Score 4 — Excellent! All points captured';
+  if (score === 3) return '✅ Score 3 — Strong, most content covered';
+  if (score === 2) return '📈 Score 2 — B1 level, key points missing';
+  if (score === 1) return '📚 Score 1 — Very few points captured';
+  return '⚪ Score 0 — Off-topic or blank';
+}
+
 // ══════════════════════════════════════════════
 // ══════ TASK 3 LOGIC ══════
 // ══════════════════════════════════════════════
 async function generateT3() {
   const topicMap = {
-    school_rules: 'a school rule or policy (uniform, phone ban, homework, etc)',
-    technology: 'technology use for students (tablets, internet, AI tools, etc)',
-    environment: 'an environmental habit or action students can take',
-    social: 'friendship, teamwork, or social behavior at school',
-    hobbies: 'hobbies, sports, or after-school activities',
+    school_rules: 'school rules, policies, or academic life (uniform, phones, homework load, exams, group work, etc)',
+    technology: 'technology use by young people (social media, AI tools, tablets, video games, online learning, etc)',
+    environment: 'environmental habits, climate action, or nature topics students can relate to',
+    social: 'friendships, peer relationships, teamwork, community involvement, or volunteering',
+    hobbies: 'hobbies, sports, arts, music, reading, or after-school pursuits',
     random: 'any topic suitable for a TOEFL Junior opinion paragraph'
   };
   const chosen = topicMap[state.t3.topic] || topicMap.random;
@@ -1079,11 +1101,19 @@ async function generateT3() {
 Topic area: ${chosen}
 Level: B1-B2 (TOEFL Junior)
 
-Return ONLY valid JSON (no markdown fences) with this exact structure:
+IMPORTANT: Make this question realistic and varied. Choose ONE of these authentic TOEFL Junior question formats at random:
+- Format A: "Some people think [X]. Others think [Y]. What do you think? Use specific reasons and examples to support your answer."
+- Format B: "Do you agree or disagree with the following statement: [statement]. Use specific reasons and examples to support your answer."
+- Format C: "Some students [do X]. Other students [do Y]. Which do you prefer? Use specific reasons and examples to support your answer."
+- Format D: "What is the most important [thing] for [group/situation]? Use specific reasons and examples to support your answer."
+
+Topic diversity: vary across school life, community, technology, environment, health habits, learning styles, friendships, travel, arts vs sports, reading vs screens — NOT always school rules.
+
+Return ONLY valid JSON (no markdown fences):
 {
   "emojis": "2-3 relevant emojis representing the topic",
-  "question": "A clear opinion question in the format 'Some people think X. Others think Y. What do you think?' — one sentence presenting two sides. Keep it school-appropriate, 25-40 words.",
-  "modelAnswer": "A model 7-sentence Score-4 answer (120-140 words) following this structure: 1) opinion statement, 2) first reason, 3) specific school-life example for reason 1, 4) second reason, 5) specific example for reason 2, 6) brief counter + dismissal, 7) conclusion. Use connector words: The first reason is, Another reason is, For example, For instance, Some people think, For these reasons. Mark connector words with <hl>tag</hl>."
+  "question": "The full opinion question (25-45 words) — must end with 'Use specific reasons and examples to support your answer.'",
+  "modelAnswer": "A model 7-sentence Score-4 answer (140-160 words) following this structure: 1) clear opinion statement naming your position, 2) first reason (topic sentence), 3) concrete specific example for reason 1 with a real name/place/number, 4) second reason (topic sentence), 5) concrete specific example for reason 2 with a real name/place/number, 6) brief acknowledgment of opposite view + dismissal ('While some may argue...'), 7) conclusion restating position + broader implication. Use connector words: The first reason is, Another reason is, For example, For instance, While some may argue, For these reasons. Mark connector words with <hl>tag</hl>."
 }`;
 
   try {
@@ -1121,19 +1151,23 @@ QUESTION: "${question}"
 STUDENT ESSAY (${wordCount} words):
 "${essay}"
 
-━━━ PART A: TOEFL JUNIOR SCORING (5 criteria, 1-4 each = 20 total) ━━━
+━━━ PART A: TOEFL JUNIOR SCORING — Task 3 (Opinion) ━━━
 
-Score each criterion strictly:
+The official rubric scores holistically 0-4. Score the essay FIRST on the four official ETS descriptors below, then provide a diagnostic breakdown.
 
-1. Task Response (1-4): Does the essay directly answer THIS specific question? Does the student clearly take ONE side? Are BOTH reasons logically connected to THIS question — not generic statements usable for any topic? 1=off-topic. 2=partially on-topic. 3=on-topic but one reason is weak/generic. 4=fully on-topic, both reasons question-specific.
+OFFICIAL SCORE (1 overall score, 0-4):
+• Score 4: States a clear position; provides specific details/examples to support it; mostly well organized and coherent; shows lexical variation appropriate for task; displays varied sentence structure; may contain minor errors that do NOT interfere with meaning.
+• Score 3: States a position; provides support but may have difficulty doing so fully; generally well organized with occasional lapses in clarity; shows SOME lexical variation; may display SOME variation in sentence structure; may contain errors that OCCASIONALLY interfere with meaning.
+• Score 2: States a position but provides inadequate/incomplete support, OR only vaguely implies a position with inadequate support; connections between ideas attempted but sometimes unclear/missing; shows LITTLE lexical variation (simple/repetitive vocab) or frequently uses vocab incorrectly; shows little variation in sentence structure; may contain errors that FREQUENTLY interfere with meaning.
+• Score 1: States a position but provides incoherent/no support OR does not state a position; generally unorganized and incoherent; extremely limited vocabulary frequently used incorrectly; mostly incorrect sentence structures; many errors that SERIOUSLY interfere with meaning.
+• Score 0: Only copies words from prompt, off-topic, blank, foreign language, or keystrokes only.
 
-2. Clear Opinion (1-4): Is the position stated explicitly in sentence 1? Is it maintained with NO contradictions throughout? 1=no clear position. 2=vague. 3=clear but wobbles. 4=crystal clear and consistent.
+Now also give scores on 4 DIAGNOSTIC sub-criteria (1-4 each, for feedback purposes — these show WHERE the student lost points, they are NOT a separate scoring system):
 
-3. Development (1-4): Does EACH reason have a SPECIFIC, CONCRETE example — not just a general claim? 1=no examples. 2=one vague example. 3=examples present but one is generic. 4=both reasons have vivid, specific school-life examples.
-
-4. Language (1-4): Grammar accuracy, spelling, connector variety, sentence complexity, word count (100-150 ideal). 1=frequent errors blocking meaning. 2=several errors. 3=minor errors only. 4=accurate throughout with varied structures.
-
-5. Argument Depth (1-4) — NEW: Does the student go BEYOND stating a reason to explain WHY it matters or what it leads to? Is there a counter-argument acknowledged and dismissed? Does the conclusion add a new insight rather than just repeat? 1=flat restatement of topic only. 2=reasons stated but no explanation of impact. 3=some depth in one reason. 4=both reasons developed with clear impact/consequence + counter dismissed + insightful conclusion.
+D1. Position & Task Response (1-4): Does the essay take a clear position on THIS specific question? Is the position stated explicitly and maintained consistently?
+D2. Development & Support (1-4): Are there SPECIFIC, CONCRETE supporting details or examples? Not generic claims — real names, situations, numbers?
+D3. Organization & Coherence (1-4): Is the essay well organized? Do ideas connect logically with appropriate connectors?
+D4. Language Use (1-4): Accuracy of grammar, spelling, vocabulary variety, sentence structure variety, appropriate word count (100-150 words ideal)?
 
 ━━━ PART B: C1 POTENTIAL SCORE (1-5, separate from TOEFL score) ━━━
 
@@ -1152,28 +1186,31 @@ c1Verdict: One sentence verdict + what specific C1 feature is closest to breakin
 
 Return ONLY valid JSON (no markdown fences):
 {
-  "score1": number,
-  "score2": number,
-  "score3": number,
-  "score4": number,
-  "score5": number,
+  "score1": number (0-4, official ETS holistic score),
+  "score2": number (D1 diagnostic 1-4),
+  "score3": number (D2 diagnostic 1-4),
+  "score4": number (D3 diagnostic 1-4),
+  "score5": number (D4 diagnostic 1-4),
   "c1Score": number,
   "c1Verdict": "one-sentence verdict on C1 potential",
-  "taskResponseAlert": "If score1 is 1 or 2: explain exactly what was missed. If 3-4: empty string.",
+  "taskResponseAlert": "If score1 is 1 or 2: explain exactly what was missed or why the support was inadequate. If 3-4: empty string.",
   "strengths": "2-3 specific strengths. Quote exact phrases from the essay. Mention any C1 features already present.",
   "improvements": "3 specific improvements. For each: Original: [quote] / Better: [rewrite] / Why: [explanation]. Include one note about the highest-impact C1 upgrade for this specific essay.",
-  "corrected": "LEVEL 1 — B1/B2 corrected: Fix all errors. Replace any vague words with precise ones. Add one connector where missing. Keep student voice and structure. 100-150 words.",
-  "upgraded": "LEVEL 2 — C1/FCE upgrade of the SAME essay: (a) Replace opener with a sophisticated structure e.g. nominal clause 'That X can Y is widely acknowledged'; (b) Use ONE nominalization e.g. 'the implementation of X' — mark as [NOM]; (c) Add hedging e.g. 'It could be argued' or 'This would suggest' — mark as [HEDGE]; (d) Rewrite ONE reason using a relative or participle clause — mark as [SYNTAX]; (e) Upgrade TWO vocabulary items — mark as [UPGRADE: old→new]; (f) Add concession 'While some may argue X, this overlooks…'; (g) End with an inferential conclusion drawing a broader implication. 130-150 words.",
+  "corrected": "LEVEL 1 — B1/B2 corrected: Fix all errors. Replace any vague words with precise ones. Add one connector where missing. Keep student voice and structure. 130-160 words minimum — expand any underdeveloped reason with a concrete detail.",
+  "upgraded": "LEVEL 2 — C1/FCE upgrade of the SAME essay: (a) Replace opener with a sophisticated structure e.g. nominal clause 'That X can Y is widely acknowledged'; (b) Use ONE nominalization e.g. 'the implementation of X' — mark as [NOM]; (c) Add hedging e.g. 'It could be argued' or 'This would suggest' — mark as [HEDGE]; (d) Rewrite ONE reason using a relative or participle clause — mark as [SYNTAX]; (e) Upgrade TWO vocabulary items — mark as [UPGRADE: old→new]; (f) Add concession 'While some may argue X, this overlooks…'; (g) End with an inferential conclusion drawing a broader implication. 140-160 words.",
   "c1Checklist": "List exactly which C1 features appear in the upgraded version. Format each as: ✦ [FEATURE NAME]: quote the exact upgraded phrase. Include: Nominalization, Hedging, Concession, Syntax upgrade, Vocabulary upgrade x2, Inferential conclusion.",
-  "modelAnswer": "A perfect Score-4 model answer at C1 level (125-140 words, 7 sentences). Mark ALL connector words with <hl>tags</hl> AND all C1 features with <c1>tags</c1>."
+  "modelAnswer": "A perfect Score-4 model answer at C1 level (140-160 words, 7 sentences). Mark ALL connector words with <hl>tags</hl> AND all C1 features with <c1>tags</c1>."
 }`;
 
   try {
     const result = await callClaude(prompt, 2000);
-    const total = result.score1 + result.score2 + result.score3 + result.score4 + result.score5;
+    // score1 = ETS holistic (0-4); scores 2-5 are diagnostic sub-scores
+    const etsScore = result.score1;
+    // Convert ETS 0-4 to a display-friendly score out of 20 for the big number
+    const total = etsScore * 5; // maps 4→20, 3→15, 2→10, 1→5
 
-    document.getElementById('t3-total-score').textContent = total;
-    document.getElementById('t3-band').textContent = bandLabel(total);
+    document.getElementById('t3-total-score').textContent = etsScore;
+    document.getElementById('t3-band').textContent = bandLabelT3(etsScore);
 
     ['1','2','3','4','5'].forEach(n => {
       const el = document.getElementById(`t3-s${n}`);
@@ -1238,12 +1275,12 @@ function resetT3() {
 // ══════════════════════════════════════════════
 async function generateT4() {
   const topicMap = {
-    geography: 'geography phenomena like mountains, rivers, or rainfall patterns',
-    animals: 'an animal life cycle or adaptation',
-    weather: 'weather systems, water cycle, or climate phenomena',
-    environment: 'environmental topics like ecosystems, pollution, or conservation',
-    science: 'human body systems or basic science processes',
-    random: 'any interesting social studies or science topic for middle school'
+    geography: 'geography phenomena: mountains, rivers, soil erosion, deserts, ocean currents, tectonic plates, or coastal features',
+    animals: 'an animal adaptation, life cycle, migration, or survival strategy — choose a specific animal (not generic)',
+    weather: 'weather systems, hurricanes, monsoons, or a specific climate phenomenon (NOT the water cycle again)',
+    environment: 'ecosystems, coral reefs, deforestation, pollution, conservation efforts, or biodiversity',
+    science: 'a specific human body system, space exploration topic, plant biology, chemistry process, or physics concept suitable for middle school',
+    random: 'any interesting, specific social studies or science topic for middle school — vary widely, avoid clichés'
   };
   const chosen = topicMap[state.t4.topic] || topicMap.random;
   showStage('t4', 1);
@@ -1253,14 +1290,16 @@ async function generateT4() {
 Topic type: ${chosen}
 Level: B1-B2 (TOEFL Junior)
 
+IMPORTANT: Make the talk realistic. The teacher should present 3 clear main points with specific facts, numbers, or named examples for each. Topics should vary widely — do NOT always use water cycle or seasons. Choose something specific and interesting: animal adaptations, historical events, space exploration, trade routes, plant biology, soil erosion, insect colonies, ocean currents, tectonic plates, the digestive system, desert survival, coral reefs, hurricanes, ancient civilizations, bird migration, etc.
+
 Return ONLY valid JSON (no markdown fences):
 {
   "topicName": "Short topic label, max 5 words",
   "imageEmojis": ["emoji1", "emoji2", "emoji3", "emoji4"],
   "imageCaption": "What the visuals represent, max 8 words",
-  "talkScript": "A teacher's academic talk, 200-230 words. Start: 'Today we are going to talk about...'. Include: clear topic intro (1-2 sentences), Point 1 with a specific number or fact, Point 2 with a specific number or fact, Point 3 if natural, brief conclusion. Use B1-B2 vocabulary. Speak as if to a class.",
-  "promptQuestion": "The exam question shown AFTER listening. Format: 'Write a paragraph that explains [topic]. Be sure to include as many details as possible. Write in complete sentences.'",
-  "modelAnswer": "A model 8-sentence Score-4 written paragraph (130-150 words) using the template: topic sentence, point 1 + detail/number, point 2 + detail/number, point 3 + detail if available, conclusion. Mark connector phrases with <hl>tags</hl>."
+  "talkScript": "A teacher's academic talk, 210-240 words. Start: 'Today we are going to talk about...'. Structure: clear topic intro (1-2 sentences), Point 1 with a SPECIFIC number or named fact, Point 2 with a SPECIFIC number or named fact, Point 3 with a SPECIFIC number or named fact, brief conclusion summarizing the 3 points. Use B1-B2 vocabulary. Use clear transition signals: 'The first reason is...', 'Another important point is...', 'Finally,...'. Speak as if to a class of 12-14 year olds.",
+  "promptQuestion": "The exam question shown AFTER listening. Format: 'Write a paragraph that explains [specific aspect of the topic]. Be sure to include as many details as possible. Write in complete sentences.'",
+  "modelAnswer": "A model 8-sentence Score-4 written paragraph (140-160 words) using this structure: Sentence 1 topic sentence naming the topic and overview; Sentences 2-3 Point 1 + specific detail/number from the talk; Sentences 4-5 Point 2 + specific detail/number from the talk; Sentences 6-7 Point 3 + specific detail/number from the talk; Sentence 8 conclusion. Mark connector phrases with <hl>tags</hl>."
 }`;
 
   try {
@@ -1352,17 +1391,23 @@ EXAM QUESTION: "${prompt_q}"
 STUDENT RESPONSE (${wordCount} words):
 "${essay}"
 
-━━━ PART A: TOEFL JUNIOR SCORING (5 criteria, 1-4 each = 20 total) ━━━
+━━━ PART A: TOEFL JUNIOR SCORING — Task 4 (Listen-Write) ━━━
 
-1. Task Response (1-4): Compare against BOTH the talk AND the question. Does the student answer the specific question using actual content from the talk? 1=ignores talk/question. 2=partially addresses but misses key points. 3=answers with some talk content but misses 1+ major point. 4=directly answers using main talk points.
+The official rubric scores holistically 0-4. Score the essay FIRST on the four official ETS descriptors below, then provide a diagnostic breakdown.
 
-2. Main Points (1-4): Did the student include the 2-3 main points from the talk accurately? 1=0-1 point captured. 2=1 point partially. 3=2 points but one inaccurate. 4=all main points captured accurately.
+OFFICIAL SCORE (1 overall score, 0-4):
+• Score 4: Accurately provides ALL key points from the talk; provides support using relevant details from the talk; is mostly well organized and coherent; shows lexical variation appropriate for the task; displays varied sentence structure appropriate for the task; may contain errors but they do NOT interfere with meaning or clarity.
+• Score 3: Accurately provides MOST key points; provides SOME supporting details from the talk; is generally organized, with an occasional lapse of clarity when connecting ideas; shows SOME lexical variation appropriate for the task; may display SOME varied sentence structure; may contain errors that OCCASIONALLY interfere with meaning.
+• Score 2: Provides SOME accurate content from the key points; provides minimal or NO supporting details from the talk; connections between ideas are attempted but often unclear or missing; shows LITTLE lexical variation (simple and repetitive vocabulary) or frequently uses vocabulary incorrectly; shows little variation in sentence structure (mostly simple and short) or shows little control of sentence structures; may contain errors that FREQUENTLY interfere with meaning.
+• Score 1: Provides minimal or NO content from the key points; does not provide details beyond those shown in the visuals; provides incoherent or no support for any of the points; is generally unorganized and incoherent; displays extremely limited vocabulary frequently used incorrectly; uses mostly incorrect sentence structures; displays many errors that SERIOUSLY interfere with meaning.
+• Score 0: Only copies words from prompt, off-topic, blank, foreign language, or keystrokes only.
 
-3. Details / Numbers (1-4): Did the student use specific facts, numbers, names, or technical terms from the audio? 1=no specifics. 2=1 specific detail. 3=2 specific details. 4=3+ specific details/numbers used correctly.
+Now also give scores on 4 DIAGNOSTIC sub-criteria (1-4 each, for feedback — NOT a separate scoring system):
 
-4. Language (1-4): Grammar, spelling, connector words, sentence variety, paragraph structure. 1=frequent errors. 2=several errors. 3=minor errors. 4=accurate and varied.
-
-5. Completeness (1-4) — NEW (this is the B1 vs B2 differentiator): What percentage of the talk's content is captured? Did the student omit any major point? 1=only 1 point from talk, major omissions. 2=about half the talk covered. 3=most content covered, 1 notable omission. 4=virtually complete — all main ideas + most supporting details conveyed, almost no omissions (matches B2 descriptor).
+D1. Key Points Accuracy (1-4): How many of the talk's main points did the student include accurately? All=4, most=3, some=2, very few=1.
+D2. Supporting Details (1-4): Did the student use specific facts, numbers, names, technical terms from the talk? 3+=4, 2=3, 1=2, 0=1.
+D3. Organization & Coherence (1-4): Is the paragraph well structured with a clear topic sentence, body, and conclusion? Good connectors used?
+D4. Language Use (1-4): Grammar accuracy, spelling, vocabulary variety, sentence structure variety.
 
 ━━━ PART B: C1 POTENTIAL SCORE (1-5, separate from TOEFL score) ━━━
 
@@ -1381,28 +1426,29 @@ c1Verdict: One sentence verdict + the specific C1 feature the student is closest
 
 Return ONLY valid JSON (no markdown fences):
 {
-  "score1": number,
-  "score2": number,
-  "score3": number,
-  "score4": number,
-  "score5": number,
+  "score1": number (0-4, official ETS holistic score),
+  "score2": number (D1 diagnostic 1-4),
+  "score3": number (D2 diagnostic 1-4),
+  "score4": number (D3 diagnostic 1-4),
+  "score5": number (D4 diagnostic 1-4),
   "c1Score": number,
   "c1Verdict": "one-sentence verdict on C1 potential",
-  "taskResponseAlert": "If score1 is 1 or 2: list 1-2 specific points from the talk that were completely ignored. If 3-4: empty string.",
-  "strengths": "2-3 specific things done well. Quote exact phrases. Note any C1 feature already present.",
-  "improvements": "3 specific improvements. For each: Original: [quote] / Better: [rewrite] / Why: [explanation]. Include: list any key facts/numbers from the talk that were missed entirely. End with highest-impact C1 upgrade for this specific essay.",
-  "corrected": "LEVEL 1 — B1/B2 corrected: Fix all grammar/spelling errors AND insert any key facts from the talk that were missing. Keep student voice. 110-150 words.",
-  "upgraded": "LEVEL 2 — C1 upgrade of the SAME content: (a) Replace topic sentence with an academic nominal structure e.g. 'The talk examines how X...' or 'X can be understood as...'; (b) Use ONE nominalization — mark as [NOM]; (c) Add academic hedging 'Evidence from the talk suggests…' or 'This implies that…' — mark as [HEDGE]; (d) Rewrite a body sentence using a non-finite or embedded clause — mark as [SYNTAX]; (e) Upgrade TWO vocabulary items to academic/technical level — mark as [UPGRADE: old→new]; (f) Add a synthesis connector showing cause-effect or contrast beyond firstly/secondly; (g) Concluding sentence draws an implication or significance beyond restating the content. 130-150 words.",
+  "taskResponseAlert": "If score1 is 1 or 2: list exactly which key points from the talk were completely missing from the student's response. If 3-4: empty string.",
+  "strengths": "2-3 specific things done well. Quote exact phrases from the student's response. Note any C1 feature already present.",
+  "improvements": "3 specific improvements. For each: Original: [quote or 'missing'] / Better: [rewrite or the fact that should have been included] / Why: [explanation]. Explicitly name any key facts/numbers from the talk that were missed entirely. End with highest-impact C1 upgrade.",
+  "corrected": "LEVEL 1 — B1/B2 corrected: Fix all grammar/spelling errors AND insert any key facts from the talk that were missing. Keep student voice. 130-160 words minimum.",
+  "upgraded": "LEVEL 2 — C1 upgrade of the SAME content: (a) Replace topic sentence with an academic nominal structure e.g. 'The talk examines how X...' or 'Central to understanding X is...'; (b) Use ONE nominalization — mark as [NOM]; (c) Add academic hedging 'Evidence from the talk suggests…' or 'This implies that…' — mark as [HEDGE]; (d) Rewrite a body sentence using a non-finite or embedded clause — mark as [SYNTAX]; (e) Upgrade TWO vocabulary items to academic/technical level — mark as [UPGRADE: old→new]; (f) Add a synthesis connector showing cause-effect or contrast beyond firstly/secondly; (g) Concluding sentence draws an implication or broader significance. 140-160 words.",
   "c1Checklist": "List exactly which C1 features appear in the upgraded version. Format each as: ✦ [FEATURE NAME]: quote the exact upgraded phrase. Include: Nominalization, Hedging, Synthesis connector, Syntax upgrade, Vocabulary upgrade x2, Inferential conclusion.",
-  "modelAnswer": "A perfect Score-4 model paragraph at C1 level using ALL key info from the talk (130-150 words). Mark connector phrases with <hl>tags</hl> AND all C1 features with <c1>tags</c1>."
+  "modelAnswer": "A perfect Score-4 model paragraph at C1 level using ALL key info from the talk (140-160 words, 8 sentences). Mark connector phrases with <hl>tags</hl> AND all C1 features with <c1>tags</c1>."
 }`;
 
   try {
     const result = await callClaude(prompt, 2000);
-    const total = result.score1 + result.score2 + result.score3 + result.score4 + result.score5;
+    // score1 = ETS holistic (0-4); scores 2-5 are diagnostic sub-scores
+    const etsScore = result.score1;
 
-    document.getElementById('t4-total-score').textContent = total;
-    document.getElementById('t4-band').textContent = bandLabel(total);
+    document.getElementById('t4-total-score').textContent = etsScore;
+    document.getElementById('t4-band').textContent = bandLabelT4(etsScore);
 
     ['1','2','3','4','5'].forEach(n => {
       const el = document.getElementById(`t4-s${n}`);
@@ -1499,8 +1545,8 @@ function downloadResult(part) {
   const s4 = document.getElementById(`${part}-s4`)?.textContent || '–';
   const s5 = document.getElementById(`${part}-s5`)?.textContent || '–';
   const criteriaLabels = isT3
-    ? ['Task Response', 'Clear Opinion', 'Development', 'Language', 'Argument Depth']
-    : ['Task Response', 'Main Points', 'Details / Numbers', 'Language', 'Completeness'];
+    ? ['ETS Score', 'D1: Position', 'D2: Development', 'D3: Organization', 'D4: Language']
+    : ['ETS Score', 'D1: Key Points', 'D2: Details', 'D3: Organization', 'D4: Language'];
 
   const c1Score = document.getElementById(`${part}-c1-score`)?.textContent || '–';
   const c1Verdict = document.getElementById(`${part}-c1-verdict`)?.textContent || '';
@@ -1596,9 +1642,9 @@ ${!isT3?'.question-box{background:#ECFDF5;border-color:#A7F3D0}':''}
     <div class="section-title">💬 3. Nhận xét chi tiết</div>
 
     <div class="big-score-row">
-      <div style="font-size:12px;opacity:.7;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">TOEFL Junior Score</div>
+      <div style="font-size:12px;opacity:.7;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">TOEFL Junior Score — ${taskLabel}</div>
       <div class="big-num">${totalScore}</div>
-      <div style="font-size:13px;opacity:.75;margin-top:2px">Tổng điểm (/ 20)</div>
+      <div style="font-size:13px;opacity:.75;margin-top:2px">ETS Score (/ 4) — Official rubric</div>
       <div class="band">${band}</div>
     </div>
 
@@ -1614,12 +1660,13 @@ ${!isT3?'.question-box{background:#ECFDF5;border-color:#A7F3D0}':''}
     </div>
 
     <div class="score-row" style="grid-template-columns:repeat(5,1fr)">
-      ${[s1,s2,s3,s4,s5].map((s,i)=>`<div class="score-cell" ${i===4?'style="border-color:'+(isT3?'#C4B5FD;background:#F5F3FF':'#A7F3D0;background:#ECFDF5')+'"':''}>
-        <div class="label" ${i===4?'style="color:'+(isT3?'#7C3AED':'#059669')+'"':''}>${criteriaLabels[i]}</div>
+      ${[s1,s2,s3,s4,s5].map((s,i)=>`<div class="score-cell" ${i===0?'style="border-color:'+(isT3?'#BFDBFE;background:#EFF6FF':'#A7F3D0;background:#ECFDF5')+'"':''}>
+        <div class="label" ${i===0?'style="font-weight:800;color:'+(isT3?'#2563EB':'#059669')+'"':''}>${criteriaLabels[i]}</div>
         <div class="num ${scoreClassStr(s)}">${s}</div>
         <div class="max">/ 4</div>
       </div>`).join('')}
     </div>
+    <div style="font-size:12px;color:#94A3B8;margin-bottom:12px;margin-top:-4px">D1–D4 = điểm chẩn đoán phụ (giải thích lý do mất điểm, không tính vào ETS Score)</div>
 
     ${taskAlert ? `<div class="alert-box">⚠️ <strong>Task Response Warning:</strong> ${escapeHtml(taskAlert)}</div>` : ''}
 
