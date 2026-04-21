@@ -1221,19 +1221,56 @@ Return ONLY a JSON object (no markdown, no explanation) with this exact structur
 }
 
 // ─── TEXT-TO-SPEECH ───
-function speak(text, onEnd) {
+
+// Tách text thành mảng câu ngắn
+function splitSentences(text) {
+  // Tách theo dấu . ! ? nhưng giữ nguyên dấu
+  return text.match(/[^.!?]+[.!?]*/g)
+    ?.map(s => s.trim())
+    .filter(s => s.length > 2) || [text];
+}
+
+// Speak tuần tự từng câu — tránh bug Chrome cắt giữa chừng
+function speakSequential(sentences, voiceRef, onEnd) {
   if (!window.speechSynthesis) { onEnd && onEnd(); return; }
-  window.speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.rate = 0.88;
-  utt.pitch = 1;
-  utt.lang = 'en-US';
-  // Try to pick a natural voice
+
+  let idx = 0;
+
+  function speakNext() {
+    if (idx >= sentences.length) {
+      onEnd && onEnd();
+      return;
+    }
+    const utt = new SpeechSynthesisUtterance(sentences[idx]);
+    utt.rate = 0.88;
+    utt.pitch = 1;
+    utt.lang = 'en-US';
+    if (voiceRef.voice) utt.voice = voiceRef.voice;
+    utt.onend = () => {
+      idx++;
+      speakNext();
+    };
+    utt.onerror = (e) => {
+      // Bỏ qua lỗi interrupted (xảy ra khi cancel), tiếp tục câu tiếp
+      if (e.error === 'interrupted') return;
+      idx++;
+      speakNext();
+    };
+    window.speechSynthesis.speak(utt);
+  }
+
+  speakNext();
+}
+
+function getVoiceRef() {
   const voices = window.speechSynthesis.getVoices();
-  const preferred = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Samantha') || v.name.includes('Karen') || v.name.includes('Daniel') || v.name.includes('Google') || v.name.includes('Natural')));
-  if (preferred) utt.voice = preferred;
-  utt.onend = onEnd || null;
-  window.speechSynthesis.speak(utt);
+  const preferred = voices.find(v =>
+    v.lang.startsWith('en') &&
+    (v.name.includes('Samantha') || v.name.includes('Karen') ||
+     v.name.includes('Daniel') || v.name.includes('Google') ||
+     v.name.includes('Natural'))
+  );
+  return { voice: preferred || null };
 }
 
 function playP3Audio() {
@@ -1246,17 +1283,21 @@ function playP3Audio() {
   status.className = 'audio-status playing';
   state.p3.audioPlayed = true;
 
-  // Format dialogue for TTS
-  const lines = state.p3.data.dialogue.split('\n').filter(l => l.trim());
-  const ttsText = lines.map(l => {
-    const colonIdx = l.indexOf(':');
-    if (colonIdx > -1) return l.slice(colonIdx + 1).trim();
-    return l;
-  }).join(' ... ');
+  window.speechSynthesis.cancel();
 
-  speak(ttsText, () => {
+  // Lấy từng dòng thoại, mỗi dòng là 1 "câu" của speaker
+  const lines = state.p3.data.dialogue.split('\n').filter(l => l.trim());
+  const sentences = lines.flatMap(l => {
+    const colonIdx = l.indexOf(':');
+    const content = colonIdx > -1 ? l.slice(colonIdx + 1).trim() : l;
+    // Tách tiếp thành câu nếu dòng dài
+    return splitSentences(content);
+  });
+
+  const voiceRef = getVoiceRef();
+  speakSequential(sentences, voiceRef, () => {
     btn.innerHTML = '<span class="btn-icon">✅</span> Played (once)';
-    status.textContent = '✅ Done! Now take notes and click Ready when you\'re done.';
+    status.textContent = "✅ Done! Now take notes and click Ready when you're done.";
     status.className = 'audio-status done';
   });
 }
@@ -1271,9 +1312,13 @@ function playP4Audio() {
   status.className = 'audio-status playing';
   state.p4.audioPlayed = true;
 
-  speak(state.p4.data.talkScript, () => {
+  window.speechSynthesis.cancel();
+
+  const sentences = splitSentences(state.p4.data.talkScript);
+  const voiceRef = getVoiceRef();
+  speakSequential(sentences, voiceRef, () => {
     btn.innerHTML = '<span class="btn-icon">✅</span> Played (once)';
-    status.textContent = '✅ Done! Now take notes and click Ready when you\'re done.';
+    status.textContent = "✅ Done! Now take notes and click Ready when you're done.";
     status.className = 'audio-status done';
   });
 }
@@ -1283,7 +1328,6 @@ if (window.speechSynthesis) {
   window.speechSynthesis.getVoices();
   window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 }
-
 // ─── TIMER ───
 function runTimer(part, totalSecs, phase, onComplete) {
   let remaining = totalSecs;
