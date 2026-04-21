@@ -241,11 +241,9 @@ body {
 /* ─── PRACTICE PANEL ─── */
 .practice-container { max-width: 100%; margin: 0; }
 
-/* Stage system */
 .stage { display: none; }
 .stage.active { display: block; }
 
-/* Generate button */
 .generate-btn {
   display: flex;
   flex-direction: column;
@@ -275,7 +273,6 @@ body {
 .p4-panel .generate-btn:hover { border-color: var(--p4); background: var(--p4-light); }
 .p4-panel .generate-btn .gen-title { color: var(--p4); }
 
-/* Topic selector */
 .topic-selector {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -301,7 +298,6 @@ body {
 .p4-panel .topic-btn:hover,
 .p4-panel .topic-btn.selected { border-color: var(--p4); color: var(--p4); background: var(--p4-light); }
 
-/* Loading */
 .loading-state {
   display: flex;
   flex-direction: column;
@@ -321,7 +317,6 @@ body {
 .p4-panel .spinner { border-top-color: var(--p4); }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Listening stage */
 .listen-card {
   background: #0F172A;
   border-radius: 14px;
@@ -347,7 +342,6 @@ body {
   color: white;
 }
 
-/* Image display for Part 4 */
 .talk-image-area {
   padding: 0 18px 18px;
   display: flex;
@@ -375,7 +369,7 @@ body {
 }
 .image-placeholder .img-icon { font-size: 96px; }
 
-/* Audio player */
+/* ─── AUDIO PLAYER ─── */
 .audio-player {
   background: white;
   border-radius: 12px;
@@ -393,6 +387,45 @@ body {
   align-items: center;
   gap: 6px;
 }
+
+/* Progress bar for audio */
+.audio-progress-wrap {
+  background: var(--gray-200);
+  border-radius: 8px;
+  height: 6px;
+  margin: 10px 0 8px;
+  overflow: hidden;
+  display: none;
+}
+.audio-progress-wrap.visible { display: block; }
+.audio-progress-bar {
+  height: 100%;
+  border-radius: 8px;
+  background: var(--p3);
+  width: 0%;
+  transition: width 0.4s linear;
+}
+.p4-panel .audio-progress-bar { background: var(--p4); }
+
+/* Currently speaking label */
+.speaking-now {
+  font-size: 23px;
+  color: var(--p3);
+  font-weight: 700;
+  min-height: 20px;
+  margin-bottom: 8px;
+  display: none;
+  align-items: center;
+  gap: 6px;
+}
+.speaking-now.visible { display: flex; }
+.p4-panel .speaking-now { color: var(--p4); }
+.speak-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: currentColor;
+  animation: speakpulse 0.8s ease-in-out infinite;
+}
+@keyframes speakpulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+
 .play-btn {
   display: flex;
   align-items: center;
@@ -426,7 +459,6 @@ body {
 .audio-status.playing { color: var(--p3); font-weight: 700; }
 .audio-status.done { color: var(--p4); font-weight: 700; }
 
-/* Note area */
 .note-area-label {
   font-family: 'Baloo 2', sans-serif;
   font-weight: 800;
@@ -499,7 +531,6 @@ body {
 }
 .btn-secondary:hover { border-color: var(--gray-400); color: var(--gray-800); }
 
-/* Prep & Record stage */
 .timer-display {
   background: #0F172A;
   border-radius: 16px;
@@ -605,12 +636,8 @@ body {
   background: #F87171;
   animation: pulse 1s infinite;
 }
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-/* Sample answer */
 .sample-answer-card {
   background: white;
   border-radius: 12px;
@@ -659,7 +686,6 @@ body {
 .try-again-btn:hover { border-color: var(--p3); color: var(--p3); }
 .p4-panel .try-again-btn:hover { border-color: var(--p4); color: var(--p4); }
 
-/* ─── MISC ─── */
 .divider { border: none; border-top: 1.5px dashed var(--gray-200); margin: 18px 0; }
 .mt8 { margin-top: 8px; }
 .mt12 { margin-top: 12px; }
@@ -774,7 +800,6 @@ body {
     <div class="sub-panel" id="p3-practice">
       <div class="practice-container" id="p3-practice-container">
 
-        <!-- STAGE 0: Pick topic -->
         <div class="stage active" id="p3-stage-0">
           <div class="section-h">Choose a conversation type:</div>
           <div class="topic-selector" id="p3-topics">
@@ -788,7 +813,6 @@ body {
           <button class="btn-primary mt16" onclick="generateP3()">✨ Generate conversation</button>
         </div>
 
-        <!-- STAGE 1: Loading -->
         <div class="stage" id="p3-stage-1">
           <div class="loading-state">
             <div class="spinner"></div>
@@ -796,7 +820,6 @@ body {
           </div>
         </div>
 
-        <!-- STAGE 2: Listen + Notes -->
         <div class="stage" id="p3-stage-2">
           <div class="listen-card">
             <div class="listen-card-header">
@@ -809,6 +832,18 @@ body {
 
           <div class="audio-player">
             <div class="audio-title">🎧 Step 1 — Listen to the conversation</div>
+
+            <!-- Speaking now indicator -->
+            <div class="speaking-now" id="p3-speaking-now">
+              <span class="speak-dot"></span>
+              <span id="p3-speaker-label">Playing…</span>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="audio-progress-wrap" id="p3-progress-wrap">
+              <div class="audio-progress-bar" id="p3-progress-bar"></div>
+            </div>
+
             <button class="play-btn" id="p3-play-btn" onclick="playP3Audio()">
               <span class="btn-icon">▶</span> Play conversation
             </button>
@@ -827,7 +862,6 @@ body {
           </div>
         </div>
 
-        <!-- STAGE 3: Prep + Record -->
         <div class="stage" id="p3-stage-3">
           <div class="timer-display">
             <div class="timer-phase prep" id="p3-timer-phase">PREPARATION TIME</div>
@@ -853,7 +887,6 @@ body {
           </div>
         </div>
 
-        <!-- STAGE 4: Review -->
         <div class="stage" id="p3-stage-4">
           <div class="info-box" style="background:#F0FDF4;border-color:#A7F3D0;margin-bottom:16px">
             <strong style="color:#059669">✅ Recording done!</strong> How did it go? Check the sample answer below.
@@ -937,7 +970,6 @@ body {
     <div class="sub-panel p4-panel" id="p4-practice">
       <div class="practice-container" id="p4-practice-container">
 
-        <!-- STAGE 0 -->
         <div class="stage active" id="p4-stage-0">
           <div class="section-h">Choose a topic area:</div>
           <div class="topic-selector p4-panel" id="p4-topics">
@@ -951,7 +983,6 @@ body {
           <button class="btn-primary mt16" style="background:var(--p4)" onclick="generateP4()">✨ Generate talk</button>
         </div>
 
-        <!-- STAGE 1 -->
         <div class="stage" id="p4-stage-1">
           <div class="loading-state">
             <div class="spinner" style="border-top-color:var(--p4)"></div>
@@ -959,7 +990,6 @@ body {
           </div>
         </div>
 
-        <!-- STAGE 2 -->
         <div class="stage" id="p4-stage-2">
           <div class="listen-card" style="background:#064E3B">
             <div class="listen-card-header">
@@ -981,10 +1011,20 @@ body {
 
           <div class="audio-player">
             <div class="audio-title">🎧 Step 1 — Listen to the teacher's talk (look at the pictures above!)</div>
+
+            <div class="speaking-now p4-panel" id="p4-speaking-now">
+              <span class="speak-dot"></span>
+              <span id="p4-speaker-label">Playing…</span>
+            </div>
+
+            <div class="audio-progress-wrap" id="p4-progress-wrap">
+              <div class="audio-progress-bar" id="p4-progress-bar"></div>
+            </div>
+
             <button class="play-btn" id="p4-play-btn" onclick="playP4Audio()" style="background:var(--p4)">
               <span class="btn-icon">▶</span> Play talk
             </button>
-            <div class="audio-status" id="p4-audio-status">Press Play to listen. You can play it once!</div>
+            <div class="audio-status" id="p4-audio-status">Press Play to listen. Look at the pictures!</div>
           </div>
 
           <div>
@@ -999,7 +1039,6 @@ body {
           </div>
         </div>
 
-        <!-- STAGE 3 -->
         <div class="stage" id="p4-stage-3">
           <div class="timer-display">
             <div class="timer-phase prep" id="p4-timer-phase">PREPARATION TIME</div>
@@ -1026,7 +1065,6 @@ body {
           </div>
         </div>
 
-        <!-- STAGE 4 -->
         <div class="stage" id="p4-stage-4">
           <div class="info-box" style="background:#F0FDF4;border-color:#A7F3D0;margin-bottom:16px">
             <strong style="color:#059669">✅ Recording done!</strong> Check the sample answer below to see how well you covered the key points.
@@ -1044,7 +1082,7 @@ body {
             <div class="sample-answer-body" id="p4-sample-body"></div>
           </div>
 
-          <button class="try-again-btn" style="--hover-color:var(--p4)" onclick="resetP4()">🔄 Try another talk</button>
+          <button class="try-again-btn" onclick="resetP4()">🔄 Try another talk</button>
         </div>
 
       </div>
@@ -1056,11 +1094,11 @@ body {
 <script>
 // ─── STATE ───
 const state = {
-  p3: { topic: 'random', data: null, audioPlayed: false, intervalId: null },
-  p4: { topic: 'random', data: null, audioPlayed: false, intervalId: null }
+  p3: { topic: 'random', data: null, audioPlayed: false, intervalId: null, ttsAborted: false },
+  p4: { topic: 'random', data: null, audioPlayed: false, intervalId: null, ttsAborted: false }
 };
 
-// ─── PROXY (Google Apps Script) ───
+// ─── PROXY ───
 const PROXY_URL = 'https://script.google.com/macros/s/AKfycbyz6yQZx1IsG2w9Uk90634jrCgqdAEWlAoRcbmSHv4NvZtdQ2CjRcip7G23fxlUSC0Z/exec';
 
 async function callClaude(prompt) {
@@ -1119,7 +1157,7 @@ function showStage(part, n) {
   document.getElementById(`${part}-stage-${n}`).classList.add('active');
 }
 
-// ─── GENERATE CONTENT VIA CLAUDE API ───
+// ─── GENERATE ───
 async function generateP3() {
   const topicMap = {
     homework: 'a teacher assigning homework with specific instructions',
@@ -1130,34 +1168,49 @@ async function generateP3() {
     random: 'any realistic school scenario'
   };
   const chosenTopic = topicMap[state.p3.topic] || topicMap.random;
-
   showStage('p3', 1);
 
   const prompt = `Generate a TOEFL Junior Speaking Part 3 (Non-academic Listen-Speak) practice question.
 
 Topic type: ${chosenTopic}
-CEFR level: B1-B2 (suitable for TOEFL Junior — intermediate vocabulary, clear grammar, not too simple but not advanced)
+CEFR level: B1-B2 (suitable for TOEFL Junior)
 
 Return ONLY a JSON object (no markdown, no explanation) with this exact structure:
 {
   "topicName": "short label for the conversation topic (max 6 words)",
-  "dialogue": "A realistic school conversation (200-250 words). Use 2-3 speakers: a teacher and/or students. Format as: Speaker1: text\\nSpeaker2: text\\n etc. Include a main announcement/task, at least 2 details, and 1-2 student questions with answers. Use B1-B2 vocabulary (e.g. discuss, organize, suggest, remind, permission, available, assignment, participate).",
+  "lines": [
+    {"speaker": "Teacher", "text": "Good morning everyone. Today I want to tell you about our upcoming science project."},
+    {"speaker": "Student1", "text": "What kind of project is it?"},
+    {"speaker": "Teacher", "text": "You will each build a model of the solar system using recycled materials."}
+  ],
   "promptQuestion": "A clear task question like: 'Your friend missed class today. Tell your friend what happened in class.'",
   "sampleResponse": "A Score-4 level spoken response (120-140 words) at B1-B2 level using connector words (She also said, On top of that, One student asked, Oh and one more thing) and full sentences. Use <hl> tags around the connector words."
-}`;
+}
+
+IMPORTANT for 'lines':
+- Use 8–12 lines total (realistic conversation length matching real TOEFL Junior)
+- Use 2–3 speakers: one teacher + one or two students
+- Speaker names must be exactly: "Teacher", "Student1", "Student2"
+- Each line must be a COMPLETE, natural spoken sentence
+- Include: main announcement, at least 2 details, 1–2 student questions with teacher answers
+- B1-B2 vocabulary: discuss, organize, remind, permission, available, assignment, participate`;
 
   try {
     const parsed = await callClaude(prompt);
     state.p3.data = parsed;
     state.p3.audioPlayed = false;
+    state.p3.ttsAborted = false;
     document.getElementById('p3-topic-name').textContent = parsed.topicName;
     document.getElementById('p3-notes').value = '';
     document.getElementById('p3-play-btn').disabled = false;
+    document.getElementById('p3-play-btn').innerHTML = '<span class="btn-icon">▶</span> Play conversation';
     document.getElementById('p3-audio-status').textContent = 'Press Play to listen. You can play it once!';
     document.getElementById('p3-audio-status').className = 'audio-status';
+    document.getElementById('p3-speaking-now').classList.remove('visible');
+    document.getElementById('p3-progress-wrap').classList.remove('visible');
     showStage('p3', 2);
   } catch(e) {
-    alert('Error generating content. Please try again.');
+    alert('Error generating content. Please try again.\n' + e.message);
     showStage('p3', 0);
   }
 }
@@ -1172,37 +1225,55 @@ async function generateP4() {
     random: 'any interesting science topic suitable for middle school'
   };
   const chosenTopic = topicMap[state.p4.topic] || topicMap.random;
-
   showStage('p4', 1);
 
   const prompt = `Generate a TOEFL Junior Speaking Part 4 (Academic Listen-Speak) practice question.
 
 Topic type: ${chosenTopic}
-CEFR level: B1-B2 (suitable for TOEFL Junior — use clear academic vocabulary appropriate for middle school students, not too technical)
+CEFR level: B1-B2 (suitable for TOEFL Junior)
 
 Return ONLY a JSON object (no markdown, no explanation) with this exact structure:
 {
   "topicName": "short topic label (max 5 words)",
   "imageEmojis": ["emoji1", "emoji2", "emoji3", "emoji4"],
   "imageCaption": "short description of what the visuals show (max 10 words)",
-  "talkScript": "A teacher's academic talk (200-240 words) at B1-B2 level. Start with 'Today we're going to talk about...' Include: topic introduction, 2-3 clear points each with a detail or example, and a brief conclusion about why it matters. Use vocabulary like: process, stage, develop, produce, release, absorb, protect, energy, environment.",
+  "sentences": [
+    "Today we're going to talk about how frogs develop from eggs into adults.",
+    "This process is called metamorphosis, which means a big change in body shape.",
+    "First, a frog begins its life as a tiny egg in the water.",
+    "The eggs hatch into tadpoles, which have tails and breathe through gills.",
+    "After a few weeks, the tadpole slowly grows legs and its tail disappears.",
+    "Finally, it becomes a frog that can live both in water and on land.",
+    "This ability to live in two environments makes frogs very special animals.",
+    "Understanding metamorphosis helps us learn how animals can change to survive."
+  ],
   "promptQuestion": "The exam question, e.g.: 'Talk about [topic]. What happens at each stage? Include as many details as you can.'",
   "promptBullets": ["bullet point 1", "bullet point 2", "bullet point 3"],
   "sampleResponse": "A Score-4 spoken response (130-150 words) at B1-B2 level using academic connectors (First, She also explained, Another important point, As a result, Overall). Use <hl> tags around the connector phrases."
-}`;
+}
+
+IMPORTANT for 'sentences':
+- Write 8–10 complete, natural spoken sentences as a teacher would say them
+- Each sentence must be COMPLETE and standalone (not mid-thought)
+- Sentences should flow naturally one after another
+- Include: topic intro, 2–3 main points each with a detail or example, brief conclusion
+- Use clear academic B1-B2 vocabulary: process, stage, develop, produce, release, absorb, protect`;
 
   try {
     const parsed = await callClaude(prompt);
     state.p4.data = parsed;
     state.p4.audioPlayed = false;
+    state.p4.ttsAborted = false;
 
     document.getElementById('p4-topic-name').textContent = parsed.topicName;
     document.getElementById('p4-notes').value = '';
     document.getElementById('p4-play-btn').disabled = false;
+    document.getElementById('p4-play-btn').innerHTML = '<span class="btn-icon">▶</span> Play talk';
     document.getElementById('p4-audio-status').textContent = 'Press Play to listen. Look at the pictures!';
     document.getElementById('p4-audio-status').className = 'audio-status';
+    document.getElementById('p4-speaking-now').classList.remove('visible');
+    document.getElementById('p4-progress-wrap').classList.remove('visible');
 
-    // Show images
     const imgContent = document.getElementById('p4-image-content');
     const imgPlaceholder = document.getElementById('p4-image-placeholder');
     if (parsed.imageEmojis && parsed.imageEmojis.length) {
@@ -1215,119 +1286,197 @@ Return ONLY a JSON object (no markdown, no explanation) with this exact structur
 
     showStage('p4', 2);
   } catch(e) {
-    alert('Error generating content. Please try again.');
+    alert('Error generating content. Please try again.\n' + e.message);
     showStage('p4', 0);
   }
 }
 
-// ─── TEXT-TO-SPEECH ───
+// ─── TTS CORE ───
+// Picks the best available English voice
+function getBestVoice(gender) {
+  const voices = window.speechSynthesis.getVoices();
+  const enVoices = voices.filter(v => v.lang.startsWith('en'));
+  if (!enVoices.length) return null;
 
-// Tách text thành mảng câu ngắn
-function splitSentences(text) {
-  // Tách theo dấu . ! ? nhưng giữ nguyên dấu
-  return text.match(/[^.!?]+[.!?]*/g)
-    ?.map(s => s.trim())
-    .filter(s => s.length > 2) || [text];
+  // Try to find gender-appropriate voice
+  const femaleKeywords = ['Samantha', 'Karen', 'Victoria', 'Moira', 'Tessa', 'Fiona', 'female', 'Female'];
+  const maleKeywords = ['Daniel', 'Tom', 'Alex', 'Fred', 'Oliver', 'male', 'Male'];
+  const keywords = gender === 'female' ? femaleKeywords : maleKeywords;
+
+  const match = enVoices.find(v => keywords.some(k => v.name.includes(k)));
+  return match || enVoices.find(v => v.lang === 'en-US') || enVoices[0];
 }
 
-// Speak tuần tự từng câu — tránh bug Chrome cắt giữa chừng
-function speakSequential(sentences, voiceRef, onEnd) {
-  if (!window.speechSynthesis) { onEnd && onEnd(); return; }
-
-  let idx = 0;
-
-  function speakNext() {
-    if (idx >= sentences.length) {
-      onEnd && onEnd();
-      return;
-    }
-    const utt = new SpeechSynthesisUtterance(sentences[idx]);
-    utt.rate = 0.88;
-    utt.pitch = 1;
+// Speak a single utterance — returns a Promise that resolves when done
+function speakOne(text, { rate = 0.88, pitch = 1, voice = null } = {}) {
+  return new Promise((resolve) => {
+    if (!window.speechSynthesis) { resolve(); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.rate = rate;
+    utt.pitch = pitch;
     utt.lang = 'en-US';
-    if (voiceRef.voice) utt.voice = voiceRef.voice;
-    utt.onend = () => {
-      idx++;
-      speakNext();
-    };
+    if (voice) utt.voice = voice;
+    utt.onend = resolve;
     utt.onerror = (e) => {
-      // Bỏ qua lỗi interrupted (xảy ra khi cancel), tiếp tục câu tiếp
-      if (e.error === 'interrupted') return;
-      idx++;
-      speakNext();
+      // 'interrupted' fires when we cancel deliberately — treat as done
+      resolve();
     };
     window.speechSynthesis.speak(utt);
-  }
-
-  speakNext();
+  });
 }
 
-function getVoiceRef() {
-  const voices = window.speechSynthesis.getVoices();
-  const preferred = voices.find(v =>
-    v.lang.startsWith('en') &&
-    (v.name.includes('Samantha') || v.name.includes('Karen') ||
-     v.name.includes('Daniel') || v.name.includes('Google') ||
-     v.name.includes('Natural'))
-  );
-  return { voice: preferred || null };
+// Chrome bug workaround: keepAlive ping every 10s to prevent silent pause
+let keepAliveTimer = null;
+function startKeepAlive() {
+  stopKeepAlive();
+  keepAliveTimer = setInterval(() => {
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.pause();
+      window.speechSynthesis.resume();
+    }
+  }, 10000);
+}
+function stopKeepAlive() {
+  if (keepAliveTimer) { clearInterval(keepAliveTimer); keepAliveTimer = null; }
 }
 
-function playP3Audio() {
+// ─── PLAY PART 3 ───
+async function playP3Audio() {
   if (state.p3.audioPlayed || !state.p3.data) return;
+
   const btn = document.getElementById('p3-play-btn');
   const status = document.getElementById('p3-audio-status');
+  const speakingNow = document.getElementById('p3-speaking-now');
+  const speakerLabel = document.getElementById('p3-speaker-label');
+  const progressWrap = document.getElementById('p3-progress-wrap');
+  const progressBar = document.getElementById('p3-progress-bar');
+
   btn.disabled = true;
   btn.innerHTML = '<span class="btn-icon">⏸</span> Playing…';
   status.textContent = '🎧 Listening…';
   status.className = 'audio-status playing';
+  speakingNow.classList.add('visible');
+  progressWrap.classList.add('visible');
   state.p3.audioPlayed = true;
+  state.p3.ttsAborted = false;
 
   window.speechSynthesis.cancel();
+  await new Promise(r => setTimeout(r, 120)); // short pause after cancel
 
-  // Lấy từng dòng thoại, mỗi dòng là 1 "câu" của speaker
-  const lines = state.p3.data.dialogue.split('\n').filter(l => l.trim());
-  const sentences = lines.flatMap(l => {
-    const colonIdx = l.indexOf(':');
-    const content = colonIdx > -1 ? l.slice(colonIdx + 1).trim() : l;
-    // Tách tiếp thành câu nếu dòng dài
-    return splitSentences(content);
-  });
+  const lines = state.p3.data.lines || [];
+  const teacherVoice = getBestVoice('female');
+  const student1Voice = getBestVoice('male');
+  const student2Voice = getBestVoice('female');
 
-  const voiceRef = getVoiceRef();
-  speakSequential(sentences, voiceRef, () => {
-    btn.innerHTML = '<span class="btn-icon">✅</span> Played (once)';
-    status.textContent = "✅ Done! Now take notes and click Ready when you're done.";
-    status.className = 'audio-status done';
-  });
+  const total = lines.length;
+  startKeepAlive();
+
+  for (let i = 0; i < lines.length; i++) {
+    if (state.p3.ttsAborted) break;
+
+    const line = lines[i];
+    const speaker = line.speaker || 'Teacher';
+    const text = line.text || '';
+
+    // Update UI
+    speakerLabel.textContent = speaker === 'Teacher' ? '👩‍🏫 Teacher speaking…'
+      : speaker === 'Student2' ? '👦 Student 2 speaking…'
+      : '👧 Student 1 speaking…';
+    progressBar.style.width = `${Math.round((i / total) * 100)}%`;
+
+    // Choose voice + style per speaker
+    let voice = teacherVoice;
+    let rate = 0.85;
+    let pitch = 1.1;
+    if (speaker === 'Student1') { voice = student1Voice; rate = 0.9; pitch = 1.2; }
+    if (speaker === 'Student2') { voice = student2Voice; rate = 0.92; pitch = 0.95; }
+
+    await speakOne(text, { rate, pitch, voice });
+
+    // Natural pause between speakers (longer when speaker changes)
+    if (i < lines.length - 1 && !state.p3.ttsAborted) {
+      const nextSpeaker = lines[i + 1].speaker;
+      const pauseMs = nextSpeaker !== speaker ? 550 : 250;
+      await new Promise(r => setTimeout(r, pauseMs));
+    }
+  }
+
+  stopKeepAlive();
+  progressBar.style.width = '100%';
+  speakerLabel.textContent = '✅ Done!';
+
+  setTimeout(() => {
+    speakingNow.classList.remove('visible');
+    progressWrap.classList.remove('visible');
+  }, 1200);
+
+  btn.innerHTML = '<span class="btn-icon">✅</span> Played (once)';
+  status.textContent = "✅ Done! Now take notes and click Ready when you're done.";
+  status.className = 'audio-status done';
 }
 
-function playP4Audio() {
+// ─── PLAY PART 4 ───
+async function playP4Audio() {
   if (state.p4.audioPlayed || !state.p4.data) return;
+
   const btn = document.getElementById('p4-play-btn');
   const status = document.getElementById('p4-audio-status');
+  const speakingNow = document.getElementById('p4-speaking-now');
+  const speakerLabel = document.getElementById('p4-speaker-label');
+  const progressWrap = document.getElementById('p4-progress-wrap');
+  const progressBar = document.getElementById('p4-progress-bar');
+
   btn.disabled = true;
   btn.innerHTML = '<span class="btn-icon">⏸</span> Playing…';
   status.textContent = '🎧 Listening… look at the pictures!';
   status.className = 'audio-status playing';
+  speakingNow.classList.add('visible');
+  progressWrap.classList.add('visible');
   state.p4.audioPlayed = true;
+  state.p4.ttsAborted = false;
 
   window.speechSynthesis.cancel();
+  await new Promise(r => setTimeout(r, 120));
 
-  const sentences = splitSentences(state.p4.data.talkScript);
-  const voiceRef = getVoiceRef();
-  speakSequential(sentences, voiceRef, () => {
-    btn.innerHTML = '<span class="btn-icon">✅</span> Played (once)';
-    status.textContent = "✅ Done! Now take notes and click Ready when you're done.";
-    status.className = 'audio-status done';
-  });
+  const sentences = state.p4.data.sentences || [];
+  const teacherVoice = getBestVoice('female');
+  const total = sentences.length;
+  startKeepAlive();
+
+  for (let i = 0; i < sentences.length; i++) {
+    if (state.p4.ttsAborted) break;
+
+    speakerLabel.textContent = '👩‍🏫 Teacher speaking…';
+    progressBar.style.width = `${Math.round((i / total) * 100)}%`;
+
+    await speakOne(sentences[i], { rate: 0.84, pitch: 1.05, voice: teacherVoice });
+
+    // Brief pause between sentences — slightly longer after key points
+    if (i < sentences.length - 1 && !state.p4.ttsAborted) {
+      await new Promise(r => setTimeout(r, 300));
+    }
+  }
+
+  stopKeepAlive();
+  progressBar.style.width = '100%';
+  speakerLabel.textContent = '✅ Done!';
+
+  setTimeout(() => {
+    speakingNow.classList.remove('visible');
+    progressWrap.classList.remove('visible');
+  }, 1200);
+
+  btn.innerHTML = '<span class="btn-icon">✅</span> Played (once)';
+  status.textContent = "✅ Done! Now take notes and click Ready when you're done.";
+  status.className = 'audio-status done';
 }
 
-// Load voices early
+// Load voices early (needed on some browsers)
 if (window.speechSynthesis) {
   window.speechSynthesis.getVoices();
   window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 }
+
 // ─── TIMER ───
 function runTimer(part, totalSecs, phase, onComplete) {
   let remaining = totalSecs;
@@ -1375,10 +1524,8 @@ function startP3Prep() {
   runTimer('p3', 45, 'prep', () => {
     runTimer('p3', 60, 'rec', () => {
       document.getElementById('p3-rec-dot').classList.remove('active');
-      document.getElementById('p3-rec-label').textContent = 'Time\'s up!';
+      document.getElementById('p3-rec-label').textContent = "Time's up!";
       document.getElementById('p3-timer-clock').textContent = '00:00';
-
-      // Format sample response
       const raw = state.p3.data.sampleResponse;
       document.getElementById('p3-sample-body').innerHTML = raw.replace(/<hl>(.*?)<\/hl>/g, '<span class="hl">$1</span>');
       showStage('p3', 4);
@@ -1406,9 +1553,8 @@ function startP4Prep() {
   runTimer('p4', 45, 'prep', () => {
     runTimer('p4', 60, 'rec', () => {
       document.getElementById('p4-rec-dot').classList.remove('active');
-      document.getElementById('p4-rec-label').textContent = 'Time\'s up!';
+      document.getElementById('p4-rec-label').textContent = "Time's up!";
       document.getElementById('p4-timer-clock').textContent = '00:00';
-
       const raw = state.p4.data.sampleResponse;
       document.getElementById('p4-sample-body').innerHTML = raw.replace(/<hl>(.*?)<\/hl>/g, '<span class="hl">$1</span>');
       showStage('p4', 4);
@@ -1419,23 +1565,31 @@ function startP4Prep() {
 // ─── RESET ───
 function resetP3() {
   if (state.p3.intervalId) clearInterval(state.p3.intervalId);
-  window.speechSynthesis && window.speechSynthesis.cancel();
+  state.p3.ttsAborted = true;
+  stopKeepAlive();
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
   state.p3.data = null;
   state.p3.audioPlayed = false;
   document.getElementById('p3-sample-body').classList.remove('open');
   document.getElementById('p3-sample-arrow').textContent = '▼ Show';
+  document.getElementById('p3-speaking-now').classList.remove('visible');
+  document.getElementById('p3-progress-wrap').classList.remove('visible');
   showStage('p3', 0);
 }
 
 function resetP4() {
   if (state.p4.intervalId) clearInterval(state.p4.intervalId);
-  window.speechSynthesis && window.speechSynthesis.cancel();
+  state.p4.ttsAborted = true;
+  stopKeepAlive();
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
   state.p4.data = null;
   state.p4.audioPlayed = false;
   document.getElementById('p4-sample-body').classList.remove('open');
   document.getElementById('p4-sample-arrow').textContent = '▼ Show';
   document.getElementById('p4-image-placeholder').style.display = 'flex';
   document.getElementById('p4-image-content').style.display = 'none';
+  document.getElementById('p4-speaking-now').classList.remove('visible');
+  document.getElementById('p4-progress-wrap').classList.remove('visible');
   showStage('p4', 0);
 }
 
