@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LIME – Chuyên Môn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #f3f8ff;
+      min-height: 100vh;
+      color: #1a1a1a;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #89c4f4 0%, #a8d8ea 50%, #c9f0e8 100%);
+      padding: 2.5rem 1rem 3.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before { content: '🎓'; position: absolute; top: 18px; left: 24px; font-size: 28px; opacity: 0.5; }
+    .hero::after  { content: '📖'; position: absolute; top: 18px; right: 24px; font-size: 28px; opacity: 0.5; }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.55);
+      color: #2a6090;
+      font-size: 11px; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 4px 14px; border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    .hero h1 { font-size: 26px; font-weight: 800; color: #1a3d5c; line-height: 1.2; }
+    .hero p   { font-size: 14px; color: #2a6090; margin-top: 6px; font-weight: 600; }
+
+    .wave { display: block; width: 100%; height: 40px; margin-top: -1px; }
+
+    main { max-width: 720px; margin: 0 auto; padding: 0 1rem 3rem; }
+
+    .section-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 800; color: #2a6090;
+      margin: 1.8rem 0 0.9rem;
+      text-transform: uppercase; letter-spacing: 0.07em;
+    }
+    .section-label::after {
+      content: ''; flex: 1; height: 1.5px;
+      background: linear-gradient(to right, #b0d4f1, transparent);
+      border-radius: 999px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1.5px solid #d0e8fb;
+      border-radius: 16px;
+      padding: 1.1rem 1rem;
+      text-decoration: none;
+      display: flex; flex-direction: column; gap: 4px;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+      position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #89c4f4, #c9f0e8);
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(100,170,230,0.18);
+      border-color: #90c8f0;
+    }
+    .card-icon { font-size: 18px; margin-bottom: 2px; }
+    .card-name { font-size: 14px; font-weight: 800; color: #1a3d5c; line-height: 1.3; }
+    .card-tag  { font-size: 11px; font-weight: 600; color: #5a9cc5; margin-top: 3px; }
+
+    .state {
+      text-align: center; padding: 2.5rem 1rem;
+      font-size: 14px; font-weight: 600; color: #5a9cc5;
+    }
+    .spinner {
+      width: 28px; height: 28px; margin: 0 auto 10px;
+      border: 3px solid #d0e8fb;
+      border-top-color: #89c4f4;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    footer {
+      text-align: center; padding: 1.5rem;
+      font-size: 12px; font-weight: 600; color: #90b8d8;
+    }
+
+    @media (max-width: 480px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .hero h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">LIME English</div>
+  <h1>Bài tập Chuyên Môn 🌈</h1>
+  <p>Chọn bài để bắt đầu nào!</p>
+</div>
+<svg class="wave" viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <path d="M0,20 C360,40 1080,0 1440,20 L1440,40 L0,40 Z" fill="#f3f8ff"/>
+</svg>
+
+<main id="main">
+  <div class="state">
+    <div class="spinner"></div>
+    Đang tải danh sách bài...
+  </div>
+</main>
+
+<footer>Made with 💙 by LIME English</footer>
+
+<script>
+  const REPO = 'tienganhlime/lime_chuyen_mon';
+  const API  = `https://api.github.com/repos/${REPO}/contents`;
+  const BASE = `https://tienganhlime.github.io/lime_chuyen_mon/`;
+
+  // Gán icon và nhóm dựa vào tên file
+  function classify(name) {
+    const n = name.toLowerCase();
+    if (n.includes('grammar'))   return { group: 'grammar',  icon: '📐', tag: 'Grammar' };
+    if (n.includes('vocab'))     return { group: 'vocab',    icon: '📚', tag: 'Vocabulary' };
+    if (n.includes('writing'))   return { group: 'writing',  icon: '✍️',  tag: 'Writing' };
+    if (n.includes('review'))    return { group: 'review',   icon: '🔁', tag: 'Review' };
+    if (n.includes('homework'))  return { group: 'homework', icon: '📋', tag: 'Homework' };
+    if (n.includes('toefl'))     return { group: 'toefl',    icon: '🏆', tag: 'TOEFL' };
+    if (n.includes('fce'))       return { group: 'fce',      icon: '🎯', tag: 'FCE' };
+    if (n.includes('tense') || n.includes('exercise')) return { group: 'exercise', icon: '💡', tag: 'Exercise' };
+    return { group: 'other', icon: '📄', tag: 'Bài tập' };
+  }
+
+  function prettyName(name) {
+    return name
+      .replace('.html', '')
+      .replace(/[-_]/g, ' ')
+      .replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  const groupOrder = ['grammar','vocab','writing','toefl','fce','exercise','review','homework','other'];
+  const groupLabels = {
+    grammar:  { emoji: '📐', label: 'Grammar' },
+    vocab:    { emoji: '📚', label: 'Vocabulary' },
+    writing:  { emoji: '✍️',  label: 'Writing' },
+    toefl:    { emoji: '🏆', label: 'TOEFL' },
+    fce:      { emoji: '🎯', label: 'FCE' },
+    exercise: { emoji: '💡', label: 'Exercises' },
+    review:   { emoji: '🔁', label: 'Review' },
+    homework: { emoji: '📋', label: 'Homework' },
+    other:    { emoji: '📄', label: 'Khác' },
+  };
+
+  async function load() {
+    try {
+      const res = await fetch(API);
+      if (!res.ok) throw new Error(`GitHub API lỗi ${res.status}`);
+      const files = await res.json();
+
+      const htmlFiles = files.filter(f =>
+        f.type === 'file' &&
+        f.name.toLowerCase().endsWith('.html') &&
+        f.name.toLowerCase() !== 'index.html'
+      );
+
+      if (htmlFiles.length === 0) {
+        document.getElementById('main').innerHTML =
+          '<div class="state">Chưa có bài nào trong repo 🥲</div>';
+        return;
+      }
+
+      // Nhóm file
+      const groups = {};
+      htmlFiles.forEach(f => {
+        const { group, icon, tag } = classify(f.name);
+        if (!groups[group]) groups[group] = [];
+        groups[group].push({ ...f, icon, tag });
+      });
+
+      let html = '';
+      for (const key of groupOrder) {
+        if (!groups[key]) continue;
+        const cfg = groupLabels[key];
+        html += `<div class="section-label"><span>${cfg.emoji}</span> ${cfg.label}</div><div class="grid">`;
+        groups[key]
+          .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
+          .forEach(f => {
+            html += `
+              <a class="card" href="${BASE}${f.name}">
+                <div class="card-icon">${f.icon}</div>
+                <div class="card-name">${prettyName(f.name)}</div>
+                <div class="card-tag">${f.tag}</div>
+              </a>`;
+          });
+        html += '</div>';
+      }
+
+      document.getElementById('main').innerHTML = html;
+
+    } catch (err) {
+      document.getElementById('main').innerHTML = `
+        <div class="state">
+          😵 Không tải được danh sách bài.<br>
+          <span style="font-size:12px;color:#90b8d8;font-weight:400;margin-top:6px;display:block">${err.message}</span>
+        </div>`;
+    }
+  }
+
+  load();
+</script>
+</body>
+</html>
