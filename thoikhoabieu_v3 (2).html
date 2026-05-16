@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌸 Thời Khóa Biểu Hè</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<!-- html2canvas for image export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- jsPDF for PDF export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  // ⚠️ THAY CÁC GIÁ TRỊ NÀY bằng config của bạn từ Firebase Console
+  const firebaseConfig = {
+  apiKey: "AIzaSyCou-Dl3q131fc3Xb4ZtdIN1sQnOQzjv2o",
+  authDomain: "thoikhoabieu-ad275.firebaseapp.com",
+  projectId: "thoikhoabieu-ad275",
+  storageBucket: "thoikhoabieu-ad275.firebasestorage.app",
+  messagingSenderId: "1061088618877",
+  appId: "1:1061088618877:web:c1d701bbb0cd4bc7c00414"
+};
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+
+  window._fbSaveMonth = async function(month, data) {
+    await setDoc(doc(db, "thoikhoabieu", "thang_" + month), data);
+  };
+  window._fbLoadMonth = async function(month) {
+    const snap = await getDoc(doc(db, "thoikhoabieu", "thang_" + month));
+    return snap.exists() ? snap.data() : null;
+  };
+  window._fbSaveBlocks = async function(data) {
+    await setDoc(doc(db, "thoikhoabieu", "blocks"), data);
+  };
+  window._fbLoadBlocks = async function() {
+    const snap = await getDoc(doc(db, "thoikhoabieu", "blocks"));
+    return snap.exists() ? snap.data() : null;
+  };
+
+  window.addEventListener("load", () => window.fbAutoLoad && window.fbAutoLoad());
+  console.log("✅ Firebase connected:", app.options.projectId);
+<\/script>
+<style>
+:root {
+  --pink:#FF85A1; --pink-l:#FFD6E0; --pink-bg:#FFF0F3;
+  --teal:#34D399; --teal-l:#D1FAE5;
+  --blue:#60A5FA; --blue-l:#DBEAFE;
+  --bg:#FFF8FA; --card:#FFFFFF; --border:#FFD6E0;
+  --text:#3D1A24; --text2:#9B6375; --text3:#C4A0AD;
+  --shadow:0 4px 20px rgba(255,133,161,0.13);
+  --r:14px;
+  --cell-h:28px; /* compact row height for screen fit */
+  --time-col:52px; /* width of time label column */
+  --day-col:minmax(0,1fr); /* day columns stretch equally */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);color:var(--text);min-height:100vh;
+  background-image:radial-gradient(circle at 15% 10%,#FFE4ED 0%,transparent 45%),
+                   radial-gradient(circle at 85% 90%,#EDE9FE 0%,transparent 45%);
+}
+.hdr{text-align:center;padding:14px 20px 8px}
+.hdr h1{font-family:'Baloo 2',cursive;font-size:26px;font-weight:800;color:var(--pink);text-shadow:0 2px 8px rgba(255,133,161,0.2)}
+.hdr p{font-size:12px;color:var(--text2);margin-top:2px}
+
+.toolbar{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap;padding:0 16px 8px}
+.tb{font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;padding:7px 18px;border-radius:30px;border:2px solid;cursor:pointer;transition:all .15s}
+.tb.month{border-color:var(--pink-l);background:var(--card);color:var(--text2)}
+.tb.month.on,.tb.month:hover{background:var(--pink);border-color:var(--pink);color:#fff}
+.tb.view{border-color:#C4B5FD;background:#F5F3FF;color:#5B21B6}
+.tb.view.on,.tb.view:hover{background:#7C3AED;border-color:#7C3AED;color:#fff}
+.tb.save{border-color:var(--teal);color:#059669;background:var(--teal-l)}
+.tb.save:hover{background:var(--teal);color:#fff}
+.tb.load{border-color:var(--blue);color:#2563EB;background:var(--blue-l)}
+.tb.load:hover{background:var(--blue);color:#fff}
+.tb.danger{border-color:#FCA5A5;color:#DC2626;background:#FEF2F2}
+.tb.danger:hover{background:#EF4444;color:#fff}
+.tb.export{border-color:#FCD34D;color:#92400E;background:#FEF3C7}
+.tb.export:hover{background:#F59E0B;color:#fff;border-color:#F59E0B}
+.sep{width:1px;height:26px;background:var(--border);flex-shrink:0}
+
+/* PALETTE */
+.pal-bar{background:var(--card);border-top:1.5px solid var(--border);border-bottom:1.5px solid var(--border);padding:7px 16px}
+.pal-groups{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.pal-grp{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.pal-lbl{font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:var(--text3);white-space:nowrap;margin-right:2px}
+.chip{
+  padding:5px 11px;border-radius:20px;font-size:13px;font-weight:700;
+  cursor:grab;user-select:none;border:1.5px solid transparent;
+  transition:transform .1s;white-space:nowrap;display:flex;align-items:center;gap:3px
+}
+.chip:active{cursor:grabbing;transform:scale(1.05)}
+.chip.drag{opacity:0.35}
+.chip-x{
+  display:none;width:15px;height:15px;border-radius:50%;
+  background:rgba(0,0,0,0.2);border:none;cursor:pointer;color:inherit;
+  font-size:9px;font-weight:900;align-items:center;justify-content:center;
+  flex-shrink:0;padding:0
+}
+.chip:hover .chip-x{display:flex}
+.vsep{width:1px;height:26px;background:var(--border);flex-shrink:0;align-self:center}
+
+.add-form{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-top:8px;border-top:1px dashed var(--border);margin-top:8px}
+.add-form input{font-family:'Nunito',sans-serif;font-size:13px;padding:5px 10px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);outline:none;width:170px}
+.add-form input:focus{border-color:var(--pink)}
+.cdot{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .1s;flex-shrink:0}
+.cdot.sel{border-color:var(--text);transform:scale(1.25)}
+.add-btn{font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;padding:5px 14px;border-radius:10px;border:none;cursor:pointer;background:var(--pink);color:#fff}
+.add-btn:hover{background:#e06385}
+
+/* DAY NAV */
+.day-nav{display:flex;gap:7px;align-items:center;padding:10px 16px 0;overflow-x:auto;scrollbar-width:none}
+.day-nav::-webkit-scrollbar{display:none}
+.daychip{font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;padding:6px 16px;border-radius:24px;border:2px solid var(--pink-l);background:var(--card);color:var(--text2);cursor:pointer;white-space:nowrap;transition:all .15s}
+.daychip.on{background:var(--pink);border-color:var(--pink);color:#fff;box-shadow:0 3px 10px rgba(255,133,161,0.35)}
+.daychip:hover:not(.on){border-color:var(--pink);color:var(--pink)}
+
+/* LEGEND */
+.legend{display:flex;gap:12px;flex-wrap:wrap;padding:8px 16px 4px;font-size:12px;color:var(--text2);font-weight:700}
+.li{display:flex;align-items:center;gap:5px}
+.ld{width:14px;height:14px;border-radius:4px}
+
+/* GRID */
+.grid-wrap{padding:8px 10px 24px;overflow-x:hidden}
+table.sc{border-collapse:collapse;table-layout:fixed;width:100%}
+table.sc th{
+  font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;
+  text-align:center;padding:6px 4px;
+  background:var(--card);border-bottom:2.5px solid var(--pink-l);
+  color:var(--text2);position:sticky;top:0;z-index:10
+}
+table.sc th.tc{width:var(--time-col);font-size:11px;color:var(--text3)}
+table.sc th.dc{} /* auto stretch */
+table.sc th .dn{font-size:15px;color:var(--text);display:block;font-weight:800}
+.dprog{margin-top:3px;display:flex;gap:3px;justify-content:center;align-items:center}
+.dpbar{height:4px;border-radius:3px;background:#F3E8EE;width:34px;overflow:hidden}
+.dpfill{height:100%;border-radius:3px;transition:width .3s}
+.dpfill.m{background:linear-gradient(90deg,#A78BFA,#7C3AED)}
+.dpfill.e{background:linear-gradient(90deg,#60A5FA,#2563EB)}
+.dok{color:#059669;font-size:10px;font-weight:800}
+.dwarn{color:#D97706;font-size:10px;font-weight:800}
+
+table.sc td.tc{
+  font-size:11px;color:var(--text3);font-weight:700;
+  text-align:right;padding-right:5px;
+  border-right:2px solid var(--pink-l);
+  vertical-align:top;padding-top:2px;width:var(--time-col);white-space:nowrap
+}
+table.sc td.tc.oh{color:var(--text2);font-size:12px}
+table.sc td.slot{
+  height:var(--cell-h);
+  border:0.5px solid #FFE4ED;vertical-align:top;position:relative;cursor:default;transition:background .1s
+}
+table.sc tr:nth-child(4n+1) td.slot{background:rgba(255,255,255,0.5)}
+table.sc td.slot.ohr{border-top:1.5px solid #FFB3C6}
+table.sc td.slot.dov{background:#D1FAE5!important;outline:2px dashed #34D399;outline-offset:-2px;z-index:5}
+table.sc td.slot.fm{background:#EDE9FE}
+table.sc td.slot.fe{background:#DBEAFE}
+table.sc td.slot.ft{background:#FEF3C7}
+
+.flabel{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;padding:0 4px;text-align:center;line-height:1.2;
+  color:#4C1D95;pointer-events:none;z-index:2
+}
+.flabel.fe{color:#1E40AF}
+.flabel.ft{color:#92400E}
+
+.pb{
+  position:absolute;left:2px;right:2px;top:1px;bottom:1px;
+  border-radius:6px;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;cursor:grab;z-index:3;
+  padding:0 4px;text-align:center;line-height:1.15;overflow:hidden;border:1.5px solid transparent
+}
+.pb:active{cursor:grabbing}
+.pbx{display:none;position:absolute;top:2px;right:3px;font-size:10px;cursor:pointer;background:none;border:none;color:inherit;font-weight:900;padding:0;opacity:0.75;line-height:1}
+.pb:hover .pbx{display:block}
+
+/* DRAG-SCROLL: show scrollable overlay indicator */
+.grid-wrap{position:relative}
+
+/* Export modal */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;
+  align-items:center;justify-content:center
+}
+.modal-overlay.show{display:flex}
+.modal{
+  background:#fff;border-radius:18px;padding:28px 32px;max-width:360px;width:90%;
+  box-shadow:0 8px 40px rgba(255,133,161,0.25);text-align:center
+}
+.modal h2{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--pink);margin-bottom:8px}
+.modal p{font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.5}
+.modal-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.modal-btn{
+  font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;
+  padding:10px 22px;border-radius:30px;border:2px solid;cursor:pointer;transition:all .15s
+}
+.modal-btn.img{border-color:#F9A8D4;background:#FCE7F3;color:#9D174D}
+.modal-btn.img:hover{background:#F472B6;border-color:#F472B6;color:#fff}
+.modal-btn.pdf{border-color:#FCD34D;background:#FEF3C7;color:#92400E}
+.modal-btn.pdf:hover{background:#F59E0B;border-color:#F59E0B;color:#fff}
+.modal-btn.cancel{border-color:#E5E7EB;background:#F9FAFB;color:#6B7280}
+.modal-btn.cancel:hover{background:#E5E7EB}
+.export-loading{display:none;font-size:13px;color:var(--text2);margin-top:14px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div style="font-size:20px;letter-spacing:4px;margin-bottom:2px">🌸 ⭐ 🌸</div>
+  <h1>Thời Khóa Biểu Hè Của Con</h1>
+  <p>Kéo thả các khối vào lưới giờ — mỗi ô = 30 phút ✨</p>
+</div>
+
+<div class="toolbar">
+  <button class="tb month on" onclick="setMonth(6,this)">Tháng 6</button>
+  <button class="tb month" onclick="setMonth(7,this)">Tháng 7</button>
+  <button class="tb month" onclick="setMonth(8,this)">Tháng 8+</button>
+  <div class="sep"></div>
+  <button class="tb save" onclick="fbSaveMonth()">☁️ Lưu Cloud</button>
+  <button class="tb load" onclick="fbLoadMonth()">🔄 Tải Cloud</button>
+  <button class="tb save" style="border-color:#d1d5db;color:#6b7280;background:#f9fafb" onclick="saveData()">💾 Lưu file</button>
+  <button class="tb load" style="border-color:#d1d5db;color:#6b7280;background:#f9fafb" onclick="loadData()">📂 Mở file</button>
+  <button class="tb export" onclick="openExportModal()">📤 Xuất ảnh/PDF</button>
+  <button class="tb danger" onclick="clearWeek()">🗑 Xóa tuần</button>
+</div>
+<div id="fb-status" style="text-align:center;font-size:12px;color:#9B6375;padding:2px 0 6px;font-family:Nunito,sans-serif;font-weight:700;min-height:20px"></div>
+
+<div class="pal-bar">
+  <div class="pal-groups" id="pal-groups"></div>
+  <div class="add-form">
+    <input type="text" id="cn" placeholder="Thêm hoạt động của con..." maxlength="22"/>
+    <div id="cdots" style="display:flex;gap:5px"></div>
+    <button class="add-btn" onclick="addCustom()">+ Thêm</button>
+  </div>
+</div>
+
+<div class="legend" id="legend">
+  <div class="li"><div class="ld" style="background:#EDE9FE;border:1px solid #A78BFA"></div>Học thêm Toán</div>
+  <div class="li"><div class="ld" style="background:#DBEAFE;border:1px solid #60A5FA"></div>Học thêm Tiếng Anh</div>
+  <div class="li" style="margin-left:auto;font-size:11px;font-weight:600;color:var(--text3)">📐 Tự học Toán ≥ 3h &nbsp;|&nbsp; 📖 Tự học Anh ≥ 3h</div>
+</div>
+
+<!-- day-nav hidden since always full week -->
+<div class="day-nav" id="day-nav" style="display:none"></div>
+
+<div class="grid-wrap" id="grid-wrap">
+  <table class="sc" id="sc"></table>
+</div>
+
+<!-- Export Modal -->
+<div class="modal-overlay" id="export-modal">
+  <div class="modal">
+    <h2>📤 Xuất Thời Khóa Biểu</h2>
+    <p>Xuất lịch với layout đúng như màn hình.<br>Chọn định dạng bạn muốn lưu:</p>
+    <div class="modal-btns">
+      <button class="modal-btn img" onclick="exportImage()">🖼 Ảnh PNG</button>
+      <button class="modal-btn pdf" onclick="exportPDF()">📄 File PDF</button>
+      <button class="modal-btn cancel" onclick="closeExportModal()">Hủy</button>
+    </div>
+    <div class="export-loading" id="export-loading">⏳ Đang xuất, chờ chút nhé...</div>
+  </div>
+</div>
+
+<script>
+const DAYS=['Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7','Chủ Nhật'];
+// Start from 7:00 (slot 14) instead of 6:00
+const SS=7*2, SE=23*2;
+function sl(s){return `${Math.floor(s/2)}:${s%2?'30':'00'}`}
+function sof(h,m){return h*2+(m>=30?1:0)}
+
+const COLS=[
+  {bg:'#FCE7F3',color:'#9D174D',border:'#F9A8D4'},
+  {bg:'#EDE9FE',color:'#5B21B6',border:'#C4B5FD'},
+  {bg:'#D1FAE5',color:'#065F46',border:'#6EE7B7'},
+  {bg:'#DBEAFE',color:'#1E40AF',border:'#93C5FD'},
+  {bg:'#FEF3C7',color:'#92400E',border:'#FCD34D'},
+  {bg:'#FFE4E6',color:'#9F1239',border:'#FCA5A5'},
+  {bg:'#F0FDF4',color:'#14532D',border:'#86EFAC'},
+  {bg:'#F3F4F6',color:'#374151',border:'#D1D5DB'},
+];
+
+const DEF=[
+  // Học tập
+  {id:'toan-tu', label:'📐 Tự học Toán',      bg:'#EDE9FE',color:'#5B21B6',border:'#C4B5FD',type:'math'},
+  {id:'anh-tu',  label:'📖 Tự học Anh',        bg:'#DBEAFE',color:'#1E40AF',border:'#93C5FD',type:'eng'},
+  {id:'btvn-t',  label:'✏️ BTVN Toán',         bg:'#FEF9C3',color:'#713F12',border:'#FDE047',type:'btvn-math'},
+  {id:'btvn-a',  label:'📝 BTVN Anh',          bg:'#E0F2FE',color:'#0C4A6E',border:'#7DD3FC',type:'btvn-eng'},
+  // Sinh hoạt
+  {id:'sang',    label:'🔍 Ăn sáng',           bg:'#FCE7F3',color:'#9D174D',border:'#F9A8D4',type:'other'},
+  {id:'trua',    label:'🍜 Ăn trưa',           bg:'#FFEDD5',color:'#7C2D12',border:'#FDBA74',type:'other'},
+  {id:'toi',     label:'🌙 Ăn tối',            bg:'#FEF3C7',color:'#78350F',border:'#FCD34D',type:'other'},
+  {id:'ngu',     label:'😴 Ngủ trưa',          bg:'#FCE7F3',color:'#831843',border:'#F9A8D4',type:'other'},
+  {id:'dichuy',  label:'🚗 Di chuyển',         bg:'#FEF3C7',color:'#92400E',border:'#FCD34D',type:'travel'},
+  // Vui chơi
+  {id:'read',    label:'📚 Đọc sách',          bg:'#D1FAE5',color:'#065F46',border:'#6EE7B7',type:'other'},
+  {id:'family',  label:'👨‍👩‍👧 Gia đình',        bg:'#FEF3C7',color:'#92400E',border:'#FCD34D',type:'other'},
+  {id:'free',    label:'🌟 Tự do',             bg:'#FEF9C3',color:'#713F12',border:'#FDE047',type:'other'},
+  // Của con (pre-loaded từ ảnh)
+  {id:'c-uke',   label:'✨ Ukulele',           bg:'#FCE7F3',color:'#9D174D',border:'#F9A8D4',type:'custom'},
+  {id:'c-hmt',   label:'✨ Xem Hannah Motana', bg:'#D1FAE5',color:'#065F46',border:'#6EE7B7',type:'custom'},
+  {id:'c-vid',   label:'✨ Quay video ngắn',   bg:'#DBEAFE',color:'#1E40AF',border:'#93C5FD',type:'custom'},
+  {id:'c-tam',   label:'✨ Tắm',               bg:'#EDE9FE',color:'#5B21B6',border:'#C4B5FD',type:'custom'},
+  {id:'c-clb',   label:'✨ CLB tiếng Anh',     bg:'#FEF9C3',color:'#713F12',border:'#FDE047',type:'custom'},
+  {id:'c-cbclb', label:'✨ Chuẩn bị bài CLB',  bg:'#DBEAFE',color:'#1E40AF',border:'#93C5FD',type:'custom'},
+  {id:'c-boi',   label:'✨ Đi Bơi',            bg:'#E0F2FE',color:'#0C4A6E',border:'#7DD3FC',type:'custom'},
+  {id:'c-box',   label:'✨ Kick-boxing',        bg:'#FCE7F3',color:'#9D174D',border:'#F9A8D4',type:'custom'},
+];
+
+// FIXED schedule — giờ học chính xác theo thông báo
+const FIXED={
+  6:[
+    {day:'Thứ 2',   start:sof(18,0), end:sof(20,30),type:'math',label:'📐 Toán online\n18:00–20:30'},
+    {day:'Thứ 5',   start:sof(10,0), end:sof(12,30),type:'math',label:'📐 Toán online\n10:00–12:30'},
+    {day:'Chủ Nhật',start:sof(12,0), end:sof(13,30),type:'math',label:'📐 Toán online\n12:00–13:30'},
+    {day:'Thứ 3',   start:sof(18,0), end:sof(20,0), type:'eng', label:'📖 Tiếng Anh\n18:00–20:00'},
+    {day:'Thứ 6',   start:sof(18,0), end:sof(20,30),type:'eng', label:'📖 Tiếng Anh\n18:00–20:30'},
+  ],
+  7:[
+    {day:'Chủ Nhật',start:sof(12,0), end:sof(13,30),type:'math',label:'📐 Toán online\n12:00–13:30'},
+    {day:'Thứ 3',   start:sof(18,0), end:sof(20,0), type:'eng', label:'📖 Tiếng Anh\n18:00–20:00'},
+    {day:'Thứ 6',   start:sof(18,0), end:sof(20,30),type:'eng', label:'📖 Tiếng Anh\n18:00–20:30'},
+  ],
+  8:[
+    {day:'Thứ 4',   start:sof(19,20),end:sof(21,50),type:'math',label:'📐 Toán online\n19:20–21:50'},
+    {day:'Chủ Nhật',start:sof(12,0), end:sof(13,30),type:'math',label:'📐 Toán online\n12:00–13:30'},
+    {day:'Thứ 3',   start:sof(18,0), end:sof(20,0), type:'eng', label:'📖 Tiếng Anh\n18:00–20:00'},
+    {day:'Thứ 6',   start:sof(18,0), end:sof(20,30),type:'eng', label:'📖 Tiếng Anh\n18:00–20:30'},
+  ],
+};
+
+function getAllFixed(month,day){
+  return (FIXED[month]||[]).filter(f=>f.day===day);
+}
+function getFA(month,day,slot){return getAllFixed(month,day).find(f=>slot>=f.start&&slot<f.end)}
+function isFixed(month,day,slot){return !!getFA(month,day,slot)}
+
+let curMonth=6;
+let blocks=[...DEF],selCol=0,dragId=null,dragFrom=null;
+let grid={};
+[6,7,8].forEach(m=>{grid[m]={};DAYS.forEach(d=>{grid[m][d]={}})});
+
+function getB(id){return blocks.find(b=>b.id===id)}
+
+// PALETTE
+function renderPal(){
+  const grps=[
+    {lbl:'📚 Học tập',   filter:b=>['math','eng','btvn-math','btvn-eng'].includes(b.type)},
+    {lbl:'🍽 Sinh hoạt', filter:b=>['sang','trua','toi','ngu','dichuy'].includes(b.id)},
+    {lbl:'🎉 Vui chơi',  filter:b=>b.type==='other'&&!['sang','trua','toi','ngu','dichuy'].includes(b.id)},
+    {lbl:'✨ Của con',   filter:b=>b.type==='custom'},
+  ];
+  const el=document.getElementById('pal-groups');
+  el.innerHTML='';
+  let first=true;
+  grps.forEach(g=>{
+    const bs=blocks.filter(g.filter);
+    if(!bs.length) return;
+    if(!first){const v=document.createElement('div');v.className='vsep';el.appendChild(v)}
+    first=false;
+    const wrap=document.createElement('div');wrap.className='pal-grp';
+    const lbl=document.createElement('span');lbl.className='pal-lbl';lbl.textContent=g.lbl;
+    wrap.appendChild(lbl);
+    bs.forEach(b=>wrap.appendChild(mkChip(b)));
+    el.appendChild(wrap);
+  });
+
+  const cd=document.getElementById('cdots');
+  cd.innerHTML='';
+  COLS.forEach((c,i)=>{
+    const d=document.createElement('div');
+    d.className='cdot'+(i===selCol?' sel':'');
+    d.style.background=c.bg;d.style.borderColor=c.border;
+    d.onclick=()=>{selCol=i;renderPal()};
+    cd.appendChild(d);
+  });
+}
+
+function mkChip(b){
+  const c=document.createElement('div');
+  c.className='chip';c.draggable=true;c.dataset.id=b.id;
+  c.style.background=b.bg;c.style.color=b.color;c.style.borderColor=b.border;
+  const s=document.createElement('span');s.textContent=b.label;c.appendChild(s);
+  const x=document.createElement('button');x.className='chip-x';x.textContent='✕';x.title='Xóa khối này';
+  x.onclick=e=>{
+    e.stopPropagation();e.preventDefault();
+    if(!confirm(`Xóa "${b.label}" khỏi danh sách?`)) return;
+    blocks=blocks.filter(bb=>bb.id!==b.id);
+    [6,7,8].forEach(m=>DAYS.forEach(d=>{
+      Object.keys(grid[m][d]).forEach(s=>{if(grid[m][d][s]===b.id)grid[m][d][s]=null});
+    }));
+    renderPal();renderGrid();
+  };
+  c.appendChild(x);
+  c.addEventListener('dragstart',e=>{dragId=b.id;dragFrom=null;c.classList.add('drag');e.dataTransfer.effectAllowed='copy'});
+  c.addEventListener('dragend',()=>c.classList.remove('drag'));
+  return c;
+}
+
+// PROGRESS
+function dayProg(day){
+  const ug=grid[curMonth][day];
+  let ms=0,es=0;
+  Object.values(ug).forEach(bid=>{if(!bid)return;const b=getB(bid);if(!b)return;if(b.type==='math')ms++;if(b.type==='eng')es++});
+  return{mp:Math.min(100,(ms/6)*100),ep:Math.min(100,(es/6)*100),mok:ms>=6,eok:es>=6,mh:(ms*.5).toFixed(1),eh:(es*.5).toFixed(1)};
+}
+
+// GRID — always full 7 days, fixed blocks rendered as single rowspan cell
+function renderGrid(){
+  const days=DAYS;
+
+  let h=`<thead><tr><th class="tc">Giờ</th>`;
+  days.forEach(d=>{
+    const p=dayProg(d);
+    h+=`<th class="dc"><span class="dn">${d}</span>
+      <div class="dprog">
+        <div class="dpbar"><div class="dpfill m" style="width:${p.mp}%"></div></div>
+        <span class="${p.mok?'dok':'dwarn'}" title="Tự học Toán: ${p.mh}h">${p.mok?'✅':'📐'}</span>
+        <div class="dpbar"><div class="dpfill e" style="width:${p.ep}%"></div></div>
+        <span class="${p.eok?'dok':'dwarn'}" title="Tự học Anh: ${p.eh}h">${p.eok?'✅':'📖'}</span>
+      </div></th>`;
+  });
+  h+=`</tr></thead><tbody>`;
+
+  // Track which (day, slot) cells are already covered by a rowspan
+  const spanned={}; // key: "day|slot"
+
+  for(let s=SS;s<SE;s++){
+    const oh=s%2===0;
+    h+=`<tr>`;
+    if(oh) h+=`<td class="tc oh" rowspan="2">${sl(s)}</td>`;
+
+    days.forEach(day=>{
+      const key=`${day}|${s}`;
+      if(spanned[key]) return; // skip: already covered by a rowspan above
+
+      const fa=getFA(curMonth,day,s);
+
+      if(fa && fa.start===s){
+        // Render the fixed block as a single merged cell
+        const rows=fa.end-fa.start; // number of 30-min slots to span
+        const bgCls=fa.type==='math'?'fm':fa.type==='eng'?'fe':'ft';
+        const textCls=fa.type==='eng'?'fe':fa.type==='travel'?'ft':'';
+        // Mark all covered slots so we skip them
+        for(let r=1;r<rows;r++) spanned[`${day}|${s+r}`]=true;
+        // Build label lines
+        const lines=fa.label.split('\n');
+        h+=`<td class="slot ${bgCls} ohr" rowspan="${rows}" data-day="${day}" data-slot="${s}"
+          style="vertical-align:middle;text-align:center;position:relative;">
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:2px 4px;gap:1px;">
+            <span style="font-family:'Baloo 2',cursive;font-size:12px;font-weight:800;color:${fa.type==='eng'?'#1E40AF':'#4C1D95'};white-space:nowrap">${lines[0]}</span>
+            ${lines[1]?`<span style="font-size:10px;font-weight:700;color:${fa.type==='eng'?'#3B82F6':'#7C3AED'};opacity:0.85">${lines[1]}</span>`:''}
+          </div>
+        </td>`;
+      } else if(fa && fa.start!==s){
+        // Middle of a fixed block — already handled by rowspan, skip
+        // (shouldn't reach here due to spanned tracking, but safety)
+      } else {
+        // Normal empty/user slot
+        let cls='slot';
+        if(oh) cls+=' ohr';
+        h+=`<td class="${cls}" data-day="${day}" data-slot="${s}"
+          ondragover="gov(event)" ondrop="gdp(event,this)" ondragleave="glv(this)">`;
+        const bid=grid[curMonth][day][s];
+        if(bid){
+          const b=getB(bid);
+          if(b) h+=`<div class="pb" draggable="true"
+            style="background:${b.bg};color:${b.color};border-color:${b.border}"
+            data-id="${b.id}" data-day="${day}" data-slot="${s}"
+            ondragstart="pds(event,this)" ondragend="pde(this)">
+            <span style="overflow:hidden;max-width:100%;white-space:nowrap;text-overflow:ellipsis;display:block">${b.label}</span>
+            <button class="pbx" onclick="delB('${day}',${s},event)">✕</button>
+          </div>`;
+        }
+        h+=`</td>`;
+      }
+    });
+    h+=`</tr>`;
+  }
+  h+=`</tbody>`;
+  document.getElementById('sc').innerHTML=h;
+  initDragScroll();
+}
+
+// ============================================================
+// AUTO-SCROLL WHILE DRAGGING near top/bottom of viewport
+// ============================================================
+let autoScrollRAF=null;
+let dragScrollSpeed=0;
+const SCROLL_ZONE=80; // px from edge to trigger scroll
+const MAX_SPEED=12;
+
+function startAutoScroll(){
+  if(autoScrollRAF) return;
+  function loop(){
+    if(dragScrollSpeed!==0){
+      window.scrollBy(0,dragScrollSpeed);
+    }
+    autoScrollRAF=requestAnimationFrame(loop);
+  }
+  autoScrollRAF=requestAnimationFrame(loop);
+}
+function stopAutoScroll(){
+  if(autoScrollRAF){cancelAnimationFrame(autoScrollRAF);autoScrollRAF=null;}
+  dragScrollSpeed=0;
+}
+
+function onDragOverWindow(e){
+  const y=e.clientY;
+  const h=window.innerHeight;
+  if(y<SCROLL_ZONE){
+    dragScrollSpeed=-MAX_SPEED*((SCROLL_ZONE-y)/SCROLL_ZONE);
+  } else if(y>h-SCROLL_ZONE){
+    dragScrollSpeed=MAX_SPEED*((y-(h-SCROLL_ZONE))/SCROLL_ZONE);
+  } else {
+    dragScrollSpeed=0;
+  }
+}
+
+// Attach once globally
+document.addEventListener('dragover',onDragOverWindow);
+document.addEventListener('dragstart',()=>startAutoScroll());
+document.addEventListener('dragend',()=>stopAutoScroll());
+document.addEventListener('drop',()=>stopAutoScroll());
+
+// Touch-drag support for mobile: long press → drag chip
+function initDragScroll(){
+  // Nothing special needed; browser handles dragover auto-scroll via our window listener
+}
+
+// ============================================================
+// SLOT INTERACTIONS
+// ============================================================
+function gov(e){e.preventDefault();e.currentTarget.classList.add('dov');e.dataTransfer.dropEffect='copy'}
+function glv(c){c.classList.remove('dov')}
+function gdp(e,cell){
+  e.preventDefault();cell.classList.remove('dov');
+  const day=cell.dataset.day,slot=+cell.dataset.slot;
+  if(isFixed(curMonth,day,slot)){dragId=null;dragFrom=null;return}
+  if(dragId){
+    if(dragFrom){const[fd,fs]=dragFrom.split('|');grid[curMonth][fd][+fs]=null}
+    grid[curMonth][day][slot]=dragId;
+    dragId=null;dragFrom=null;renderGrid();
+  }
+}
+function pds(e,el){
+  dragId=el.dataset.id;dragFrom=el.dataset.day+'|'+el.dataset.slot;
+  e.dataTransfer.effectAllowed='move';
+  setTimeout(()=>el.style.opacity='0.3',0);
+}
+function pde(el){el.style.opacity='1'}
+function delB(day,slot,e){e.stopPropagation();grid[curMonth][day][slot]=null;renderGrid()}
+
+function setMonth(m,btn){
+  curMonth=m;
+  document.querySelectorAll('.tb.month').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');renderGrid();
+}
+function addCustom(){
+  const inp=document.getElementById('cn'),name=inp.value.trim();
+  if(!name) return;
+  const c=COLS[selCol];
+  blocks.push({id:'c'+Date.now(),label:'✨ '+name,bg:c.bg,color:c.color,border:c.border,type:'custom'});
+  inp.value='';renderPal();
+}
+function clearWeek(){
+  if(!confirm('Xóa toàn bộ lịch tuần này?')) return;
+  DAYS.forEach(d=>{grid[curMonth][d]={}});renderGrid();
+}
+// ── File backup (giữ nguyên) ─────────────────────────────────
+function saveData(){
+  const blob=new Blob([JSON.stringify({grid,blocks})],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='thoikhoabieu_he.json';a.click();
+}
+function loadData(){
+  const inp=document.createElement('input');inp.type='file';inp.accept='.json';
+  inp.onchange=e=>{
+    const r=new FileReader();
+    r.onload=ev=>{
+      try{
+        const d=JSON.parse(ev.target.result);
+        if(d.grid) grid=d.grid;
+        if(d.blocks) blocks=d.blocks;
+        renderPal();renderGrid();
+      }catch{alert('File không hợp lệ!')}
+    };
+    r.readAsText(e.target.files[0]);
+  };
+  inp.click();
+}
+
+// ── Firebase Cloud ────────────────────────────────────────────
+function fbStatus(msg, color='#9B6375'){
+  const el=document.getElementById('fb-status');
+  if(el){ el.textContent=msg; el.style.color=color; }
+}
+
+// Serialize grid[month] — Firestore không chấp nhận key là số
+function serializeMonth(month){
+  const out={};
+  DAYS.forEach(d=>{
+    out[d]={};
+    Object.entries(grid[month][d]).forEach(([s,v])=>{ if(v) out[d]['s'+s]=v; });
+  });
+  return out;
+}
+function deserializeMonth(raw, month){
+  DAYS.forEach(d=>{
+    grid[month][d]={};
+    if(!raw[d]) return;
+    Object.entries(raw[d]).forEach(([k,v])=>{
+      const s=+k.replace('s','');
+      grid[month][d][s]=v;
+    });
+  });
+}
+
+async function fbSaveMonth(){
+  if(!window._fbSaveMonth){ alert('⚠️ Chưa cấu hình Firebase!\nHãy điền firebaseConfig trong code.'); return; }
+  fbStatus('⏳ Đang lưu tháng '+curMonth+'...','#D97706');
+  try{
+    const monthData = serializeMonth(curMonth);
+    await window._fbSaveMonth(curMonth, monthData);
+    // Lưu luôn danh sách blocks custom
+    const customBlocks = blocks.filter(b=>b.type==='custom');
+    await window._fbSaveBlocks({ list: JSON.stringify(customBlocks) });
+    fbStatus('✅ Đã lưu Tháng '+curMonth+' lên Cloud! ('+new Date().toLocaleTimeString('vi-VN')+')','#059669');
+  } catch(err){
+    fbStatus('❌ Lỗi lưu: '+err.message,'#DC2626');
+    console.error(err);
+  }
+}
+
+async function fbLoadMonth(){
+  if(!window._fbLoadMonth){ alert('⚠️ Chưa cấu hình Firebase!\nHãy điền firebaseConfig trong code.'); return; }
+  fbStatus('⏳ Đang tải tháng '+curMonth+'...','#D97706');
+  try{
+    const raw = await window._fbLoadMonth(curMonth);
+    if(!raw){ fbStatus('ℹ️ Tháng '+curMonth+' chưa có dữ liệu trên Cloud','#9B6375'); return; }
+    deserializeMonth(raw, curMonth);
+    // Tải blocks custom nếu có
+    const braw = await window._fbLoadBlocks();
+    if(braw && braw.list){
+      const customs = JSON.parse(braw.list);
+      // Merge: giữ DEF, thêm custom mới
+      const defIds = new Set(blocks.filter(b=>b.type!=='custom').map(b=>b.id));
+      blocks = blocks.filter(b=>b.type!=='custom');
+      customs.forEach(b=>{ if(!defIds.has(b.id)) blocks.push(b); });
+    }
+    renderPal(); renderGrid();
+    fbStatus('✅ Đã tải Tháng '+curMonth+' từ Cloud! ('+new Date().toLocaleTimeString('vi-VN')+')','#059669');
+  } catch(err){
+    fbStatus('❌ Lỗi tải: '+err.message,'#DC2626');
+    console.error(err);
+  }
+}
+
+// Auto-load tháng hiện tại khi mở trang
+window.fbAutoLoad = async function(){
+  if(!window._fbLoadMonth) return;
+  fbStatus('⏳ Đang tự động tải dữ liệu...','#D97706');
+  try{
+    // Load tất cả 3 tháng
+    for(const m of [6,7,8]){
+      const raw = await window._fbLoadMonth(m);
+      if(raw) deserializeMonth(raw, m);
+    }
+    const braw = await window._fbLoadBlocks();
+    if(braw && braw.list){
+      const customs = JSON.parse(braw.list);
+      blocks = blocks.filter(b=>b.type!=='custom');
+      customs.forEach(b=>blocks.push(b));
+    }
+    renderPal(); renderGrid();
+    fbStatus('✅ Đã đồng bộ từ Cloud!','#059669');
+    setTimeout(()=>fbStatus(''),4000);
+  } catch(err){
+    fbStatus('⚠️ Không thể tải Cloud — dùng dữ liệu cục bộ','#D97706');
+  }
+};
+
+// ============================================================
+// EXPORT (Image / PDF)
+// ============================================================
+function openExportModal(){document.getElementById('export-modal').classList.add('show')}
+function closeExportModal(){
+  document.getElementById('export-modal').classList.remove('show');
+  document.getElementById('export-loading').style.display='none';
+}
+
+async function captureTable(){
+  // Capture the entire page content (header + toolbar area hidden, grid focus)
+  const wrap=document.getElementById('grid-wrap');
+  const table=document.getElementById('sc');
+
+  // Temporarily remove overflow constraints so full table is captured
+  const origOverflow=wrap.style.overflow;
+  wrap.style.overflow='visible';
+
+  // Build a standalone snapshot container
+  const target=document.createElement('div');
+  target.style.cssText=`
+    background:#FFF8FA;
+    padding:20px 24px 28px;
+    display:inline-block;
+    font-family:'Nunito',sans-serif;
+    min-width:${wrap.offsetWidth}px;
+  `;
+
+  // Title
+  const title=document.createElement('div');
+  title.style.cssText='text-align:center;margin-bottom:10px';
+  title.innerHTML=`
+    <div style="font-size:16px;letter-spacing:4px;margin-bottom:2px">🌸 ⭐ 🌸</div>
+    <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:#FF85A1">Thời Khóa Biểu Hè Của Con</div>
+  `;
+  target.appendChild(title);
+
+  // Clone the full-width table
+  const tclone=table.cloneNode(true);
+  tclone.style.cssText='border-collapse:collapse;table-layout:fixed;width:100%';
+  target.appendChild(tclone);
+
+  // Offscreen
+  target.style.position='absolute';
+  target.style.left='-9999px';
+  target.style.top='0';
+  document.body.appendChild(target);
+
+  const inner=await html2canvas(target,{
+    scale:2, useCORS:true, backgroundColor:'#FFF8FA', logging:false,
+    windowWidth: wrap.offsetWidth + 48,
+  });
+
+  document.body.removeChild(target);
+  wrap.style.overflow=origOverflow;
+
+  return inner;
+}
+
+// Draw timetable in NEW LAYOUT onto 1920×1080
+// Layout: columns = days (7), rows = time slots (7:00–23:00, every 30min = 32 slots)
+async function makeWallpaperCanvas(){
+  const W=1920, H=1080;
+  const out=document.createElement('canvas');
+  out.width=W; out.height=H;
+  const ctx=out.getContext('2d');
+
+  // ── Background gradient ──────────────────────────────────────
+  const grad=ctx.createLinearGradient(0,0,W,H);
+  grad.addColorStop(0,'#FFF0F3');
+  grad.addColorStop(0.5,'#F5F0FF');
+  grad.addColorStop(1,'#EFF6FF');
+  ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
+
+  // decorative blobs
+  [[120,90,200,'rgba(255,182,207,0.22)'],[1800,150,240,'rgba(196,181,253,0.20)'],
+   [200,1000,160,'rgba(147,197,253,0.18)'],[1760,1000,180,'rgba(110,231,183,0.15)'],
+   [960,30,130,'rgba(255,213,227,0.22)']].forEach(([bx,by,br,bc])=>{
+    const g=ctx.createRadialGradient(bx,by,0,bx,by,br);
+    g.addColorStop(0,bc); g.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(bx,by,br,0,Math.PI*2); ctx.fill();
+  });
+
+  // ── Layout constants ─────────────────────────────────────────
+  const PAD=30;          // outer padding
+  const TITLE_H=54;      // title area height at top
+  const TIME_COL=56;     // left column width for time labels
+  const DAY_HDR=52;      // top header height for day names
+  const INNER_W=W-PAD*2;
+  const INNER_H=H-PAD*2;
+
+  // card bg
+  ctx.shadowColor='rgba(255,133,161,0.15)';
+  ctx.shadowBlur=32; ctx.shadowOffsetY=6;
+  ctx.fillStyle='rgba(255,248,250,0.97)';
+  roundRect(ctx,PAD,PAD,INNER_W,INNER_H,16); ctx.fill();
+  ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.shadowOffsetY=0;
+  ctx.strokeStyle='rgba(255,182,207,0.55)'; ctx.lineWidth=1.5;
+  roundRect(ctx,PAD,PAD,INNER_W,INNER_H,16); ctx.stroke();
+
+  // ── Title ────────────────────────────────────────────────────
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.font='bold 28px "Baloo 2",cursive,sans-serif';
+  ctx.fillStyle='#FF85A1';
+  ctx.fillText('🌸  Thời Khóa Biểu Hè Của Con  🌸', W/2, PAD+TITLE_H/2);
+
+  // ── Grid area ────────────────────────────────────────────────
+  const gx=PAD+TIME_COL;           // grid left (after time labels)
+  const gy=PAD+TITLE_H+DAY_HDR;    // grid top (after title + day headers)
+  const GRID_W=INNER_W-TIME_COL;
+  const GRID_H=INNER_H-TITLE_H-DAY_HDR;
+
+  const slots=SE-SS;                // 32 half-hour slots (7:00–23:00)
+  const dayW=GRID_W/DAYS.length;    // width per day column
+  const slotH=GRID_H/slots;         // height per 30-min row
+
+  // ── Day column headers ───────────────────────────────────────
+  DAYS.forEach((day,di)=>{
+    const cx=gx+di*dayW;
+    // header bg
+    ctx.fillStyle=di%2===0?'rgba(255,240,245,0.5)':'rgba(245,240,255,0.4)';
+    ctx.fillRect(cx,PAD+TITLE_H,dayW,DAY_HDR);
+    // day name
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.font='bold 18px "Baloo 2",cursive,sans-serif';
+    ctx.fillStyle='#3D1A24';
+    ctx.fillText(day, cx+dayW/2, PAD+TITLE_H+DAY_HDR/2);
+    // vertical divider
+    if(di>0){
+      ctx.strokeStyle='rgba(255,182,207,0.5)'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(cx,PAD+TITLE_H); ctx.lineTo(cx,PAD+INNER_H); ctx.stroke();
+    }
+  });
+
+  // header bottom border
+  ctx.strokeStyle='rgba(255,133,161,0.5)'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(PAD,gy); ctx.lineTo(PAD+INNER_W,gy); ctx.stroke();
+
+  // ── Time rows ────────────────────────────────────────────────
+  for(let i=0;i<=slots;i++){
+    const s=SS+i;
+    const y=gy+i*slotH;
+
+    if(s%2===0){ // on-the-hour: label + stronger line
+      ctx.textAlign='right'; ctx.textBaseline='middle';
+      ctx.font='bold 13px Nunito,sans-serif';
+      ctx.fillStyle='#9B6375';
+      ctx.fillText(sl(s), PAD+TIME_COL-6, y+slotH*0.5);
+      ctx.strokeStyle='rgba(255,133,161,0.3)'; ctx.lineWidth=1;
+    } else {
+      ctx.strokeStyle='rgba(255,182,207,0.18)'; ctx.lineWidth=0.5;
+    }
+    if(i<slots){
+      ctx.beginPath(); ctx.moveTo(gx,y); ctx.lineTo(gx+GRID_W,y); ctx.stroke();
+    }
+  }
+
+  // bottom border
+  ctx.strokeStyle='rgba(255,182,207,0.4)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(PAD,gy+GRID_H); ctx.lineTo(PAD+INNER_W,gy+GRID_H); ctx.stroke();
+  // left border of grid
+  ctx.strokeStyle='rgba(255,182,207,0.5)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(gx,PAD+TITLE_H); ctx.lineTo(gx,gy+GRID_H); ctx.stroke();
+
+  // ── Draw blocks per day column ───────────────────────────────
+  DAYS.forEach((day,di)=>{
+    const cx=gx+di*dayW;
+
+    // alternating column bg
+    ctx.fillStyle=di%2===0?'rgba(255,240,245,0.12)':'rgba(245,240,255,0.10)';
+    ctx.fillRect(cx,gy,dayW,GRID_H);
+
+    // fixed class blocks
+    const fixed=getAllFixed(curMonth,day);
+    fixed.forEach(f=>{
+      const fy=gy+(f.start-SS)*slotH;
+      const fh=(f.end-f.start)*slotH;
+      const isMath=f.type==='math', isEng=f.type==='eng';
+      const bg=isMath?'#EDE9FE':isEng?'#DBEAFE':'#FEF3C7';
+      const border=isMath?'#A78BFA':isEng?'#60A5FA':'#FCD34D';
+      const tc=isMath?'#4C1D95':isEng?'#1E40AF':'#78350F';
+      ctx.fillStyle=bg;
+      roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,7); ctx.fill();
+      ctx.strokeStyle=border; ctx.lineWidth=1.5;
+      roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,7); ctx.stroke();
+      const lines=f.label.split('\n');
+      ctx.fillStyle=tc; ctx.textAlign='center'; ctx.textBaseline='middle';
+      const midY=fy+fh/2;
+      if(lines.length>=2 && fh>28){
+        ctx.font='bold 14px "Baloo 2",cursive,sans-serif';
+        ctx.fillText(lines[0], cx+dayW/2, midY-9);
+        ctx.font='11px Nunito,sans-serif';
+        ctx.fillText(lines[1], cx+dayW/2, midY+9);
+      } else {
+        ctx.font='bold 13px "Baloo 2",cursive,sans-serif';
+        ctx.fillText(lines[0], cx+dayW/2, midY);
+      }
+    });
+
+    // user-placed blocks — find contiguous runs for same block id
+    const ug=grid[curMonth][day];
+    // group consecutive slots with same bid
+    const drawn={};
+    for(let i=0;i<slots;i++){
+      const s=SS+i;
+      const bid=ug[s];
+      if(!bid || drawn[s]) continue;
+      // find end of run
+      let end=s+1;
+      while(end<SE && ug[end]===bid) end++;
+      // mark all as drawn
+      for(let k=s;k<end;k++) drawn[k]=true;
+      const b=getB(bid); if(!b) continue;
+      const by=gy+(s-SS)*slotH;
+      const bh=(end-s)*slotH;
+      ctx.fillStyle=b.bg;
+      roundRect(ctx,cx+2,by+2,dayW-4,bh-4,5); ctx.fill();
+      ctx.strokeStyle=b.border; ctx.lineWidth=1;
+      roundRect(ctx,cx+2,by+2,dayW-4,bh-4,5); ctx.stroke();
+      ctx.fillStyle=b.color; ctx.textAlign='center'; ctx.textBaseline='middle';
+      const fs=Math.min(13, Math.max(9, bh*0.38));
+      ctx.font=`bold ${fs}px Nunito,sans-serif`;
+      let lbl=b.label;
+      while(ctx.measureText(lbl).width>dayW-10 && lbl.length>3) lbl=lbl.slice(0,-1);
+      ctx.fillText(lbl, cx+dayW/2, by+bh/2);
+    }
+  });
+
+  return out;
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);
+  ctx.closePath();
+}
+
+async function exportImage(){
+  const loading=document.getElementById('export-loading');
+  loading.style.display='block';
+  loading.textContent='⏳ Đang tạo hình nền 1920×1080...';
+  try{
+    const canvas=await makeWallpaperCanvas();
+    const a=document.createElement('a');
+    a.download='thoikhoabieu_he_wallpaper.png';
+    a.href=canvas.toDataURL('image/png');
+    a.click();
+  }catch(err){alert('Lỗi xuất ảnh: '+err.message);console.error(err)}
+  loading.style.display='none';
+  closeExportModal();
+}
+
+async function exportPDF(){
+  const loading=document.getElementById('export-loading');
+  loading.style.display='block';
+  try{
+    const canvas=await captureTable();
+    const {jsPDF}=window.jspdf;
+    const imgW=canvas.width;
+    const imgH=canvas.height;
+    // Fit to A4 landscape
+    const pageW=297,pageH=210; // mm, landscape
+    const ratio=Math.min(pageW/imgW*3.7795275591, pageH/imgH*3.7795275591);
+    const finalW=imgW*ratio/3.7795275591;
+    const finalH=imgH*ratio/3.7795275591;
+    const offsetX=(pageW-finalW)/2;
+    const offsetY=(pageH-finalH)/2;
+    const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+    pdf.addImage(canvas.toDataURL('image/png'),'PNG',offsetX,offsetY,finalW,finalH);
+    pdf.save('thoikhoabieu_he.pdf');
+  }catch(err){alert('Lỗi xuất PDF: '+err.message)}
+  loading.style.display='none';
+  closeExportModal();
+}
+
+// Close modal on overlay click
+document.getElementById('export-modal').addEventListener('click',function(e){
+  if(e.target===this) closeExportModal();
+});
+
+renderPal();renderGrid();
+</script>
+</body>
+</html>
