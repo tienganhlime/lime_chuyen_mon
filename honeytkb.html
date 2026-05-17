@@ -15,7 +15,7 @@
   import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   // ⚠️ THAY CÁC GIÁ TRỊ NÀY bằng config của bạn từ Firebase Console
-  const firebaseConfig = {
+   const firebaseConfig = {
   apiKey: "AIzaSyCou-Dl3q131fc3Xb4ZtdIN1sQnOQzjv2o",
   authDomain: "thoikhoabieu-ad275.firebaseapp.com",
   projectId: "thoikhoabieu-ad275",
@@ -27,18 +27,18 @@
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
 
-  window._fbSaveMonth = async function(month, data) {
-    await setDoc(doc(db, "thoikhoabieu", "thang_" + month), data);
+  window._fbSaveMonth = async function(child, month, data) {
+    await setDoc(doc(db, child, "thang_" + month), data);
   };
-  window._fbLoadMonth = async function(month) {
-    const snap = await getDoc(doc(db, "thoikhoabieu", "thang_" + month));
+  window._fbLoadMonth = async function(child, month) {
+    const snap = await getDoc(doc(db, child, "thang_" + month));
     return snap.exists() ? snap.data() : null;
   };
-  window._fbSaveBlocks = async function(data) {
-    await setDoc(doc(db, "thoikhoabieu", "blocks"), data);
+  window._fbSaveBlocks = async function(child, data) {
+    await setDoc(doc(db, child, "blocks"), data);
   };
-  window._fbLoadBlocks = async function() {
-    const snap = await getDoc(doc(db, "thoikhoabieu", "blocks"));
+  window._fbLoadBlocks = async function(child) {
+    const snap = await getDoc(doc(db, child, "blocks"));
     return snap.exists() ? snap.data() : null;
   };
 
@@ -186,6 +186,31 @@ table.sc td.slot.ft{background:#FEF3C7}
 /* DRAG-SCROLL: show scrollable overlay indicator */
 .grid-wrap{position:relative}
 
+/* Child tabs */
+.child-tabs{display:flex;gap:0;justify-content:center;padding:0 0 0;border-bottom:2.5px solid var(--pink-l);}
+.child-tab{
+  font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;
+  padding:10px 36px;border:none;background:none;cursor:pointer;
+  color:var(--text2);border-bottom:3px solid transparent;margin-bottom:-2.5px;
+  transition:all .18s;border-radius:12px 12px 0 0;
+}
+.child-tab:hover{background:var(--pink-bg);color:var(--pink)}
+.child-tab.active{
+  background:var(--card);color:var(--pink);
+  border-bottom:3px solid var(--pink);
+  box-shadow:0 -2px 12px rgba(255,133,161,0.10);
+}
+
+/* Icon picker modal */
+.icon-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:2000;align-items:center;justify-content:center}
+.icon-modal-overlay.show{display:flex}
+.icon-modal{background:#fff;border-radius:18px;padding:22px 24px;max-width:420px;width:95%;box-shadow:0 8px 40px rgba(255,133,161,0.25)}
+.icon-modal h3{font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:var(--pink);margin-bottom:12px;text-align:center}
+.icon-grid{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-height:220px;overflow-y:auto}
+.icon-btn{font-size:22px;padding:6px 8px;border:2px solid transparent;border-radius:8px;cursor:pointer;background:none;transition:all .12s}
+.icon-btn:hover,.icon-btn.sel{background:var(--pink-bg);border-color:var(--pink)}
+.icon-modal-footer{display:flex;gap:8px;justify-content:center;margin-top:14px}
+
 /* Export modal */
 .modal-overlay{
   display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;
@@ -216,8 +241,18 @@ table.sc td.slot.ft{background:#FEF3C7}
 
 <div class="hdr">
   <div style="font-size:20px;letter-spacing:4px;margin-bottom:2px">🌸 ⭐ 🌸</div>
-  <h1>Thời Khóa Biểu Hè Của Con</h1>
+  <h1>Thời Khóa Biểu Hè</h1>
   <p>Kéo thả các khối vào lưới giờ — mỗi ô = 30 phút ✨</p>
+</div>
+
+<!-- Child tabs -->
+<div class="child-tabs">
+  <button class="child-tab active" id="tab-honey" onclick="switchChild('honey',this)">
+    🍯 Honey
+  </button>
+  <button class="child-tab" id="tab-moon" onclick="switchChild('moon',this)">
+    🌙 Moon
+  </button>
 </div>
 
 <div class="toolbar">
@@ -237,7 +272,8 @@ table.sc td.slot.ft{background:#FEF3C7}
 <div class="pal-bar">
   <div class="pal-groups" id="pal-groups"></div>
   <div class="add-form">
-    <input type="text" id="cn" placeholder="Thêm hoạt động của con..." maxlength="22"/>
+    <button id="icon-pick-btn" onclick="openIconPicker()" style="font-size:20px;padding:4px 8px;border:2px solid var(--pink-l);border-radius:8px;background:var(--pink-bg);cursor:pointer;" title="Chọn icon">✨</button>
+    <input type="text" id="cn" placeholder="Thêm hoạt động..." maxlength="22"/>
     <div id="cdots" style="display:flex;gap:5px"></div>
     <button class="add-btn" onclick="addCustom()">+ Thêm</button>
   </div>
@@ -254,6 +290,17 @@ table.sc td.slot.ft{background:#FEF3C7}
 
 <div class="grid-wrap" id="grid-wrap">
   <table class="sc" id="sc"></table>
+</div>
+
+<!-- Icon Picker Modal -->
+<div class="icon-modal-overlay" id="icon-modal">
+  <div class="icon-modal">
+    <h3>Chọn icon cho hoạt động</h3>
+    <div class="icon-grid" id="icon-grid"></div>
+    <div class="icon-modal-footer">
+      <button class="modal-btn cancel" onclick="closeIconPicker()">Đóng</button>
+    </div>
+  </div>
 </div>
 
 <!-- Export Modal -->
@@ -276,6 +323,32 @@ const DAYS=['Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7','Chủ N
 const SS=7*2, SE=23*2;
 function sl(s){return `${Math.floor(s/2)}:${s%2?'30':'00'}`}
 function sof(h,m){return h*2+(m>=30?1:0)}
+
+// ── Current child ────────────────────────────────────────────
+let curChild='honey'; // 'honey' | 'moon'
+
+// Child config
+const CHILDREN={
+  honey:{
+    name:'Honey', icon:'🍯',
+    accentColor:'#FF85A1',
+    hasFixed:true,
+  },
+  moon:{
+    name:'Moon', icon:'🌙',
+    accentColor:'#7C3AED',
+    hasFixed:false,
+  }
+};
+
+function switchChild(child, btn){
+  curChild=child;
+  document.querySelectorAll('.child-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  // Update legend visibility
+  document.getElementById('legend').style.display = child==='honey'?'':'none';
+  renderPal(); renderGrid();
+}
 
 const COLS=[
   {bg:'#FCE7F3',color:'#9D174D',border:'#F9A8D4'},
@@ -315,6 +388,18 @@ const DEF=[
   {id:'c-box',   label:'✨ Kick-boxing',        bg:'#FCE7F3',color:'#9D174D',border:'#F9A8D4',type:'custom'},
 ];
 
+// Moon's default activities (no fixed schedule)
+const DEF_MOON=[
+  {id:'m-sang',   label:'🌅 Ăn sáng',       bg:'#FCE7F3',color:'#9D174D',border:'#F9A8D4',type:'other'},
+  {id:'m-trua',   label:'🍜 Ăn trưa',        bg:'#FFEDD5',color:'#7C2D12',border:'#FDBA74',type:'other'},
+  {id:'m-toi',    label:'🌙 Ăn tối',         bg:'#FEF3C7',color:'#78350F',border:'#FCD34D',type:'other'},
+  {id:'m-ngu',    label:'😴 Ngủ trưa',       bg:'#FCE7F3',color:'#831843',border:'#F9A8D4',type:'other'},
+  {id:'m-dichuy', label:'🚗 Di chuyển',      bg:'#FEF3C7',color:'#92400E',border:'#FCD34D',type:'travel'},
+  {id:'m-read',   label:'📚 Đọc sách',       bg:'#D1FAE5',color:'#065F46',border:'#6EE7B7',type:'other'},
+  {id:'m-family', label:'👨‍👩‍👧 Gia đình',   bg:'#FEF3C7',color:'#92400E',border:'#FCD34D',type:'other'},
+  {id:'m-free',   label:'🌟 Tự do',          bg:'#FEF9C3',color:'#713F12',border:'#FDE047',type:'other'},
+];
+
 // FIXED schedule — giờ học chính xác theo thông báo
 const FIXED={
   6:[
@@ -344,19 +429,47 @@ function getFA(month,day,slot){return getAllFixed(month,day).find(f=>slot>=f.sta
 function isFixed(month,day,slot){return !!getFA(month,day,slot)}
 
 let curMonth=6;
-let blocks=[...DEF],selCol=0,dragId=null,dragFrom=null;
-let grid={};
-[6,7,8].forEach(m=>{grid[m]={};DAYS.forEach(d=>{grid[m][d]={}})});
+// Per-child blocks and grids
+const allBlocks={
+  honey:[...DEF],
+  moon:[...DEF_MOON],
+};
+const allGrids={
+  honey:{},
+  moon:{},
+};
+[6,7,8].forEach(m=>{
+  allGrids.honey[m]={};DAYS.forEach(d=>{allGrids.honey[m][d]={}});
+  allGrids.moon[m]={};DAYS.forEach(d=>{allGrids.moon[m][d]={}});
+});
 
-function getB(id){return blocks.find(b=>b.id===id)}
+// Convenience accessors for current child
+function getGrid(){return allGrids[curChild]}
+function getBlocks(){return allBlocks[curChild]}
+function setBlocks(arr){allBlocks[curChild]=arr}
+
+let selCol=0,dragId=null,dragFrom=null;
+// Legacy aliases used throughout (redirect to current child)
+Object.defineProperty(window,'blocks',{get:getBlocks,set:setBlocks});
+Object.defineProperty(window,'grid',{get:getGrid});
+
+let selectedIcon='✨'; // current icon selection
+
+function getB(id){return allBlocks[curChild].find(b=>b.id===id)||(allBlocks.honey.find(b=>b.id===id))||(allBlocks.moon.find(b=>b.id===id))}
 
 // PALETTE
 function renderPal(){
-  const grps=[
+  const isMoon=curChild==='moon';
+  const sinh=['sang','trua','toi','ngu','dichuy','m-sang','m-trua','m-toi','m-ngu','m-dichuy'];
+  const grps=isMoon?[
+    {lbl:'🍽 Sinh hoạt', filter:b=>sinh.includes(b.id)},
+    {lbl:'🎉 Vui chơi',  filter:b=>b.type==='other'&&!sinh.includes(b.id)},
+    {lbl:'✨ Của Moon',  filter:b=>b.type==='custom'},
+  ]:[
     {lbl:'📚 Học tập',   filter:b=>['math','eng','btvn-math','btvn-eng'].includes(b.type)},
-    {lbl:'🍽 Sinh hoạt', filter:b=>['sang','trua','toi','ngu','dichuy'].includes(b.id)},
-    {lbl:'🎉 Vui chơi',  filter:b=>b.type==='other'&&!['sang','trua','toi','ngu','dichuy'].includes(b.id)},
-    {lbl:'✨ Của con',   filter:b=>b.type==='custom'},
+    {lbl:'🍽 Sinh hoạt', filter:b=>sinh.includes(b.id)},
+    {lbl:'🎉 Vui chơi',  filter:b=>b.type==='other'&&!sinh.includes(b.id)},
+    {lbl:'✨ Của Honey', filter:b=>b.type==='custom'},
   ];
   const el=document.getElementById('pal-groups');
   el.innerHTML='';
@@ -393,9 +506,9 @@ function mkChip(b){
   x.onclick=e=>{
     e.stopPropagation();e.preventDefault();
     if(!confirm(`Xóa "${b.label}" khỏi danh sách?`)) return;
-    blocks=blocks.filter(bb=>bb.id!==b.id);
+    allBlocks[curChild]=allBlocks[curChild].filter(bb=>bb.id!==b.id);
     [6,7,8].forEach(m=>DAYS.forEach(d=>{
-      Object.keys(grid[m][d]).forEach(s=>{if(grid[m][d][s]===b.id)grid[m][d][s]=null});
+      Object.keys(allGrids[curChild][m][d]).forEach(s=>{if(allGrids[curChild][m][d][s]===b.id)allGrids[curChild][m][d][s]=null});
     }));
     renderPal();renderGrid();
   };
@@ -407,7 +520,7 @@ function mkChip(b){
 
 // PROGRESS
 function dayProg(day){
-  const ug=grid[curMonth][day];
+  const ug=allGrids[curChild][curMonth][day];
   let ms=0,es=0;
   Object.values(ug).forEach(bid=>{if(!bid)return;const b=getB(bid);if(!b)return;if(b.type==='math')ms++;if(b.type==='eng')es++});
   return{mp:Math.min(100,(ms/6)*100),ep:Math.min(100,(es/6)*100),mok:ms>=6,eok:es>=6,mh:(ms*.5).toFixed(1),eh:(es*.5).toFixed(1)};
@@ -432,6 +545,7 @@ function renderGrid(){
 
   // Track which (day, slot) cells are already covered by a rowspan
   const spanned={}; // key: "day|slot"
+  const showFixed=CHILDREN[curChild].hasFixed;
 
   for(let s=SS;s<SE;s++){
     const oh=s%2===0;
@@ -442,7 +556,7 @@ function renderGrid(){
       const key=`${day}|${s}`;
       if(spanned[key]) return; // skip: already covered by a rowspan above
 
-      const fa=getFA(curMonth,day,s);
+      const fa=showFixed?getFA(curMonth,day,s):null;
 
       if(fa && fa.start===s){
         // Render the fixed block as a single merged cell
@@ -469,7 +583,7 @@ function renderGrid(){
         if(oh) cls+=' ohr';
         h+=`<td class="${cls}" data-day="${day}" data-slot="${s}"
           ondragover="gov(event)" ondrop="gdp(event,this)" ondragleave="glv(this)">`;
-        const bid=grid[curMonth][day][s];
+        const bid=allGrids[curChild][curMonth][day][s];
         if(bid){
           const b=getB(bid);
           if(b) h+=`<div class="pb" draggable="true"
@@ -546,8 +660,8 @@ function gdp(e,cell){
   const day=cell.dataset.day,slot=+cell.dataset.slot;
   if(isFixed(curMonth,day,slot)){dragId=null;dragFrom=null;return}
   if(dragId){
-    if(dragFrom){const[fd,fs]=dragFrom.split('|');grid[curMonth][fd][+fs]=null}
-    grid[curMonth][day][slot]=dragId;
+    if(dragFrom){const[fd,fs]=dragFrom.split('|');allGrids[curChild][curMonth][fd][+fs]=null}
+    allGrids[curChild][curMonth][day][slot]=dragId;
     dragId=null;dragFrom=null;renderGrid();
   }
 }
@@ -557,7 +671,7 @@ function pds(e,el){
   setTimeout(()=>el.style.opacity='0.3',0);
 }
 function pde(el){el.style.opacity='1'}
-function delB(day,slot,e){e.stopPropagation();grid[curMonth][day][slot]=null;renderGrid()}
+function delB(day,slot,e){e.stopPropagation();allGrids[curChild][curMonth][day][slot]=null;renderGrid()}
 
 function setMonth(m,btn){
   curMonth=m;
@@ -568,12 +682,42 @@ function addCustom(){
   const inp=document.getElementById('cn'),name=inp.value.trim();
   if(!name) return;
   const c=COLS[selCol];
-  blocks.push({id:'c'+Date.now(),label:'✨ '+name,bg:c.bg,color:c.color,border:c.border,type:'custom'});
+  const prefix=curChild==='moon'?'m':'c';
+  allBlocks[curChild].push({id:prefix+Date.now(),label:selectedIcon+' '+name,bg:c.bg,color:c.color,border:c.border,type:'custom'});
   inp.value='';renderPal();
 }
+
+// ── Icon Picker ───────────────────────────────────────────────
+const ICON_LIST=[
+  '⭐','🌟','✨','🎯','🎨','🎭','🎪','🎬','🎤','🎵','🎶','🎸','🎹','🥁','🎺','🎻',
+  '📚','📖','✏️','📝','📐','📏','🔬','🔭','💡','🖥️','📱','🎮','🕹️',
+  '⚽','🏀','🏊','🚴','🤸','🏋️','🥋','🤼','🏄','⛹️','🎾','🏸','🥊',
+  '🍎','🍊','🍋','🍇','🍓','🍰','🧁','🍕','🍜','🍱','🥗','☕','🧃',
+  '🌸','🌺','🌻','🌈','🦋','🐣','🐬','🦄','🐼','🦊','🐧','🌙','☀️','⛅',
+  '🚗','✈️','🚀','🏠','🛁','💤','😴','🎁','❤️','💜','💙','💚','🔥','💫',
+];
+function openIconPicker(){
+  const grid=document.getElementById('icon-grid');
+  grid.innerHTML='';
+  ICON_LIST.forEach(ic=>{
+    const btn=document.createElement('button');
+    btn.className='icon-btn'+(ic===selectedIcon?' sel':'');
+    btn.textContent=ic;
+    btn.onclick=()=>{
+      selectedIcon=ic;
+      document.getElementById('icon-pick-btn').textContent=ic;
+      document.querySelectorAll('.icon-btn').forEach(b=>b.classList.remove('sel'));
+      btn.classList.add('sel');
+      closeIconPicker();
+    };
+    grid.appendChild(btn);
+  });
+  document.getElementById('icon-modal').classList.add('show');
+}
+function closeIconPicker(){document.getElementById('icon-modal').classList.remove('show');}
 function clearWeek(){
   if(!confirm('Xóa toàn bộ lịch tuần này?')) return;
-  DAYS.forEach(d=>{grid[curMonth][d]={}});renderGrid();
+  DAYS.forEach(d=>{allGrids[curChild][curMonth][d]={}});renderGrid();
 }
 // ── File backup (giữ nguyên) ─────────────────────────────────
 function saveData(){
@@ -604,35 +748,35 @@ function fbStatus(msg, color='#9B6375'){
 }
 
 // Serialize grid[month] — Firestore không chấp nhận key là số
-function serializeMonth(month){
+function serializeMonth(child, month){
   const out={};
   DAYS.forEach(d=>{
     out[d]={};
-    Object.entries(grid[month][d]).forEach(([s,v])=>{ if(v) out[d]['s'+s]=v; });
+    Object.entries(allGrids[child][month][d]).forEach(([s,v])=>{ if(v) out[d]['s'+s]=v; });
   });
   return out;
 }
-function deserializeMonth(raw, month){
+function deserializeMonth(raw, child, month){
   DAYS.forEach(d=>{
-    grid[month][d]={};
+    allGrids[child][month][d]={};
     if(!raw[d]) return;
     Object.entries(raw[d]).forEach(([k,v])=>{
       const s=+k.replace('s','');
-      grid[month][d][s]=v;
+      allGrids[child][month][d][s]=v;
     });
   });
 }
 
 async function fbSaveMonth(){
   if(!window._fbSaveMonth){ alert('⚠️ Chưa cấu hình Firebase!\nHãy điền firebaseConfig trong code.'); return; }
-  fbStatus('⏳ Đang lưu tháng '+curMonth+'...','#D97706');
+  const child=curChild;
+  fbStatus('⏳ Đang lưu '+CHILDREN[child].name+' Tháng '+curMonth+'...','#D97706');
   try{
-    const monthData = serializeMonth(curMonth);
-    await window._fbSaveMonth(curMonth, monthData);
-    // Lưu luôn danh sách blocks custom
-    const customBlocks = blocks.filter(b=>b.type==='custom');
-    await window._fbSaveBlocks({ list: JSON.stringify(customBlocks) });
-    fbStatus('✅ Đã lưu Tháng '+curMonth+' lên Cloud! ('+new Date().toLocaleTimeString('vi-VN')+')','#059669');
+    const monthData = serializeMonth(child, curMonth);
+    await window._fbSaveMonth(child, curMonth, monthData);
+    const customBlocks = allBlocks[child].filter(b=>b.type==='custom');
+    await window._fbSaveBlocks(child, { list: JSON.stringify(customBlocks) });
+    fbStatus('✅ Đã lưu '+CHILDREN[child].icon+' '+CHILDREN[child].name+' Tháng '+curMonth+'! ('+new Date().toLocaleTimeString('vi-VN')+')','#059669');
   } catch(err){
     fbStatus('❌ Lỗi lưu: '+err.message,'#DC2626');
     console.error(err);
@@ -641,22 +785,21 @@ async function fbSaveMonth(){
 
 async function fbLoadMonth(){
   if(!window._fbLoadMonth){ alert('⚠️ Chưa cấu hình Firebase!\nHãy điền firebaseConfig trong code.'); return; }
-  fbStatus('⏳ Đang tải tháng '+curMonth+'...','#D97706');
+  const child=curChild;
+  fbStatus('⏳ Đang tải '+CHILDREN[child].name+' Tháng '+curMonth+'...','#D97706');
   try{
-    const raw = await window._fbLoadMonth(curMonth);
-    if(!raw){ fbStatus('ℹ️ Tháng '+curMonth+' chưa có dữ liệu trên Cloud','#9B6375'); return; }
-    deserializeMonth(raw, curMonth);
-    // Tải blocks custom nếu có
-    const braw = await window._fbLoadBlocks();
+    const raw = await window._fbLoadMonth(child, curMonth);
+    if(!raw){ fbStatus('ℹ️ '+CHILDREN[child].name+' Tháng '+curMonth+' chưa có dữ liệu trên Cloud','#9B6375'); return; }
+    deserializeMonth(raw, child, curMonth);
+    const braw = await window._fbLoadBlocks(child);
     if(braw && braw.list){
       const customs = JSON.parse(braw.list);
-      // Merge: giữ DEF, thêm custom mới
-      const defIds = new Set(blocks.filter(b=>b.type!=='custom').map(b=>b.id));
-      blocks = blocks.filter(b=>b.type!=='custom');
-      customs.forEach(b=>{ if(!defIds.has(b.id)) blocks.push(b); });
+      const defIds = new Set(allBlocks[child].filter(b=>b.type!=='custom').map(b=>b.id));
+      allBlocks[child] = allBlocks[child].filter(b=>b.type!=='custom');
+      customs.forEach(b=>{ if(!defIds.has(b.id)) allBlocks[child].push(b); });
     }
     renderPal(); renderGrid();
-    fbStatus('✅ Đã tải Tháng '+curMonth+' từ Cloud! ('+new Date().toLocaleTimeString('vi-VN')+')','#059669');
+    fbStatus('✅ Đã tải '+CHILDREN[child].icon+' '+CHILDREN[child].name+' Tháng '+curMonth+'! ('+new Date().toLocaleTimeString('vi-VN')+')','#059669');
   } catch(err){
     fbStatus('❌ Lỗi tải: '+err.message,'#DC2626');
     console.error(err);
@@ -668,16 +811,17 @@ window.fbAutoLoad = async function(){
   if(!window._fbLoadMonth) return;
   fbStatus('⏳ Đang tự động tải dữ liệu...','#D97706');
   try{
-    // Load tất cả 3 tháng
-    for(const m of [6,7,8]){
-      const raw = await window._fbLoadMonth(m);
-      if(raw) deserializeMonth(raw, m);
-    }
-    const braw = await window._fbLoadBlocks();
-    if(braw && braw.list){
-      const customs = JSON.parse(braw.list);
-      blocks = blocks.filter(b=>b.type!=='custom');
-      customs.forEach(b=>blocks.push(b));
+    for(const child of ['honey','moon']){
+      for(const m of [6,7,8]){
+        const raw = await window._fbLoadMonth(child, m);
+        if(raw) deserializeMonth(raw, child, m);
+      }
+      const braw = await window._fbLoadBlocks(child);
+      if(braw && braw.list){
+        const customs = JSON.parse(braw.list);
+        allBlocks[child] = allBlocks[child].filter(b=>b.type!=='custom');
+        customs.forEach(b=>allBlocks[child].push(b));
+      }
     }
     renderPal(); renderGrid();
     fbStatus('✅ Đã đồng bộ từ Cloud!','#059669');
@@ -791,7 +935,7 @@ async function makeWallpaperCanvas(){
   ctx.textAlign='center'; ctx.textBaseline='middle';
   ctx.font='bold 28px "Baloo 2",cursive,sans-serif';
   ctx.fillStyle='#FF85A1';
-  ctx.fillText('🌸  Thời Khóa Biểu Hè Của Con  🌸', W/2, PAD+TITLE_H/2);
+  ctx.fillText(CHILDREN[curChild].icon+'  Thời Khóa Biểu Hè — '+CHILDREN[curChild].name+'  '+CHILDREN[curChild].icon, W/2, PAD+TITLE_H/2);
 
   // ── Grid area ────────────────────────────────────────────────
   const gx=PAD+TIME_COL;           // grid left (after time labels)
