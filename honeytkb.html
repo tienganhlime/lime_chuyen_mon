@@ -15,7 +15,7 @@
   import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   // ⚠️ THAY CÁC GIÁ TRỊ NÀY bằng config của bạn từ Firebase Console
-   const firebaseConfig = {
+  const firebaseConfig = {
   apiKey: "AIzaSyCou-Dl3q131fc3Xb4ZtdIN1sQnOQzjv2o",
   authDomain: "thoikhoabieu-ad275.firebaseapp.com",
   projectId: "thoikhoabieu-ad275",
@@ -23,6 +23,7 @@
   messagingSenderId: "1061088618877",
   appId: "1:1061088618877:web:c1d701bbb0cd4bc7c00414"
 };
+
 
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
@@ -658,7 +659,7 @@ function glv(c){c.classList.remove('dov')}
 function gdp(e,cell){
   e.preventDefault();cell.classList.remove('dov');
   const day=cell.dataset.day,slot=+cell.dataset.slot;
-  if(isFixed(curMonth,day,slot)){dragId=null;dragFrom=null;return}
+  if(CHILDREN[curChild].hasFixed && isFixed(curMonth,day,slot)){dragId=null;dragFrom=null;return}
   if(dragId){
     if(dragFrom){const[fd,fs]=dragFrom.split('|');allGrids[curChild][curMonth][fd][+fs]=null}
     allGrids[curChild][curMonth][day][slot]=dragId;
