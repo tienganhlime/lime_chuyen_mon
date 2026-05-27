@@ -5,16 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🌸 Thời Khóa Biểu Hè</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-<!-- html2canvas for image export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<!-- jsPDF for PDF export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  // ⚠️ THAY CÁC GIÁ TRỊ NÀY bằng config của bạn từ Firebase Console
   const firebaseConfig = {
   apiKey: "AIzaSyCou-Dl3q131fc3Xb4ZtdIN1sQnOQzjv2o",
   authDomain: "thoikhoabieu-ad275.firebaseapp.com",
@@ -23,7 +19,6 @@
   messagingSenderId: "1061088618877",
   appId: "1:1061088618877:web:c1d701bbb0cd4bc7c00414"
 };
-
 
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
@@ -55,9 +50,9 @@
   --text:#3D1A24; --text2:#9B6375; --text3:#C4A0AD;
   --shadow:0 4px 20px rgba(255,133,161,0.13);
   --r:14px;
-  --cell-h:28px; /* compact row height for screen fit */
-  --time-col:52px; /* width of time label column */
-  --day-col:minmax(0,1fr); /* day columns stretch equally */
+  --cell-h:28px;
+  --time-col:52px;
+  --day-col:minmax(0,1fr);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -87,7 +82,6 @@ body{
 .tb.export:hover{background:#F59E0B;color:#fff;border-color:#F59E0B}
 .sep{width:1px;height:26px;background:var(--border);flex-shrink:0}
 
-/* PALETTE */
 .pal-bar{background:var(--card);border-top:1.5px solid var(--border);border-bottom:1.5px solid var(--border);padding:7px 16px}
 .pal-groups{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}
 .pal-grp{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
@@ -116,19 +110,12 @@ body{
 .add-btn{font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;padding:5px 14px;border-radius:10px;border:none;cursor:pointer;background:var(--pink);color:#fff}
 .add-btn:hover{background:#e06385}
 
-/* DAY NAV */
 .day-nav{display:flex;gap:7px;align-items:center;padding:10px 16px 0;overflow-x:auto;scrollbar-width:none}
 .day-nav::-webkit-scrollbar{display:none}
 .daychip{font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;padding:6px 16px;border-radius:24px;border:2px solid var(--pink-l);background:var(--card);color:var(--text2);cursor:pointer;white-space:nowrap;transition:all .15s}
 .daychip.on{background:var(--pink);border-color:var(--pink);color:#fff;box-shadow:0 3px 10px rgba(255,133,161,0.35)}
 .daychip:hover:not(.on){border-color:var(--pink);color:var(--pink)}
 
-/* LEGEND */
-.legend{display:flex;gap:12px;flex-wrap:wrap;padding:8px 16px 4px;font-size:12px;color:var(--text2);font-weight:700}
-.li{display:flex;align-items:center;gap:5px}
-.ld{width:14px;height:14px;border-radius:4px}
-
-/* GRID */
 .grid-wrap{padding:8px 10px 24px;overflow-x:hidden}
 table.sc{border-collapse:collapse;table-layout:fixed;width:100%}
 table.sc th{
@@ -138,15 +125,7 @@ table.sc th{
   color:var(--text2);position:sticky;top:0;z-index:10
 }
 table.sc th.tc{width:var(--time-col);font-size:11px;color:var(--text3)}
-table.sc th.dc{} /* auto stretch */
 table.sc th .dn{font-size:15px;color:var(--text);display:block;font-weight:800}
-.dprog{margin-top:3px;display:flex;gap:3px;justify-content:center;align-items:center}
-.dpbar{height:4px;border-radius:3px;background:#F3E8EE;width:34px;overflow:hidden}
-.dpfill{height:100%;border-radius:3px;transition:width .3s}
-.dpfill.m{background:linear-gradient(90deg,#A78BFA,#7C3AED)}
-.dpfill.e{background:linear-gradient(90deg,#60A5FA,#2563EB)}
-.dok{color:#059669;font-size:10px;font-weight:800}
-.dwarn{color:#D97706;font-size:10px;font-weight:800}
 
 table.sc td.tc{
   font-size:11px;color:var(--text3);font-weight:700;
@@ -184,10 +163,6 @@ table.sc td.slot.ft{background:#FEF3C7}
 .pbx{display:none;position:absolute;top:2px;right:3px;font-size:10px;cursor:pointer;background:none;border:none;color:inherit;font-weight:900;padding:0;opacity:0.75;line-height:1}
 .pb:hover .pbx{display:block}
 
-/* DRAG-SCROLL: show scrollable overlay indicator */
-.grid-wrap{position:relative}
-
-/* Child tabs */
 .child-tabs{display:flex;gap:0;justify-content:center;padding:0 0 0;border-bottom:2.5px solid var(--pink-l);}
 .child-tab{
   font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;
@@ -202,7 +177,6 @@ table.sc td.slot.ft{background:#FEF3C7}
   box-shadow:0 -2px 12px rgba(255,133,161,0.10);
 }
 
-/* Icon picker modal */
 .icon-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:2000;align-items:center;justify-content:center}
 .icon-modal-overlay.show{display:flex}
 .icon-modal{background:#fff;border-radius:18px;padding:22px 24px;max-width:420px;width:95%;box-shadow:0 8px 40px rgba(255,133,161,0.25)}
@@ -212,7 +186,6 @@ table.sc td.slot.ft{background:#FEF3C7}
 .icon-btn:hover,.icon-btn.sel{background:var(--pink-bg);border-color:var(--pink)}
 .icon-modal-footer{display:flex;gap:8px;justify-content:center;margin-top:14px}
 
-/* Export modal */
 .modal-overlay{
   display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;
   align-items:center;justify-content:center
@@ -246,7 +219,6 @@ table.sc td.slot.ft{background:#FEF3C7}
   <p>Kéo thả các khối vào lưới giờ — mỗi ô = 30 phút ✨</p>
 </div>
 
-<!-- Child tabs -->
 <div class="child-tabs">
   <button class="child-tab active" id="tab-honey" onclick="switchChild('honey',this)">
     🍯 Honey
@@ -280,13 +252,6 @@ table.sc td.slot.ft{background:#FEF3C7}
   </div>
 </div>
 
-<div class="legend" id="legend">
-  <div class="li"><div class="ld" style="background:#EDE9FE;border:1px solid #A78BFA"></div>Học thêm Toán</div>
-  <div class="li"><div class="ld" style="background:#DBEAFE;border:1px solid #60A5FA"></div>Học thêm Tiếng Anh</div>
-  <div class="li" style="margin-left:auto;font-size:11px;font-weight:600;color:var(--text3)">📐 Tự học Toán ≥ 3h &nbsp;|&nbsp; 📖 Tự học Anh ≥ 3h</div>
-</div>
-
-<!-- day-nav hidden since always full week -->
 <div class="day-nav" id="day-nav" style="display:none"></div>
 
 <div class="grid-wrap" id="grid-wrap">
@@ -320,34 +285,21 @@ table.sc td.slot.ft{background:#FEF3C7}
 
 <script>
 const DAYS=['Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7','Chủ Nhật'];
-// Start from 7:00 (slot 14) instead of 6:00
 const SS=7*2, SE=23*2;
 function sl(s){return `${Math.floor(s/2)}:${s%2?'30':'00'}`}
 function sof(h,m){return h*2+(m>=30?1:0)}
 
-// ── Current child ────────────────────────────────────────────
-let curChild='honey'; // 'honey' | 'moon'
+let curChild='honey';
 
-// Child config
 const CHILDREN={
-  honey:{
-    name:'Honey', icon:'🍯',
-    accentColor:'#FF85A1',
-    hasFixed:true,
-  },
-  moon:{
-    name:'Moon', icon:'🌙',
-    accentColor:'#7C3AED',
-    hasFixed:false,
-  }
+  honey:{name:'Honey', icon:'🍯', accentColor:'#FF85A1', hasFixed:true},
+  moon:{name:'Moon', icon:'🌙', accentColor:'#7C3AED', hasFixed:false}
 };
 
 function switchChild(child, btn){
   curChild=child;
   document.querySelectorAll('.child-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  // Update legend visibility
-  document.getElementById('legend').style.display = child==='honey'?'':'none';
   renderPal(); renderGrid();
 }
 
@@ -363,22 +315,18 @@ const COLS=[
 ];
 
 const DEF=[
-  // Học tập
   {id:'toan-tu', label:'📐 Tự học Toán',      bg:'#EDE9FE',color:'#5B21B6',border:'#C4B5FD',type:'math'},
   {id:'anh-tu',  label:'📖 Tự học Anh',        bg:'#DBEAFE',color:'#1E40AF',border:'#93C5FD',type:'eng'},
   {id:'btvn-t',  label:'✏️ BTVN Toán',         bg:'#FEF9C3',color:'#713F12',border:'#FDE047',type:'btvn-math'},
   {id:'btvn-a',  label:'📝 BTVN Anh',          bg:'#E0F2FE',color:'#0C4A6E',border:'#7DD3FC',type:'btvn-eng'},
-  // Sinh hoạt
   {id:'sang',    label:'🔍 Ăn sáng',           bg:'#FCE7F3',color:'#9D174D',border:'#F9A8D4',type:'other'},
   {id:'trua',    label:'🍜 Ăn trưa',           bg:'#FFEDD5',color:'#7C2D12',border:'#FDBA74',type:'other'},
   {id:'toi',     label:'🌙 Ăn tối',            bg:'#FEF3C7',color:'#78350F',border:'#FCD34D',type:'other'},
   {id:'ngu',     label:'😴 Ngủ trưa',          bg:'#FCE7F3',color:'#831843',border:'#F9A8D4',type:'other'},
   {id:'dichuy',  label:'🚗 Di chuyển',         bg:'#FEF3C7',color:'#92400E',border:'#FCD34D',type:'travel'},
-  // Vui chơi
   {id:'read',    label:'📚 Đọc sách',          bg:'#D1FAE5',color:'#065F46',border:'#6EE7B7',type:'other'},
   {id:'family',  label:'👨‍👩‍👧 Gia đình',        bg:'#FEF3C7',color:'#92400E',border:'#FCD34D',type:'other'},
   {id:'free',    label:'🌟 Tự do',             bg:'#FEF9C3',color:'#713F12',border:'#FDE047',type:'other'},
-  // Của con (pre-loaded từ ảnh)
   {id:'c-uke',   label:'✨ Ukulele',           bg:'#FCE7F3',color:'#9D174D',border:'#F9A8D4',type:'custom'},
   {id:'c-hmt',   label:'✨ Xem Hannah Motana', bg:'#D1FAE5',color:'#065F46',border:'#6EE7B7',type:'custom'},
   {id:'c-vid',   label:'✨ Quay video ngắn',   bg:'#DBEAFE',color:'#1E40AF',border:'#93C5FD',type:'custom'},
@@ -389,7 +337,6 @@ const DEF=[
   {id:'c-box',   label:'✨ Kick-boxing',        bg:'#FCE7F3',color:'#9D174D',border:'#F9A8D4',type:'custom'},
 ];
 
-// Moon's default activities (no fixed schedule)
 const DEF_MOON=[
   {id:'m-sang',   label:'🌅 Ăn sáng',       bg:'#FCE7F3',color:'#9D174D',border:'#F9A8D4',type:'other'},
   {id:'m-trua',   label:'🍜 Ăn trưa',        bg:'#FFEDD5',color:'#7C2D12',border:'#FDBA74',type:'other'},
@@ -401,7 +348,6 @@ const DEF_MOON=[
   {id:'m-free',   label:'🌟 Tự do',          bg:'#FEF9C3',color:'#713F12',border:'#FDE047',type:'other'},
 ];
 
-// FIXED schedule — giờ học chính xác theo thông báo
 const FIXED={
   6:[
     {day:'Thứ 2',   start:sof(18,0), end:sof(20,30),type:'math',label:'📐 Toán online\n18:00–20:30'},
@@ -430,35 +376,25 @@ function getFA(month,day,slot){return getAllFixed(month,day).find(f=>slot>=f.sta
 function isFixed(month,day,slot){return !!getFA(month,day,slot)}
 
 let curMonth=6;
-// Per-child blocks and grids
-const allBlocks={
-  honey:[...DEF],
-  moon:[...DEF_MOON],
-};
-const allGrids={
-  honey:{},
-  moon:{},
-};
+const allBlocks={honey:[...DEF],moon:[...DEF_MOON]};
+const allGrids={honey:{},moon:{}};
 [6,7,8].forEach(m=>{
   allGrids.honey[m]={};DAYS.forEach(d=>{allGrids.honey[m][d]={}});
   allGrids.moon[m]={};DAYS.forEach(d=>{allGrids.moon[m][d]={}});
 });
 
-// Convenience accessors for current child
 function getGrid(){return allGrids[curChild]}
 function getBlocks(){return allBlocks[curChild]}
 function setBlocks(arr){allBlocks[curChild]=arr}
 
 let selCol=0,dragId=null,dragFrom=null;
-// Legacy aliases used throughout (redirect to current child)
 Object.defineProperty(window,'blocks',{get:getBlocks,set:setBlocks});
 Object.defineProperty(window,'grid',{get:getGrid});
 
-let selectedIcon='✨'; // current icon selection
+let selectedIcon='✨';
 
 function getB(id){return allBlocks[curChild].find(b=>b.id===id)||(allBlocks.honey.find(b=>b.id===id))||(allBlocks.moon.find(b=>b.id===id))}
 
-// PALETTE
 function renderPal(){
   const isMoon=curChild==='moon';
   const sinh=['sang','trua','toi','ngu','dichuy','m-sang','m-trua','m-toi','m-ngu','m-dichuy'];
@@ -519,33 +455,15 @@ function mkChip(b){
   return c;
 }
 
-// PROGRESS
-function dayProg(day){
-  const ug=allGrids[curChild][curMonth][day];
-  let ms=0,es=0;
-  Object.values(ug).forEach(bid=>{if(!bid)return;const b=getB(bid);if(!b)return;if(b.type==='math')ms++;if(b.type==='eng')es++});
-  return{mp:Math.min(100,(ms/6)*100),ep:Math.min(100,(es/6)*100),mok:ms>=6,eok:es>=6,mh:(ms*.5).toFixed(1),eh:(es*.5).toFixed(1)};
-}
-
-// GRID — always full 7 days, fixed blocks rendered as single rowspan cell
 function renderGrid(){
   const days=DAYS;
-
   let h=`<thead><tr><th class="tc">Giờ</th>`;
   days.forEach(d=>{
-    const p=dayProg(d);
-    h+=`<th class="dc"><span class="dn">${d}</span>
-      <div class="dprog">
-        <div class="dpbar"><div class="dpfill m" style="width:${p.mp}%"></div></div>
-        <span class="${p.mok?'dok':'dwarn'}" title="Tự học Toán: ${p.mh}h">${p.mok?'✅':'📐'}</span>
-        <div class="dpbar"><div class="dpfill e" style="width:${p.ep}%"></div></div>
-        <span class="${p.eok?'dok':'dwarn'}" title="Tự học Anh: ${p.eh}h">${p.eok?'✅':'📖'}</span>
-      </div></th>`;
+    h+=`<th class="dc"><span class="dn">${d}</span></th>`;
   });
   h+=`</tr></thead><tbody>`;
 
-  // Track which (day, slot) cells are already covered by a rowspan
-  const spanned={}; // key: "day|slot"
+  const spanned={};
   const showFixed=CHILDREN[curChild].hasFixed;
 
   for(let s=SS;s<SE;s++){
@@ -555,18 +473,14 @@ function renderGrid(){
 
     days.forEach(day=>{
       const key=`${day}|${s}`;
-      if(spanned[key]) return; // skip: already covered by a rowspan above
+      if(spanned[key]) return;
 
       const fa=showFixed?getFA(curMonth,day,s):null;
 
       if(fa && fa.start===s){
-        // Render the fixed block as a single merged cell
-        const rows=fa.end-fa.start; // number of 30-min slots to span
+        const rows=fa.end-fa.start;
         const bgCls=fa.type==='math'?'fm':fa.type==='eng'?'fe':'ft';
-        const textCls=fa.type==='eng'?'fe':fa.type==='travel'?'ft':'';
-        // Mark all covered slots so we skip them
         for(let r=1;r<rows;r++) spanned[`${day}|${s+r}`]=true;
-        // Build label lines
         const lines=fa.label.split('\n');
         h+=`<td class="slot ${bgCls} ohr" rowspan="${rows}" data-day="${day}" data-slot="${s}"
           style="vertical-align:middle;text-align:center;position:relative;">
@@ -576,10 +490,8 @@ function renderGrid(){
           </div>
         </td>`;
       } else if(fa && fa.start!==s){
-        // Middle of a fixed block — already handled by rowspan, skip
-        // (shouldn't reach here due to spanned tracking, but safety)
+        // skip
       } else {
-        // Normal empty/user slot
         let cls='slot';
         if(oh) cls+=' ohr';
         h+=`<td class="${cls}" data-day="${day}" data-slot="${s}"
@@ -605,20 +517,15 @@ function renderGrid(){
   initDragScroll();
 }
 
-// ============================================================
-// AUTO-SCROLL WHILE DRAGGING near top/bottom of viewport
-// ============================================================
 let autoScrollRAF=null;
 let dragScrollSpeed=0;
-const SCROLL_ZONE=80; // px from edge to trigger scroll
+const SCROLL_ZONE=80;
 const MAX_SPEED=12;
 
 function startAutoScroll(){
   if(autoScrollRAF) return;
   function loop(){
-    if(dragScrollSpeed!==0){
-      window.scrollBy(0,dragScrollSpeed);
-    }
+    if(dragScrollSpeed!==0) window.scrollBy(0,dragScrollSpeed);
     autoScrollRAF=requestAnimationFrame(loop);
   }
   autoScrollRAF=requestAnimationFrame(loop);
@@ -627,33 +534,19 @@ function stopAutoScroll(){
   if(autoScrollRAF){cancelAnimationFrame(autoScrollRAF);autoScrollRAF=null;}
   dragScrollSpeed=0;
 }
-
 function onDragOverWindow(e){
-  const y=e.clientY;
-  const h=window.innerHeight;
-  if(y<SCROLL_ZONE){
-    dragScrollSpeed=-MAX_SPEED*((SCROLL_ZONE-y)/SCROLL_ZONE);
-  } else if(y>h-SCROLL_ZONE){
-    dragScrollSpeed=MAX_SPEED*((y-(h-SCROLL_ZONE))/SCROLL_ZONE);
-  } else {
-    dragScrollSpeed=0;
-  }
+  const y=e.clientY,h=window.innerHeight;
+  if(y<SCROLL_ZONE) dragScrollSpeed=-MAX_SPEED*((SCROLL_ZONE-y)/SCROLL_ZONE);
+  else if(y>h-SCROLL_ZONE) dragScrollSpeed=MAX_SPEED*((y-(h-SCROLL_ZONE))/SCROLL_ZONE);
+  else dragScrollSpeed=0;
 }
-
-// Attach once globally
 document.addEventListener('dragover',onDragOverWindow);
 document.addEventListener('dragstart',()=>startAutoScroll());
 document.addEventListener('dragend',()=>stopAutoScroll());
 document.addEventListener('drop',()=>stopAutoScroll());
 
-// Touch-drag support for mobile: long press → drag chip
-function initDragScroll(){
-  // Nothing special needed; browser handles dragover auto-scroll via our window listener
-}
+function initDragScroll(){}
 
-// ============================================================
-// SLOT INTERACTIONS
-// ============================================================
 function gov(e){e.preventDefault();e.currentTarget.classList.add('dov');e.dataTransfer.dropEffect='copy'}
 function glv(c){c.classList.remove('dov')}
 function gdp(e,cell){
@@ -688,7 +581,6 @@ function addCustom(){
   inp.value='';renderPal();
 }
 
-// ── Icon Picker ───────────────────────────────────────────────
 const ICON_LIST=[
   '⭐','🌟','✨','🎯','🎨','🎭','🎪','🎬','🎤','🎵','🎶','🎸','🎹','🥁','🎺','🎻',
   '📚','📖','✏️','📝','📐','📏','🔬','🔭','💡','🖥️','📱','🎮','🕹️',
@@ -720,7 +612,6 @@ function clearWeek(){
   if(!confirm('Xóa toàn bộ lịch tuần này?')) return;
   DAYS.forEach(d=>{allGrids[curChild][curMonth][d]={}});renderGrid();
 }
-// ── File backup (giữ nguyên) ─────────────────────────────────
 function saveData(){
   const blob=new Blob([JSON.stringify({grid,blocks})],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='thoikhoabieu_he.json';a.click();
@@ -742,13 +633,11 @@ function loadData(){
   inp.click();
 }
 
-// ── Firebase Cloud ────────────────────────────────────────────
 function fbStatus(msg, color='#9B6375'){
   const el=document.getElementById('fb-status');
   if(el){ el.textContent=msg; el.style.color=color; }
 }
 
-// Serialize grid[month] — Firestore không chấp nhận key là số
 function serializeMonth(child, month){
   const out={};
   DAYS.forEach(d=>{
@@ -769,7 +658,7 @@ function deserializeMonth(raw, child, month){
 }
 
 async function fbSaveMonth(){
-  if(!window._fbSaveMonth){ alert('⚠️ Chưa cấu hình Firebase!\nHãy điền firebaseConfig trong code.'); return; }
+  if(!window._fbSaveMonth){ alert('⚠️ Chưa cấu hình Firebase!'); return; }
   const child=curChild;
   fbStatus('⏳ Đang lưu '+CHILDREN[child].name+' Tháng '+curMonth+'...','#D97706');
   try{
@@ -785,7 +674,7 @@ async function fbSaveMonth(){
 }
 
 async function fbLoadMonth(){
-  if(!window._fbLoadMonth){ alert('⚠️ Chưa cấu hình Firebase!\nHãy điền firebaseConfig trong code.'); return; }
+  if(!window._fbLoadMonth){ alert('⚠️ Chưa cấu hình Firebase!'); return; }
   const child=curChild;
   fbStatus('⏳ Đang tải '+CHILDREN[child].name+' Tháng '+curMonth+'...','#D97706');
   try{
@@ -807,7 +696,6 @@ async function fbLoadMonth(){
   }
 }
 
-// Auto-load tháng hiện tại khi mở trang
 window.fbAutoLoad = async function(){
   if(!window._fbLoadMonth) return;
   fbStatus('⏳ Đang tự động tải dữ liệu...','#D97706');
@@ -832,9 +720,6 @@ window.fbAutoLoad = async function(){
   }
 };
 
-// ============================================================
-// EXPORT (Image / PDF)
-// ============================================================
 function openExportModal(){document.getElementById('export-modal').classList.add('show')}
 function closeExportModal(){
   document.getElementById('export-modal').classList.remove('show');
@@ -842,250 +727,135 @@ function closeExportModal(){
 }
 
 async function captureTable(){
-  // Capture the entire page content (header + toolbar area hidden, grid focus)
   const wrap=document.getElementById('grid-wrap');
   const table=document.getElementById('sc');
-
-  // Temporarily remove overflow constraints so full table is captured
   const origOverflow=wrap.style.overflow;
   wrap.style.overflow='visible';
-
-  // Build a standalone snapshot container
   const target=document.createElement('div');
-  target.style.cssText=`
-    background:#FFF8FA;
-    padding:20px 24px 28px;
-    display:inline-block;
-    font-family:'Nunito',sans-serif;
-    min-width:${wrap.offsetWidth}px;
-  `;
-
-  // Title
+  target.style.cssText=`background:#FFF8FA;padding:20px 24px 28px;display:inline-block;font-family:'Nunito',sans-serif;min-width:${wrap.offsetWidth}px;`;
   const title=document.createElement('div');
   title.style.cssText='text-align:center;margin-bottom:10px';
-  title.innerHTML=`
-    <div style="font-size:16px;letter-spacing:4px;margin-bottom:2px">🌸 ⭐ 🌸</div>
-    <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:#FF85A1">Thời Khóa Biểu Hè Của Con</div>
-  `;
+  title.innerHTML=`<div style="font-size:16px;letter-spacing:4px;margin-bottom:2px">🌸 ⭐ 🌸</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:#FF85A1">Thời Khóa Biểu Hè Của Con</div>`;
   target.appendChild(title);
-
-  // Clone the full-width table
   const tclone=table.cloneNode(true);
   tclone.style.cssText='border-collapse:collapse;table-layout:fixed;width:100%';
   target.appendChild(tclone);
-
-  // Offscreen
-  target.style.position='absolute';
-  target.style.left='-9999px';
-  target.style.top='0';
+  target.style.position='absolute';target.style.left='-9999px';target.style.top='0';
   document.body.appendChild(target);
-
-  const inner=await html2canvas(target,{
-    scale:2, useCORS:true, backgroundColor:'#FFF8FA', logging:false,
-    windowWidth: wrap.offsetWidth + 48,
-  });
-
+  const inner=await html2canvas(target,{scale:2,useCORS:true,backgroundColor:'#FFF8FA',logging:false,windowWidth:wrap.offsetWidth+48});
   document.body.removeChild(target);
   wrap.style.overflow=origOverflow;
-
   return inner;
 }
 
-// Draw timetable in NEW LAYOUT onto 1920×1080
-// Layout: columns = days (7), rows = time slots (7:00–23:00, every 30min = 32 slots)
 async function makeWallpaperCanvas(){
-  const W=1920, H=1080;
+  const W=1920,H=1080;
   const out=document.createElement('canvas');
-  out.width=W; out.height=H;
+  out.width=W;out.height=H;
   const ctx=out.getContext('2d');
-
-  // ── Background gradient ──────────────────────────────────────
   const grad=ctx.createLinearGradient(0,0,W,H);
-  grad.addColorStop(0,'#FFF0F3');
-  grad.addColorStop(0.5,'#F5F0FF');
-  grad.addColorStop(1,'#EFF6FF');
-  ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
-
-  // decorative blobs
+  grad.addColorStop(0,'#FFF0F3');grad.addColorStop(0.5,'#F5F0FF');grad.addColorStop(1,'#EFF6FF');
+  ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
   [[120,90,200,'rgba(255,182,207,0.22)'],[1800,150,240,'rgba(196,181,253,0.20)'],
    [200,1000,160,'rgba(147,197,253,0.18)'],[1760,1000,180,'rgba(110,231,183,0.15)'],
    [960,30,130,'rgba(255,213,227,0.22)']].forEach(([bx,by,br,bc])=>{
     const g=ctx.createRadialGradient(bx,by,0,bx,by,br);
-    g.addColorStop(0,bc); g.addColorStop(1,'rgba(255,255,255,0)');
-    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(bx,by,br,0,Math.PI*2); ctx.fill();
+    g.addColorStop(0,bc);g.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(bx,by,br,0,Math.PI*2);ctx.fill();
   });
-
-  // ── Layout constants ─────────────────────────────────────────
-  const PAD=30;          // outer padding
-  const TITLE_H=54;      // title area height at top
-  const TIME_COL=56;     // left column width for time labels
-  const DAY_HDR=52;      // top header height for day names
-  const INNER_W=W-PAD*2;
-  const INNER_H=H-PAD*2;
-
-  // card bg
-  ctx.shadowColor='rgba(255,133,161,0.15)';
-  ctx.shadowBlur=32; ctx.shadowOffsetY=6;
+  const PAD=30,TITLE_H=54,TIME_COL=56,DAY_HDR=52;
+  const INNER_W=W-PAD*2,INNER_H=H-PAD*2;
+  ctx.shadowColor='rgba(255,133,161,0.15)';ctx.shadowBlur=32;ctx.shadowOffsetY=6;
   ctx.fillStyle='rgba(255,248,250,0.97)';
-  roundRect(ctx,PAD,PAD,INNER_W,INNER_H,16); ctx.fill();
-  ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.shadowOffsetY=0;
-  ctx.strokeStyle='rgba(255,182,207,0.55)'; ctx.lineWidth=1.5;
-  roundRect(ctx,PAD,PAD,INNER_W,INNER_H,16); ctx.stroke();
-
-  // ── Title ────────────────────────────────────────────────────
-  ctx.textAlign='center'; ctx.textBaseline='middle';
+  roundRect(ctx,PAD,PAD,INNER_W,INNER_H,16);ctx.fill();
+  ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+  ctx.strokeStyle='rgba(255,182,207,0.55)';ctx.lineWidth=1.5;
+  roundRect(ctx,PAD,PAD,INNER_W,INNER_H,16);ctx.stroke();
+  ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.font='bold 28px "Baloo 2",cursive,sans-serif';
   ctx.fillStyle='#FF85A1';
-  ctx.fillText(CHILDREN[curChild].icon+'  Thời Khóa Biểu Hè — '+CHILDREN[curChild].name+'  '+CHILDREN[curChild].icon, W/2, PAD+TITLE_H/2);
-
-  // ── Grid area ────────────────────────────────────────────────
-  const gx=PAD+TIME_COL;           // grid left (after time labels)
-  const gy=PAD+TITLE_H+DAY_HDR;    // grid top (after title + day headers)
-  const GRID_W=INNER_W-TIME_COL;
-  const GRID_H=INNER_H-TITLE_H-DAY_HDR;
-
-  const slots=SE-SS;                // 32 half-hour slots (7:00–23:00)
-  const dayW=GRID_W/DAYS.length;    // width per day column
-  const slotH=GRID_H/slots;         // height per 30-min row
-
-  // ── Day column headers ───────────────────────────────────────
+  ctx.fillText(CHILDREN[curChild].icon+'  Thời Khóa Biểu Hè — '+CHILDREN[curChild].name+'  '+CHILDREN[curChild].icon,W/2,PAD+TITLE_H/2);
+  const gx=PAD+TIME_COL,gy=PAD+TITLE_H+DAY_HDR;
+  const GRID_W=INNER_W-TIME_COL,GRID_H=INNER_H-TITLE_H-DAY_HDR;
+  const slots=SE-SS,dayW=GRID_W/DAYS.length,slotH=GRID_H/slots;
   DAYS.forEach((day,di)=>{
     const cx=gx+di*dayW;
-    // header bg
     ctx.fillStyle=di%2===0?'rgba(255,240,245,0.5)':'rgba(245,240,255,0.4)';
     ctx.fillRect(cx,PAD+TITLE_H,dayW,DAY_HDR);
-    // day name
-    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.font='bold 18px "Baloo 2",cursive,sans-serif';
     ctx.fillStyle='#3D1A24';
-    ctx.fillText(day, cx+dayW/2, PAD+TITLE_H+DAY_HDR/2);
-    // vertical divider
-    if(di>0){
-      ctx.strokeStyle='rgba(255,182,207,0.5)'; ctx.lineWidth=1;
-      ctx.beginPath(); ctx.moveTo(cx,PAD+TITLE_H); ctx.lineTo(cx,PAD+INNER_H); ctx.stroke();
-    }
+    ctx.fillText(day,cx+dayW/2,PAD+TITLE_H+DAY_HDR/2);
+    if(di>0){ctx.strokeStyle='rgba(255,182,207,0.5)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(cx,PAD+TITLE_H);ctx.lineTo(cx,PAD+INNER_H);ctx.stroke();}
   });
-
-  // header bottom border
-  ctx.strokeStyle='rgba(255,133,161,0.5)'; ctx.lineWidth=2;
-  ctx.beginPath(); ctx.moveTo(PAD,gy); ctx.lineTo(PAD+INNER_W,gy); ctx.stroke();
-
-  // ── Time rows ────────────────────────────────────────────────
+  ctx.strokeStyle='rgba(255,133,161,0.5)';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(PAD,gy);ctx.lineTo(PAD+INNER_W,gy);ctx.stroke();
   for(let i=0;i<=slots;i++){
-    const s=SS+i;
-    const y=gy+i*slotH;
-
-    if(s%2===0){ // on-the-hour: label + stronger line
-      ctx.textAlign='right'; ctx.textBaseline='middle';
-      ctx.font='bold 13px Nunito,sans-serif';
-      ctx.fillStyle='#9B6375';
-      ctx.fillText(sl(s), PAD+TIME_COL-6, y+slotH*0.5);
-      ctx.strokeStyle='rgba(255,133,161,0.3)'; ctx.lineWidth=1;
-    } else {
-      ctx.strokeStyle='rgba(255,182,207,0.18)'; ctx.lineWidth=0.5;
-    }
-    if(i<slots){
-      ctx.beginPath(); ctx.moveTo(gx,y); ctx.lineTo(gx+GRID_W,y); ctx.stroke();
-    }
+    const s=SS+i,y=gy+i*slotH;
+    if(s%2===0){ctx.textAlign='right';ctx.textBaseline='middle';ctx.font='bold 13px Nunito,sans-serif';ctx.fillStyle='#9B6375';ctx.fillText(sl(s),PAD+TIME_COL-6,y+slotH*0.5);ctx.strokeStyle='rgba(255,133,161,0.3)';ctx.lineWidth=1;}
+    else{ctx.strokeStyle='rgba(255,182,207,0.18)';ctx.lineWidth=0.5;}
+    if(i<slots){ctx.beginPath();ctx.moveTo(gx,y);ctx.lineTo(gx+GRID_W,y);ctx.stroke();}
   }
-
-  // bottom border
-  ctx.strokeStyle='rgba(255,182,207,0.4)'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(PAD,gy+GRID_H); ctx.lineTo(PAD+INNER_W,gy+GRID_H); ctx.stroke();
-  // left border of grid
-  ctx.strokeStyle='rgba(255,182,207,0.5)'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.moveTo(gx,PAD+TITLE_H); ctx.lineTo(gx,gy+GRID_H); ctx.stroke();
-
-  // ── Draw blocks per day column ───────────────────────────────
+  ctx.strokeStyle='rgba(255,182,207,0.4)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PAD,gy+GRID_H);ctx.lineTo(PAD+INNER_W,gy+GRID_H);ctx.stroke();
+  ctx.strokeStyle='rgba(255,182,207,0.5)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(gx,PAD+TITLE_H);ctx.lineTo(gx,gy+GRID_H);ctx.stroke();
   DAYS.forEach((day,di)=>{
     const cx=gx+di*dayW;
-
-    // alternating column bg
     ctx.fillStyle=di%2===0?'rgba(255,240,245,0.12)':'rgba(245,240,255,0.10)';
     ctx.fillRect(cx,gy,dayW,GRID_H);
-
-    // fixed class blocks
     const fixed=getAllFixed(curMonth,day);
     fixed.forEach(f=>{
-      const fy=gy+(f.start-SS)*slotH;
-      const fh=(f.end-f.start)*slotH;
-      const isMath=f.type==='math', isEng=f.type==='eng';
+      const fy=gy+(f.start-SS)*slotH,fh=(f.end-f.start)*slotH;
+      const isMath=f.type==='math',isEng=f.type==='eng';
       const bg=isMath?'#EDE9FE':isEng?'#DBEAFE':'#FEF3C7';
       const border=isMath?'#A78BFA':isEng?'#60A5FA':'#FCD34D';
       const tc=isMath?'#4C1D95':isEng?'#1E40AF':'#78350F';
-      ctx.fillStyle=bg;
-      roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,7); ctx.fill();
-      ctx.strokeStyle=border; ctx.lineWidth=1.5;
-      roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,7); ctx.stroke();
+      ctx.fillStyle=bg;roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,7);ctx.fill();
+      ctx.strokeStyle=border;ctx.lineWidth=1.5;roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,7);ctx.stroke();
       const lines=f.label.split('\n');
-      ctx.fillStyle=tc; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillStyle=tc;ctx.textAlign='center';ctx.textBaseline='middle';
       const midY=fy+fh/2;
-      if(lines.length>=2 && fh>28){
-        ctx.font='bold 14px "Baloo 2",cursive,sans-serif';
-        ctx.fillText(lines[0], cx+dayW/2, midY-9);
-        ctx.font='11px Nunito,sans-serif';
-        ctx.fillText(lines[1], cx+dayW/2, midY+9);
-      } else {
-        ctx.font='bold 13px "Baloo 2",cursive,sans-serif';
-        ctx.fillText(lines[0], cx+dayW/2, midY);
-      }
+      if(lines.length>=2&&fh>28){ctx.font='bold 14px "Baloo 2",cursive,sans-serif';ctx.fillText(lines[0],cx+dayW/2,midY-9);ctx.font='11px Nunito,sans-serif';ctx.fillText(lines[1],cx+dayW/2,midY+9);}
+      else{ctx.font='bold 13px "Baloo 2",cursive,sans-serif';ctx.fillText(lines[0],cx+dayW/2,midY);}
     });
-
-    // user-placed blocks — find contiguous runs for same block id
     const ug=grid[curMonth][day];
-    // group consecutive slots with same bid
     const drawn={};
     for(let i=0;i<slots;i++){
-      const s=SS+i;
-      const bid=ug[s];
-      if(!bid || drawn[s]) continue;
-      // find end of run
+      const s=SS+i,bid=ug[s];
+      if(!bid||drawn[s]) continue;
       let end=s+1;
-      while(end<SE && ug[end]===bid) end++;
-      // mark all as drawn
+      while(end<SE&&ug[end]===bid) end++;
       for(let k=s;k<end;k++) drawn[k]=true;
-      const b=getB(bid); if(!b) continue;
-      const by=gy+(s-SS)*slotH;
-      const bh=(end-s)*slotH;
-      ctx.fillStyle=b.bg;
-      roundRect(ctx,cx+2,by+2,dayW-4,bh-4,5); ctx.fill();
-      ctx.strokeStyle=b.border; ctx.lineWidth=1;
-      roundRect(ctx,cx+2,by+2,dayW-4,bh-4,5); ctx.stroke();
-      ctx.fillStyle=b.color; ctx.textAlign='center'; ctx.textBaseline='middle';
-      const fs=Math.min(13, Math.max(9, bh*0.38));
+      const b=getB(bid);if(!b) continue;
+      const by=gy+(s-SS)*slotH,bh=(end-s)*slotH;
+      ctx.fillStyle=b.bg;roundRect(ctx,cx+2,by+2,dayW-4,bh-4,5);ctx.fill();
+      ctx.strokeStyle=b.border;ctx.lineWidth=1;roundRect(ctx,cx+2,by+2,dayW-4,bh-4,5);ctx.stroke();
+      ctx.fillStyle=b.color;ctx.textAlign='center';ctx.textBaseline='middle';
+      const fs=Math.min(13,Math.max(9,bh*0.38));
       ctx.font=`bold ${fs}px Nunito,sans-serif`;
       let lbl=b.label;
-      while(ctx.measureText(lbl).width>dayW-10 && lbl.length>3) lbl=lbl.slice(0,-1);
-      ctx.fillText(lbl, cx+dayW/2, by+bh/2);
+      while(ctx.measureText(lbl).width>dayW-10&&lbl.length>3) lbl=lbl.slice(0,-1);
+      ctx.fillText(lbl,cx+dayW/2,by+bh/2);
     }
   });
-
   return out;
 }
 
 function roundRect(ctx,x,y,w,h,r){
-  ctx.beginPath();
-  ctx.moveTo(x+r,y);
-  ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
-  ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
-  ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);
-  ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);
-  ctx.closePath();
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);
+  ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();
 }
 
 async function exportImage(){
   const loading=document.getElementById('export-loading');
-  loading.style.display='block';
-  loading.textContent='⏳ Đang tạo hình nền 1920×1080...';
+  loading.style.display='block';loading.textContent='⏳ Đang tạo hình nền 1920×1080...';
   try{
     const canvas=await makeWallpaperCanvas();
-    const a=document.createElement('a');
-    a.download='thoikhoabieu_he_wallpaper.png';
-    a.href=canvas.toDataURL('image/png');
-    a.click();
+    const a=document.createElement('a');a.download='thoikhoabieu_he_wallpaper.png';a.href=canvas.toDataURL('image/png');a.click();
   }catch(err){alert('Lỗi xuất ảnh: '+err.message);console.error(err)}
-  loading.style.display='none';
-  closeExportModal();
+  loading.style.display='none';closeExportModal();
 }
 
 async function exportPDF(){
@@ -1094,27 +864,19 @@ async function exportPDF(){
   try{
     const canvas=await captureTable();
     const {jsPDF}=window.jspdf;
-    const imgW=canvas.width;
-    const imgH=canvas.height;
-    // Fit to A4 landscape
-    const pageW=297,pageH=210; // mm, landscape
-    const ratio=Math.min(pageW/imgW*3.7795275591, pageH/imgH*3.7795275591);
-    const finalW=imgW*ratio/3.7795275591;
-    const finalH=imgH*ratio/3.7795275591;
-    const offsetX=(pageW-finalW)/2;
-    const offsetY=(pageH-finalH)/2;
+    const imgW=canvas.width,imgH=canvas.height;
+    const pageW=297,pageH=210;
+    const ratio=Math.min(pageW/imgW*3.7795275591,pageH/imgH*3.7795275591);
+    const finalW=imgW*ratio/3.7795275591,finalH=imgH*ratio/3.7795275591;
+    const offsetX=(pageW-finalW)/2,offsetY=(pageH-finalH)/2;
     const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
     pdf.addImage(canvas.toDataURL('image/png'),'PNG',offsetX,offsetY,finalW,finalH);
     pdf.save('thoikhoabieu_he.pdf');
   }catch(err){alert('Lỗi xuất PDF: '+err.message)}
-  loading.style.display='none';
-  closeExportModal();
+  loading.style.display='none';closeExportModal();
 }
 
-// Close modal on overlay click
-document.getElementById('export-modal').addEventListener('click',function(e){
-  if(e.target===this) closeExportModal();
-});
+document.getElementById('export-modal').addEventListener('click',function(e){if(e.target===this) closeExportModal();});
 
 renderPal();renderGrid();
 </script>
