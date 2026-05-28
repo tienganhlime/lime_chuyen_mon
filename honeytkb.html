@@ -749,136 +749,158 @@ async function captureTable(){
 }
 
 async function makeWallpaperCanvas(){
-  const W=1920,H=1080;
+  // Export range: 7:00–22:00 (cut empty rows after 22h)
+  const EXP_SS=SS, EXP_SE=22*2;
+  const W=2560,H=1440;
   const out=document.createElement('canvas');
   out.width=W;out.height=H;
   const ctx=out.getContext('2d');
+
+  // Background gradient
   const grad=ctx.createLinearGradient(0,0,W,H);
   grad.addColorStop(0,'#FFF0F3');grad.addColorStop(0.5,'#F5F0FF');grad.addColorStop(1,'#EFF6FF');
   ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
-  [[120,90,200,'rgba(255,182,207,0.22)'],[1800,150,240,'rgba(196,181,253,0.20)'],
-   [200,1000,160,'rgba(147,197,253,0.18)'],[1760,1000,180,'rgba(110,231,183,0.15)'],
-   [960,30,130,'rgba(255,213,227,0.22)']].forEach(([bx,by,br,bc])=>{
+  [[150,110,260,'rgba(255,182,207,0.22)'],[2410,180,300,'rgba(196,181,253,0.20)'],
+   [250,1300,200,'rgba(147,197,253,0.18)'],[2300,1300,220,'rgba(110,231,183,0.15)'],
+   [1280,40,170,'rgba(255,213,227,0.22)']].forEach(([bx,by,br,bc])=>{
     const g=ctx.createRadialGradient(bx,by,0,bx,by,br);
     g.addColorStop(0,bc);g.addColorStop(1,'rgba(255,255,255,0)');
     ctx.fillStyle=g;ctx.beginPath();ctx.arc(bx,by,br,0,Math.PI*2);ctx.fill();
   });
-  const PAD=30,TITLE_H=54,TIME_COL=56,DAY_HDR=52;
+
+  const PAD=36,TITLE_H=66,TIME_COL=72,DAY_HDR=60;
   const INNER_W=W-PAD*2,INNER_H=H-PAD*2;
-  ctx.shadowColor='rgba(255,133,161,0.15)';ctx.shadowBlur=32;ctx.shadowOffsetY=6;
+
+  // Card background
+  ctx.shadowColor='rgba(255,133,161,0.15)';ctx.shadowBlur=40;ctx.shadowOffsetY=8;
   ctx.fillStyle='rgba(255,248,250,0.97)';
-  roundRect(ctx,PAD,PAD,INNER_W,INNER_H,16);ctx.fill();
+  roundRect(ctx,PAD,PAD,INNER_W,INNER_H,20);ctx.fill();
   ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;
-  ctx.strokeStyle='rgba(255,182,207,0.55)';ctx.lineWidth=1.5;
-  roundRect(ctx,PAD,PAD,INNER_W,INNER_H,16);ctx.stroke();
+  ctx.strokeStyle='rgba(255,182,207,0.55)';ctx.lineWidth=2;
+  roundRect(ctx,PAD,PAD,INNER_W,INNER_H,20);ctx.stroke();
+
+  // Title
   ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.font='bold 28px "Baloo 2",cursive,sans-serif';
+  ctx.font='bold 36px "Baloo 2",cursive,sans-serif';
   ctx.fillStyle='#FF85A1';
   ctx.fillText(CHILDREN[curChild].icon+'  Thời Khóa Biểu Hè — '+CHILDREN[curChild].name+'  '+CHILDREN[curChild].icon,W/2,PAD+TITLE_H/2);
-  const gx=PAD+TIME_COL,gy=PAD+TITLE_H+DAY_HDR;
-  const GRID_W=INNER_W-TIME_COL,GRID_H=INNER_H-TITLE_H-DAY_HDR;
-  const slots=SE-SS,dayW=GRID_W/DAYS.length,slotH=GRID_H/slots;
+
+  const gx=PAD+TIME_COL, gy=PAD+TITLE_H+DAY_HDR;
+  const GRID_W=INNER_W-TIME_COL, GRID_H=INNER_H-TITLE_H-DAY_HDR;
+  const slots=EXP_SE-EXP_SS;
+  const dayW=GRID_W/DAYS.length, slotH=GRID_H/slots;
+
+  // Day headers
   DAYS.forEach((day,di)=>{
     const cx=gx+di*dayW;
     ctx.fillStyle=di%2===0?'rgba(255,240,245,0.5)':'rgba(245,240,255,0.4)';
     ctx.fillRect(cx,PAD+TITLE_H,dayW,DAY_HDR);
     ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.font='bold 18px "Baloo 2",cursive,sans-serif';
+    ctx.font='bold 24px "Baloo 2",cursive,sans-serif';
     ctx.fillStyle='#3D1A24';
     ctx.fillText(day,cx+dayW/2,PAD+TITLE_H+DAY_HDR/2);
     if(di>0){ctx.strokeStyle='rgba(255,182,207,0.5)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(cx,PAD+TITLE_H);ctx.lineTo(cx,PAD+INNER_H);ctx.stroke();}
   });
-  ctx.strokeStyle='rgba(255,133,161,0.5)';ctx.lineWidth=2;
+
+  // Header bottom border
+  ctx.strokeStyle='rgba(255,133,161,0.5)';ctx.lineWidth=2.5;
   ctx.beginPath();ctx.moveTo(PAD,gy);ctx.lineTo(PAD+INNER_W,gy);ctx.stroke();
+
+  // Time row lines + labels
   for(let i=0;i<=slots;i++){
-    const s=SS+i,y=gy+i*slotH;
-    if(s%2===0){ctx.textAlign='right';ctx.textBaseline='middle';ctx.font='bold 13px Nunito,sans-serif';ctx.fillStyle='#9B6375';ctx.fillText(sl(s),PAD+TIME_COL-6,y+slotH*0.5);ctx.strokeStyle='rgba(255,133,161,0.3)';ctx.lineWidth=1;}
-    else{ctx.strokeStyle='rgba(255,182,207,0.18)';ctx.lineWidth=0.5;}
+    const s=EXP_SS+i, y=gy+i*slotH;
+    if(s%2===0){
+      ctx.textAlign='right';ctx.textBaseline='middle';
+      ctx.font='bold 16px Nunito,sans-serif';ctx.fillStyle='#9B6375';
+      ctx.fillText(sl(s),PAD+TIME_COL-8,y+slotH*0.5);
+      ctx.strokeStyle='rgba(255,133,161,0.3)';ctx.lineWidth=1;
+    } else {
+      ctx.strokeStyle='rgba(255,182,207,0.18)';ctx.lineWidth=0.5;
+    }
     if(i<slots){ctx.beginPath();ctx.moveTo(gx,y);ctx.lineTo(gx+GRID_W,y);ctx.stroke();}
   }
+
+  // Grid borders
   ctx.strokeStyle='rgba(255,182,207,0.4)';ctx.lineWidth=1;
   ctx.beginPath();ctx.moveTo(PAD,gy+GRID_H);ctx.lineTo(PAD+INNER_W,gy+GRID_H);ctx.stroke();
-  ctx.strokeStyle='rgba(255,182,207,0.5)';ctx.lineWidth=1.5;
+  ctx.strokeStyle='rgba(255,182,207,0.5)';ctx.lineWidth=2;
   ctx.beginPath();ctx.moveTo(gx,PAD+TITLE_H);ctx.lineTo(gx,gy+GRID_H);ctx.stroke();
+
+  // Helper: draw text centered in a box, word-wrap if needed, always 20px
+  function drawBlockText(txt, color, cx, by, bw, bh){
+    const FONT_SIZE=20;
+    const PAD_X=10;
+    const maxW=bw-PAD_X*2;
+    ctx.font=`bold ${FONT_SIZE}px Nunito,sans-serif`;
+    ctx.fillStyle=color;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    if(ctx.measureText(txt).width<=maxW){
+      // Fits on one line
+      ctx.fillText(txt,cx,by+bh/2);
+    } else {
+      // Wrap: split into 2 lines at best word boundary
+      const words=txt.split(' ');
+      let line1=words[0], line2='';
+      for(let w=1;w<words.length;w++){
+        const candidate=words.slice(0,w+1).join(' ');
+        if(ctx.measureText(candidate).width<=maxW) line1=candidate;
+        else { line2=words.slice(w).join(' '); break; }
+      }
+      const gap=FONT_SIZE*1.3;
+      ctx.fillText(line1,cx,by+bh/2-(line2?gap/2:0));
+      if(line2) ctx.fillText(line2,cx,by+bh/2+gap/2);
+    }
+  }
+
+  // Draw blocks per column
   DAYS.forEach((day,di)=>{
     const cx=gx+di*dayW;
     ctx.fillStyle=di%2===0?'rgba(255,240,245,0.12)':'rgba(245,240,255,0.10)';
     ctx.fillRect(cx,gy,dayW,GRID_H);
+
+    // Fixed class blocks (only within export range)
     const fixed=getAllFixed(curMonth,day);
     fixed.forEach(f=>{
-      const fy=gy+(f.start-SS)*slotH,fh=(f.end-f.start)*slotH;
+      if(f.end<=EXP_SS||f.start>=EXP_SE) return;
+      const clampStart=Math.max(f.start,EXP_SS), clampEnd=Math.min(f.end,EXP_SE);
+      const fy=gy+(clampStart-EXP_SS)*slotH, fh=(clampEnd-clampStart)*slotH;
       const isMath=f.type==='math',isEng=f.type==='eng';
       const bg=isMath?'#EDE9FE':isEng?'#DBEAFE':'#FEF3C7';
       const border=isMath?'#A78BFA':isEng?'#60A5FA':'#FCD34D';
       const tc=isMath?'#4C1D95':isEng?'#1E40AF':'#78350F';
-      ctx.fillStyle=bg;roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,7);ctx.fill();
-      ctx.strokeStyle=border;ctx.lineWidth=1.5;roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,7);ctx.stroke();
+      ctx.fillStyle=bg;roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,8);ctx.fill();
+      ctx.strokeStyle=border;ctx.lineWidth=2;roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,8);ctx.stroke();
       const lines=f.label.split('\n');
-      ctx.fillStyle=tc;ctx.textAlign='center';ctx.textBaseline='middle';
       const midY=fy+fh/2;
-      // Fixed blocks: scale font to fill the column width nicely
-      const maxW=dayW-16;
-      let ffs=20;
-      ctx.font=`bold ${ffs}px "Baloo 2",cursive,sans-serif`;
-      while(ffs>11&&ctx.measureText(lines[0]).width>maxW){ffs--;ctx.font=`bold ${ffs}px "Baloo 2",cursive,sans-serif`;}
-      if(lines.length>=2&&fh>40){
-        ctx.fillText(lines[0],cx+dayW/2,midY-ffs*0.65);
-        ctx.font=`${Math.max(10,ffs-3)}px Nunito,sans-serif`;
-        ctx.fillText(lines[1],cx+dayW/2,midY+ffs*0.65);
+      ctx.fillStyle=tc;ctx.textAlign='center';ctx.textBaseline='middle';
+      if(lines.length>=2&&fh>50){
+        ctx.font='bold 20px "Baloo 2",cursive,sans-serif';
+        ctx.fillText(lines[0],cx+dayW/2,midY-13);
+        ctx.font='bold 18px Nunito,sans-serif';
+        ctx.fillText(lines[1],cx+dayW/2,midY+13);
       } else {
+        ctx.font='bold 20px "Baloo 2",cursive,sans-serif';
         ctx.fillText(lines[0],cx+dayW/2,midY);
       }
     });
+
+    // User-placed blocks (only within export range)
     const ug=grid[curMonth][day];
     const drawn={};
     for(let i=0;i<slots;i++){
-      const s=SS+i,bid=ug[s];
+      const s=EXP_SS+i, bid=ug[s];
       if(!bid||drawn[s]) continue;
       let end=s+1;
-      while(end<SE&&ug[end]===bid) end++;
+      while(end<EXP_SE&&ug[end]===bid) end++;
       for(let k=s;k<end;k++) drawn[k]=true;
       const b=getB(bid);if(!b) continue;
-      const by=gy+(s-SS)*slotH,bh=(end-s)*slotH;
-      ctx.fillStyle=b.bg;roundRect(ctx,cx+2,by+2,dayW-4,bh-4,5);ctx.fill();
-      ctx.strokeStyle=b.border;ctx.lineWidth=1;roundRect(ctx,cx+2,by+2,dayW-4,bh-4,5);ctx.stroke();
-      ctx.fillStyle=b.color;ctx.textAlign='center';ctx.textBaseline='middle';
-      // Smart font sizing: start large, shrink to fit width, cap by height
-      const maxW=dayW-14;
-      const maxLineH=bh*0.42;
-      let fs=Math.min(20,Math.max(11,maxLineH));
-      const lbl=b.label;
-      // Try single line first
-      ctx.font=`bold ${fs}px Nunito,sans-serif`;
-      while(fs>11&&ctx.measureText(lbl).width>maxW){fs--;ctx.font=`bold ${fs}px Nunito,sans-serif`;}
-      // If still too wide after shrinking to 11, wrap into 2 lines
-      if(ctx.measureText(lbl).width>maxW){
-        // Split on space or after emoji (first char group)
-        const words=lbl.split(' ');
-        let line1='',line2='';
-        if(words.length>=2){
-          // Find best split point
-          let best=1;
-          for(let w=1;w<words.length;w++){
-            const a=words.slice(0,w).join(' '),bb=words.slice(w).join(' ');
-            if(ctx.measureText(a).width<=maxW&&ctx.measureText(bb).width<=maxW){best=w;break;}
-          }
-          line1=words.slice(0,best).join(' ');
-          line2=words.slice(best).join(' ');
-        } else {
-          line1=lbl;line2='';
-        }
-        const lineGap=fs*1.25;
-        if(line2){
-          ctx.fillText(line1,cx+dayW/2,by+bh/2-lineGap/2);
-          ctx.fillText(line2,cx+dayW/2,by+bh/2+lineGap/2);
-        } else {
-          ctx.fillText(line1,cx+dayW/2,by+bh/2);
-        }
-      } else {
-        ctx.fillText(lbl,cx+dayW/2,by+bh/2);
-      }
+      const by=gy+(s-EXP_SS)*slotH, bh=(end-s)*slotH;
+      ctx.fillStyle=b.bg;roundRect(ctx,cx+2,by+2,dayW-4,bh-4,6);ctx.fill();
+      ctx.strokeStyle=b.border;ctx.lineWidth=1.5;roundRect(ctx,cx+2,by+2,dayW-4,bh-4,6);ctx.stroke();
+      drawBlockText(b.label,b.color,cx+dayW/2,by,dayW,bh);
     }
   });
+
   return out;
 }
 
