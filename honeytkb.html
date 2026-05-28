@@ -816,8 +816,18 @@ async function makeWallpaperCanvas(){
       const lines=f.label.split('\n');
       ctx.fillStyle=tc;ctx.textAlign='center';ctx.textBaseline='middle';
       const midY=fy+fh/2;
-      if(lines.length>=2&&fh>28){ctx.font='bold 14px "Baloo 2",cursive,sans-serif';ctx.fillText(lines[0],cx+dayW/2,midY-9);ctx.font='11px Nunito,sans-serif';ctx.fillText(lines[1],cx+dayW/2,midY+9);}
-      else{ctx.font='bold 13px "Baloo 2",cursive,sans-serif';ctx.fillText(lines[0],cx+dayW/2,midY);}
+      // Fixed blocks: scale font to fill the column width nicely
+      const maxW=dayW-16;
+      let ffs=20;
+      ctx.font=`bold ${ffs}px "Baloo 2",cursive,sans-serif`;
+      while(ffs>11&&ctx.measureText(lines[0]).width>maxW){ffs--;ctx.font=`bold ${ffs}px "Baloo 2",cursive,sans-serif`;}
+      if(lines.length>=2&&fh>40){
+        ctx.fillText(lines[0],cx+dayW/2,midY-ffs*0.65);
+        ctx.font=`${Math.max(10,ffs-3)}px Nunito,sans-serif`;
+        ctx.fillText(lines[1],cx+dayW/2,midY+ffs*0.65);
+      } else {
+        ctx.fillText(lines[0],cx+dayW/2,midY);
+      }
     });
     const ug=grid[curMonth][day];
     const drawn={};
@@ -832,11 +842,41 @@ async function makeWallpaperCanvas(){
       ctx.fillStyle=b.bg;roundRect(ctx,cx+2,by+2,dayW-4,bh-4,5);ctx.fill();
       ctx.strokeStyle=b.border;ctx.lineWidth=1;roundRect(ctx,cx+2,by+2,dayW-4,bh-4,5);ctx.stroke();
       ctx.fillStyle=b.color;ctx.textAlign='center';ctx.textBaseline='middle';
-      const fs=Math.min(13,Math.max(9,bh*0.38));
+      // Smart font sizing: start large, shrink to fit width, cap by height
+      const maxW=dayW-14;
+      const maxLineH=bh*0.42;
+      let fs=Math.min(20,Math.max(11,maxLineH));
+      const lbl=b.label;
+      // Try single line first
       ctx.font=`bold ${fs}px Nunito,sans-serif`;
-      let lbl=b.label;
-      while(ctx.measureText(lbl).width>dayW-10&&lbl.length>3) lbl=lbl.slice(0,-1);
-      ctx.fillText(lbl,cx+dayW/2,by+bh/2);
+      while(fs>11&&ctx.measureText(lbl).width>maxW){fs--;ctx.font=`bold ${fs}px Nunito,sans-serif`;}
+      // If still too wide after shrinking to 11, wrap into 2 lines
+      if(ctx.measureText(lbl).width>maxW){
+        // Split on space or after emoji (first char group)
+        const words=lbl.split(' ');
+        let line1='',line2='';
+        if(words.length>=2){
+          // Find best split point
+          let best=1;
+          for(let w=1;w<words.length;w++){
+            const a=words.slice(0,w).join(' '),bb=words.slice(w).join(' ');
+            if(ctx.measureText(a).width<=maxW&&ctx.measureText(bb).width<=maxW){best=w;break;}
+          }
+          line1=words.slice(0,best).join(' ');
+          line2=words.slice(best).join(' ');
+        } else {
+          line1=lbl;line2='';
+        }
+        const lineGap=fs*1.25;
+        if(line2){
+          ctx.fillText(line1,cx+dayW/2,by+bh/2-lineGap/2);
+          ctx.fillText(line2,cx+dayW/2,by+bh/2+lineGap/2);
+        } else {
+          ctx.fillText(line1,cx+dayW/2,by+bh/2);
+        }
+      } else {
+        ctx.fillText(lbl,cx+dayW/2,by+bh/2);
+      }
     }
   });
   return out;
