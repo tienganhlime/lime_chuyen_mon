@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advertising – FCE for Schools Speaking & Writing</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f4ff;--white:#fff;--border:#c0d0f0;
+  --primary:#2563eb;--primary-light:#dbeafe;
+  --green:#16a34a;--green-light:#dcfce7;
+  --red:#dc2626;--red-light:#fee2e2;
+  --orange:#ea580c;--orange-light:#fff7ed;
+  --purple:#7c3aed;--purple-light:#ede9fe;
+  --teal:#0891b2;--teal-light:#cffafe;
+  --pink:#db2777;--pink-light:#fce7f3;
+  --yellow:#d97706;--yellow-light:#fef3c7;
+  --text:#1e293b;--muted:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+header{background:linear-gradient(135deg,#2563eb,#7c3aed);padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:0 4px 20px rgba(37,99,235,.3);}
+header h1{font-family:'Baloo 2',sans-serif;font-size:clamp(20px,3vw,34px);color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.2);}
+header span{font-size:clamp(13px,1.6vw,18px);color:rgba(255,255,255,.88);}
+.tab-row{display:flex;gap:4px;padding:10px 14px 0;flex-wrap:wrap;background:var(--white);border-bottom:2px solid var(--border);}
+.tab-btn{font-family:'Nunito',sans-serif;font-size:clamp(12px,1.5vw,17px);font-weight:800;padding:9px 13px;border-radius:10px 10px 0 0;border:2px solid var(--border);border-bottom:none;background:var(--bg);cursor:pointer;color:var(--muted);transition:all .15s;white-space:nowrap;}
+.tab-btn.active{background:var(--white);color:var(--primary);border-color:var(--primary);position:relative;top:2px;}
+main{padding:14px 16px 40px;max-width:1100px;margin:0 auto;}
+.panel{display:none;}
+.panel.active{display:block;}
+.section-card{background:var(--white);border:2px solid var(--border);border-radius:20px;padding:24px 26px 20px;box-shadow:0 2px 18px rgba(37,99,235,.08);margin-bottom:18px;}
+.btn{font-family:'Nunito',sans-serif;font-size:clamp(14px,1.7vw,19px);font-weight:800;padding:10px 20px;border-radius:11px;border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:7px;}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-primary:hover{background:#1d4ed8;transform:translateY(-1px);}
+.btn-orange{background:var(--orange);color:#fff;}
+.btn-orange:hover{background:#c2410c;}
+.btn-green{background:var(--green);color:#fff;}
+.btn-green:hover{background:#15803d;}
+.btn-purple{background:var(--purple);color:#fff;}
+.btn-purple:hover{background:#6d28d9;}
+.btn-gray{background:#e2e8f0;color:var(--text);}
+.btn-gray:hover{background:#cbd5e1;}
+.btn-teal{background:var(--teal);color:#fff;}
+.btn-teal:hover{background:#0e7490;}
+.btn-yellow{background:var(--yellow);color:#fff;}
+.btn-yellow:hover{background:#b45309;}
+.btn-sm{font-size:clamp(13px,1.4vw,16px);padding:8px 14px;}
+.progress-bar{background:var(--border);border-radius:99px;height:12px;margin-bottom:10px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--primary),var(--teal));transition:width .4s;}
+.progress-text{display:flex;justify-content:space-between;font-size:clamp(13px,1.5vw,18px);color:var(--muted);font-weight:700;margin-bottom:5px;}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.opt-btn{font-family:'Nunito',sans-serif;font-size:clamp(15px,1.9vw,23px);font-weight:700;padding:14px 15px;border-radius:14px;border:2.5px solid var(--border);background:#fff;cursor:pointer;transition:all .15s;text-align:left;display:flex;align-items:flex-start;gap:10px;line-height:1.5;}
+.opt-letter{display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:36px;background:var(--primary-light);color:var(--primary);border-radius:50%;font-size:15px;flex-shrink:0;font-weight:900;}
+.opt-btn:hover:not(:disabled){border-color:var(--primary);background:var(--primary-light);}
+.opt-btn:hover:not(:disabled) .opt-letter{background:var(--primary);color:#fff;}
+.opt-btn.correct{background:var(--green-light);border-color:var(--green);color:var(--green);}
+.opt-btn.correct .opt-letter{background:var(--green);color:#fff;}
+.opt-btn.wrong{background:var(--red-light);border-color:var(--red);color:var(--red);}
+.opt-btn.wrong .opt-letter{background:var(--red);color:#fff;}
+.opt-btn:disabled{cursor:default;}
+.feedback{display:none;padding:14px 18px;border-radius:14px;font-size:clamp(16px,1.9vw,23px);font-weight:700;margin-bottom:12px;line-height:1.5;}
+.feedback.show{display:block;}
+.feedback.ok{background:var(--green-light);color:var(--green);}
+.feedback.bad{background:var(--red-light);color:var(--red);}
+.next-btn{width:100%;padding:16px;border-radius:14px;border:none;font-family:'Nunito',sans-serif;font-size:clamp(17px,2vw,26px);font-weight:800;cursor:pointer;background:var(--primary);color:#fff;display:none;transition:all .18s;margin-top:4px;}
+.next-btn:hover{background:#1d4ed8;transform:translateY(-2px);}
+.next-btn.show{display:block;}
+.score-badge{margin-left:auto;font-size:clamp(14px,1.7vw,21px);font-weight:800;color:var(--primary);background:var(--primary-light);padding:8px 18px;border-radius:50px;white-space:nowrap;}
+.q-sentence{font-size:clamp(17px,2.1vw,28px);font-weight:700;line-height:1.8;margin-bottom:14px;color:var(--text);}
+.q-label{font-size:clamp(13px,1.5vw,17px);font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;}
+
+/* Tab 2 */
+.question-block{margin-bottom:20px;padding:18px 20px;background:#f8faff;border:2px solid var(--border);border-radius:16px;}
+.question-block h3{font-family:'Baloo 2',sans-serif;font-size:clamp(15px,1.8vw,21px);font-weight:800;color:var(--primary);margin-bottom:12px;line-height:1.4;}
+.idea-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.idea-chip{font-family:'Nunito',sans-serif;font-size:clamp(12px,1.4vw,16px);font-weight:700;padding:7px 14px;border-radius:50px;border:2px solid var(--border);background:#fff;cursor:pointer;transition:all .15s;line-height:1.4;}
+.idea-chip:hover{border-color:var(--primary);background:var(--primary-light);color:var(--primary);}
+.idea-chip.selected{background:var(--primary);color:#fff;border-color:var(--primary);}
+.idea-chip.correct{background:var(--green-light);border-color:var(--green);color:var(--green);}
+.idea-chip.incorrect{background:var(--red-light);border-color:var(--red);color:var(--red);}
+.idea-chip.missed{background:var(--yellow-light);border-color:var(--yellow);color:var(--yellow);}
+.ans-reveal{display:none;margin-top:10px;padding:12px 16px;border-radius:12px;background:var(--green-light);border:2px solid var(--green);color:var(--green);font-size:clamp(13px,1.5vw,18px);font-weight:700;line-height:1.6;}
+.ans-reveal.show{display:block;}
+
+/* Tab 3 */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:18px;}
+.info-card{background:#f8faff;border:2px solid var(--border);border-radius:16px;padding:18px 16px;text-align:center;}
+.info-card .icon{font-size:34px;margin-bottom:8px;}
+.info-card h4{font-family:'Baloo 2',sans-serif;font-size:clamp(14px,1.7vw,19px);font-weight:800;color:var(--primary);margin-bottom:6px;}
+.info-card p{font-size:clamp(12px,1.3vw,15px);color:var(--muted);line-height:1.5;}
+.step-flow-wrap{overflow-x:auto;margin-bottom:18px;padding-bottom:6px;}
+.step-flow{display:flex;gap:6px;min-width:max-content;align-items:center;}
+.step-box{background:var(--primary);color:#fff;border-radius:14px;padding:14px 14px;text-align:center;width:140px;}
+.step-box .step-num{font-size:20px;font-weight:900;margin-bottom:4px;}
+.step-box .step-txt{font-size:13px;font-weight:700;line-height:1.3;}
+.step-arrow{font-size:20px;color:var(--primary);}
+.collapse-section{margin-top:12px;}
+.collapse-btn{width:100%;padding:13px 18px;border-radius:14px;border:2px solid var(--border);background:#fff;font-family:'Nunito',sans-serif;font-size:clamp(14px,1.6vw,19px);font-weight:800;cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;color:var(--text);transition:all .15s;}
+.collapse-btn:hover{border-color:var(--primary);background:var(--primary-light);}
+.collapse-body{display:none;padding:16px;border:2px solid var(--border);border-top:none;border-radius:0 0 14px 14px;background:#fafcff;}
+.collapse-body.open{display:block;}
+.q-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.q-list li{padding:10px 14px;background:#fff;border:2px solid var(--primary-light);border-radius:11px;font-size:clamp(13px,1.5vw,18px);font-weight:700;color:var(--text);line-height:1.5;}
+.criteria-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.criteria-list li{padding:10px 14px;border-radius:11px;font-size:clamp(12px,1.4vw,16px);font-weight:700;line-height:1.5;}
+.criteria-list li.ok{background:var(--green-light);color:var(--green);}
+.criteria-list li.bad{background:var(--red-light);color:var(--red);}
+.tip-banner{padding:12px 16px;border-radius:12px;background:var(--teal-light);border:2px solid var(--teal);font-size:clamp(13px,1.4vw,16px);font-weight:700;color:var(--teal);margin-bottom:14px;line-height:1.5;}
+
+/* Tab 4 */
+.spin-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.spin-wheel-area{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.spin-display{width:200px;height:200px;border-radius:50%;background:conic-gradient(var(--primary) 0deg 90deg, var(--purple) 90deg 180deg, var(--teal) 180deg 270deg, var(--orange) 270deg 360deg);box-shadow:0 8px 32px rgba(37,99,235,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.spin-inner{background:#fff;width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;box-shadow:0 2px 10px rgba(0,0,0,.1);}
+.spin-name-display{font-family:'Baloo 2',sans-serif;font-size:clamp(20px,2.8vw,38px);font-weight:800;color:#fff;text-align:center;padding:16px;background:linear-gradient(135deg,var(--purple),var(--primary));border-radius:16px;min-height:74px;display:flex;align-items:center;justify-content:center;}
+.q-display{padding:14px;background:var(--yellow-light);border:2px solid var(--yellow);border-radius:16px;font-size:clamp(14px,1.7vw,20px);font-weight:700;color:var(--text);text-align:center;min-height:60px;display:flex;align-items:center;justify-content:center;line-height:1.6;}
+.player-textarea{width:100%;height:110px;font-family:'Nunito',sans-serif;font-size:clamp(13px,1.4vw,16px);padding:10px;border:2px solid var(--border);border-radius:12px;resize:vertical;outline:none;}
+.player-textarea:focus{border-color:var(--primary);}
+.player-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px;min-height:28px;}
+.player-chip{font-family:'Nunito',sans-serif;font-size:clamp(12px,1.3vw,15px);font-weight:700;padding:5px 12px;border-radius:50px;background:var(--primary);color:#fff;display:flex;align-items:center;gap:5px;}
+.player-chip .del{cursor:pointer;opacity:.7;font-size:15px;}
+.player-chip .del:hover{opacity:1;}
+
+/* Tab 5 */
+.motion-card{padding:22px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:20px;color:#fff;text-align:center;margin-bottom:16px;min-height:110px;display:flex;align-items:center;justify-content:center;}
+.motion-card p{font-family:'Baloo 2',sans-serif;font-size:clamp(18px,2.6vw,34px);font-weight:800;line-height:1.4;}
+.debate-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:16px;}
+.rule-card{padding:16px;border-radius:16px;text-align:center;}
+.rule-card.team-a{background:var(--primary-light);border:2px solid var(--primary);}
+.rule-card.team-b{background:var(--red-light);border:2px solid var(--red);}
+.rule-card.neutral{background:var(--yellow-light);border:2px solid var(--yellow);}
+.rule-card h4{font-family:'Baloo 2',sans-serif;font-size:clamp(15px,1.8vw,21px);font-weight:800;margin-bottom:8px;}
+.rule-card.team-a h4{color:var(--primary);}
+.rule-card.team-b h4{color:var(--red);}
+.rule-card.neutral h4{color:var(--yellow);}
+.rule-card p{font-size:clamp(12px,1.3vw,15px);font-weight:700;color:var(--text);line-height:1.5;}
+.motion-dots{display:flex;justify-content:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.motion-dot{width:12px;height:12px;border-radius:50%;background:var(--border);cursor:pointer;transition:all .15s;}
+.motion-dot.active{background:var(--primary);transform:scale(1.3);}
+
+@media(max-width:700px){
+  .options-grid{grid-template-columns:1fr;}
+  main{padding:10px 8px 40px;}
+  .section-card{padding:14px 10px 12px;}
+  .spin-layout{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📢 Advertising – FCE for Schools</h1>
+  <span>Speaking &amp; Writing Practice · LIME English Centre</span>
+</header>
+
+<div class="tab-row">
+  <button class="tab-btn active" onclick="showTab(0)">📝 Ex 1 – Match</button>
+  <button class="tab-btn" onclick="showTab(1)">🎯 Ex 2 – Ideas</button>
+  <button class="tab-btn" onclick="showTab(2)">🔥 Hot Seat</button>
+  <button class="tab-btn" onclick="showTab(3)">🎡 Spin &amp; Speak</button>
+  <button class="tab-btn" onclick="showTab(4)">⚔️ Debate Relay</button>
+</div>
+
+<main>
+
+<!-- ══════════ TAB 1 ══════════ -->
+<div class="panel active" id="panel0">
+  <div class="section-card" id="t1card">
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+      <div>
+        <div class="q-label">Exercise 1 — Sentence Halves (MCQ)</div>
+        <p style="font-size:clamp(12px,1.4vw,16px);color:var(--muted);font-weight:600;">Choose the correct completion A–D for each sentence.</p>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;margin-left:auto;flex-wrap:wrap;">
+        <button class="btn btn-purple btn-sm" onclick="t1Shuffle()">🔀 Shuffle</button>
+        <div class="score-badge" id="t1score">0 / 15</div>
+      </div>
+    </div>
+    <div class="progress-text"><span id="t1prog">Question 1 of 15</span><span id="t1pct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="t1fill" style="width:0%"></div></div>
+    <div class="q-sentence" id="t1stem"></div>
+    <div class="options-grid" id="t1opts"></div>
+    <div class="feedback" id="t1fb"></div>
+    <div style="display:flex;gap:8px;margin-top:4px;">
+      <button class="btn btn-yellow btn-sm" id="t1showans" onclick="t1ShowAnswer()" style="flex:1;">💡 Show Answer</button>
+      <button class="next-btn" id="t1next" onclick="t1Next()" style="display:none;flex:2;margin-top:0;">Next →</button>
+    </div>
+  </div>
+  <div class="section-card" id="t1done" style="display:none;text-align:center;">
+    <div style="font-size:56px;margin-bottom:10px;">🎉</div>
+    <div style="font-family:'Baloo 2',sans-serif;font-size:clamp(22px,3.5vw,42px);font-weight:800;color:var(--primary);" id="t1final"></div>
+    <p style="font-size:clamp(15px,1.7vw,21px);color:var(--muted);margin:8px 0 18px;">Well done on Exercise 1!</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn btn-orange" onclick="t1Reset()">🔄 Try Again</button>
+      <button class="btn btn-purple" onclick="t1Shuffle()">🔀 Shuffle &amp; Retry</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ TAB 2 ══════════ -->
+<div class="panel" id="panel1">
+  <div class="section-card">
+    <div class="q-label" style="margin-bottom:4px;">Exercise 2 — Choose Relevant Ideas</div>
+    <p style="font-size:clamp(12px,1.4vw,16px);color:var(--muted);font-weight:600;margin-bottom:16px;">
+      Read each exam question. Think about which ideas from Exercise 1 are relevant, then check the suggested answer.
+    </p>
+
+    <!-- Progress -->
+    <div class="progress-text"><span id="t2prog">Question 1 of 6</span><span id="t2pct">1 / 6</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="t2fill" style="width:17%"></div></div>
+
+    <!-- Question display -->
+    <div style="margin-bottom:16px;padding:20px 22px;background:#f0f4ff;border:2px solid var(--primary);border-radius:16px;">
+      <div style="font-size:clamp(11px,1.3vw,14px);font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--primary);margin-bottom:8px;" id="t2qtype"></div>
+      <div style="font-family:'Baloo 2',sans-serif;font-size:clamp(17px,2.2vw,28px);font-weight:800;color:var(--text);line-height:1.5;" id="t2qtext"></div>
+    </div>
+
+    <!-- Hint reveal -->
+    <div class="ans-reveal" id="t2hint"></div>
+
+    <!-- Buttons -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+      <button class="btn btn-gray btn-sm" onclick="t2Nav(-1)">← Prev</button>
+      <button class="btn btn-yellow btn-sm" onclick="t2ShowHint()" id="t2hintbtn">💡 Show Suggested Ideas</button>
+      <button class="btn btn-purple btn-sm" onclick="t2Shuffle()">🔀 Shuffle</button>
+      <button class="btn btn-primary btn-sm" onclick="t2Nav(1)" style="margin-left:auto;">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ TAB 3 ══════════ -->
+<div class="panel" id="panel2">
+  <div class="section-card">
+    <div class="q-label" style="margin-bottom:14px;">🔥 Hot Seat — How to Play</div>
+
+    <div class="step-flow-wrap">
+      <div class="step-flow">
+        <div class="step-box"><div class="step-num">1️⃣</div><div class="step-txt">Teams write 5+ questions</div></div>
+        <span class="step-arrow">→</span>
+        <div class="step-box" style="background:var(--purple);"><div class="step-num">2️⃣</div><div class="step-txt">1 student sits in Hot Seat</div></div>
+        <span class="step-arrow">→</span>
+        <div class="step-box" style="background:var(--teal);"><div class="step-num">3️⃣</div><div class="step-txt">Teams take turns asking</div></div>
+        <span class="step-arrow">→</span>
+        <div class="step-box" style="background:var(--orange);"><div class="step-num">4️⃣</div><div class="step-txt">Student answers 2–3 sentences</div></div>
+        <span class="step-arrow">→</span>
+        <div class="step-box" style="background:var(--green);"><div class="step-num">5️⃣</div><div class="step-txt">Rotate! New asker &amp; hot seat each round</div></div>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card"><div class="icon">❓</div><h4>Valid Question</h4><p>Asking team gets <strong>+1 pt</strong></p></div>
+      <div class="info-card"><div class="icon">💬</div><h4>Full Answer</h4><p>Hot seat team gets <strong>+1 pt</strong> for answer + reason</p></div>
+      <div class="info-card"><div class="icon">❌</div><h4>Invalid Question</h4><p>Team <strong>loses the turn</strong></p></div>
+    </div>
+
+    <div class="tip-banner">💡 <strong>How to extend your answer:</strong> Direct answer → Reason (because…) → Example (For example…) → Feeling (I find it… / I think…)</div>
+
+    <div class="collapse-section">
+      <button class="collapse-btn" onclick="toggleCollapse('hsq')">
+        <span>💬 Show Sample Part 1 Questions</span><span id="hsq-icon">▼</span>
+      </button>
+      <div class="collapse-body" id="hsq">
+        <ul class="q-list">
+          <li>Do you spend a lot of time online? What do you usually do?</li>
+          <li>What kind of ads do you usually see when you use your phone?</li>
+          <li>Have you ever bought something because of an ad? What was it?</li>
+          <li>Do you think ads are useful or annoying? Why?</li>
+          <li>Do you prefer watching TV channels with ads, or would you rather pay to avoid them?</li>
+          <li>What type of ads do you find most interesting? Why?</li>
+          <li>How do you usually react when an ad pops up on your screen?</li>
+          <li>Have you ever clicked on an online ad on purpose? What happened?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="collapse-section" style="margin-top:10px;">
+      <button class="collapse-btn" onclick="toggleCollapse('hsc')">
+        <span>✅ Show Valid Question Criteria</span><span id="hsc-icon">▼</span>
+      </button>
+      <div class="collapse-body" id="hsc">
+        <ul class="criteria-list">
+          <li class="ok">✅ Ask about personal experience, habits, or opinions</li>
+          <li class="ok">✅ Good starters: "Do you often…?" / "Have you ever…?" / "What kind of…?"</li>
+          <li class="bad">❌ Don't ask about government policy or laws → that's Part 4</li>
+          <li class="bad">❌ Don't ask to compare and choose between options → that's Part 3</li>
+          <li class="bad">❌ Invalid example: "Should governments ban ads for children?"</li>
+          <li class="bad">❌ Invalid example: "Which type of advertising is most effective?"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ TAB 4 ══════════ -->
+<div class="panel" id="panel3">
+  <div class="section-card">
+    <div class="q-label" style="margin-bottom:14px;">🎡 Spin &amp; Speak</div>
+    <div class="spin-layout">
+      <div>
+        <div style="margin-bottom:12px;">
+          <label style="font-weight:800;font-size:clamp(13px,1.5vw,17px);display:block;margin-bottom:7px;color:var(--primary);">👤 Enter student names (one per line):</label>
+          <textarea class="player-textarea" id="playerInput" placeholder="Anna&#10;Ben&#10;Linh&#10;Nam&#10;Minh"></textarea>
+          <button class="btn btn-primary btn-sm" style="margin-top:8px;width:100%;" onclick="loadPlayers()">✅ Load Players</button>
+        </div>
+        <div class="player-chips" id="playerChips"></div>
+        <div style="margin-top:10px;">
+          <div style="font-weight:800;font-size:clamp(13px,1.5vw,17px);color:var(--purple);margin-bottom:7px;">🎯 Student:</div>
+          <div class="spin-name-display" id="spinNameDisplay">—</div>
+        </div>
+        <div style="margin-top:12px;">
+          <div style="font-weight:800;font-size:clamp(13px,1.5vw,17px);color:var(--yellow);margin-bottom:7px;">❓ Question:</div>
+          <div class="q-display" id="spinQDisplay">Press SPIN to begin!</div>
+        </div>
+      </div>
+      <div class="spin-wheel-area">
+        <div style="text-align:center;font-weight:800;font-size:clamp(13px,1.4vw,16px);color:var(--muted);">Click wheel or button to spin</div>
+        <div class="spin-display" id="spinWheel" onclick="spinAll()">
+          <div class="spin-inner" id="spinInner">🎡</div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;font-size:clamp(16px,2vw,26px);padding:15px;" onclick="spinAll()">🎡 SPIN!</button>
+        <button class="btn btn-gray btn-sm" style="width:100%;margin-top:4px;" onclick="spinAll()">🔄 Spin Again</button>
+        <div style="margin-top:10px;padding:10px 12px;background:#f0f4ff;border-radius:12px;font-size:clamp(11px,1.2vw,14px);color:var(--muted);font-weight:700;text-align:center;">20 Part 4-style questions in the bank</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ TAB 5 ══════════ -->
+<div class="panel" id="panel4">
+  <div class="section-card">
+    <div class="q-label" style="margin-bottom:14px;">⚔️ Debate Relay — Rules &amp; Motion Cards</div>
+
+    <div class="debate-grid">
+      <div class="rule-card team-a"><h4>🔵 Team A</h4><p><strong>AGREE</strong> with the motion — find reasons to support it</p></div>
+      <div class="rule-card team-b"><h4>🔴 Team B</h4><p><strong>DISAGREE</strong> with the motion — find reasons to oppose it</p></div>
+      <div class="rule-card neutral"><h4>⏱️ Format</h4><p>Alternate speakers · different person each turn · give 1 point + explanation</p></div>
+    </div>
+
+    <div class="tip-banner">
+      <strong>+2 pts</strong> New argument + explanation &nbsp;|&nbsp;
+      <strong>+1 pt</strong> Counters opponent's point &nbsp;|&nbsp;
+      <strong>−1 pt</strong> Repeats an idea already said &nbsp;|&nbsp;
+      <strong>0 pt</strong> Can't explain the point
+    </div>
+
+    <div style="font-weight:800;font-size:clamp(14px,1.7vw,20px);color:var(--primary);margin-bottom:10px;text-align:center;">🗣️ Current Motion:</div>
+    <div class="motion-card"><p id="motionText">Press "New Motion" to draw a card!</p></div>
+    <div class="motion-dots" id="motionDots"></div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:14px;">
+      <button class="btn btn-purple" onclick="nextMotion()">▶ Next Motion</button>
+      <button class="btn btn-orange" onclick="shuffleMotions()">🎲 Shuffle All</button>
+    </div>
+
+    <div class="collapse-section">
+      <button class="collapse-btn" onclick="toggleCollapse('motlist')">
+        <span>📋 See All Motion Cards</span><span id="motlist-icon">▼</span>
+      </button>
+      <div class="collapse-body" id="motlist">
+        <ul class="q-list" id="allMotionsList"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ─── TABS ───
+function showTab(i){
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('active',j===i));
+  document.querySelectorAll('.tab-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
+}
+function toggleCollapse(id){
+  const body=document.getElementById(id);
+  const icon=document.getElementById(id+'-icon');
+  icon.textContent=body.classList.toggle('open')?'▲':'▼';
+}
+
+// ─── TAB 1: MCQ MATCHING ───
+const t1Data=[
+  {stem:"Advertisers build a profile of consumers",correct:"by tracking their browsing history and using algorithms.",distractors:["when they notice patterns in how people shop offline.","so they can decide which products to stop making.","because consumers give direct feedback to companies."]},
+  {stem:"Children under 8 cannot think critically about ads,",correct:"which makes them easy targets for advertisers.",distractors:["so parents must explain every ad to them.","which is why companies prefer to advertise to adults.","and this is why screen time should be limited."]},
+  {stem:"Pop-up ads that take over your whole screen",correct:"negatively affect people's willingness to buy.",distractors:["are now illegal in many countries.","tend to be the most successful type of advertising.","only appear on free websites."]},
+  {stem:"The hiking boots ad only influenced people",correct:"who already had an interest in outdoor activities.",distractors:["who had previously bought shoes online.","who clicked on the ad by accident.","who were already loyal customers of that brand."]},
+  {stem:"Ads teach children to pressure their parents,",correct:"so families end up buying things they did not plan to.",distractors:["which is why advertising to children is now banned.","and this is actually useful for the economy.","but most parents can easily resist this."]},
+  {stem:"Children can influence big family spending decisions,",correct:"even for expensive things like cars and holidays.",distractors:["only when both parents agree to listen to them.","but only if they are teenagers.","which is why companies never target children."]},
+  {stem:"Parents alone cannot protect children from advertising,",correct:"which is why governments should step in to regulate it.",distractors:["so children must learn to protect themselves.","and this is why TV ads are always family-friendly.","but schools can help by teaching media literacy."]},
+  {stem:"The green product ad reinforced an eco-friendly identity,",correct:"which led participants to buy more green products and donate to charity.",distractors:["even though participants said they did not trust the brand.","because the ad was shown on environmental websites.","so the company earned higher profits that quarter."]},
+  {stem:"Targeted ads are most effective",correct:"when they are based on past behaviour, consumer awareness, and accuracy.",distractors:["only when shown on social media platforms.","if they include bright colours and music.","when the price of the product is clearly shown."]},
+  {stem:"Without advertising, much of the online world would disappear",correct:"because ads are the main source of income for most websites.",distractors:["since internet companies would have to charge higher fees.","as governments would have to fund websites instead.","because no one would bother creating websites for free."]},
+  {stem:"Facebook earned about 98% of its revenue from ads,",correct:"which shows how heavily the online world depends on advertising.",distractors:["so it decided to reduce the number of ads shown to users.","but this changed after privacy laws were introduced.","which is why it charges users a monthly fee."]},
+  {stem:"A targeted ad can change how you see yourself",correct:"because it implies you have certain characteristics or interests.",distractors:["if you see it more than three times in one day.","since advertising always tells you what to think.","because companies design ads to make you feel inferior."]},
+  {stem:"Advertising supports the entertainment industry",correct:"by paying for TV production, sports events, and website services.",distractors:["because celebrities are paid to promote brands.","since streaming platforms rely on subscriptions, not ads.","by encouraging consumers to buy tickets to live events."]},
+  {stem:"Public Service Announcements are different from regular ads",correct:"because they educate people about health and safety rather than sell products.",distractors:["since they are funded by private companies.","as they are only shown on government websites.","because they always feature famous people."]},
+  {stem:"The 'creepiness factor' refers to ads that feel too personal,",correct:"which can actually reduce a person's willingness to buy.",distractors:["so advertisers try to make their ads as personal as possible.","which is why data privacy laws were introduced.","and this makes targeted advertising very successful."]},
+];
+let t1cur=0,t1sc=0,t1done=false,t1order=[];
+function t1Init(){t1order=t1Data.map((_,i)=>i);}
+function t1Shuffle(){
+  t1order=t1Data.map((_,i)=>i).sort(()=>Math.random()-.5);
+  t1cur=0;t1sc=0;t1done=false;
+  document.getElementById('t1card').style.display='block';
+  document.getElementById('t1done').style.display='none';
+  t1Render();
+}
+function t1Render(){
+  if(t1cur>=t1Data.length){
+    document.getElementById('t1card').style.display='none';
+    document.getElementById('t1done').style.display='block';
+    document.getElementById('t1final').textContent='Score: '+t1sc+' / '+t1Data.length;
+    return;
+  }
+  const q=t1Data[t1order[t1cur]];
+  document.getElementById('t1prog').textContent='Question '+(t1cur+1)+' of '+t1Data.length;
+  const pct=Math.round(t1cur/t1Data.length*100);
+  document.getElementById('t1pct').textContent=pct+'%';
+  document.getElementById('t1fill').style.width=pct+'%';
+  document.getElementById('t1stem').textContent=(t1cur+1)+'. '+q.stem+' ___';
+  document.getElementById('t1score').textContent=t1sc+' / '+t1Data.length;
+  const opts=[q.correct,...q.distractors].sort(()=>Math.random()-.5);
+  const grid=document.getElementById('t1opts');
+  grid.innerHTML='';
+  ['A','B','C','D'].forEach((lbl,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';
+    btn.innerHTML='<span class="opt-letter">'+lbl+'</span><span>'+opts[i]+'</span>';
+    btn.onclick=()=>t1Answer(opts[i]===q.correct,btn,opts,q.correct,grid);
+    grid.appendChild(btn);
+  });
+  document.getElementById('t1fb').className='feedback';
+  document.getElementById('t1fb').textContent='';
+  document.getElementById('t1next').style.display='none';
+  document.getElementById('t1showans').style.display='';
+}
+function t1Answer(correct,btn,opts,right,grid){
+  if(t1done)return;t1done=true;
+  if(correct){
+    btn.classList.add('correct');t1sc++;
+    document.getElementById('t1fb').className='feedback show ok';
+    document.getElementById('t1fb').textContent='✅ Correct!';
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('t1fb').className='feedback show bad';
+    document.getElementById('t1fb').textContent='❌ The correct completion: '+right;
+    grid.querySelectorAll('.opt-btn').forEach(b=>{if(b.querySelector('span:last-child').textContent===right)b.classList.add('correct');});
+  }
+  grid.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  document.getElementById('t1score').textContent=t1sc+' / '+t1Data.length;
+  document.getElementById('t1next').style.display='block';
+  document.getElementById('t1showans').style.display='none';
+}
+function t1ShowAnswer(){
+  if(t1done)return;t1done=true;
+  const q=t1Data[t1order[t1cur]];
+  const grid=document.getElementById('t1opts');
+  grid.querySelectorAll('.opt-btn').forEach(b=>{
+    if(b.querySelector('span:last-child').textContent===q.correct)b.classList.add('correct');
+    b.disabled=true;
+  });
+  document.getElementById('t1fb').className='feedback show bad';
+  document.getElementById('t1fb').textContent='💡 Answer: '+q.correct;
+  document.getElementById('t1next').style.display='block';
+  document.getElementById('t1showans').style.display='none';
+}
+function t1Next(){t1cur++;t1done=false;t1Render();}
+function t1Reset(){t1cur=0;t1sc=0;t1done=false;document.getElementById('t1card').style.display='block';document.getElementById('t1done').style.display='none';t1Render();}
+t1Init();t1Render();
+
+// ─── TAB 2: CHOOSE IDEAS (one at a time) ───
+const t2Qs=[
+  {type:'Part 4 — Speaking',q:'"Do you think online advertising has more positive or negative effects on people?"',hint:'<strong>Positive ideas:</strong> targeted ads reach right people (9), economic model keeps internet free (10, 11), PSAs help society (14)<br><strong>Negative ideas:</strong> pop-ups reduce willingness to buy (3), creepiness factor puts people off (15)'},
+  {type:'Part 4 — Speaking',q:'"Should companies be allowed to collect your personal data to show you targeted ads?"',hint:'<strong>For (yes):</strong> more effective ads (9), can shape self-image positively (12)<br><strong>Against (no):</strong> privacy — building profiles from tracking (1), creepiness factor (15)'},
+  {type:'Writing — Article',q:'"What are the advantages and disadvantages of advertising?"',hint:'<strong>Advantages:</strong> effective targeting (9), funds the online world (10, 11, 13), PSAs educate (14)<br><strong>Disadvantages:</strong> pop-ups annoy (3), creepiness factor (15), changes self-image (12)'},
+  {type:'Writing — Opinion Essay',q:'"Advertising does more harm than good. Do you agree?"',hint:'<strong>Agree (harm):</strong> pop-ups (3), children can\'t think critically (2), pressure on parents (5, 6), need regulation (7), creepiness (15)<br><strong>Disagree (good):</strong> funds online world (10, 13), PSAs benefit society (14)'},
+  {type:'Part 3 — Speaking',q:'"A company wants to advertise a new product to young people. Which advertising methods would work best?"',hint:'<strong>Relevant ideas:</strong> targeting based on past behaviour (1, 9), ads can shape identity (12) — also worth considering what puts young people off: pop-ups (3), creepiness (15)'},
+  {type:'Part 4 — Speaking',q:'"Do you think advertising aimed at children should be more strictly regulated?"',hint:'<strong>All four ideas directly support regulation:</strong> children can\'t think critically (2), ads pressure kids to pester parents (5), children influence big purchases (6), parents alone can\'t protect children (7)'},
+];
+let t2cur=0,t2order=[];
+function t2Init(){t2order=t2Qs.map((_,i)=>i);}
+function t2Shuffle(){
+  t2order=t2Qs.map((_,i)=>i).sort(()=>Math.random()-.5);
+  t2cur=0;t2Render();
+}
+function t2Render(){
+  const q=t2Qs[t2order[t2cur]];
+  document.getElementById('t2prog').textContent='Question '+(t2cur+1)+' of '+t2Qs.length;
+  document.getElementById('t2pct').textContent=(t2cur+1)+' / '+t2Qs.length;
+  document.getElementById('t2fill').style.width=(((t2cur+1)/t2Qs.length)*100)+'%';
+  document.getElementById('t2qtype').textContent=q.type;
+  document.getElementById('t2qtext').textContent=q.q;
+  document.getElementById('t2hint').className='ans-reveal';
+  document.getElementById('t2hint').innerHTML='';
+  document.getElementById('t2hintbtn').disabled=false;
+}
+function t2ShowHint(){
+  const q=t2Qs[t2order[t2cur]];
+  document.getElementById('t2hint').innerHTML='<strong>💡 Suggested ideas:</strong><br><br>'+q.hint;
+  document.getElementById('t2hint').classList.add('show');
+  document.getElementById('t2hintbtn').disabled=true;
+}
+function t2Nav(dir){
+  t2cur=Math.max(0,Math.min(t2Qs.length-1,t2cur+dir));
+  t2Render();
+}
+t2Init();t2Render();
+
+// ─── TAB 4: SPIN & SPEAK ───
+const spinQuestions=[
+  "Do you think it is fair for companies to collect personal data to show you targeted ads?",
+  "Do you think advertising aimed at young children should be more strictly regulated? Why?",
+  "Some people say advertising is essential for modern society. Do you agree?",
+  "How do you think advertising will be different in the future?",
+  "Should social media platforms be allowed to show ads to teenagers? Why or why not?",
+  "Do you think pop-up ads should be banned? Give your reasons.",
+  "How do you feel when you see an ad for something you were just searching for online?",
+  "Do you think advertisements always tell the truth? Why or why not?",
+  "Would you prefer to pay for apps and websites to avoid ads? Why?",
+  "Do you think celebrities should be more responsible about the products they advertise? Why?",
+  "Is it a good idea for schools to teach students how to recognise advertising tricks?",
+  "Should companies be allowed to advertise unhealthy food to young people?",
+  "Do you think online ads or TV ads are more powerful? Why?",
+  "How much do you think advertising influences what young people choose to buy?",
+  "Do you think it is wrong for a company to collect data about your browsing history?",
+  "Should governments fund public service announcements instead of allowing commercial ads?",
+  "Is advertising a form of art, or is it just about making money?",
+  "Do you think targeted advertising helps people discover products they genuinely need?",
+  "Should influencers be required by law to label when they are paid to promote a product?",
+  "Do you think the world would be better or worse without advertising? Why?",
+];
+let players=[],spinning=false,spinAngle=0;
+function loadPlayers(){
+  const raw=document.getElementById('playerInput').value;
+  players=[...new Set(raw.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean))];
+  renderChips();
+}
+function renderChips(){
+  const c=document.getElementById('playerChips');c.innerHTML='';
+  players.forEach((name,i)=>{
+    const chip=document.createElement('span');chip.className='player-chip';
+    chip.innerHTML=name+' <span class="del" onclick="removePlayer('+i+')">✕</span>';
+    c.appendChild(chip);
+  });
+}
+function removePlayer(i){players.splice(i,1);renderChips();}
+function spinAll(){
+  if(spinning)return;spinning=true;
+  const wheel=document.getElementById('spinWheel');
+  const inner=document.getElementById('spinInner');
+  inner.textContent='🎡';
+  let ticks=0,total=28+Math.floor(Math.random()*18);
+  const iv=setInterval(()=>{
+    spinAngle+=15;wheel.style.transform='rotate('+spinAngle+'deg)';
+    ticks++;
+    if(ticks>=total){
+      clearInterval(iv);inner.textContent='✨';spinning=false;
+      const name=players.length>0?players[Math.floor(Math.random()*players.length)]:'—';
+      document.getElementById('spinNameDisplay').textContent=name;
+      document.getElementById('spinQDisplay').textContent=spinQuestions[Math.floor(Math.random()*spinQuestions.length)];
+    }
+  },38);
+}
+
+// ─── TAB 5: DEBATE RELAY ───
+let motions=[
+  "Targeted advertising does more good than harm.",
+  "Advertising aimed at children should be completely banned.",
+  "Companies should not be allowed to track your browsing history.",
+  "Without advertising, the internet would not exist.",
+  "Social media influencers should be banned from advertising products to teenagers.",
+  "Governments should make it illegal to advertise unhealthy food on television.",
+  "People who use ad blockers are harming the internet.",
+  "All advertising should be honest and backed by scientific evidence.",
+  "Schools should teach students how to critically analyse advertisements.",
+  "Public figures and celebrities should be held responsible for the products they promote.",
+];
+let curMotion=0;
+function renderMotion(){
+  document.getElementById('motionText').textContent=motions[curMotion];
+  const dots=document.getElementById('motionDots');dots.innerHTML='';
+  motions.forEach((_,i)=>{
+    const d=document.createElement('span');
+    d.className='motion-dot'+(i===curMotion?' active':'');
+    d.onclick=()=>{curMotion=i;renderMotion();};
+    dots.appendChild(d);
+  });
+  const list=document.getElementById('allMotionsList');list.innerHTML='';
+  motions.forEach((m,i)=>{
+    const li=document.createElement('li');li.textContent=(i+1)+'. '+m;
+    if(i===curMotion)li.style.background='var(--primary-light)';
+    li.style.cursor='pointer';
+    li.onclick=()=>{curMotion=i;renderMotion();};
+    list.appendChild(li);
+  });
+}
+function nextMotion(){curMotion=(curMotion+1)%motions.length;renderMotion();}
+function shuffleMotions(){motions=motions.sort(()=>Math.random()-.5);curMotion=0;renderMotion();}
+renderMotion();
+</script>
+</body>
+</html>
