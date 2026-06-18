@@ -166,7 +166,7 @@ table.sc td.slot.ft{background:#FEF3C7}
 .child-tabs{display:flex;gap:0;justify-content:center;padding:0 0 0;border-bottom:2.5px solid var(--pink-l);}
 .child-tab{
   font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;
-  padding:10px 36px;border:none;background:none;cursor:pointer;
+  padding:10px 28px;border:none;background:none;cursor:pointer;
   color:var(--text2);border-bottom:3px solid transparent;margin-bottom:-2.5px;
   transition:all .18s;border-radius:12px 12px 0 0;
 }
@@ -176,6 +176,10 @@ table.sc td.slot.ft{background:#FEF3C7}
   border-bottom:3px solid var(--pink);
   box-shadow:0 -2px 12px rgba(255,133,161,0.10);
 }
+/* Mẹ Linh tab gets a green accent */
+.child-tab.melinh-tab{color:var(--text2)}
+.child-tab.melinh-tab:hover{background:#F0FDF4;color:#059669}
+.child-tab.melinh-tab.active{color:#059669;border-bottom-color:#059669;background:var(--card)}
 
 .icon-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:2000;align-items:center;justify-content:center}
 .icon-modal-overlay.show{display:flex}
@@ -225,6 +229,9 @@ table.sc td.slot.ft{background:#FEF3C7}
   </button>
   <button class="child-tab" id="tab-moon" onclick="switchChild('moon',this)">
     🌙 Moon
+  </button>
+  <button class="child-tab melinh-tab" id="tab-melinh" onclick="switchChild('melinh',this)">
+    🌿 Mẹ Linh
   </button>
 </div>
 
@@ -293,7 +300,8 @@ let curChild='honey';
 
 const CHILDREN={
   honey:{name:'Honey', icon:'🍯', accentColor:'#FF85A1', hasFixed:true},
-  moon:{name:'Moon', icon:'🌙', accentColor:'#7C3AED', hasFixed:false}
+  moon:{name:'Moon', icon:'🌙', accentColor:'#7C3AED', hasFixed:false},
+  melinh:{name:'Mẹ Linh', icon:'🌿', accentColor:'#059669', hasFixed:false}
 };
 
 function switchChild(child, btn){
@@ -348,6 +356,21 @@ const DEF_MOON=[
   {id:'m-free',   label:'🌟 Tự do',          bg:'#FEF9C3',color:'#713F12',border:'#FDE047',type:'other'},
 ];
 
+const DEF_MELINH=[
+  {id:'ml-sang',    label:'🌅 Ăn sáng',       bg:'#FCE7F3',color:'#9D174D',border:'#F9A8D4',type:'other'},
+  {id:'ml-trua',    label:'🍜 Ăn trưa',        bg:'#FFEDD5',color:'#7C2D12',border:'#FDBA74',type:'other'},
+  {id:'ml-toi',     label:'🌙 Ăn tối',         bg:'#FEF3C7',color:'#78350F',border:'#FCD34D',type:'other'},
+  {id:'ml-ngu',     label:'😴 Ngủ trưa',       bg:'#FCE7F3',color:'#831843',border:'#F9A8D4',type:'other'},
+  {id:'ml-dichuy',  label:'🚗 Di chuyển',      bg:'#FEF3C7',color:'#92400E',border:'#FCD34D',type:'travel'},
+  {id:'ml-work',    label:'💼 Làm việc',        bg:'#D1FAE5',color:'#065F46',border:'#6EE7B7',type:'other'},
+  {id:'ml-read',    label:'📚 Đọc sách',        bg:'#DBEAFE',color:'#1E40AF',border:'#93C5FD',type:'other'},
+  {id:'ml-family',  label:'👨‍👩‍👧 Gia đình',   bg:'#FEF3C7',color:'#92400E',border:'#FCD34D',type:'other'},
+  {id:'ml-free',    label:'🌟 Nghỉ ngơi',       bg:'#FEF9C3',color:'#713F12',border:'#FDE047',type:'other'},
+  {id:'ml-sport',   label:'🏃 Vận động',        bg:'#F0FDF4',color:'#14532D',border:'#86EFAC',type:'custom'},
+  {id:'ml-shop',    label:'🛒 Đi chợ/siêu thị', bg:'#EDE9FE',color:'#5B21B6',border:'#C4B5FD',type:'custom'},
+  {id:'ml-cook',    label:'🍳 Nấu ăn',          bg:'#FFEDD5',color:'#7C2D12',border:'#FDBA74',type:'custom'},
+];
+
 const FIXED={
   6:[
     {day:'Thứ 2',   start:sof(18,0), end:sof(20,30),type:'math',label:'📐 Toán online\n18:00–20:30'},
@@ -376,11 +399,12 @@ function getFA(month,day,slot){return getAllFixed(month,day).find(f=>slot>=f.sta
 function isFixed(month,day,slot){return !!getFA(month,day,slot)}
 
 let curMonth=6;
-const allBlocks={honey:[...DEF],moon:[...DEF_MOON]};
-const allGrids={honey:{},moon:{}};
+const allBlocks={honey:[...DEF],moon:[...DEF_MOON],melinh:[...DEF_MELINH]};
+const allGrids={honey:{},moon:{},melinh:{}};
 [6,7,8].forEach(m=>{
   allGrids.honey[m]={};DAYS.forEach(d=>{allGrids.honey[m][d]={}});
   allGrids.moon[m]={};DAYS.forEach(d=>{allGrids.moon[m][d]={}});
+  allGrids.melinh[m]={};DAYS.forEach(d=>{allGrids.melinh[m][d]={}});
 });
 
 function getGrid(){return allGrids[curChild]}
@@ -393,21 +417,40 @@ Object.defineProperty(window,'grid',{get:getGrid});
 
 let selectedIcon='✨';
 
-function getB(id){return allBlocks[curChild].find(b=>b.id===id)||(allBlocks.honey.find(b=>b.id===id))||(allBlocks.moon.find(b=>b.id===id))}
+function getB(id){
+  return allBlocks[curChild].find(b=>b.id===id)
+    || allBlocks.honey.find(b=>b.id===id)
+    || allBlocks.moon.find(b=>b.id===id)
+    || allBlocks.melinh.find(b=>b.id===id);
+}
 
 function renderPal(){
-  const isMoon=curChild==='moon';
-  const sinh=['sang','trua','toi','ngu','dichuy','m-sang','m-trua','m-toi','m-ngu','m-dichuy'];
-  const grps=isMoon?[
-    {lbl:'🍽 Sinh hoạt', filter:b=>sinh.includes(b.id)},
-    {lbl:'🎉 Vui chơi',  filter:b=>b.type==='other'&&!sinh.includes(b.id)},
-    {lbl:'✨ Của Moon',  filter:b=>b.type==='custom'},
-  ]:[
-    {lbl:'📚 Học tập',   filter:b=>['math','eng','btvn-math','btvn-eng'].includes(b.type)},
-    {lbl:'🍽 Sinh hoạt', filter:b=>sinh.includes(b.id)},
-    {lbl:'🎉 Vui chơi',  filter:b=>b.type==='other'&&!sinh.includes(b.id)},
-    {lbl:'✨ Của Honey', filter:b=>b.type==='custom'},
-  ];
+  const sinh_honey=['sang','trua','toi','ngu','dichuy'];
+  const sinh_moon=['m-sang','m-trua','m-toi','m-ngu','m-dichuy'];
+  const sinh_melinh=['ml-sang','ml-trua','ml-toi','ml-ngu','ml-dichuy'];
+
+  let grps;
+  if(curChild==='melinh'){
+    grps=[
+      {lbl:'🍽 Sinh hoạt', filter:b=>sinh_melinh.includes(b.id)},
+      {lbl:'🌿 Hoạt động', filter:b=>b.type==='other'&&!sinh_melinh.includes(b.id)},
+      {lbl:'✨ Của Mẹ Linh', filter:b=>b.type==='custom'},
+    ];
+  } else if(curChild==='moon'){
+    grps=[
+      {lbl:'🍽 Sinh hoạt', filter:b=>sinh_moon.includes(b.id)},
+      {lbl:'🎉 Vui chơi',  filter:b=>b.type==='other'&&!sinh_moon.includes(b.id)},
+      {lbl:'✨ Của Moon',  filter:b=>b.type==='custom'},
+    ];
+  } else {
+    grps=[
+      {lbl:'📚 Học tập',   filter:b=>['math','eng','btvn-math','btvn-eng'].includes(b.type)},
+      {lbl:'🍽 Sinh hoạt', filter:b=>sinh_honey.includes(b.id)},
+      {lbl:'🎉 Vui chơi',  filter:b=>b.type==='other'&&!sinh_honey.includes(b.id)},
+      {lbl:'✨ Của Honey', filter:b=>b.type==='custom'},
+    ];
+  }
+
   const el=document.getElementById('pal-groups');
   el.innerHTML='';
   let first=true;
@@ -576,7 +619,7 @@ function addCustom(){
   const inp=document.getElementById('cn'),name=inp.value.trim();
   if(!name) return;
   const c=COLS[selCol];
-  const prefix=curChild==='moon'?'m':'c';
+  const prefix=curChild==='moon'?'m':curChild==='melinh'?'ml':'c';
   allBlocks[curChild].push({id:prefix+Date.now(),label:selectedIcon+' '+name,bg:c.bg,color:c.color,border:c.border,type:'custom'});
   inp.value='';renderPal();
 }
@@ -588,6 +631,7 @@ const ICON_LIST=[
   '🍎','🍊','🍋','🍇','🍓','🍰','🧁','🍕','🍜','🍱','🥗','☕','🧃',
   '🌸','🌺','🌻','🌈','🦋','🐣','🐬','🦄','🐼','🦊','🐧','🌙','☀️','⛅',
   '🚗','✈️','🚀','🏠','🛁','💤','😴','🎁','❤️','💜','💙','💚','🔥','💫',
+  '🌿','💼','🛒','🍳','🧘','🎀','🌊','🏔️','🎋','🍵','💅','🛍️',
 ];
 function openIconPicker(){
   const grid=document.getElementById('icon-grid');
@@ -700,7 +744,7 @@ window.fbAutoLoad = async function(){
   if(!window._fbLoadMonth) return;
   fbStatus('⏳ Đang tự động tải dữ liệu...','#D97706');
   try{
-    for(const child of ['honey','moon']){
+    for(const child of ['honey','moon','melinh']){
       for(const m of [6,7,8]){
         const raw = await window._fbLoadMonth(child, m);
         if(raw) deserializeMonth(raw, child, m);
@@ -735,7 +779,7 @@ async function captureTable(){
   target.style.cssText=`background:#FFF8FA;padding:20px 24px 28px;display:inline-block;font-family:'Nunito',sans-serif;min-width:${wrap.offsetWidth}px;`;
   const title=document.createElement('div');
   title.style.cssText='text-align:center;margin-bottom:10px';
-  title.innerHTML=`<div style="font-size:16px;letter-spacing:4px;margin-bottom:2px">🌸 ⭐ 🌸</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:#FF85A1">Thời Khóa Biểu Hè Của Con</div>`;
+  title.innerHTML=`<div style="font-size:16px;letter-spacing:4px;margin-bottom:2px">🌸 ⭐ 🌸</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:#FF85A1">Thời Khóa Biểu Hè Của ${CHILDREN[curChild].name}</div>`;
   target.appendChild(title);
   const tclone=table.cloneNode(true);
   tclone.style.cssText='border-collapse:collapse;table-layout:fixed;width:100%';
@@ -749,14 +793,12 @@ async function captureTable(){
 }
 
 async function makeWallpaperCanvas(){
-  // Export range: 7:00–22:00 (cut empty rows after 22h)
   const EXP_SS=SS, EXP_SE=22*2;
   const W=2560,H=1440;
   const out=document.createElement('canvas');
   out.width=W;out.height=H;
   const ctx=out.getContext('2d');
 
-  // Background gradient
   const grad=ctx.createLinearGradient(0,0,W,H);
   grad.addColorStop(0,'#FFF0F3');grad.addColorStop(0.5,'#F5F0FF');grad.addColorStop(1,'#EFF6FF');
   ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
@@ -771,7 +813,6 @@ async function makeWallpaperCanvas(){
   const PAD=36,TITLE_H=66,TIME_COL=72,DAY_HDR=60;
   const INNER_W=W-PAD*2,INNER_H=H-PAD*2;
 
-  // Card background
   ctx.shadowColor='rgba(255,133,161,0.15)';ctx.shadowBlur=40;ctx.shadowOffsetY=8;
   ctx.fillStyle='rgba(255,248,250,0.97)';
   roundRect(ctx,PAD,PAD,INNER_W,INNER_H,20);ctx.fill();
@@ -779,7 +820,6 @@ async function makeWallpaperCanvas(){
   ctx.strokeStyle='rgba(255,182,207,0.55)';ctx.lineWidth=2;
   roundRect(ctx,PAD,PAD,INNER_W,INNER_H,20);ctx.stroke();
 
-  // Title
   ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.font='bold 36px "Baloo 2",cursive,sans-serif';
   ctx.fillStyle='#FF85A1';
@@ -790,7 +830,6 @@ async function makeWallpaperCanvas(){
   const slots=EXP_SE-EXP_SS;
   const dayW=GRID_W/DAYS.length, slotH=GRID_H/slots;
 
-  // Day headers
   DAYS.forEach((day,di)=>{
     const cx=gx+di*dayW;
     ctx.fillStyle=di%2===0?'rgba(255,240,245,0.5)':'rgba(245,240,255,0.4)';
@@ -802,11 +841,9 @@ async function makeWallpaperCanvas(){
     if(di>0){ctx.strokeStyle='rgba(255,182,207,0.5)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(cx,PAD+TITLE_H);ctx.lineTo(cx,PAD+INNER_H);ctx.stroke();}
   });
 
-  // Header bottom border
   ctx.strokeStyle='rgba(255,133,161,0.5)';ctx.lineWidth=2.5;
   ctx.beginPath();ctx.moveTo(PAD,gy);ctx.lineTo(PAD+INNER_W,gy);ctx.stroke();
 
-  // Time row lines + labels
   for(let i=0;i<=slots;i++){
     const s=EXP_SS+i, y=gy+i*slotH;
     if(s%2===0){
@@ -820,13 +857,11 @@ async function makeWallpaperCanvas(){
     if(i<slots){ctx.beginPath();ctx.moveTo(gx,y);ctx.lineTo(gx+GRID_W,y);ctx.stroke();}
   }
 
-  // Grid borders
   ctx.strokeStyle='rgba(255,182,207,0.4)';ctx.lineWidth=1;
   ctx.beginPath();ctx.moveTo(PAD,gy+GRID_H);ctx.lineTo(PAD+INNER_W,gy+GRID_H);ctx.stroke();
   ctx.strokeStyle='rgba(255,182,207,0.5)';ctx.lineWidth=2;
   ctx.beginPath();ctx.moveTo(gx,PAD+TITLE_H);ctx.lineTo(gx,gy+GRID_H);ctx.stroke();
 
-  // Helper: draw text centered in a box, word-wrap if needed, always 20px
   function drawBlockText(txt, color, cx, by, bw, bh){
     const FONT_SIZE=20;
     const PAD_X=10;
@@ -835,10 +870,8 @@ async function makeWallpaperCanvas(){
     ctx.fillStyle=color;
     ctx.textAlign='center';ctx.textBaseline='middle';
     if(ctx.measureText(txt).width<=maxW){
-      // Fits on one line
       ctx.fillText(txt,cx,by+bh/2);
     } else {
-      // Wrap: split into 2 lines at best word boundary
       const words=txt.split(' ');
       let line1=words[0], line2='';
       for(let w=1;w<words.length;w++){
@@ -852,39 +885,38 @@ async function makeWallpaperCanvas(){
     }
   }
 
-  // Draw blocks per column
   DAYS.forEach((day,di)=>{
     const cx=gx+di*dayW;
     ctx.fillStyle=di%2===0?'rgba(255,240,245,0.12)':'rgba(245,240,255,0.10)';
     ctx.fillRect(cx,gy,dayW,GRID_H);
 
-    // Fixed class blocks (only within export range)
     const fixed=getAllFixed(curMonth,day);
-    fixed.forEach(f=>{
-      if(f.end<=EXP_SS||f.start>=EXP_SE) return;
-      const clampStart=Math.max(f.start,EXP_SS), clampEnd=Math.min(f.end,EXP_SE);
-      const fy=gy+(clampStart-EXP_SS)*slotH, fh=(clampEnd-clampStart)*slotH;
-      const isMath=f.type==='math',isEng=f.type==='eng';
-      const bg=isMath?'#EDE9FE':isEng?'#DBEAFE':'#FEF3C7';
-      const border=isMath?'#A78BFA':isEng?'#60A5FA':'#FCD34D';
-      const tc=isMath?'#4C1D95':isEng?'#1E40AF':'#78350F';
-      ctx.fillStyle=bg;roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,8);ctx.fill();
-      ctx.strokeStyle=border;ctx.lineWidth=2;roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,8);ctx.stroke();
-      const lines=f.label.split('\n');
-      const midY=fy+fh/2;
-      ctx.fillStyle=tc;ctx.textAlign='center';ctx.textBaseline='middle';
-      if(lines.length>=2&&fh>50){
-        ctx.font='bold 20px "Baloo 2",cursive,sans-serif';
-        ctx.fillText(lines[0],cx+dayW/2,midY-13);
-        ctx.font='bold 18px Nunito,sans-serif';
-        ctx.fillText(lines[1],cx+dayW/2,midY+13);
-      } else {
-        ctx.font='bold 20px "Baloo 2",cursive,sans-serif';
-        ctx.fillText(lines[0],cx+dayW/2,midY);
-      }
-    });
+    if(CHILDREN[curChild].hasFixed){
+      fixed.forEach(f=>{
+        if(f.end<=EXP_SS||f.start>=EXP_SE) return;
+        const clampStart=Math.max(f.start,EXP_SS), clampEnd=Math.min(f.end,EXP_SE);
+        const fy=gy+(clampStart-EXP_SS)*slotH, fh=(clampEnd-clampStart)*slotH;
+        const isMath=f.type==='math',isEng=f.type==='eng';
+        const bg=isMath?'#EDE9FE':isEng?'#DBEAFE':'#FEF3C7';
+        const border=isMath?'#A78BFA':isEng?'#60A5FA':'#FCD34D';
+        const tc=isMath?'#4C1D95':isEng?'#1E40AF':'#78350F';
+        ctx.fillStyle=bg;roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,8);ctx.fill();
+        ctx.strokeStyle=border;ctx.lineWidth=2;roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,8);ctx.stroke();
+        const lines=f.label.split('\n');
+        const midY=fy+fh/2;
+        ctx.fillStyle=tc;ctx.textAlign='center';ctx.textBaseline='middle';
+        if(lines.length>=2&&fh>50){
+          ctx.font='bold 20px "Baloo 2",cursive,sans-serif';
+          ctx.fillText(lines[0],cx+dayW/2,midY-13);
+          ctx.font='bold 18px Nunito,sans-serif';
+          ctx.fillText(lines[1],cx+dayW/2,midY+13);
+        } else {
+          ctx.font='bold 20px "Baloo 2",cursive,sans-serif';
+          ctx.fillText(lines[0],cx+dayW/2,midY);
+        }
+      });
+    }
 
-    // User-placed blocks (only within export range)
     const ug=grid[curMonth][day];
     const drawn={};
     for(let i=0;i<slots;i++){
@@ -912,7 +944,7 @@ function roundRect(ctx,x,y,w,h,r){
 
 async function exportImage(){
   const loading=document.getElementById('export-loading');
-  loading.style.display='block';loading.textContent='⏳ Đang tạo hình nền 1920×1080...';
+  loading.style.display='block';loading.textContent='⏳ Đang tạo hình nền 2560×1440...';
   try{
     const canvas=await makeWallpaperCanvas();
     const a=document.createElement('a');a.download='thoikhoabieu_he_wallpaper.png';a.href=canvas.toDataURL('image/png');a.click();
