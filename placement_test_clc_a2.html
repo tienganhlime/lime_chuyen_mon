@@ -705,7 +705,7 @@
 </div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTJX8tTNkHnnYN9BR25IR0NDFy_4A_NkDIpqcmJ8O2-ZXPjmg2DObh5P4CmuMv4Vy7EQ/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw2zix8wke5aqwScMAXAiIqD6J4WHrl4LEbV9SM0MBnNHtkxdklb1srXsSwrbZbZ1FEFg/exec';
 const TEST_NAME = 'CLC_A2'; // Đổi tên này cho mỗi bài test/level khác nhau (VD: 'CLC_B1', 'FCE_B2'...) để dữ liệu tự tách sheet riêng
 
 const ANSWER_KEY = {
@@ -715,7 +715,7 @@ const ANSWER_KEY = {
   tf1:'FALSE',tf2:'TRUE',tf3:'FALSE',tf4:'TRUE',tf5:'TRUE'
 };
 
-let studentName='', studentPhone='';
+let studentName='', studentPhone='', submissionId='';
 let timerInterval=null, secondsLeft=45*60;
 let fsExitCount=0, testStartTime=null;
 
@@ -728,6 +728,7 @@ function startTest(){
   document.getElementById('disp-name').textContent = studentName;
   document.getElementById('disp-phone').textContent = studentPhone;
   document.getElementById('ty-name').textContent = studentName;
+  submissionId = `${Date.now()}_${studentPhone}`; // mã bài làm duy nhất, dùng để giáo viên tra cứu & lưu chấm bài sau này
 
   const el = document.documentElement;
   if(el.requestFullscreen) el.requestFullscreen();
@@ -833,6 +834,7 @@ async function submitTest(autoSubmit=false){
   const taken=45*60-secondsLeft;
   const payload={
     testName:TEST_NAME,
+    submissionId,
     name:studentName, phone:studentPhone,
     startTime:testStartTime,
     timeTaken:`${Math.floor(taken/60)}m${taken%60}s`,
