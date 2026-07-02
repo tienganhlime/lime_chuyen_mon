@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chữa bài – LIME English</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lime:#a8d08d; --lime-dark:#6aaa4a; --lime-light:#eaf5e3;
+    --peach:#fde8d8; --sky:#dceefb; --text:#2d3a2e; --muted:#7a8c7b;
+    --white:#fff; --radius:14px; --shadow:0 4px 20px rgba(0,0,0,0.08);
+    --red:#c0392b; --red-light:#fdecea;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{font-size:22px;}
+  body{font-family:'Nunito',sans-serif;background:#f0f7eb;color:var(--text);min-height:100vh;padding:20px 10px 60px;}
+  .wrap{max-width:1100px;margin:0 auto;}
+
+  .top-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:20px;}
+  .top-card h1{font-family:'Baloo 2',cursive;font-size:1.3rem;color:var(--lime-dark);margin-bottom:14px;}
+  .search-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .search-row input{
+    flex:1; min-width:220px; padding:12px 14px; border:2px solid #dde8d8;
+    border-radius:10px; font-family:'Nunito',sans-serif; font-size:1rem;
+    outline:none; background:var(--lime-light);
+  }
+  .search-row input:focus{border-color:var(--lime-dark);}
+  .btn{
+    padding:12px 24px; border:none; border-radius:10px; cursor:pointer;
+    font-family:'Baloo 2',cursive; font-weight:700; font-size:1rem;
+    background:var(--lime-dark); color:white; transition:all .15s;
+  }
+  .btn:hover{background:#559a38;}
+  .btn.secondary{background:#e0ecd8;color:var(--text);}
+  .btn.secondary:hover{background:#cfe3c2;}
+  .status-msg{margin-top:12px;font-size:0.9rem;color:var(--muted);}
+  .status-msg.error{color:var(--red);}
+
+  .result-list{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
+  .result-item{
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;
+    padding:12px 16px;border:2px solid #e0ecd8;border-radius:10px;cursor:pointer;background:#fafff7;
+  }
+  .result-item:hover{border-color:var(--lime-dark);background:var(--lime-light);}
+  .result-item .ri-left b{font-size:1.05rem;}
+  .result-item .ri-left span{display:block;font-size:0.82rem;color:var(--muted);}
+  .result-item .ri-score{font-family:'Baloo 2',cursive;font-weight:700;color:var(--lime-dark);font-size:1.1rem;}
+
+  #detail{display:none;}
+  .detail-header{
+    background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:18px 20px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+  }
+  .detail-header .dh-info b{font-size:1.15rem;}
+  .detail-header .dh-info span{display:block;color:var(--muted);font-size:0.85rem;margin-top:2px;}
+  .score-box{
+    text-align:center;background:var(--lime-light);border-radius:12px;padding:10px 22px;
+  }
+  .score-box .num{font-family:'Baloo 2',cursive;font-size:1.6rem;font-weight:700;color:var(--lime-dark);}
+  .score-box .lbl{font-size:0.78rem;color:var(--muted);}
+
+  .part{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px;margin-bottom:16px;}
+  .part-title{
+    font-family:'Baloo 2',cursive;font-weight:700;color:var(--lime-dark);
+    background:var(--lime-light);display:inline-block;padding:4px 14px;border-radius:20px;margin-bottom:16px;font-size:0.95rem;
+  }
+
+  .q-row{padding:12px 0;border-bottom:1px solid #eef3ea;}
+  .q-row:last-child{border-bottom:none;}
+  .q-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+  .q-prompt{flex:1;line-height:1.6;font-size:0.95rem;}
+  .q-prompt b{color:var(--lime-dark);}
+
+  .toggle-group{display:flex;gap:6px;flex-shrink:0;}
+  .toggle-btn{
+    width:38px;height:38px;border-radius:8px;border:2px solid #ddd;background:white;
+    cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;
+    transition:all .15s; color:#999;
+  }
+  .toggle-btn.correct.active{background:#e5f6e0;border-color:var(--lime-dark);color:var(--lime-dark);}
+  .toggle-btn.wrong.active{background:var(--red-light);border-color:var(--red);color:var(--red);}
+
+  .ans-box{margin-top:8px;padding:10px 12px;border-radius:8px;background:#fafff7;border:1px solid #e5eee0;font-size:0.92rem;}
+  .ans-box .lbl{font-size:0.75rem;color:var(--muted);margin-bottom:2px;}
+  .ans-box .val{font-weight:700;}
+  .ans-box.empty .val{color:#bbb;font-style:italic;font-weight:400;}
+  .correct-hint{font-size:0.8rem;color:var(--muted);margin-top:6px;}
+  .correct-hint summary{cursor:pointer;color:var(--lime-dark);font-weight:700;list-style:none;user-select:none;}
+  .correct-hint summary::-webkit-details-marker{display:none;}
+  .correct-hint summary:hover{text-decoration:underline;}
+  .correct-hint[open] summary{margin-bottom:4px;}
+  .correct-hint b{color:var(--lime-dark);}
+
+  .note-input{
+    width:100%;margin-top:8px;padding:8px 10px;border:2px solid #e5eee0;border-radius:8px;
+    font-family:'Nunito',sans-serif;font-size:0.88rem;outline:none;background:#fdfdfb;resize:vertical;
+  }
+  .note-input:focus{border-color:var(--lime-dark);}
+
+  .save-bar{
+    position:sticky;bottom:0;background:var(--white);box-shadow:0 -4px 16px rgba(0,0,0,0.08);
+    border-radius:var(--radius) var(--radius) 0 0;padding:14px 20px;display:flex;
+    justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
+  }
+  .save-bar .live-score{font-family:'Baloo 2',cursive;font-weight:700;color:var(--lime-dark);font-size:1.15rem;}
+
+  @media(max-width:600px){
+    .q-top{flex-direction:column;}
+    .toggle-group{align-self:flex-end;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top-card">
+    <h1>🔍 Tra cứu & chữa bài học sinh</h1>
+    <div class="search-row">
+      <input type="text" id="inp-phone" placeholder="Nhập số điện thoại học sinh..." />
+      <button class="btn" onclick="lookup()">Tìm kiếm</button>
+    </div>
+    <div class="status-msg" id="status-msg"></div>
+    <div class="result-list" id="result-list"></div>
+  </div>
+
+  <div id="detail"></div>
+</div>
+
+<script>
+const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'; // dán đúng link /exec giống trong file bài test
+
+// ═══ Định nghĩa nội dung từng bài test để hiển thị lại khi chữa bài ═══
+// Muốn thêm bài test khác (level khác) -> thêm 1 mục mới vào TEST_DEFINITIONS với testName tương ứng
+const TEST_DEFINITIONS = {
+  CLC_A2: {
+    label: 'Placement Test – CLC Cambridge A2',
+    parts: [
+      { key:'p1', title:'Part I – Choose the correct answer (15 pts)', pointsEach:1, questions:[
+        {key:'q1', prompt:'My sister _______ to school every day, but today she _______ at home.', options:{A:'goes / stay',B:'goes / is staying',C:'is going / stays',D:'go / is staying'}, answer:'B'},
+        {key:'q2', prompt:'Can you _______ me a favour? I need help with this exercise.', options:{A:'make',B:'take',C:'do',D:'give'}, answer:'C'},
+        {key:'q3', prompt:"I _______ this bag. It _______ to my brother.", options:{A:"don't have / belongs",B:'am not having / belongs',C:"don't have / is belonging",D:'am not having / is belonging'}, answer:'A'},
+        {key:'q4', prompt:'Mount Everest is _______ mountain in the world.', options:{A:'higher',B:'the most high',C:'the highest',D:'more high'}, answer:'C'},
+        {key:'q5', prompt:'She _______ a photo of the beautiful sunset and sent it to all her friends.', options:{A:'did',B:'made',C:'took',D:'had'}, answer:'C'},
+        {key:'q6', prompt:'_______ she usually _______ breakfast before school?', options:{A:'Is / having',B:'Does / has',C:'Does / have',D:'Is / have'}, answer:'C'},
+        {key:'q7', prompt:"We don't have _______ eggs. Can you buy some?", options:{A:'a',B:'some',C:'any',D:'–'}, answer:'C'},
+        {key:'q8', prompt:'This book is _______ than the one I read last week.', options:{A:'more interesting',B:'interestinger',C:'most interesting',D:'the most interesting'}, answer:'A'},
+        {key:'q9', prompt:'She dances very _______. Everyone loves watching her perform.', options:{A:'beautiful',B:'beauty',C:'beautifully',D:'beautify'}, answer:'C'},
+        {key:'q10', prompt:'Look! The children _______ in the garden right now.', options:{A:'play',B:'are play',C:'are playing',D:'plays'}, answer:'C'},
+        {key:'q11', prompt:'She gave me _______ good advice about the exam.', options:{A:'a',B:'an',C:'some',D:'many'}, answer:'C'},
+        {key:'q12', prompt:"He _______ his best in the race but didn't win.", options:{A:'made',B:'did',C:'took',D:'had'}, answer:'B'},
+        {key:'q13', prompt:'_______ you _______ to the cinema last weekend?', options:{A:'Did / went',B:'Do / go',C:'Did / go',D:'Were / go'}, answer:'C'},
+        {key:'q14', prompt:"My dog runs _______ as my friend's dog. They always finish at the same time.", options:{A:'as fast',B:'faster',C:'fastest',D:'more fast'}, answer:'A'},
+        {key:'q15', prompt:'We _______ a great time at the party last night.', options:{A:'made',B:'did',C:'took',D:'had'}, answer:'D'}
+      ]},
+      { key:'p2', title:'Part II – Find and correct ONE mistake (10 pts)', pointsEach:2, questions:[
+        {key:'p2q1', prompt:"He don't know the answer because he isn't listening in class."},
+        {key:'p2q2', prompt:'Last weekend, we visit our grandparents and had a delicious meal.'},
+        {key:'p2q3', prompt:"My mum is always make dinner at 6 o'clock."},
+        {key:'p2q4', prompt:'This is the more expensive restaurant in the city.'},
+        {key:'p2q5', prompt:"Can I have a water, please? I'm very thirsty."}
+      ]},
+      { key:'p3', title:'Part III – Complete with correct verb form (10 pts)', pointsEach:2, questions:[
+        {key:'p3q1', prompt:'She ___ her homework yesterday. (not finish)'},
+        {key:'p3q2', prompt:'Listen! Someone ___ at the door. (knock)'},
+        {key:'p3q3', prompt:'Every morning, my dad ___ breakfast for the family. (make)'},
+        {key:'p3q4', keys:['p3q4a','p3q4b'], prompt:"___ he ___ to the cinema last Friday? (go)"},
+        {key:'p3q5', prompt:'I ___ a strange bird in the garden this morning. (see)'}
+      ]},
+      { key:'p4', title:'Part IV – Write the WH question for the underlined part (10 pts)', pointsEach:2, questions:[
+        {key:'p4q1', prompt:'I go to school <u>by bicycle</u>.'},
+        {key:'p4q2', prompt:'She is reading <u>because she has a test tomorrow</u>.'},
+        {key:'p4q3', prompt:'They went to <u>Da Nang</u> last summer.'},
+        {key:'p4q4', prompt:"The film starts at <u>7 o'clock</u>."},
+        {key:'p4q5', prompt:'My favourite subject is <u>Science</u>.'}
+      ]},
+      { key:'p5', title:'Part V – Rearrange the words (10 pts)', pointsEach:2, questions:[
+        {key:'p5q1', prompt:'always / my / early / wakes / morning / dad / in / the / up'},
+        {key:'p5q2', prompt:'did / last / where / you / summer / go / ?'},
+        {key:'p5q3', prompt:'interesting / this / than / more / film / the / is / last / one / watched / I'},
+        {key:'p5q4', prompt:'not / she / her / finish / yesterday / did / homework'},
+        {key:'p5q5', prompt:'advice / she / me / about / gave / some / the / good / exam'}
+      ]},
+      { key:'p6tf', title:'Part VI.A – TRUE / FALSE (5 pts)', pointsEach:1, questions:[
+        {key:'tf1', prompt:'The family went to the forest by train.', answer:'FALSE'},
+        {key:'tf2', prompt:'They had their picnic near a river.', answer:'TRUE'},
+        {key:'tf3', prompt:'The mother brought fruit for the picnic.', answer:'FALSE'},
+        {key:'tf4', prompt:'The little brother saw an animal in the forest.', answer:'TRUE'},
+        {key:'tf5', prompt:'They visited a market in the afternoon.', answer:'TRUE'}
+      ]},
+      { key:'p6b', title:'Part VI.B – Answer in full sentences (10 pts)', pointsEach:2, questions:[
+        {key:'p6b1', prompt:'What was the weather like that day?'},
+        {key:'p6b2', prompt:'How long did they go hiking?'},
+        {key:'p6b3', prompt:'What did the narrator buy at the market?'},
+        {key:'p6b4', prompt:'Why do you think the deer ran away? Give a reason.'},
+        {key:'p6b5', prompt:'Do you think this was a good day for the family? Why or why not?'}
+      ]}
+    ]
+  }
+};
+
+let currentRecord = null;
+let currentGrading = {}; // { questionKey: 'correct' | 'wrong' | undefined }
+let currentNotes = {};   // { questionKey: 'text ghi chú' }
+
+function setStatus(msg, isError=false){
+  const el = document.getElementById('status-msg');
+  el.textContent = msg;
+  el.className = 'status-msg' + (isError ? ' error' : '');
+}
+
+async function lookup(){
+  const phone = document.getElementById('inp-phone').value.trim();
+  if(!phone){ setStatus('Vui lòng nhập số điện thoại.', true); return; }
+  setStatus('Đang tìm kiếm...');
+  document.getElementById('result-list').innerHTML='';
+  document.getElementById('detail').style.display='none';
+
+  try{
+    const res = await fetch(`${SCRIPT_URL}?action=lookup&phone=${encodeURIComponent(phone)}`);
+    const json = await res.json();
+    if(!json.ok){ setStatus(json.error || 'Có lỗi xảy ra.', true); return; }
+    if(json.results.length === 0){ setStatus('Không tìm thấy bài làm nào với số điện thoại này.', true); return; }
+    setStatus(`Tìm thấy ${json.results.length} bài làm.`);
+    renderResultList(json.results);
+  }catch(err){
+    console.error(err);
+    setStatus('Không kết nối được tới server. Kiểm tra lại SCRIPT_URL.', true);
+  }
+}
+
+function renderResultList(results){
+  const wrap = document.getElementById('result-list');
+  wrap.innerHTML = '';
+  results.forEach(r=>{
+    const def = TEST_DEFINITIONS[r.__testName];
+    const div = document.createElement('div');
+    div.className = 'result-item';
+    div.innerHTML = `
+      <div class="ri-left">
+        <b>${r['Tên'] || '—'}</b>
+        <span>${def ? def.label : r.__testName} · ${r['Giờ bắt đầu'] || ''}</span>
+      </div>
+      <div class="ri-score">${r['Điểm GV chấm'] !== '' ? r['Điểm GV chấm'] : (r['Điểm tự động'] ?? '—')}</div>
+    `;
+    div.onclick = () => openDetail(r);
+    wrap.appendChild(div);
+  });
+}
+
+function openDetail(record){
+  currentRecord = record;
+  const def = TEST_DEFINITIONS[record.__testName];
+  const detail = document.getElementById('detail');
+
+  if(!def){
+    detail.style.display='block';
+    detail.innerHTML = `<div class="part">Chưa có cấu hình hiển thị cho bài test "${record.__testName}". Hãy thêm vào TEST_DEFINITIONS trong file này.</div>`;
+    return;
+  }
+
+  // Khôi phục chấm điểm đã lưu trước đó (nếu có)
+  currentGrading = {};
+  currentNotes = {};
+  try{
+    const saved = JSON.parse(record['GV chấm bài (JSON)'] || '{}');
+    Object.keys(saved).forEach(k=>{
+      currentGrading[k] = saved[k].status;
+      currentNotes[k] = saved[k].note || '';
+    });
+  }catch(e){}
+
+  let html = `
+    <div class="detail-header">
+      <div class="dh-info">
+        <b>${record['Tên'] || '—'}</b>
+        <span>${record['SĐT'] || ''} · ${def.label} · Nộp lúc ${record['Giờ bắt đầu'] || ''}</span>
+      </div>
+      <div class="score-box">
+        <div class="num" id="live-score-top">${record['Điểm GV chấm'] !== '' ? record['Điểm GV chấm'] : '—'}</div>
+        <div class="lbl">Điểm GV chấm</div>
+      </div>
+    </div>
+  `;
+
+  def.parts.forEach(part=>{
+    html += `<div class="part"><div class="part-title">${part.title}</div>`;
+    part.questions.forEach(q=>{
+      html += renderQuestion(q, part.pointsEach, record);
+    });
+    html += `</div>`;
+  });
+
+  html += `
+    <div class="save-bar">
+      <div class="live-score">Tổng điểm GV chấm: <span id="live-score-bottom">0</span></div>
+      <button class="btn" onclick="saveGrading()">💾 Lưu chấm bài</button>
+    </div>
+  `;
+
+  detail.innerHTML = html;
+  detail.style.display = 'block';
+  detail.scrollIntoView({behavior:'smooth'});
+  recalcScore();
+}
+
+function renderQuestion(q, points, record){
+  const isMulti = !!q.keys; // câu p3q4 có 2 ô a/b
+  const keys = isMulti ? q.keys : [q.key];
+  const studentVal = isMulti
+    ? keys.map(k => record[k] || '').join(' / ')
+    : (record[q.key] || '');
+
+  let promptHtml = q.prompt;
+  let ansBoxHtml = '';
+
+  if(q.options){
+    // Trắc nghiệm: hiện lại các đáp án, tô màu đáp án học sinh chọn
+    const optsHtml = Object.entries(q.options).map(([letter,text])=>{
+      const isChosen = studentVal === letter;
+      const isRight = q.answer === letter;
+      let style = '';
+      if(isChosen && isRight) style='color:var(--lime-dark);font-weight:700;';
+      else if(isChosen && !isRight) style='color:var(--red);font-weight:700;text-decoration:line-through;';
+      return `<span style="display:inline-block;margin-right:14px;${style}">${isChosen?'👉 ':''}${letter}. ${text}</span>`;
+    }).join('');
+    ansBoxHtml = `<div class="ans-box"><div class="lbl">Học sinh chọn: ${studentVal||'(chưa chọn)'}</div><div style="margin-top:4px;font-size:0.85rem;">${optsHtml}</div></div>
+      <details class="correct-hint"><summary>👁 Xem đáp án đúng</summary>Đáp án đúng: <b>${q.answer}</b></details>`;
+  } else if(q.answer){
+    // TRUE/FALSE
+    const isRight = studentVal === q.answer;
+    ansBoxHtml = `<div class="ans-box ${!studentVal?'empty':''}"><div class="lbl">Học sinh chọn</div><div class="val" style="color:${studentVal?(isRight?'var(--lime-dark)':'var(--red)'):'#bbb'}">${studentVal||'(chưa chọn)'}</div></div>
+      <details class="correct-hint"><summary>👁 Xem đáp án đúng</summary>Đáp án đúng: <b>${q.answer}</b></details>`;
+  } else {
+    // Tự luận / viết tự do
+    ansBoxHtml = `<div class="ans-box ${!studentVal?'empty':''}"><div class="lbl">Học sinh viết</div><div class="val">${studentVal || '(chưa trả lời)'}</div></div>`;
+  }
+
+  // Trạng thái tick hiện tại: nếu chưa có trong currentGrading, tự suy ra từ đáp án đúng/sai (nếu có đáp án cố định)
+  const qId = q.key;
+  if(currentGrading[qId] === undefined){
+    if(q.answer){
+      currentGrading[qId] = (studentVal === q.answer) ? 'correct' : (studentVal ? 'wrong' : undefined);
+    }
+  }
+  const state = currentGrading[qId];
+
+  return `
+    <div class="q-row" data-qkey="${qId}" data-points="${points}">
+      <div class="q-top">
+        <div class="q-prompt">${promptHtml}</div>
+        <div class="toggle-group">
+          <button type="button" class="toggle-btn correct ${state==='correct'?'active':''}" onclick="setTick('${qId}','correct')">✓</button>
+          <button type="button" class="toggle-btn wrong ${state==='wrong'?'active':''}" onclick="setTick('${qId}','wrong')">✗</button>
+        </div>
+      </div>
+      ${ansBoxHtml}
+      <textarea class="note-input" rows="1" placeholder="Ghi chú thêm cho câu này (tuỳ chọn)..." oninput="setNote('${qId}', this.value)">${currentNotes[qId]||''}</textarea>
+    </div>
+  `;
+}
+
+function setTick(qKey, status){
+  currentGrading[qKey] = currentGrading[qKey] === status ? undefined : status; // bấm lại lần 2 để bỏ chọn
+  const row = document.querySelector(`.q-row[data-qkey="${qKey}"]`);
+  row.querySelector('.toggle-btn.correct').classList.toggle('active', currentGrading[qKey]==='correct');
+  row.querySelector('.toggle-btn.wrong').classList.toggle('active', currentGrading[qKey]==='wrong');
+  recalcScore();
+}
+
+function setNote(qKey, val){
+  currentNotes[qKey] = val;
+}
+
+function recalcScore(){
+  let total = 0;
+  document.querySelectorAll('.q-row').forEach(row=>{
+    const qKey = row.dataset.qkey;
+    const pts = Number(row.dataset.points);
+    if(currentGrading[qKey] === 'correct') total += pts;
+  });
+  document.getElementById('live-score-bottom').textContent = total;
+  document.getElementById('live-score-top').textContent = total;
+  return total;
+}
+
+async function saveGrading(){
+  const total = recalcScore();
+  const gvGrading = {};
+  Object.keys(currentGrading).forEach(k=>{
+    if(currentGrading[k] !== undefined || currentNotes[k]){
+      gvGrading[k] = { status: currentGrading[k] || '', note: currentNotes[k] || '' };
+    }
+  });
+
+  const payload = {
+    action: 'saveGrading',
+    testName: currentRecord.__testName,
+    submissionId: currentRecord['Mã bài làm'],
+    teacherScore: total,
+    gvGrading: JSON.stringify(gvGrading)
+  };
+
+  try{
+    const res = await fetch(SCRIPT_URL, {
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'}, // tránh preflight CORS
+      body: JSON.stringify(payload)
+    });
+    const json = await res.json();
+    if(json.ok){ setStatus('Đã lưu chấm bài thành công ✓'); }
+    else { setStatus(json.error || 'Lưu thất bại.', true); }
+  }catch(err){
+    console.error(err);
+    setStatus('Không lưu được, kiểm tra lại kết nối.', true);
+  }
+}
+</script>
+</body>
+</html>
