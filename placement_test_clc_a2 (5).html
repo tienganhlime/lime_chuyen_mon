@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Placement Test – CLC Cambridge A2</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lime: #a8d08d;
+    --lime-dark: #6aaa4a;
+    --lime-light: #eaf5e3;
+    --peach: #fde8d8;
+    --sky: #dceefb;
+    --text: #2d3a2e;
+    --muted: #7a8c7b;
+    --white: #ffffff;
+    --radius: 14px;
+    --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    font-size: 26px; /* giảm bớt 1 chút so với 32px trước đó, vẫn to hơn bản gốc rõ rệt */
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #f0f7eb;
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 28px; /* giảm bớt 1 chút so với 36px trước đó */
+  }
+
+  /* ── SPLASH ── */
+  #splash {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; min-height: 100vh;
+    padding: 16px 10px; /* lề giảm 1 nửa */
+    background: linear-gradient(135deg, #e8f5e1 0%, #dceefb 100%);
+  }
+
+  .splash-card {
+    background: var(--white); border-radius: 24px;
+    box-shadow: var(--shadow); padding: 24px 20px; /* lề giảm 1 nửa */
+    max-width: 800px; width: 100%; text-align: center; /* rộng hơn để lề 2 bên nhỏ lại */
+  }
+
+  .logo-img { height: 100px; margin-bottom: 10px; } /* logo to hơn */
+
+  .center-name {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem; font-weight: 700;
+    color: var(--muted); margin-bottom: 4px; letter-spacing: 0.5px;
+  }
+
+  .splash-card h1 {
+    font-size: 1.25rem; font-weight: 800;
+    margin: 12px 0 8px; color: var(--text);
+  }
+
+  .splash-card p {
+    color: var(--muted); font-size: 0.9rem;
+    margin-bottom: 28px; line-height: 1.6;
+  }
+
+  .info-row { margin-bottom: 14px; }
+
+  .info-row input {
+    width: 100%; padding: 14px 16px;
+    border: 2px solid #dde8d8; border-radius: var(--radius);
+    font-family: 'Nunito', sans-serif; font-size: 1rem;
+    outline: none; transition: border-color 0.2s;
+    background: var(--lime-light);
+  }
+
+  .info-row input:focus { border-color: var(--lime-dark); }
+  .info-row input::placeholder { color: #b0c4b0; }
+
+  .notice {
+    background: var(--peach); border-radius: 10px;
+    padding: 14px 16px; font-size: 0.82rem; color: #7a4a2e;
+    margin-bottom: 24px; text-align: left; line-height: 1.6;
+  }
+  .notice b { color: #c0392b; }
+
+  .btn-start {
+    width: 100%; padding: 16px;
+    background: var(--lime-dark); color: white; border: none;
+    border-radius: var(--radius); font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem; font-weight: 700; cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-start:hover { background: #559a38; transform: translateY(-1px); }
+
+  /* ── FULLSCREEN WARNING ── */
+  #fs-warning {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85); z-index: 9999;
+    align-items: center; justify-content: center;
+  }
+  #fs-warning.show { display: flex; }
+
+  .fs-warning-box {
+    background: white; border-radius: 20px;
+    padding: 20px 18px; max-width: 420px; text-align: center; /* lề giảm 1 nửa */
+  }
+  .fs-warning-box .warn-icon { font-size: 3rem; margin-bottom: 12px; }
+  .fs-warning-box h2 { color: #c0392b; margin-bottom: 10px; font-size: 1.3rem; }
+  .fs-warning-box p { color: #555; margin-bottom: 24px; font-size: 1rem; line-height: 1.6; }
+
+  .btn-reenter {
+    padding: 14px 32px; background: #c0392b; color: white;
+    border: none; border-radius: 12px;
+    font-family: 'Baloo 2', cursive; font-size: 1.05rem;
+    font-weight: 700; cursor: pointer;
+  }
+
+  /* ── TEST CONTAINER ── */
+  #test-container {
+    display: none;
+    max-width: 1300px; margin: 0 auto; /* rộng hơn để lề 2 bên nhỏ lại */
+    padding: 12px 6px 30px; /* lề giảm 1 nửa */
+  }
+  #test-container.active { display: block; }
+
+  .test-header {
+    background: var(--white); border-radius: 16px;
+    padding: 8px 10px; margin-bottom: 20px; /* lề giảm 1 nửa */
+    box-shadow: var(--shadow);
+    display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 12px; z-index: 100; /* luôn hiện khi cuộn trang để xem giờ */
+  }
+
+  .test-header .hd-left { display: flex; align-items: center; gap: 12px; }
+  .test-header .hd-logo { height: 64px; } /* logo to hơn */
+  .student-info { font-size: 0.9rem; color: var(--muted); }
+  .student-info b { color: var(--text); font-size: 1rem; }
+
+  #timer {
+    font-family: 'Baloo 2', cursive; font-size: 1.5rem;
+    font-weight: 700; color: var(--lime-dark);
+    background: var(--lime-light); padding: 6px 18px; border-radius: 20px;
+  }
+  #timer.urgent { color: #c0392b; background: #fff1f1; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+
+  .progress-bar-wrap {
+    height: 6px; background: #dde8d8;
+    border-radius: 3px; margin-bottom: 20px; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; background: var(--lime-dark);
+    border-radius: 3px; transition: width 0.3s;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    background: var(--white); border-radius: var(--radius);
+    padding: 12px 11px; margin-bottom: 18px; box-shadow: var(--shadow); /* lề giảm 1 nửa */
+  }
+
+  .section-title {
+    font-family: 'Baloo 2', cursive; font-size: 1.05rem;
+    font-weight: 700; color: var(--lime-dark);
+    background: var(--lime-light); display: inline-block;
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 18px;
+  }
+
+  .section h3 {
+    font-size: 1rem; font-weight: 700;
+    color: var(--text); margin-bottom: 16px; line-height: 1.5;
+  }
+
+  /* ── QUESTIONS ── */
+  .question { margin-bottom: 22px; }
+
+  .question p {
+    font-size: 1.05rem; /* chữ to hơn */
+    margin-bottom: 10px; line-height: 1.7;
+  }
+  .question p b { color: var(--lime-dark); }
+
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  .option-label {
+    display: flex; align-items: center; gap: 8px;
+    padding: 11px 14px; border: 2px solid #e0ecd8;
+    border-radius: 10px; cursor: pointer;
+    font-size: 1rem; /* chữ option to hơn */
+    transition: all 0.15s; background: #fafff7;
+  }
+  .option-label:hover { border-color: var(--lime-dark); background: var(--lime-light); }
+  .option-label input[type="radio"] { accent-color: var(--lime-dark); width: 22px; height: 22px; }
+
+  input[type="text"], textarea {
+    width: 100%; padding: 12px 14px;
+    border: 2px solid #dde8d8; border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem; /* chữ input to hơn */
+    outline: none; transition: border-color 0.2s;
+    background: var(--lime-light); resize: vertical;
+  }
+  input[type="text"]:focus, textarea:focus { border-color: var(--lime-dark); }
+
+  /* ── PART III: verb hint shown outside box ── */
+  .verb-row {
+    display: flex; align-items: baseline;
+    flex-wrap: wrap; gap: 6px;
+    font-size: 1.05rem; line-height: 2;
+    margin-bottom: 16px;
+  }
+  .verb-row b { color: var(--lime-dark); margin-right: 4px; }
+  .verb-hint {
+    color: #888; font-style: italic; font-size: 0.88rem;
+    background: #f0f0f0; border-radius: 6px;
+    padding: 1px 7px; white-space: nowrap;
+  }
+  .verb-blank {
+    display: inline-block; min-width: 160px;
+    border: none; border-bottom: 2.5px solid var(--lime-dark);
+    background: transparent; font-family: 'Nunito', sans-serif;
+    font-size: 1rem; outline: none; padding: 2px 6px;
+    vertical-align: bottom;
+  }
+
+  /* ── PART IV: underline highlight ── */
+  .underline-answer {
+    text-decoration: underline;
+    text-decoration-color: var(--lime-dark);
+    text-underline-offset: 3px;
+    font-weight: 700;
+    color: var(--lime-dark);
+  }
+
+  /* ── READING ── */
+  .reading-box {
+    background: var(--sky); border-left: 4px solid #5ba3d0;
+    border-radius: 10px; padding: 18px 20px; margin-bottom: 20px;
+    font-size: 1rem; line-height: 1.9; color: #2a3f5a;
+  }
+
+  .tf-row {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: 11px 14px; border: 2px solid #e0ecd8;
+    border-radius: 10px; margin-bottom: 8px;
+    font-size: 1rem; background: #fafff7;
+  }
+  .tf-options { display: flex; gap: 20px; flex-shrink: 0; }
+  .tf-options label {
+    display: flex; align-items: center; gap: 5px;
+    cursor: pointer; font-weight: 700; font-size: 1rem;
+  }
+  .tf-options input { accent-color: var(--lime-dark); width:22px; height:22px; }
+
+  /* ── SUBMIT ── */
+  .submit-area { text-align: center; margin-top: 32px; }
+  .btn-submit {
+    padding: 18px 56px; background: var(--lime-dark);
+    color: white; border: none; border-radius: var(--radius);
+    font-family: 'Baloo 2', cursive; font-size: 1.2rem;
+    font-weight: 700; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(106,170,74,0.35); transition: all 0.2s;
+  }
+  .btn-submit:hover { background: #559a38; transform: translateY(-2px); }
+  .btn-submit:disabled { background: #aaa; cursor: not-allowed; transform: none; }
+
+  /* ── THANK YOU ── */
+  #thankyou {
+    display: none; min-height: 100vh;
+    align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #e8f5e1 0%, #dceefb 100%);
+  }
+  #thankyou.show { display: flex; }
+  .ty-card {
+    background: white; border-radius: 24px; box-shadow: var(--shadow);
+    padding: 28px 24px; max-width: 420px; text-align: center; /* lề giảm 1 nửa */
+  }
+  .ty-card .ty-icon { font-size: 4rem; margin-bottom: 16px; }
+  .ty-card h2 { font-family:'Baloo 2',cursive; font-size:1.8rem; color:var(--lime-dark); margin-bottom:12px; }
+  .ty-card p { color:var(--muted); line-height:1.7; font-size:1rem; }
+
+  @media(max-width:600px){
+    .options{grid-template-columns:1fr;}
+    #test-container{padding:16px 6px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ SPLASH ══ -->
+<div id="splash">
+  <div class="splash-card">
+    <img class="logo-img" src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" alt="LIME Logo" onerror="this.style.display='none'">
+    <div class="center-name">Trung Tâm Tiếng Anh LIME – Hotline: 0976 222 792</div>
+    <h1>Placement Test – CLC Cambridge A2</h1>
+    <p>Thời gian làm bài: <b>45 phút</b><br>Vui lòng điền đầy đủ thông tin trước khi bắt đầu.</p>
+
+    <div class="info-row">
+      <input type="text" id="inp-name" placeholder="Họ và tên học sinh" />
+    </div>
+    <div class="info-row">
+      <input type="text" id="inp-phone" placeholder="Số điện thoại bố/mẹ đã đăng ký tại LIME" />
+    </div>
+
+    <div class="notice">
+      ⚠️ <b>Lưu ý:</b> Sau khi bắt đầu, bài thi sẽ <b>chuyển sang chế độ toàn màn hình</b>. Thoát khỏi màn hình sẽ bị ghi nhận. Không được dùng tài liệu hay chuyển sang tab khác.
+    </div>
+
+    <button class="btn-start" onclick="startTest()">Bắt đầu làm bài →</button>
+  </div>
+</div>
+
+<!-- ══ FULLSCREEN WARNING ══ -->
+<div id="fs-warning">
+  <div class="fs-warning-box">
+    <div class="warn-icon">⚠️</div>
+    <h2>Bạn đã thoát toàn màn hình!</h2>
+    <p>Hành động này đã được ghi lại. Vui lòng quay lại chế độ toàn màn hình để tiếp tục làm bài.</p>
+    <button class="btn-reenter" onclick="reenterFullscreen()">Quay lại làm bài</button>
+  </div>
+</div>
+
+<!-- ══ TEST ══ -->
+<div id="test-container">
+  <div class="test-header">
+    <div class="hd-left">
+      <img class="hd-logo" src="https://gofirst.pro/images/uploads/62/baseimg/logo_16541442053.png" alt="LIME" onerror="this.style.display='none'">
+      <div class="student-info">
+        <b id="disp-name">—</b><br>
+        <span id="disp-phone">—</span>
+      </div>
+    </div>
+    <div id="timer">45:00</div>
+  </div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+
+  <!-- PART I -->
+  <div class="section">
+    <div class="section-title">Part I – Choose the correct answer &nbsp;(15 pts)</div>
+
+    <div class="question">
+      <p><b>1.</b> My sister _______ to school every day, but today she _______ at home.</p>
+      <div class="options">
+        <label class="option-label"><input type="radio" name="q1" value="A"> A. goes / stay</label>
+        <label class="option-label"><input type="radio" name="q1" value="B"> B. goes / is staying</label>
+        <label class="option-label"><input type="radio" name="q1" value="C"> C. is going / stays</label>
+        <label class="option-label"><input type="radio" name="q1" value="D"> D. go / is staying</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <p><b>2.</b> Can you _______ me a favour? I need help with this exercise.</p>
+      <div class="options">
+        <label class="option-label"><input type="radio" name="q2" value="A"> A. make</label>
+        <label class="option-label"><input type="radio" name="q2" value="B"> B. take</label>
+        <label class="option-label"><input type="radio" name="q2" value="C"> C. do</label>
+        <label class="option-label"><input type="radio" name="q2" value="D"> D. give</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <p><b>3.</b> I _______ this bag. It _______ to my brother.</p>
+      <div class="options">
+        <label class="option-label"><input type="radio" name="q3" value="A"> A. don't have / belongs</label>
+        <label class="option-label"><input type="radio" name="q3" value="B"> B. am not having / belongs</label>
+        <label class="option-label"><input type="radio" name="q3" value="C"> C. don't have / is belonging</label>
+        <label class="option-label"><input type="radio" name="q3" value="D"> D. am not having / is belonging</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <p><b>4.</b> Mount Everest is _______ mountain in the world.</p>
+      <div class="options">
+        <label class="option-label"><input type="radio" name="q4" value="A"> A. higher</label>
+        <label class="option-label"><input type="radio" name="q4" value="B"> B. the most high</label>
+        <label class="option-label"><input type="radio" name="q4" value="C"> C. the highest</label>
+        <label class="option-label"><input type="radio" name="q4" value="D"> D. more high</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <p><b>5.</b> She _______ a photo of the beautiful sunset and sent it to all her friends.</p>
+      <div class="options">
+        <label class="option-label"><input type="radio" name="q5" value="A"> A. did</label>
+        <label class="option-label"><input type="radio" name="q5" value="B"> B. made</label>
+        <label class="option-label"><input type="radio" name="q5" value="C"> C. took</label>
+        <label class="option-label"><input type="radio" name="q5" value="D"> D. had</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <p><b>6.</b> _______ she usually _______ breakfast before school?</p>
+      <div class="options">
+        <label class="option-label"><input type="radio" name="q6" value="A"> A. Is / having</label>
+        <label class="option-label"><input type="radio" name="q6" value="B"> B. Does / has</label>
+        <label class="option-label"><input type="radio" name="q6" value="C"> C. Does / have</label>
+        <label class="option-label"><input type="radio" name="q6" value="D"> D. Is / have</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <p><b>7.</b> We don't have _______ eggs. Can you buy some?</p>
+      <div class="options">
+        <label class="option-label"><input type="radio" name="q7" value="A"> A. a</label>
+        <label class="option-label"><input type="radio" name="q7" value="B"> B. some</label>
+        <label class="option-label"><input type="radio" name="q7" value="C"> C. any</label>
+        <label class="option-label"><input type="radio" name="q7" value="D"> D. –</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <p><b>8.</b> This book is _______ than the one I read last week.</p>
+      <div class="options">
+        <label class="option-label"><input type="radio" name="q8" value="A"> A. more interesting</label>
+        <label class="option-label"><input type="radio" name="q8" value="B"> B. interestinger</label>
+        <label class="option-label"><input type="radio" name="q8" value="C"> C. most interesting</label>
+        <label class="option-label"><input type="radio" name="q8" value="D"> D. the most interesting</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <p><b>9.</b> She dances very _______. Everyone loves watching her perform.</p>
+      <div class="options">
+        <label class="option-label"><input type="radio" name="q9" value="A"> A. beautiful</label>
+        <label class="option-label"><input type="radio" name="q9" value="B"> B. beauty</label>
+        <label class="option-label"><input type="radio" name="q9" value="C"> C. beautifully</label>
+        <label class="option-label"><input type="radio" name="q9" value="D"> D. beautify</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <p><b>10.</b> Look! The children _______ in the garden right now.</p>
+      <div class="options">
+        <label class="option-label"><input type="radio" name="q10" value="A"> A. play</label>
+        <label class="option-label"><input type="radio" name="q10" value="B"> B. are play</label>
+        <label class="option-label"><input type="radio" name="q10" value="C"> C. are playing</label>
+        <label class="option-label"><input type="radio" name="q10" value="D"> D. plays</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <p><b>11.</b> She gave me _______ good advice about the exam.</p>
+      <div class="options">
+        <label class="option-label"><input type="radio" name="q11" value="A"> A. a</label>
+        <label class="option-label"><input type="radio" name="q11" value="B"> B. an</label>
+        <label class="option-label"><input type="radio" name="q11" value="C"> C. some</label>
+        <label class="option-label"><input type="radio" name="q11" value="D"> D. many</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <p><b>12.</b> He _______ his best in the race but didn't win.</p>
+      <div class="options">
+        <label class="option-label"><input type="radio" name="q12" value="A"> A. made</label>
+        <label class="option-label"><input type="radio" name="q12" value="B"> B. did</label>
+        <label class="option-label"><input type="radio" name="q12" value="C"> C. took</label>
+        <label class="option-label"><input type="radio" name="q12" value="D"> D. had</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <p><b>13.</b> _______ you _______ to the cinema last weekend?</p>
+      <div class="options">
+        <label class="option-label"><input type="radio" name="q13" value="A"> A. Did / went</label>
+        <label class="option-label"><input type="radio" name="q13" value="B"> B. Do / go</label>
+        <label class="option-label"><input type="radio" name="q13" value="C"> C. Did / go</label>
+        <label class="option-label"><input type="radio" name="q13" value="D"> D. Were / go</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <p><b>14.</b> My dog runs _______ as my friend's dog. They always finish at the same time.</p>
+      <div class="options">
+        <label class="option-label"><input type="radio" name="q14" value="A"> A. as fast</label>
+        <label class="option-label"><input type="radio" name="q14" value="B"> B. faster</label>
+        <label class="option-label"><input type="radio" name="q14" value="C"> C. fastest</label>
+        <label class="option-label"><input type="radio" name="q14" value="D"> D. more fast</label>
+      </div>
+    </div>
+
+    <div class="question">
+      <p><b>15.</b> We _______ a great time at the party last night.</p>
+      <div class="options">
+        <label class="option-label"><input type="radio" name="q15" value="A"> A. made</label>
+        <label class="option-label"><input type="radio" name="q15" value="B"> B. did</label>
+        <label class="option-label"><input type="radio" name="q15" value="C"> C. took</label>
+        <label class="option-label"><input type="radio" name="q15" value="D"> D. had</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART II -->
+  <div class="section">
+    <div class="section-title">Part II – Find and correct ONE mistake &nbsp;(10 pts)</div>
+    <h3>Rewrite the sentence with the mistake corrected.</h3>
+
+    <div class="question">
+      <p><b>1.</b> He don't know the answer because he isn't listening in class.</p>
+      <input type="text" name="p2q1" placeholder="Corrected sentence..." />
+    </div>
+    <div class="question">
+      <p><b>2.</b> Last weekend, we visit our grandparents and had a delicious meal.</p>
+      <input type="text" name="p2q2" placeholder="Corrected sentence..." />
+    </div>
+    <div class="question">
+      <p><b>3.</b> My mum is always make dinner at 6 o'clock.</p>
+      <input type="text" name="p2q3" placeholder="Corrected sentence..." />
+    </div>
+    <div class="question">
+      <p><b>4.</b> This is the more expensive restaurant in the city.</p>
+      <input type="text" name="p2q4" placeholder="Corrected sentence..." />
+    </div>
+    <div class="question">
+      <p><b>5.</b> Can I have a water, please? I'm very thirsty.</p>
+      <input type="text" name="p2q5" placeholder="Corrected sentence..." />
+    </div>
+  </div>
+
+  <!-- PART III — động từ hiển thị ngoài ô điền -->
+  <div class="section">
+    <div class="section-title">Part III – Complete with correct verb form &nbsp;(10 pts)</div>
+
+    <div class="verb-row">
+      <b>1.</b> She
+      <input class="verb-blank" name="p3q1">
+      her homework yesterday.
+      <span class="verb-hint">not finish</span>
+    </div>
+
+    <div class="verb-row">
+      <b>2.</b> Listen! Someone
+      <input class="verb-blank" name="p3q2">
+      at the door.
+      <span class="verb-hint">knock</span>
+    </div>
+
+    <div class="verb-row">
+      <b>3.</b> Every morning, my dad
+      <input class="verb-blank" name="p3q3">
+      breakfast for the family.
+      <span class="verb-hint">make</span>
+    </div>
+
+    <div class="verb-row">
+      <b>4.</b>
+      <input class="verb-blank" name="p3q4a" style="min-width:80px">
+      he
+      <input class="verb-blank" name="p3q4b">
+      to the cinema last Friday?
+      <span class="verb-hint">go</span>
+    </div>
+
+    <div class="verb-row">
+      <b>5.</b> I
+      <input class="verb-blank" name="p3q5">
+      a strange bird in the garden this morning.
+      <span class="verb-hint">see</span>
+    </div>
+  </div>
+
+  <!-- PART IV — có gạch chân phần cần hỏi -->
+  <div class="section">
+    <div class="section-title">Part IV – Write the WH question for the underlined part &nbsp;(10 pts)</div>
+
+    <div class="question">
+      <p><b>1.</b> → I go to school <span class="underline-answer">by bicycle</span>.</p>
+      <input type="text" name="p4q1" placeholder="Your question...?" />
+    </div>
+    <div class="question">
+      <p><b>2.</b> → She is reading <span class="underline-answer">because she has a test tomorrow</span>.</p>
+      <input type="text" name="p4q2" placeholder="Your question...?" />
+    </div>
+    <div class="question">
+      <p><b>3.</b> → They went to <span class="underline-answer">Da Nang</span> last summer.</p>
+      <input type="text" name="p4q3" placeholder="Your question...?" />
+    </div>
+    <div class="question">
+      <p><b>4.</b> → The film starts at <span class="underline-answer">7 o'clock</span>.</p>
+      <input type="text" name="p4q4" placeholder="Your question...?" />
+    </div>
+    <div class="question">
+      <p><b>5.</b> → My favourite subject is <span class="underline-answer">Science</span>.</p>
+      <input type="text" name="p4q5" placeholder="Your question...?" />
+    </div>
+  </div>
+
+  <!-- PART V -->
+  <div class="section">
+    <div class="section-title">Part V – Rearrange the words &nbsp;(10 pts)</div>
+    <h3>Put the words in the correct order to make a sentence.</h3>
+
+    <div class="question">
+      <p><b>1.</b> always / my / early / wakes / morning / dad / in / the / up</p>
+      <input type="text" name="p5q1" placeholder="Your answer..." />
+    </div>
+    <div class="question">
+      <p><b>2.</b> did / last / where / you / summer / go / ?</p>
+      <input type="text" name="p5q2" placeholder="Your answer..." />
+    </div>
+    <div class="question">
+      <p><b>3.</b> interesting / this / than / more / film / the / is / last / one / watched / I</p>
+      <input type="text" name="p5q3" placeholder="Your answer..." />
+    </div>
+    <div class="question">
+      <p><b>4.</b> not / she / her / finish / yesterday / did / homework</p>
+      <input type="text" name="p5q4" placeholder="Your answer..." />
+    </div>
+    <div class="question">
+      <p><b>5.</b> advice / she / me / about / gave / some / the / good / exam</p>
+      <input type="text" name="p5q5" placeholder="Your answer..." />
+    </div>
+  </div>
+
+  <!-- PART VI -->
+  <div class="section">
+    <div class="section-title">Part VI – Reading &nbsp;(15 pts)</div>
+
+    <div class="reading-box">
+      Last Saturday, my family decided to spend the day outdoors. We left home early in the morning and drove to a small town near a forest. The weather was perfect — the sun was shining and there was a light wind. We went hiking for two hours, then stopped next to a river to have a picnic. My mum made sandwiches and my dad brought some fruit. While we were eating, my little brother saw a deer in the trees! It looked at us for a moment, then ran away quickly. In the afternoon, we visited a small market in the town. I bought a beautiful wooden box for my collection. We arrived home late, but everyone was very happy.
+    </div>
+
+    <h3 style="margin-bottom:14px;">A. Circle TRUE or FALSE. (5 pts)</h3>
+
+    <div class="tf-row">
+      <span>1. The family went to the forest by train.</span>
+      <div class="tf-options">
+        <label><input type="radio" name="tf1" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="tf1" value="FALSE"> FALSE</label>
+      </div>
+    </div>
+    <div class="tf-row">
+      <span>2. They had their picnic near a river.</span>
+      <div class="tf-options">
+        <label><input type="radio" name="tf2" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="tf2" value="FALSE"> FALSE</label>
+      </div>
+    </div>
+    <div class="tf-row">
+      <span>3. The mother brought fruit for the picnic.</span>
+      <div class="tf-options">
+        <label><input type="radio" name="tf3" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="tf3" value="FALSE"> FALSE</label>
+      </div>
+    </div>
+    <div class="tf-row">
+      <span>4. The little brother saw an animal in the forest.</span>
+      <div class="tf-options">
+        <label><input type="radio" name="tf4" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="tf4" value="FALSE"> FALSE</label>
+      </div>
+    </div>
+    <div class="tf-row">
+      <span>5. They visited a market in the afternoon.</span>
+      <div class="tf-options">
+        <label><input type="radio" name="tf5" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="tf5" value="FALSE"> FALSE</label>
+      </div>
+    </div>
+
+    <h3 style="margin:20px 0 14px;">B. Answer in FULL sentences. (10 pts)</h3>
+
+    <div class="question">
+      <p><b>1.</b> What was the weather like that day?</p>
+      <textarea name="p6b1" rows="2" placeholder="Write a full sentence..."></textarea>
+    </div>
+    <div class="question">
+      <p><b>2.</b> How long did they go hiking?</p>
+      <textarea name="p6b2" rows="2" placeholder="Write a full sentence..."></textarea>
+    </div>
+    <div class="question">
+      <p><b>3.</b> What did the narrator buy at the market?</p>
+      <textarea name="p6b3" rows="2" placeholder="Write a full sentence..."></textarea>
+    </div>
+    <div class="question">
+      <p><b>4.</b> Why do you think the deer ran away? Give a reason.</p>
+      <textarea name="p6b4" rows="3" placeholder="Write a full sentence with your reason..."></textarea>
+    </div>
+    <div class="question">
+      <p><b>5.</b> Do you think this was a good day for the family? Why or why not?</p>
+      <textarea name="p6b5" rows="3" placeholder="Write a full sentence with your opinion..."></textarea>
+    </div>
+  </div>
+
+  <div class="submit-area">
+    <button class="btn-submit" id="btn-submit" onclick="submitTest()">Nộp bài ✓</button>
+    <p style="margin-top:12px;color:var(--muted);font-size:0.9rem;">Sau khi nộp bài, bạn không thể chỉnh sửa câu trả lời.</p>
+  </div>
+</div>
+
+<!-- ══ THANK YOU ══ -->
+<div id="thankyou">
+  <div class="ty-card">
+    <div class="ty-icon">🎉</div>
+    <h2>Đã nộp bài!</h2>
+    <p>Cảm ơn <b id="ty-name"></b> đã hoàn thành bài kiểm tra.<br><br>
+    Kết quả sẽ được thông báo bởi giáo viên của LIME English.<br><br>
+    Chúc bạn một ngày thật vui! 🌿</p>
+  </div>
+</div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznSslx0V7tiLKIFdApCliToyXn_OeqwTG8Dt81jH5SAl7wDxGge7iwh9lXHoYZ6dltiQ/exec';
+const TEST_NAME = 'CLC_A2'; // Đổi tên này cho mỗi bài test/level khác nhau (VD: 'CLC_B1', 'FCE_B2'...) để dữ liệu tự tách sheet riêng
+
+const ANSWER_KEY = {
+  q1:'B',q2:'C',q3:'A',q4:'C',q5:'C',
+  q6:'C',q7:'C',q8:'A',q9:'C',q10:'C',
+  q11:'C',q12:'B',q13:'C',q14:'A',q15:'D',
+  tf1:'FALSE',tf2:'TRUE',tf3:'FALSE',tf4:'TRUE',tf5:'TRUE'
+};
+
+let studentName='', studentPhone='';
+let timerInterval=null, secondsLeft=45*60;
+let fsExitCount=0, testStartTime=null;
+
+function startTest(){
+  studentName = document.getElementById('inp-name').value.trim();
+  studentPhone = document.getElementById('inp-phone').value.trim();
+  if(!studentName||!studentPhone){
+    alert('Vui lòng điền đầy đủ họ tên và số điện thoại!'); return;
+  }
+  document.getElementById('disp-name').textContent = studentName;
+  document.getElementById('disp-phone').textContent = studentPhone;
+  document.getElementById('ty-name').textContent = studentName;
+
+  const el = document.documentElement;
+  if(el.requestFullscreen) el.requestFullscreen();
+  else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  else if(el.mozRequestFullScreen) el.mozRequestFullScreen();
+
+  document.getElementById('splash').style.display='none';
+  document.getElementById('test-container').classList.add('active');
+  testStartTime = new Date().toLocaleString('vi-VN');
+  startTimer();
+  updateProgress();
+
+  document.addEventListener('fullscreenchange', onFsChange);
+  document.addEventListener('webkitfullscreenchange', onFsChange);
+  document.addEventListener('mozfullscreenchange', onFsChange);
+}
+
+function onFsChange(){
+  const isFs=!!(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement);
+  if(!isFs && document.getElementById('test-container').classList.contains('active')){
+    fsExitCount++;
+    document.getElementById('fs-warning').classList.add('show');
+  }
+}
+
+function reenterFullscreen(){
+  document.getElementById('fs-warning').classList.remove('show');
+  const el=document.documentElement;
+  if(el.requestFullscreen) el.requestFullscreen();
+  else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  else if(el.mozRequestFullScreen) el.mozRequestFullScreen();
+}
+
+function startTimer(){
+  timerInterval=setInterval(()=>{
+    secondsLeft--;
+    const m=Math.floor(secondsLeft/60).toString().padStart(2,'0');
+    const s=(secondsLeft%60).toString().padStart(2,'0');
+    const t=document.getElementById('timer');
+    t.textContent=`${m}:${s}`;
+    if(secondsLeft<=300) t.classList.add('urgent');
+    if(secondsLeft<=0){clearInterval(timerInterval);submitTest(true);}
+  },1000);
+}
+
+function updateProgress(){
+  const allNames=new Set(Array.from(document.querySelectorAll('[name]')).map(e=>e.name));
+  const filledNames=new Set();
+  allNames.forEach(n=>{
+    const els=document.querySelectorAll(`[name="${n}"]`);
+    if(els[0]&&els[0].type==='radio'){
+      if(document.querySelector(`input[name="${n}"]:checked`)) filledNames.add(n);
+    } else {
+      if(els[0]&&els[0].value.trim()!=='') filledNames.add(n);
+    }
+  });
+  document.getElementById('progress-fill').style.width=`${Math.round(filledNames.size/allNames.size*100)}%`;
+}
+
+document.addEventListener('change',updateProgress);
+document.addEventListener('input',updateProgress);
+
+function autoGrade(data){
+  let score=0;
+  for(let i=1;i<=15;i++) if(data[`q${i}`]===ANSWER_KEY[`q${i}`]) score++;
+  for(let i=1;i<=5;i++) if(data[`tf${i}`]===ANSWER_KEY[`tf${i}`]) score++;
+  return score;
+}
+
+function collectData(){
+  const data={};
+  for(let i=1;i<=15;i++){
+    const s=document.querySelector(`input[name="q${i}"]:checked`);
+    data[`q${i}`]=s?s.value:'';
+  }
+  for(let i=1;i<=5;i++) data[`p2q${i}`]=document.querySelector(`[name="p2q${i}"]`)?.value.trim()||'';
+  for(let i=1;i<=5;i++){
+    if(i===4){
+      data['p3q4a']=document.querySelector('[name="p3q4a"]')?.value.trim()||'';
+      data['p3q4b']=document.querySelector('[name="p3q4b"]')?.value.trim()||'';
+    } else {
+      data[`p3q${i}`]=document.querySelector(`[name="p3q${i}"]`)?.value.trim()||'';
+    }
+  }
+  for(let i=1;i<=5;i++) data[`p4q${i}`]=document.querySelector(`[name="p4q${i}"]`)?.value.trim()||'';
+  for(let i=1;i<=5;i++) data[`p5q${i}`]=document.querySelector(`[name="p5q${i}"]`)?.value.trim()||'';
+  for(let i=1;i<=5;i++){
+    const s=document.querySelector(`input[name="tf${i}"]:checked`);
+    data[`tf${i}`]=s?s.value:'';
+  }
+  for(let i=1;i<=5;i++) data[`p6b${i}`]=document.querySelector(`[name="p6b${i}"]`)?.value.trim()||'';
+  return data;
+}
+
+async function submitTest(autoSubmit=false){
+  if(!autoSubmit&&!confirm('Bạn có chắc muốn nộp bài không?')) return;
+  clearInterval(timerInterval);
+  document.getElementById('btn-submit').disabled=true;
+  document.getElementById('btn-submit').textContent='Đang gửi...';
+
+  const data=collectData();
+  const autoScore=autoGrade(data);
+  const taken=45*60-secondsLeft;
+  const payload={
+    testName:TEST_NAME,
+    name:studentName, phone:studentPhone,
+    startTime:testStartTime,
+    timeTaken:`${Math.floor(taken/60)}m${taken%60}s`,
+    fsExitCount, autoScore, ...data
+  };
+
+  try{
+    await fetch(SCRIPT_URL,{
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+  }catch(e){console.error(e);}
+
+  if(document.exitFullscreen) document.exitFullscreen();
+  else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+
+  document.removeEventListener('fullscreenchange',onFsChange);
+  document.removeEventListener('webkitfullscreenchange',onFsChange);
+  document.getElementById('test-container').classList.remove('active');
+  document.getElementById('fs-warning').classList.remove('show');
+  document.getElementById('thankyou').classList.add('show');
+}
+</script>
+</body>
+</html>
