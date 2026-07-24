@@ -68,10 +68,6 @@ body{
 
 .toolbar{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap;padding:0 16px 8px}
 .tb{font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;padding:7px 18px;border-radius:30px;border:2px solid;cursor:pointer;transition:all .15s}
-.tb.month{border-color:var(--pink-l);background:var(--card);color:var(--text2)}
-.tb.month.on,.tb.month:hover{background:var(--pink);border-color:var(--pink);color:#fff}
-.tb.view{border-color:#C4B5FD;background:#F5F3FF;color:#5B21B6}
-.tb.view.on,.tb.view:hover{background:#7C3AED;border-color:#7C3AED;color:#fff}
 .tb.save{border-color:var(--teal);color:#059669;background:var(--teal-l)}
 .tb.save:hover{background:var(--teal);color:#fff}
 .tb.load{border-color:var(--blue);color:#2563EB;background:var(--blue-l)}
@@ -110,12 +106,6 @@ body{
 .add-btn{font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;padding:5px 14px;border-radius:10px;border:none;cursor:pointer;background:var(--pink);color:#fff}
 .add-btn:hover{background:#e06385}
 
-.day-nav{display:flex;gap:7px;align-items:center;padding:10px 16px 0;overflow-x:auto;scrollbar-width:none}
-.day-nav::-webkit-scrollbar{display:none}
-.daychip{font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;padding:6px 16px;border-radius:24px;border:2px solid var(--pink-l);background:var(--card);color:var(--text2);cursor:pointer;white-space:nowrap;transition:all .15s}
-.daychip.on{background:var(--pink);border-color:var(--pink);color:#fff;box-shadow:0 3px 10px rgba(255,133,161,0.35)}
-.daychip:hover:not(.on){border-color:var(--pink);color:var(--pink)}
-
 .grid-wrap{padding:8px 10px 24px;overflow-x:hidden}
 table.sc{border-collapse:collapse;table-layout:fixed;width:100%}
 table.sc th{
@@ -141,17 +131,6 @@ table.sc td.slot{
 table.sc tr:nth-child(4n+1) td.slot{background:rgba(255,255,255,0.5)}
 table.sc td.slot.ohr{border-top:1.5px solid #FFB3C6}
 table.sc td.slot.dov{background:#D1FAE5!important;outline:2px dashed #34D399;outline-offset:-2px;z-index:5}
-table.sc td.slot.fm{background:#EDE9FE}
-table.sc td.slot.fe{background:#DBEAFE}
-table.sc td.slot.ft{background:#FEF3C7}
-
-.flabel{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;padding:0 4px;text-align:center;line-height:1.2;
-  color:#4C1D95;pointer-events:none;z-index:2
-}
-.flabel.fe{color:#1E40AF}
-.flabel.ft{color:#92400E}
 
 .pb{
   position:absolute;left:2px;right:2px;top:1px;bottom:1px;
@@ -176,7 +155,6 @@ table.sc td.slot.ft{background:#FEF3C7}
   border-bottom:3px solid var(--pink);
   box-shadow:0 -2px 12px rgba(255,133,161,0.10);
 }
-/* Mẹ Linh tab gets a green accent */
 .child-tab.melinh-tab{color:var(--text2)}
 .child-tab.melinh-tab:hover{background:#F0FDF4;color:#059669}
 .child-tab.melinh-tab.active{color:#059669;border-bottom-color:#059669;background:var(--card)}
@@ -219,7 +197,7 @@ table.sc td.slot.ft{background:#FEF3C7}
 
 <div class="hdr">
   <div style="font-size:20px;letter-spacing:4px;margin-bottom:2px">🌸 ⭐ 🌸</div>
-  <h1>Thời Khóa Biểu Hè</h1>
+  <h1>Thời Khóa Biểu</h1>
   <p>Kéo thả các khối vào lưới giờ — mỗi ô = 30 phút ✨</p>
 </div>
 
@@ -236,10 +214,6 @@ table.sc td.slot.ft{background:#FEF3C7}
 </div>
 
 <div class="toolbar">
-  <button class="tb month on" onclick="setMonth(6,this)">Tháng 6</button>
-  <button class="tb month" onclick="setMonth(7,this)">Tháng 7</button>
-  <button class="tb month" onclick="setMonth(8,this)">Tháng 8+</button>
-  <div class="sep"></div>
   <button class="tb save" onclick="fbSaveMonth()">☁️ Lưu Cloud</button>
   <button class="tb load" onclick="fbLoadMonth()">🔄 Tải Cloud</button>
   <button class="tb save" style="border-color:#d1d5db;color:#6b7280;background:#f9fafb" onclick="saveData()">💾 Lưu file</button>
@@ -258,8 +232,6 @@ table.sc td.slot.ft{background:#FEF3C7}
     <button class="add-btn" onclick="addCustom()">+ Thêm</button>
   </div>
 </div>
-
-<div class="day-nav" id="day-nav" style="display:none"></div>
 
 <div class="grid-wrap" id="grid-wrap">
   <table class="sc" id="sc"></table>
@@ -294,14 +266,13 @@ table.sc td.slot.ft{background:#FEF3C7}
 const DAYS=['Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7','Chủ Nhật'];
 const SS=7*2, SE=23*2;
 function sl(s){return `${Math.floor(s/2)}:${s%2?'30':'00'}`}
-function sof(h,m){return h*2+(m>=30?1:0)}
 
 let curChild='honey';
 
 const CHILDREN={
-  honey:{name:'Honey', icon:'🍯', accentColor:'#FF85A1', hasFixed:true},
-  moon:{name:'Moon', icon:'🌙', accentColor:'#7C3AED', hasFixed:false},
-  melinh:{name:'Mẹ Linh', icon:'🌿', accentColor:'#059669', hasFixed:false}
+  honey:{name:'Honey', icon:'🍯', accentColor:'#FF85A1'},
+  moon:{name:'Moon', icon:'🌙', accentColor:'#7C3AED'},
+  melinh:{name:'Mẹ Linh', icon:'🌿', accentColor:'#059669'}
 };
 
 function switchChild(child, btn){
@@ -371,40 +342,14 @@ const DEF_MELINH=[
   {id:'ml-cook',    label:'🍳 Nấu ăn',          bg:'#FFEDD5',color:'#7C2D12',border:'#FDBA74',type:'custom'},
 ];
 
-const FIXED={
-  6:[
-    {day:'Thứ 2',   start:sof(18,0), end:sof(20,30),type:'math',label:'📐 Toán online\n18:00–20:30'},
-    {day:'Thứ 5',   start:sof(10,0), end:sof(12,30),type:'math',label:'📐 Toán online\n10:00–12:30'},
-    {day:'Chủ Nhật',start:sof(12,0), end:sof(13,30),type:'math',label:'📐 Toán online\n12:00–13:30'},
-    {day:'Thứ 3',   start:sof(18,0), end:sof(20,0), type:'eng', label:'📖 Tiếng Anh\n18:00–20:00'},
-    {day:'Thứ 6',   start:sof(18,0), end:sof(20,30),type:'eng', label:'📖 Tiếng Anh\n18:00–20:30'},
-  ],
-  7:[
-    {day:'Chủ Nhật',start:sof(12,0), end:sof(13,30),type:'math',label:'📐 Toán online\n12:00–13:30'},
-    {day:'Thứ 3',   start:sof(18,0), end:sof(20,0), type:'eng', label:'📖 Tiếng Anh\n18:00–20:00'},
-    {day:'Thứ 6',   start:sof(18,0), end:sof(20,30),type:'eng', label:'📖 Tiếng Anh\n18:00–20:30'},
-  ],
-  8:[
-    {day:'Thứ 4',   start:sof(19,20),end:sof(21,50),type:'math',label:'📐 Toán online\n19:20–21:50'},
-    {day:'Chủ Nhật',start:sof(12,0), end:sof(13,30),type:'math',label:'📐 Toán online\n12:00–13:30'},
-    {day:'Thứ 3',   start:sof(18,0), end:sof(20,0), type:'eng', label:'📖 Tiếng Anh\n18:00–20:00'},
-    {day:'Thứ 6',   start:sof(18,0), end:sof(20,30),type:'eng', label:'📖 Tiếng Anh\n18:00–20:30'},
-  ],
-};
+// Không còn lịch cố định (Toán/Tiếng Anh online) — cả Honey và Moon đều đã đi học ở trường từ tháng 8.
+// Toàn bộ lưới giờ đều trống và có thể kéo thả tự do.
+const curMonth='chinh'; // chỉ còn 1 lịch duy nhất, không chia theo tháng nữa
 
-function getAllFixed(month,day){
-  return (FIXED[month]||[]).filter(f=>f.day===day);
-}
-function getFA(month,day,slot){return getAllFixed(month,day).find(f=>slot>=f.start&&slot<f.end)}
-function isFixed(month,day,slot){return !!getFA(month,day,slot)}
-
-let curMonth=6;
 const allBlocks={honey:[...DEF],moon:[...DEF_MOON],melinh:[...DEF_MELINH]};
 const allGrids={honey:{},moon:{},melinh:{}};
-[6,7,8].forEach(m=>{
-  allGrids.honey[m]={};DAYS.forEach(d=>{allGrids.honey[m][d]={}});
-  allGrids.moon[m]={};DAYS.forEach(d=>{allGrids.moon[m][d]={}});
-  allGrids.melinh[m]={};DAYS.forEach(d=>{allGrids.melinh[m][d]={}});
+['honey','moon','melinh'].forEach(c=>{
+  allGrids[c][curMonth]={};DAYS.forEach(d=>{allGrids[c][curMonth][d]={}});
 });
 
 function getGrid(){return allGrids[curChild]}
@@ -487,9 +432,9 @@ function mkChip(b){
     e.stopPropagation();e.preventDefault();
     if(!confirm(`Xóa "${b.label}" khỏi danh sách?`)) return;
     allBlocks[curChild]=allBlocks[curChild].filter(bb=>bb.id!==b.id);
-    [6,7,8].forEach(m=>DAYS.forEach(d=>{
-      Object.keys(allGrids[curChild][m][d]).forEach(s=>{if(allGrids[curChild][m][d][s]===b.id)allGrids[curChild][m][d][s]=null});
-    }));
+    DAYS.forEach(d=>{
+      Object.keys(allGrids[curChild][curMonth][d]).forEach(s=>{if(allGrids[curChild][curMonth][d][s]===b.id)allGrids[curChild][curMonth][d][s]=null});
+    });
     renderPal();renderGrid();
   };
   c.appendChild(x);
@@ -506,52 +451,28 @@ function renderGrid(){
   });
   h+=`</tr></thead><tbody>`;
 
-  const spanned={};
-  const showFixed=CHILDREN[curChild].hasFixed;
-
   for(let s=SS;s<SE;s++){
     const oh=s%2===0;
     h+=`<tr>`;
     if(oh) h+=`<td class="tc oh" rowspan="2">${sl(s)}</td>`;
 
     days.forEach(day=>{
-      const key=`${day}|${s}`;
-      if(spanned[key]) return;
-
-      const fa=showFixed?getFA(curMonth,day,s):null;
-
-      if(fa && fa.start===s){
-        const rows=fa.end-fa.start;
-        const bgCls=fa.type==='math'?'fm':fa.type==='eng'?'fe':'ft';
-        for(let r=1;r<rows;r++) spanned[`${day}|${s+r}`]=true;
-        const lines=fa.label.split('\n');
-        h+=`<td class="slot ${bgCls} ohr" rowspan="${rows}" data-day="${day}" data-slot="${s}"
-          style="vertical-align:middle;text-align:center;position:relative;">
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:2px 4px;gap:1px;">
-            <span style="font-family:'Baloo 2',cursive;font-size:12px;font-weight:800;color:${fa.type==='eng'?'#1E40AF':'#4C1D95'};white-space:nowrap">${lines[0]}</span>
-            ${lines[1]?`<span style="font-size:10px;font-weight:700;color:${fa.type==='eng'?'#3B82F6':'#7C3AED'};opacity:0.85">${lines[1]}</span>`:''}
-          </div>
-        </td>`;
-      } else if(fa && fa.start!==s){
-        // skip
-      } else {
-        let cls='slot';
-        if(oh) cls+=' ohr';
-        h+=`<td class="${cls}" data-day="${day}" data-slot="${s}"
-          ondragover="gov(event)" ondrop="gdp(event,this)" ondragleave="glv(this)">`;
-        const bid=allGrids[curChild][curMonth][day][s];
-        if(bid){
-          const b=getB(bid);
-          if(b) h+=`<div class="pb" draggable="true"
-            style="background:${b.bg};color:${b.color};border-color:${b.border}"
-            data-id="${b.id}" data-day="${day}" data-slot="${s}"
-            ondragstart="pds(event,this)" ondragend="pde(this)">
-            <span style="overflow:hidden;max-width:100%;white-space:nowrap;text-overflow:ellipsis;display:block">${b.label}</span>
-            <button class="pbx" onclick="delB('${day}',${s},event)">✕</button>
-          </div>`;
-        }
-        h+=`</td>`;
+      let cls='slot';
+      if(oh) cls+=' ohr';
+      h+=`<td class="${cls}" data-day="${day}" data-slot="${s}"
+        ondragover="gov(event)" ondrop="gdp(event,this)" ondragleave="glv(this)">`;
+      const bid=allGrids[curChild][curMonth][day][s];
+      if(bid){
+        const b=getB(bid);
+        if(b) h+=`<div class="pb" draggable="true"
+          style="background:${b.bg};color:${b.color};border-color:${b.border}"
+          data-id="${b.id}" data-day="${day}" data-slot="${s}"
+          ondragstart="pds(event,this)" ondragend="pde(this)">
+          <span style="overflow:hidden;max-width:100%;white-space:nowrap;text-overflow:ellipsis;display:block">${b.label}</span>
+          <button class="pbx" onclick="delB('${day}',${s},event)">✕</button>
+        </div>`;
       }
+      h+=`</td>`;
     });
     h+=`</tr>`;
   }
@@ -595,7 +516,6 @@ function glv(c){c.classList.remove('dov')}
 function gdp(e,cell){
   e.preventDefault();cell.classList.remove('dov');
   const day=cell.dataset.day,slot=+cell.dataset.slot;
-  if(CHILDREN[curChild].hasFixed && isFixed(curMonth,day,slot)){dragId=null;dragFrom=null;return}
   if(dragId){
     if(dragFrom){const[fd,fs]=dragFrom.split('|');allGrids[curChild][curMonth][fd][+fs]=null}
     allGrids[curChild][curMonth][day][slot]=dragId;
@@ -610,11 +530,6 @@ function pds(e,el){
 function pde(el){el.style.opacity='1'}
 function delB(day,slot,e){e.stopPropagation();allGrids[curChild][curMonth][day][slot]=null;renderGrid()}
 
-function setMonth(m,btn){
-  curMonth=m;
-  document.querySelectorAll('.tb.month').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');renderGrid();
-}
 function addCustom(){
   const inp=document.getElementById('cn'),name=inp.value.trim();
   if(!name) return;
@@ -658,7 +573,7 @@ function clearWeek(){
 }
 function saveData(){
   const blob=new Blob([JSON.stringify({grid,blocks})],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='thoikhoabieu_he.json';a.click();
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='thoikhoabieu.json';a.click();
 }
 function loadData(){
   const inp=document.createElement('input');inp.type='file';inp.accept='.json';
@@ -704,13 +619,13 @@ function deserializeMonth(raw, child, month){
 async function fbSaveMonth(){
   if(!window._fbSaveMonth){ alert('⚠️ Chưa cấu hình Firebase!'); return; }
   const child=curChild;
-  fbStatus('⏳ Đang lưu '+CHILDREN[child].name+' Tháng '+curMonth+'...','#D97706');
+  fbStatus('⏳ Đang lưu '+CHILDREN[child].name+'...','#D97706');
   try{
     const monthData = serializeMonth(child, curMonth);
     await window._fbSaveMonth(child, curMonth, monthData);
     const customBlocks = allBlocks[child].filter(b=>b.type==='custom');
     await window._fbSaveBlocks(child, { list: JSON.stringify(customBlocks) });
-    fbStatus('✅ Đã lưu '+CHILDREN[child].icon+' '+CHILDREN[child].name+' Tháng '+curMonth+'! ('+new Date().toLocaleTimeString('vi-VN')+')','#059669');
+    fbStatus('✅ Đã lưu '+CHILDREN[child].icon+' '+CHILDREN[child].name+'! ('+new Date().toLocaleTimeString('vi-VN')+')','#059669');
   } catch(err){
     fbStatus('❌ Lỗi lưu: '+err.message,'#DC2626');
     console.error(err);
@@ -720,10 +635,10 @@ async function fbSaveMonth(){
 async function fbLoadMonth(){
   if(!window._fbLoadMonth){ alert('⚠️ Chưa cấu hình Firebase!'); return; }
   const child=curChild;
-  fbStatus('⏳ Đang tải '+CHILDREN[child].name+' Tháng '+curMonth+'...','#D97706');
+  fbStatus('⏳ Đang tải '+CHILDREN[child].name+'...','#D97706');
   try{
     const raw = await window._fbLoadMonth(child, curMonth);
-    if(!raw){ fbStatus('ℹ️ '+CHILDREN[child].name+' Tháng '+curMonth+' chưa có dữ liệu trên Cloud','#9B6375'); return; }
+    if(!raw){ fbStatus('ℹ️ '+CHILDREN[child].name+' chưa có dữ liệu trên Cloud','#9B6375'); return; }
     deserializeMonth(raw, child, curMonth);
     const braw = await window._fbLoadBlocks(child);
     if(braw && braw.list){
@@ -733,7 +648,7 @@ async function fbLoadMonth(){
       customs.forEach(b=>{ if(!defIds.has(b.id)) allBlocks[child].push(b); });
     }
     renderPal(); renderGrid();
-    fbStatus('✅ Đã tải '+CHILDREN[child].icon+' '+CHILDREN[child].name+' Tháng '+curMonth+'! ('+new Date().toLocaleTimeString('vi-VN')+')','#059669');
+    fbStatus('✅ Đã tải '+CHILDREN[child].icon+' '+CHILDREN[child].name+'! ('+new Date().toLocaleTimeString('vi-VN')+')','#059669');
   } catch(err){
     fbStatus('❌ Lỗi tải: '+err.message,'#DC2626');
     console.error(err);
@@ -745,10 +660,8 @@ window.fbAutoLoad = async function(){
   fbStatus('⏳ Đang tự động tải dữ liệu...','#D97706');
   try{
     for(const child of ['honey','moon','melinh']){
-      for(const m of [6,7,8]){
-        const raw = await window._fbLoadMonth(child, m);
-        if(raw) deserializeMonth(raw, child, m);
-      }
+      const raw = await window._fbLoadMonth(child, curMonth);
+      if(raw) deserializeMonth(raw, child, curMonth);
       const braw = await window._fbLoadBlocks(child);
       if(braw && braw.list){
         const customs = JSON.parse(braw.list);
@@ -779,7 +692,7 @@ async function captureTable(){
   target.style.cssText=`background:#FFF8FA;padding:20px 24px 28px;display:inline-block;font-family:'Nunito',sans-serif;min-width:${wrap.offsetWidth}px;`;
   const title=document.createElement('div');
   title.style.cssText='text-align:center;margin-bottom:10px';
-  title.innerHTML=`<div style="font-size:16px;letter-spacing:4px;margin-bottom:2px">🌸 ⭐ 🌸</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:#FF85A1">Thời Khóa Biểu Hè Của ${CHILDREN[curChild].name}</div>`;
+  title.innerHTML=`<div style="font-size:16px;letter-spacing:4px;margin-bottom:2px">🌸 ⭐ 🌸</div><div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:#FF85A1">Thời Khóa Biểu Của ${CHILDREN[curChild].name}</div>`;
   target.appendChild(title);
   const tclone=table.cloneNode(true);
   tclone.style.cssText='border-collapse:collapse;table-layout:fixed;width:100%';
@@ -823,7 +736,7 @@ async function makeWallpaperCanvas(){
   ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.font='bold 36px "Baloo 2",cursive,sans-serif';
   ctx.fillStyle='#FF85A1';
-  ctx.fillText(CHILDREN[curChild].icon+'  Thời Khóa Biểu Hè — '+CHILDREN[curChild].name+'  '+CHILDREN[curChild].icon,W/2,PAD+TITLE_H/2);
+  ctx.fillText(CHILDREN[curChild].icon+'  Thời Khóa Biểu — '+CHILDREN[curChild].name+'  '+CHILDREN[curChild].icon,W/2,PAD+TITLE_H/2);
 
   const gx=PAD+TIME_COL, gy=PAD+TITLE_H+DAY_HDR;
   const GRID_W=INNER_W-TIME_COL, GRID_H=INNER_H-TITLE_H-DAY_HDR;
@@ -890,33 +803,6 @@ async function makeWallpaperCanvas(){
     ctx.fillStyle=di%2===0?'rgba(255,240,245,0.12)':'rgba(245,240,255,0.10)';
     ctx.fillRect(cx,gy,dayW,GRID_H);
 
-    const fixed=getAllFixed(curMonth,day);
-    if(CHILDREN[curChild].hasFixed){
-      fixed.forEach(f=>{
-        if(f.end<=EXP_SS||f.start>=EXP_SE) return;
-        const clampStart=Math.max(f.start,EXP_SS), clampEnd=Math.min(f.end,EXP_SE);
-        const fy=gy+(clampStart-EXP_SS)*slotH, fh=(clampEnd-clampStart)*slotH;
-        const isMath=f.type==='math',isEng=f.type==='eng';
-        const bg=isMath?'#EDE9FE':isEng?'#DBEAFE':'#FEF3C7';
-        const border=isMath?'#A78BFA':isEng?'#60A5FA':'#FCD34D';
-        const tc=isMath?'#4C1D95':isEng?'#1E40AF':'#78350F';
-        ctx.fillStyle=bg;roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,8);ctx.fill();
-        ctx.strokeStyle=border;ctx.lineWidth=2;roundRect(ctx,cx+2,fy+2,dayW-4,fh-4,8);ctx.stroke();
-        const lines=f.label.split('\n');
-        const midY=fy+fh/2;
-        ctx.fillStyle=tc;ctx.textAlign='center';ctx.textBaseline='middle';
-        if(lines.length>=2&&fh>50){
-          ctx.font='bold 20px "Baloo 2",cursive,sans-serif';
-          ctx.fillText(lines[0],cx+dayW/2,midY-13);
-          ctx.font='bold 18px Nunito,sans-serif';
-          ctx.fillText(lines[1],cx+dayW/2,midY+13);
-        } else {
-          ctx.font='bold 20px "Baloo 2",cursive,sans-serif';
-          ctx.fillText(lines[0],cx+dayW/2,midY);
-        }
-      });
-    }
-
     const ug=grid[curMonth][day];
     const drawn={};
     for(let i=0;i<slots;i++){
@@ -947,7 +833,7 @@ async function exportImage(){
   loading.style.display='block';loading.textContent='⏳ Đang tạo hình nền 2560×1440...';
   try{
     const canvas=await makeWallpaperCanvas();
-    const a=document.createElement('a');a.download='thoikhoabieu_he_wallpaper.png';a.href=canvas.toDataURL('image/png');a.click();
+    const a=document.createElement('a');a.download='thoikhoabieu_wallpaper.png';a.href=canvas.toDataURL('image/png');a.click();
   }catch(err){alert('Lỗi xuất ảnh: '+err.message);console.error(err)}
   loading.style.display='none';closeExportModal();
 }
@@ -965,7 +851,7 @@ async function exportPDF(){
     const offsetX=(pageW-finalW)/2,offsetY=(pageH-finalH)/2;
     const pdf=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
     pdf.addImage(canvas.toDataURL('image/png'),'PNG',offsetX,offsetY,finalW,finalH);
-    pdf.save('thoikhoabieu_he.pdf');
+    pdf.save('thoikhoabieu.pdf');
   }catch(err){alert('Lỗi xuất PDF: '+err.message)}
   loading.style.display='none';closeExportModal();
 }
