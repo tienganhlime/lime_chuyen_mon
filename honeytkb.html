@@ -357,6 +357,7 @@ function getBlocks(){return allBlocks[curChild]}
 function setBlocks(arr){allBlocks[curChild]=arr}
 
 let selCol=0,dragId=null,dragFrom=null;
+let multiAnchor=null;
 Object.defineProperty(window,'blocks',{get:getBlocks,set:setBlocks});
 Object.defineProperty(window,'grid',{get:getGrid});
 
@@ -438,7 +439,7 @@ function mkChip(b){
     renderPal();renderGrid();
   };
   c.appendChild(x);
-  c.addEventListener('dragstart',e=>{dragId=b.id;dragFrom=null;c.classList.add('drag');e.dataTransfer.effectAllowed='copy'});
+  c.addEventListener('dragstart',e=>{dragId=b.id;dragFrom=null;multiAnchor=null;c.classList.add('drag');e.dataTransfer.effectAllowed='copy'});
   c.addEventListener('dragend',()=>c.classList.remove('drag'));
   return c;
 }
@@ -506,24 +507,53 @@ function onDragOverWindow(e){
 }
 document.addEventListener('dragover',onDragOverWindow);
 document.addEventListener('dragstart',()=>startAutoScroll());
-document.addEventListener('dragend',()=>stopAutoScroll());
+document.addEventListener('dragend',()=>{stopAutoScroll();clearMultiHighlight();multiAnchor=null;});
 document.addEventListener('drop',()=>stopAutoScroll());
 
 function initDragScroll(){}
 
-function gov(e){e.preventDefault();e.currentTarget.classList.add('dov');e.dataTransfer.dropEffect='copy'}
-function glv(c){c.classList.remove('dov')}
+function clearMultiHighlight(){
+  document.querySelectorAll('td.slot.dov').forEach(c=>c.classList.remove('dov'));
+}
+
+function gov(e){
+  e.preventDefault();
+  e.dataTransfer.dropEffect=dragFrom?'move':'copy';
+  const cell=e.currentTarget;
+  const day=cell.dataset.day, slot=+cell.dataset.slot;
+  if(multiAnchor===null || multiAnchor.day!==day){
+    multiAnchor={day,slot};
+  }
+  clearMultiHighlight();
+  const lo=Math.min(multiAnchor.slot,slot), hi=Math.max(multiAnchor.slot,slot);
+  document.querySelectorAll(`td.slot[data-day="${CSS.escape(day)}"]`).forEach(c=>{
+    const s=+c.dataset.slot;
+    if(s>=lo && s<=hi) c.classList.add('dov');
+  });
+}
+function glv(c){}
 function gdp(e,cell){
-  e.preventDefault();cell.classList.remove('dov');
-  const day=cell.dataset.day,slot=+cell.dataset.slot;
+  e.preventDefault();
+  clearMultiHighlight();
+  const day=cell.dataset.day, slot=+cell.dataset.slot;
   if(dragId){
+    let lo,hi;
+    if(multiAnchor && multiAnchor.day===day){
+      lo=Math.min(multiAnchor.slot,slot);
+      hi=Math.max(multiAnchor.slot,slot);
+    } else {
+      lo=hi=slot;
+    }
     if(dragFrom){const[fd,fs]=dragFrom.split('|');allGrids[curChild][curMonth][fd][+fs]=null}
-    allGrids[curChild][curMonth][day][slot]=dragId;
-    dragId=null;dragFrom=null;renderGrid();
+    for(let s=lo;s<=hi;s++){
+      allGrids[curChild][curMonth][day][s]=dragId;
+    }
+    dragId=null;dragFrom=null;multiAnchor=null;renderGrid();
   }
 }
 function pds(e,el){
   dragId=el.dataset.id;dragFrom=el.dataset.day+'|'+el.dataset.slot;
+  multiAnchor=null;
   e.dataTransfer.effectAllowed='move';
   setTimeout(()=>el.style.opacity='0.3',0);
 }
