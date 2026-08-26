@@ -113,11 +113,13 @@
   .reopen-pill{ display:none; align-items:center; gap:6px; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:0.85rem; padding:9px 16px; border-radius:14px; border:2px solid var(--line); background:white; color:var(--ink); cursor:pointer; margin-bottom:14px; }
   .main-grid.collapsed ~ .reopen-pill, .main-grid.collapsed .reopen-pill{ display:inline-flex; }
 
-  .current-q-card{ background:var(--peach); border-color:var(--peach-deep); }
-  .current-q-label{ font-size:1rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--peach-deep); margin-bottom:10px; }
-  .current-q-text{ font-family:'Baloo 2', sans-serif; font-size:2.6rem; font-weight:700; line-height:1.35; transition:.15s; }
+  .current-q-card{ background:var(--card); border:3px solid var(--peach-deep); position:relative; overflow:hidden; padding-right:90px; }
+  .current-q-label{ display:inline-block; font-size:0.85rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--peach-deep); background:var(--peach); padding:6px 16px; border-radius:20px; margin-bottom:14px; }
+  .current-q-text{ font-family:'Baloo 2', sans-serif; font-size:2.6rem; font-weight:700; line-height:1.35; transition:.15s; color:var(--ink); }
   .current-q-text.pulse{ animation:qpulse .4s ease; }
   @keyframes qpulse{ 0%{ transform:scale(.97); opacity:.4;} 100%{ transform:scale(1); opacity:1;} }
+  .current-q-mascot{ position:absolute; top:16px; right:18px; width:56px; height:56px; opacity:0.9; animation:bob 3.2s ease-in-out infinite; }
+  @media (max-width:640px){ .current-q-card{ padding-right:26px; } .current-q-mascot{ display:none; } }
   .nav-btns{ display:flex; gap:12px; margin-top:22px; }
   .nav-btns button{ font-size:1.15rem; padding:16px 26px; }
 
@@ -248,6 +250,7 @@
 
       <div>
         <div class="card current-q-card">
+          <svg class="current-q-mascot" viewBox="0 0 100 100"><circle cx="50" cy="55" r="34" fill="#FFDDB8"/><circle cx="38" cy="50" r="5" fill="#6B4A5C"/><circle cx="62" cy="50" r="5" fill="#6B4A5C"/><path d="M40 64 Q50 72 60 64" stroke="#6B4A5C" stroke-width="3.5" fill="none" stroke-linecap="round"/><ellipse cx="50" cy="24" rx="13" ry="9" fill="#FFA85C"/></svg>
           <div class="current-q-label" id="qCounter">Câu 1 / 1</div>
           <div class="current-q-text" id="currentQText">—</div>
           <div class="nav-btns">
