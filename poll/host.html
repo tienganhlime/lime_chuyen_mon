@@ -136,6 +136,16 @@
   .empty-state .mascot{ width:64px; height:64px; margin:0 auto 10px; animation:bob 3s ease-in-out infinite; }
 
   .footer-actions{ display:flex; justify-content:space-between; align-items:center; margin-top:24px; flex-wrap:wrap; gap:10px; }
+
+  /* ---------- Saved sessions (open old session) ---------- */
+  .saved-list{ display:flex; flex-direction:column; gap:10px; max-height:340px; overflow-y:auto; padding-right:4px; margin-bottom:6px; }
+  .saved-item{ display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:14px; border:2px solid var(--line); background:var(--cream); }
+  .saved-item .info{ flex:1; min-width:0; cursor:pointer; }
+  .saved-item .s-title{ font-weight:800; font-size:0.95rem; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .saved-item .s-meta{ font-size:0.78rem; color:var(--ink-soft); margin-top:2px; }
+  .saved-item:hover{ border-color:var(--pink-deep); }
+  .del-btn{ flex-shrink:0; width:36px; height:36px; border-radius:10px; border:2px solid var(--line); background:white; color:#D2637A; font-size:1.05rem; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .del-btn:hover{ background:#FDEDF1; border-color:#D2637A; }
 </style>
 </head>
 <body>
@@ -186,10 +196,18 @@
 
     <div id="paneOpen" style="display:none;">
       <div class="field">
-        <label>Nhập mã phiên cũ</label>
-        <input type="text" id="openCode" placeholder="VD: 7K2X9M" style="text-transform:uppercase;">
+        <label>Chọn phiên cũ để mở lại</label>
+        <div class="saved-list" id="savedList"></div>
+        <div class="hint" id="savedEmptyHint" style="display:none;">Chưa có phiên nào được lưu trên máy này. Bạn có thể nhập mã phiên thủ công bên dưới.</div>
       </div>
-      <button class="primary" onclick="openSession()">Mở phiên</button>
+      <button class="ghost" onclick="toggleManualCode()" id="manualToggleBtn" style="padding-left:0;">⌨️ Nhập mã phiên thủ công</button>
+      <div id="manualCodeWrap" style="display:none; margin-top:10px;">
+        <div class="field">
+          <label>Nhập mã phiên cũ</label>
+          <input type="text" id="openCode" placeholder="VD: 7K2X9M" style="text-transform:uppercase;">
+        </div>
+        <button class="primary" onclick="openSession()">Mở phiên</button>
+      </div>
       <div id="openError" class="error-msg"></div>
     </div>
   </div>
@@ -272,6 +290,96 @@ function switchTab(which){
   document.getElementById('tabOpen').classList.toggle('active', which==='open');
   document.getElementById('paneCreate').style.display = which==='create' ? 'block' : 'none';
   document.getElementById('paneOpen').style.display = which==='open' ? 'block' : 'none';
+  if(which === 'open') renderSavedSessionsList();
+}
+
+/* ---------- Saved sessions (stored locally in this browser) ---------- */
+const SAVED_KEY = 'qa_host_sessions_v1';
+
+function getSavedSessions(){
+  try{ return JSON.parse(localStorage.getItem(SAVED_KEY)) || []; }catch(e){ return []; }
+}
+function setSavedSessions(list){
+  localStorage.setItem(SAVED_KEY, JSON.stringify(list));
+}
+function rememberSession(code, title){
+  const list = getSavedSessions().filter(s=>s.code!==code);
+  list.unshift({ code, title: title || 'Phiên hỏi đáp', lastOpened: Date.now() });
+  setSavedSessions(list.slice(0,50));
+}
+function removeSavedSession(code){
+  setSavedSessions(getSavedSessions().filter(s=>s.code!==code));
+}
+
+function renderSavedSessionsList(){
+  const list = getSavedSessions();
+  const wrap = document.getElementById('savedList');
+  const emptyHint = document.getElementById('savedEmptyHint');
+  wrap.innerHTML = '';
+  if(list.length === 0){
+    emptyHint.style.display = 'block';
+    return;
+  }
+  emptyHint.style.display = 'none';
+  list.forEach(s=>{
+    const item = document.createElement('div');
+    item.className = 'saved-item';
+    const dateStr = s.lastOpened ? new Date(s.lastOpened).toLocaleDateString('vi-VN') : '';
+    item.innerHTML = `
+      <div class="info" onclick="openSavedSession('${s.code}')">
+        <div class="s-title">${escapeHtml(s.title)}</div>
+        <div class="s-meta">Mã: ${s.code} • Mở gần nhất: ${dateStr}</div>
+      </div>
+      <button class="del-btn" title="Xóa phiên này" onclick="deleteSavedSession('${s.code}', event)">🗑</button>
+    `;
+    wrap.appendChild(item);
+  });
+}
+
+async function openSavedSession(code){
+  const errBox = document.getElementById('openError');
+  errBox.textContent = '';
+  try{
+    const doc = await db.collection('sessions').doc(code).get();
+    if(!doc.exists){
+      errBox.textContent = 'Phiên này không còn tồn tại trên máy chủ, đã tự động xóa khỏi danh sách.';
+      removeSavedSession(code);
+      renderSavedSessionsList();
+      return;
+    }
+    rememberSession(code, doc.data().title);
+    loadSession(code);
+  }catch(e){
+    errBox.textContent = 'Có lỗi khi mở phiên. Kiểm tra lại cấu hình Firebase.';
+    console.error(e);
+  }
+}
+
+async function deleteSavedSession(code, evt){
+  if(evt) evt.stopPropagation();
+  const errBox = document.getElementById('openError');
+  errBox.textContent = '';
+  if(!confirm(`Xóa hẳn phiên "${code}"? Toàn bộ câu hỏi và câu trả lời sẽ bị xóa vĩnh viễn, không thể khôi phục.`)) return;
+  try{
+    const answersSnap = await db.collection('sessions').doc(code).collection('answers').get();
+    const batch = db.batch();
+    answersSnap.forEach(doc=> batch.delete(doc.ref));
+    batch.delete(db.collection('sessions').doc(code));
+    await batch.commit();
+  }catch(e){
+    console.error(e);
+    errBox.textContent = 'Có lỗi khi xóa phiên trên máy chủ (đã xóa khỏi danh sách trên máy này).';
+  }
+  removeSavedSession(code);
+  renderSavedSessionsList();
+  if(currentSessionId === code) backToSetup();
+}
+
+function toggleManualCode(){
+  const wrap = document.getElementById('manualCodeWrap');
+  const isHidden = wrap.style.display === 'none';
+  wrap.style.display = isHidden ? 'block' : 'none';
+  document.getElementById('manualToggleBtn').textContent = isHidden ? '⌨️ Ẩn nhập mã thủ công' : '⌨️ Nhập mã phiên thủ công';
 }
 
 document.getElementById('anonToggle').addEventListener('change', (e)=>{
@@ -308,6 +416,7 @@ async function createSession(){
       started: false,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
+    rememberSession(code, title);
     loadSession(code);
   }catch(e){
     errBox.textContent = 'Không tạo được phiên. Kiểm tra lại cấu hình Firebase trong config.js (xem README).';
@@ -323,6 +432,7 @@ async function openSession(){
   try{
     const doc = await db.collection('sessions').doc(code).get();
     if(!doc.exists){ errBox.textContent = 'Không tìm thấy phiên với mã này.'; return; }
+    rememberSession(code, doc.data().title);
     loadSession(code);
   }catch(e){
     errBox.textContent = 'Có lỗi khi mở phiên. Kiểm tra lại cấu hình Firebase.';
