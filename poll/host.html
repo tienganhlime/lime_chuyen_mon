@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phòng Hỏi Đáp — Host</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sage:#B9D3C2;
+    --sage-deep:#8FB89D;
+    --peach:#FFD3B6;
+    --peach-deep:#F5A876;
+    --butter:#FFE8A3;
+    --lavender:#DCD3F0;
+    --lavender-deep:#B4A4DE;
+    --ink:#4A4458;
+    --ink-soft:#7A7288;
+    --paper:#FFFCF6;
+    --card:#FFFFFF;
+    --line:#EDE7DC;
+    --shadow: 0 4px 0 rgba(74,68,88,0.08), 0 8px 24px rgba(74,68,88,0.06);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 8% 12%, rgba(220,211,240,0.5), transparent 40%),
+      radial-gradient(circle at 92% 88%, rgba(255,211,182,0.45), transparent 40%),
+      var(--paper);
+    min-height:100vh;
+    font-family:'Nunito', sans-serif;
+    color:var(--ink);
+  }
+  h1,h2,h3,.display{ font-family:'Baloo 2', sans-serif; }
+  .wrap{ max-width:1100px; margin:0 auto; padding:28px 20px 60px; }
+
+  /* ---------- Header ---------- */
+  .topbar{ display:flex; align-items:center; gap:14px; margin-bottom:26px; }
+  .mascot{ width:52px; height:52px; flex-shrink:0; }
+  .topbar h1{ font-size:1.5rem; margin:0; font-weight:700; }
+  .topbar p{ margin:2px 0 0; color:var(--ink-soft); font-size:0.9rem; }
+
+  /* ---------- Cards ---------- */
+  .card{
+    background:var(--card);
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    padding:26px;
+    border:2px solid var(--line);
+  }
+  .stack{ display:flex; flex-direction:column; gap:20px; }
+
+  /* ---------- Setup screen ---------- */
+  #setup .tabs{ display:flex; gap:8px; margin-bottom:20px; }
+  .tab-btn{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:600;
+    font-size:0.95rem;
+    padding:10px 20px;
+    border-radius:14px;
+    border:2px solid var(--line);
+    background:var(--paper);
+    color:var(--ink-soft);
+    cursor:pointer;
+    transition:.15s;
+  }
+  .tab-btn.active{ background:var(--lavender); color:var(--ink); border-color:var(--lavender-deep); }
+  label{ font-weight:700; font-size:0.9rem; display:block; margin-bottom:6px; color:var(--ink); }
+  .hint{ font-size:0.82rem; color:var(--ink-soft); margin-top:4px; }
+  input[type=text], textarea{
+    width:100%;
+    font-family:'Nunito',sans-serif;
+    font-size:1rem;
+    padding:12px 14px;
+    border-radius:14px;
+    border:2px solid var(--line);
+    background:var(--paper);
+    color:var(--ink);
+    resize:vertical;
+  }
+  input[type=text]:focus, textarea:focus{ outline:none; border-color:var(--lavender-deep); }
+  .field{ margin-bottom:18px; }
+  .toggle-row{ display:flex; align-items:center; gap:12px; padding:14px 16px; background:var(--paper); border-radius:14px; border:2px solid var(--line); }
+  .switch{ position:relative; width:46px; height:26px; flex-shrink:0; }
+  .switch input{ opacity:0; width:0; height:0; }
+  .slider{ position:absolute; inset:0; background:#E3DCCF; border-radius:20px; cursor:pointer; transition:.2s; }
+  .slider:before{ content:""; position:absolute; width:20px; height:20px; left:3px; top:3px; background:white; border-radius:50%; transition:.2s; box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+  input:checked + .slider{ background:var(--sage-deep); }
+  input:checked + .slider:before{ transform:translateX(20px); }
+
+  button.primary{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:1rem;
+    padding:13px 22px;
+    border-radius:16px;
+    border:none;
+    background:var(--sage-deep);
+    color:white;
+    cursor:pointer;
+    box-shadow:0 3px 0 #6f9a80;
+    transition:.1s;
+  }
+  button.primary:active{ transform:translateY(2px); box-shadow:0 1px 0 #6f9a80; }
+  button.primary:hover{ filter:brightness(1.05); }
+  button.secondary{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:0.9rem;
+    padding:10px 18px;
+    border-radius:14px;
+    border:2px solid var(--line);
+    background:white;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  button.secondary:hover{ border-color:var(--lavender-deep); }
+  button.ghost{
+    font-family:'Nunito',sans-serif;
+    font-weight:700;
+    font-size:0.85rem;
+    padding:8px 14px;
+    border-radius:12px;
+    border:none;
+    background:transparent;
+    color:var(--ink-soft);
+    cursor:pointer;
+    text-decoration:underline;
+  }
+  .error-msg{ color:#C4634B; font-weight:700; font-size:0.88rem; margin-top:8px; }
+  .success-msg{ color:var(--sage-deep); font-weight:700; font-size:0.88rem; margin-top:8px; }
+
+  /* ---------- Dashboard ---------- */
+  #dashboard{ display:none; }
+  .session-strip{
+    display:flex; flex-wrap:wrap; align-items:center; gap:16px;
+    background:var(--lavender); border-radius:20px; padding:18px 22px; margin-bottom:20px;
+    border:2px solid var(--lavender-deep);
+  }
+  .code-badge{
+    font-family:'Baloo 2', sans-serif; font-weight:800; font-size:1.3rem;
+    background:white; padding:8px 16px; border-radius:12px; letter-spacing:2px;
+    border:2px dashed var(--lavender-deep); color:var(--ink);
+  }
+  .session-strip .grow{ flex:1; min-width:180px; }
+  .session-strip .title{ font-weight:800; font-size:1rem; }
+  .session-strip .sub{ font-size:0.82rem; color:var(--ink-soft); }
+  .qr-box{ background:white; padding:6px; border-radius:12px; border:2px solid var(--lavender-deep); }
+  .qr-box img{ display:block; width:88px; height:88px; border-radius:6px; }
+  .strip-actions{ display:flex; flex-direction:column; gap:6px; }
+
+  .main-grid{ display:grid; grid-template-columns: 260px 1fr; gap:20px; }
+  @media (max-width:800px){ .main-grid{ grid-template-columns:1fr; } }
+
+  .qlist{ display:flex; flex-direction:column; gap:8px; max-height:520px; overflow-y:auto; padding-right:4px; }
+  .qitem{
+    text-align:left; padding:12px 14px; border-radius:14px; border:2px solid var(--line);
+    background:var(--paper); cursor:pointer; font-size:0.88rem; color:var(--ink-soft); font-weight:700;
+  }
+  .qitem.live{ background:var(--butter); border-color:#E0C266; color:var(--ink); }
+  .qitem small{ display:block; font-weight:600; color:inherit; opacity:0.7; }
+  .add-q{ margin-top:10px; display:flex; gap:6px; }
+  .add-q input{ flex:1; }
+
+  .current-q-card{ background:var(--peach); border-color:var(--peach-deep); }
+  .current-q-label{ font-size:0.8rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--peach-deep); margin-bottom:6px; }
+  .current-q-text{ font-family:'Baloo 2', sans-serif; font-size:1.3rem; font-weight:700; line-height:1.4; }
+  .nav-btns{ display:flex; gap:10px; margin-top:16px; }
+
+  .answers-head{ display:flex; align-items:center; justify-content:space-between; margin:22px 0 12px; }
+  .answers-head h3{ margin:0; font-size:1.05rem; }
+  .count-pill{ background:var(--sage); color:var(--ink); font-weight:800; padding:4px 12px; border-radius:20px; font-size:0.85rem; }
+  .answers-list{ display:flex; flex-direction:column; gap:10px; max-height:420px; overflow-y:auto; padding-right:4px; }
+  .ans-item{ background:var(--paper); border:2px solid var(--line); border-radius:14px; padding:12px 16px; }
+  .ans-item .name{ font-weight:800; font-size:0.82rem; color:var(--sage-deep); margin-bottom:3px; }
+  .ans-item .text{ font-size:0.98rem; line-height:1.45; }
+  .empty-state{ text-align:center; padding:30px 10px; color:var(--ink-soft); }
+  .empty-state .mascot{ width:64px; height:64px; margin:0 auto 10px; }
+
+  .footer-actions{ display:flex; justify-content:space-between; align-items:center; margin-top:24px; flex-wrap:wrap; gap:10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <svg class="mascot" viewBox="0 0 100 100"><circle cx="50" cy="55" r="34" fill="#DCD3F0"/><circle cx="38" cy="50" r="5" fill="#4A4458"/><circle cx="62" cy="50" r="5" fill="#4A4458"/><path d="M40 64 Q50 72 60 64" stroke="#4A4458" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="27" cy="60" r="7" fill="#FFD3B6" opacity="0.8"/><circle cx="73" cy="60" r="7" fill="#FFD3B6" opacity="0.8"/><ellipse cx="50" cy="24" rx="14" ry="10" fill="#B9D3C2"/></svg>
+    <div>
+      <h1>Phòng Hỏi Đáp</h1>
+      <p>Giao diện điều khiển — dành cho host</p>
+    </div>
+  </div>
+
+  <!-- SETUP SCREEN -->
+  <div id="setup" class="card">
+    <div class="tabs">
+      <button class="tab-btn active" id="tabCreate" onclick="switchTab('create')">✨ Tạo phiên mới</button>
+      <button class="tab-btn" id="tabOpen" onclick="switchTab('open')">📂 Mở phiên cũ</button>
+    </div>
+
+    <div id="paneCreate">
+      <div class="field">
+        <label>Tên phiên (để bạn dễ nhận ra sau này)</label>
+        <input type="text" id="sessionTitle" placeholder="VD: Họp chuyên môn tháng 8 - Team Speaking">
+      </div>
+      <div class="field">
+        <label>Danh sách câu hỏi (mỗi dòng 1 câu — có thể thêm câu hỏi mới sau)</label>
+        <textarea id="questionsInput" rows="6" placeholder="Câu hỏi 1&#10;Câu hỏi 2&#10;Câu hỏi 3"></textarea>
+        <div class="hint">Có thể chỉ nhập 1 câu để bắt đầu, thêm dần trong lúc họp cũng được.</div>
+      </div>
+      <div class="field">
+        <div class="toggle-row">
+          <label class="switch"><input type="checkbox" id="anonToggle" checked><span class="slider"></span></label>
+          <div>
+            <div style="font-weight:800;">Ẩn danh hoàn toàn</div>
+            <div class="hint" id="anonHint">Người tham gia không cần nhập tên trước khi gửi câu trả lời.</div>
+          </div>
+        </div>
+      </div>
+      <button class="primary" onclick="createSession()">Tạo phiên & bắt đầu</button>
+      <div id="createError" class="error-msg"></div>
+    </div>
+
+    <div id="paneOpen" style="display:none;">
+      <div class="field">
+        <label>Nhập mã phiên cũ</label>
+        <input type="text" id="openCode" placeholder="VD: 7K2X9M" style="text-transform:uppercase;">
+      </div>
+      <button class="primary" onclick="openSession()">Mở phiên</button>
+      <div id="openError" class="error-msg"></div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard">
+    <div class="session-strip">
+      <div class="code-badge" id="codeBadge">------</div>
+      <div class="grow">
+        <div class="title" id="titleDisplay">—</div>
+        <div class="sub" id="modeDisplay">—</div>
+      </div>
+      <div class="qr-box"><img id="qrImg" src="" alt="QR tham gia"></div>
+      <div class="strip-actions">
+        <button class="secondary" onclick="copyLink()">🔗 Copy link tham gia</button>
+        <button class="ghost" onclick="backToSetup()">← Quay lại / đổi phiên</button>
+      </div>
+    </div>
+    <div id="copyMsg" class="success-msg" style="display:none; margin-bottom:14px;">Đã copy link! Gửi cho giáo viên tham gia nhé 🎉</div>
+
+    <div class="main-grid">
+      <div class="card">
+        <div style="font-weight:800; margin-bottom:10px; font-size:0.92rem;">Danh sách câu hỏi</div>
+        <div class="qlist" id="qList"></div>
+        <div class="add-q">
+          <input type="text" id="newQInput" placeholder="Thêm câu hỏi mới...">
+          <button class="secondary" onclick="addQuestion()">+ Thêm</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="card current-q-card">
+          <div class="current-q-label" id="qCounter">Câu 1 / 1</div>
+          <div class="current-q-text" id="currentQText">—</div>
+          <div class="nav-btns">
+            <button class="secondary" onclick="prevQuestion()">← Câu trước</button>
+            <button class="primary" onclick="nextQuestion()">Câu tiếp theo →</button>
+          </div>
+        </div>
+
+        <div class="answers-head">
+          <h3>💬 Câu trả lời (câu hỏi đang hiện)</h3>
+          <span class="count-pill" id="ansCount">0</span>
+        </div>
+        <div class="answers-list" id="answersList"></div>
+
+        <div class="footer-actions">
+          <button class="secondary" onclick="exportCSV()">⬇️ Xuất toàn bộ (CSV)</button>
+          <div class="hint">Dữ liệu tự lưu — có thể mở lại phiên này bất cứ lúc nào bằng mã phiên.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+let currentSessionId = null;
+let currentSessionData = null;
+let unsubSession = null;
+let unsubAnswers = null;
+
+function switchTab(which){
+  document.getElementById('tabCreate').classList.toggle('active', which==='create');
+  document.getElementById('tabOpen').classList.toggle('active', which==='open');
+  document.getElementById('paneCreate').style.display = which==='create' ? 'block' : 'none';
+  document.getElementById('paneOpen').style.display = which==='open' ? 'block' : 'none';
+}
+
+document.getElementById('anonToggle').addEventListener('change', (e)=>{
+  document.getElementById('anonHint').textContent = e.target.checked
+    ? 'Người tham gia không cần nhập tên trước khi gửi câu trả lời.'
+    : 'Người tham gia sẽ được yêu cầu nhập tên trước khi gửi câu trả lời đầu tiên.';
+});
+
+function genCode(){
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; // bỏ ký tự dễ nhầm (0/O, 1/I/L)
+  let s='';
+  for(let i=0;i<6;i++) s += chars[Math.floor(Math.random()*chars.length)];
+  return s;
+}
+
+async function createSession(){
+  const title = document.getElementById('sessionTitle').value.trim() || 'Phiên hỏi đáp';
+  const raw = document.getElementById('questionsInput').value;
+  const questions = raw.split('\n').map(q=>q.trim()).filter(q=>q.length>0);
+  const anonymous = document.getElementById('anonToggle').checked;
+  const errBox = document.getElementById('createError');
+  errBox.textContent = '';
+
+  if(questions.length === 0){
+    errBox.textContent = 'Nhập ít nhất 1 câu hỏi nhé.';
+    return;
+  }
+
+  const code = genCode();
+  try{
+    await db.collection('sessions').doc(code).set({
+      title, questions, anonymous,
+      currentIndex: 0,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    loadSession(code);
+  }catch(e){
+    errBox.textContent = 'Không tạo được phiên. Kiểm tra lại cấu hình Firebase trong config.js (xem README).';
+    console.error(e);
+  }
+}
+
+async function openSession(){
+  const code = document.getElementById('openCode').value.trim().toUpperCase();
+  const errBox = document.getElementById('openError');
+  errBox.textContent = '';
+  if(!code){ errBox.textContent = 'Nhập mã phiên nhé.'; return; }
+  try{
+    const doc = await db.collection('sessions').doc(code).get();
+    if(!doc.exists){ errBox.textContent = 'Không tìm thấy phiên với mã này.'; return; }
+    loadSession(code);
+  }catch(e){
+    errBox.textContent = 'Có lỗi khi mở phiên. Kiểm tra lại cấu hình Firebase.';
+    console.error(e);
+  }
+}
+
+function loadSession(code){
+  currentSessionId = code;
+  document.getElementById('setup').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('codeBadge').textContent = code;
+
+  const joinUrl = buildJoinUrl(code);
+  document.getElementById('qrImg').src = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(joinUrl);
+
+  if(unsubSession) unsubSession();
+  unsubSession = db.collection('sessions').doc(code).onSnapshot(doc=>{
+    if(!doc.exists) return;
+    currentSessionData = doc.data();
+    renderSession();
+  });
+}
+
+function buildJoinUrl(code){
+  const base = window.location.href.replace(/host\.html.*$/, 'submit.html');
+  return base + '?session=' + code;
+}
+
+function renderSession(){
+  const d = currentSessionData;
+  document.getElementById('titleDisplay').textContent = d.title;
+  document.getElementById('modeDisplay').textContent = d.anonymous ? 'Chế độ: Ẩn danh hoàn toàn' : 'Chế độ: Yêu cầu tên người tham gia';
+
+  const qi = d.currentIndex ?? 0;
+  document.getElementById('qCounter').textContent = `Câu ${qi+1} / ${d.questions.length}`;
+  document.getElementById('currentQText').textContent = d.questions[qi] || '—';
+
+  const qList = document.getElementById('qList');
+  qList.innerHTML = '';
+  d.questions.forEach((q, i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'qitem' + (i===qi ? ' live' : '');
+    btn.innerHTML = `<small>Câu ${i+1}${i===qi ? ' • ĐANG HIỆN':''}</small>${q}`;
+    btn.onclick = ()=> jumpToQuestion(i);
+    qList.appendChild(btn);
+  });
+
+  listenAnswers(qi);
+}
+
+function jumpToQuestion(i){
+  db.collection('sessions').doc(currentSessionId).update({ currentIndex: i });
+}
+function nextQuestion(){
+  const d = currentSessionData;
+  const next = Math.min((d.currentIndex??0)+1, d.questions.length-1);
+  jumpToQuestion(next);
+}
+function prevQuestion(){
+  const d = currentSessionData;
+  const prev = Math.max((d.currentIndex??0)-1, 0);
+  jumpToQuestion(prev);
+}
+
+async function addQuestion(){
+  const input = document.getElementById('newQInput');
+  const text = input.value.trim();
+  if(!text) return;
+  const newQuestions = [...currentSessionData.questions, text];
+  await db.collection('sessions').doc(currentSessionId).update({ questions: newQuestions });
+  input.value = '';
+}
+
+function listenAnswers(questionIndex){
+  if(unsubAnswers) unsubAnswers();
+  const list = document.getElementById('answersList');
+  const countPill = document.getElementById('ansCount');
+  unsubAnswers = db.collection('sessions').doc(currentSessionId).collection('answers')
+    .where('questionIndex','==', questionIndex)
+    .orderBy('createdAt','desc')
+    .onSnapshot(snap=>{
+      countPill.textContent = snap.size;
+      if(snap.empty){
+        list.innerHTML = `<div class="empty-state">
+          <svg class="mascot" viewBox="0 0 100 100"><circle cx="50" cy="55" r="30" fill="#FFE8A3"/><circle cx="40" cy="52" r="4" fill="#4A4458"/><circle cx="60" cy="52" r="4" fill="#4A4458"/><path d="M42 63 Q50 58 58 63" stroke="#4A4458" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+          Chưa có câu trả lời nào cho câu hỏi này.</div>`;
+        return;
+      }
+      list.innerHTML = '';
+      snap.forEach(doc=>{
+        const a = doc.data();
+        const item = document.createElement('div');
+        item.className = 'ans-item';
+        item.innerHTML = `${a.name ? `<div class="name">${escapeHtml(a.name)}</div>` : ''}<div class="text">${escapeHtml(a.text)}</div>`;
+        list.appendChild(item);
+      });
+    });
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function copyLink(){
+  const url = buildJoinUrl(currentSessionId);
+  navigator.clipboard.writeText(url).then(()=>{
+    const msg = document.getElementById('copyMsg');
+    msg.style.display = 'block';
+    setTimeout(()=> msg.style.display='none', 2500);
+  });
+}
+
+function backToSetup(){
+  if(unsubSession) unsubSession();
+  if(unsubAnswers) unsubAnswers();
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('setup').style.display = 'block';
+  currentSessionId = null;
+  currentSessionData = null;
+}
+
+async function exportCSV(){
+  if(!currentSessionId) return;
+  const snap = await db.collection('sessions').doc(currentSessionId).collection('answers').orderBy('createdAt','asc').get();
+  const d = currentSessionData;
+  let rows = [['Câu hỏi số','Nội dung câu hỏi','Tên người trả lời','Câu trả lời','Thời gian']];
+  snap.forEach(doc=>{
+    const a = doc.data();
+    const qText = d.questions[a.questionIndex] || '';
+    const time = a.createdAt ? new Date(a.createdAt.toDate()).toLocaleString('vi-VN') : '';
+    rows.push([a.questionIndex+1, qText, a.name || '(ẩn danh)', a.text, time]);
+  });
+  const csv = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `${d.title}_${currentSessionId}.csv`;
+  link.click();
+}
+</script>
+</body>
+</html>
