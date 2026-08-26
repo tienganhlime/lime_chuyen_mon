@@ -293,65 +293,41 @@ function switchTab(which){
   if(which === 'open') renderSavedSessionsList();
 }
 
-/* ---------- Saved sessions (stored locally in this browser) ---------- */
-const SAVED_KEY = 'qa_host_sessions_v1';
-
-function getSavedSessions(){
-  try{ return JSON.parse(localStorage.getItem(SAVED_KEY)) || []; }catch(e){ return []; }
-}
-function setSavedSessions(list){
-  localStorage.setItem(SAVED_KEY, JSON.stringify(list));
-}
-function rememberSession(code, title){
-  const list = getSavedSessions().filter(s=>s.code!==code);
-  list.unshift({ code, title: title || 'Phiên hỏi đáp', lastOpened: Date.now() });
-  setSavedSessions(list.slice(0,50));
-}
-function removeSavedSession(code){
-  setSavedSessions(getSavedSessions().filter(s=>s.code!==code));
-}
-
-function renderSavedSessionsList(){
-  const list = getSavedSessions();
+/* ---------- Old sessions list (queried live from Firestore) ---------- */
+async function renderSavedSessionsList(){
   const wrap = document.getElementById('savedList');
   const emptyHint = document.getElementById('savedEmptyHint');
-  wrap.innerHTML = '';
-  if(list.length === 0){
-    emptyHint.style.display = 'block';
-    return;
-  }
-  emptyHint.style.display = 'none';
-  list.forEach(s=>{
-    const item = document.createElement('div');
-    item.className = 'saved-item';
-    const dateStr = s.lastOpened ? new Date(s.lastOpened).toLocaleDateString('vi-VN') : '';
-    item.innerHTML = `
-      <div class="info" onclick="openSavedSession('${s.code}')">
-        <div class="s-title">${escapeHtml(s.title)}</div>
-        <div class="s-meta">Mã: ${s.code} • Mở gần nhất: ${dateStr}</div>
-      </div>
-      <button class="del-btn" title="Xóa phiên này" onclick="deleteSavedSession('${s.code}', event)">🗑</button>
-    `;
-    wrap.appendChild(item);
-  });
-}
-
-async function openSavedSession(code){
   const errBox = document.getElementById('openError');
   errBox.textContent = '';
+  wrap.innerHTML = `<div class="hint" style="padding:8px 2px;">Đang tải danh sách phiên...</div>`;
+  emptyHint.style.display = 'none';
+
   try{
-    const doc = await db.collection('sessions').doc(code).get();
-    if(!doc.exists){
-      errBox.textContent = 'Phiên này không còn tồn tại trên máy chủ, đã tự động xóa khỏi danh sách.';
-      removeSavedSession(code);
-      renderSavedSessionsList();
+    const snap = await db.collection('sessions').orderBy('createdAt','desc').limit(30).get();
+    wrap.innerHTML = '';
+    if(snap.empty){
+      emptyHint.style.display = 'block';
       return;
     }
-    rememberSession(code, doc.data().title);
-    loadSession(code);
+    snap.forEach(doc=>{
+      const d = doc.data();
+      const code = doc.id;
+      const dateStr = d.createdAt ? new Date(d.createdAt.toDate()).toLocaleDateString('vi-VN') : '';
+      const item = document.createElement('div');
+      item.className = 'saved-item';
+      item.innerHTML = `
+        <div class="info" onclick="loadSession('${code}')">
+          <div class="s-title">${escapeHtml(d.title || 'Phiên hỏi đáp')}</div>
+          <div class="s-meta">Mã: ${code} • Tạo ngày: ${dateStr}</div>
+        </div>
+        <button class="del-btn" title="Xóa phiên này" onclick="deleteSavedSession('${code}', event)">🗑</button>
+      `;
+      wrap.appendChild(item);
+    });
   }catch(e){
-    errBox.textContent = 'Có lỗi khi mở phiên. Kiểm tra lại cấu hình Firebase.';
     console.error(e);
+    wrap.innerHTML = '';
+    errBox.textContent = 'Không tải được danh sách phiên từ Firebase. Kiểm tra lại cấu hình / kết nối mạng.';
   }
 }
 
@@ -368,11 +344,11 @@ async function deleteSavedSession(code, evt){
     await batch.commit();
   }catch(e){
     console.error(e);
-    errBox.textContent = 'Có lỗi khi xóa phiên trên máy chủ (đã xóa khỏi danh sách trên máy này).';
+    errBox.textContent = 'Có lỗi khi xóa phiên trên máy chủ. Kiểm tra lại kết nối rồi thử lại.';
+    return;
   }
-  removeSavedSession(code);
-  renderSavedSessionsList();
   if(currentSessionId === code) backToSetup();
+  renderSavedSessionsList();
 }
 
 function toggleManualCode(){
@@ -416,7 +392,6 @@ async function createSession(){
       started: false,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
-    rememberSession(code, title);
     loadSession(code);
   }catch(e){
     errBox.textContent = 'Không tạo được phiên. Kiểm tra lại cấu hình Firebase trong config.js (xem README).';
@@ -432,7 +407,6 @@ async function openSession(){
   try{
     const doc = await db.collection('sessions').doc(code).get();
     if(!doc.exists){ errBox.textContent = 'Không tìm thấy phiên với mã này.'; return; }
-    rememberSession(code, doc.data().title);
     loadSession(code);
   }catch(e){
     errBox.textContent = 'Có lỗi khi mở phiên. Kiểm tra lại cấu hình Firebase.';
