@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gửi câu trả lời</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sage:#B9D3C2; --sage-deep:#8FB89D;
+    --peach:#FFD3B6; --peach-deep:#F5A876;
+    --butter:#FFE8A3;
+    --lavender:#DCD3F0; --lavender-deep:#B4A4DE;
+    --ink:#4A4458; --ink-soft:#7A7288;
+    --paper:#FFFCF6; --card:#FFFFFF; --line:#EDE7DC;
+    --shadow: 0 4px 0 rgba(74,68,88,0.08), 0 8px 24px rgba(74,68,88,0.06);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; min-height:100vh;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(220,211,240,0.5), transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(185,211,194,0.5), transparent 40%),
+      var(--paper);
+    font-family:'Nunito', sans-serif; color:var(--ink);
+    display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  h1,h2,.display{ font-family:'Baloo 2', sans-serif; }
+  .wrap{ width:100%; max-width:460px; }
+  .card{
+    background:var(--card); border-radius:26px; box-shadow:var(--shadow);
+    border:2px solid var(--line); padding:30px 26px; text-align:center;
+  }
+  .mascot{ width:76px; height:76px; margin:0 auto 14px; display:block; }
+  h1{ font-size:1.35rem; margin:0 0 6px; }
+  p.sub{ color:var(--ink-soft); margin:0 0 22px; font-size:0.92rem; }
+  label{ font-weight:800; font-size:0.9rem; display:block; margin-bottom:6px; text-align:left; }
+  input[type=text], textarea{
+    width:100%; font-family:'Nunito',sans-serif; font-size:1rem;
+    padding:13px 15px; border-radius:14px; border:2px solid var(--line);
+    background:var(--paper); color:var(--ink); resize:vertical;
+  }
+  input[type=text]:focus, textarea:focus{ outline:none; border-color:var(--lavender-deep); }
+  .field{ margin-bottom:16px; text-align:left; }
+  button.primary{
+    width:100%; font-family:'Baloo 2', sans-serif; font-weight:700; font-size:1.05rem;
+    padding:14px; border-radius:16px; border:none; background:var(--sage-deep); color:white;
+    cursor:pointer; box-shadow:0 3px 0 #6f9a80; transition:.1s;
+  }
+  button.primary:active{ transform:translateY(2px); box-shadow:0 1px 0 #6f9a80; }
+  button.primary:disabled{ opacity:0.5; cursor:not-allowed; }
+  .error-msg{ color:#C4634B; font-weight:700; font-size:0.88rem; margin-top:10px; }
+
+  .question-box{
+    background:var(--peach); border:2px solid var(--peach-deep); border-radius:18px;
+    padding:18px 20px; margin-bottom:18px; text-align:left;
+  }
+  .qlabel{ font-size:0.78rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--peach-deep); margin-bottom:6px; }
+  .qtext{ font-family:'Baloo 2', sans-serif; font-size:1.25rem; font-weight:700; line-height:1.4; }
+
+  .toast{
+    display:none; background:var(--sage); color:var(--ink); font-weight:800;
+    padding:12px 16px; border-radius:14px; margin-top:14px; font-size:0.92rem;
+  }
+  .name-pill{ display:inline-block; background:var(--lavender); padding:4px 12px; border-radius:20px; font-size:0.82rem; font-weight:800; margin-bottom:14px; }
+  .switch-name{ background:none; border:none; text-decoration:underline; color:var(--ink-soft); font-size:0.8rem; cursor:pointer; margin-top:8px; }
+  #screenLoading, #screenCode, #screenName, #screenAnswer{ display:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <svg class="mascot" viewBox="0 0 100 100"><circle cx="50" cy="55" r="34" fill="#B9D3C2"/><circle cx="38" cy="50" r="5" fill="#4A4458"/><circle cx="62" cy="50" r="5" fill="#4A4458"/><path d="M40 62 Q50 70 60 62" stroke="#4A4458" stroke-width="3.5" fill="none" stroke-linecap="round"/><ellipse cx="50" cy="24" rx="14" ry="10" fill="#FFD3B6"/></svg>
+
+    <div id="screenLoading">
+      <p class="sub">Đang tải phòng hỏi đáp...</p>
+    </div>
+
+    <div id="screenCode">
+      <h1>Tham gia phòng hỏi đáp</h1>
+      <p class="sub">Nhập mã phiên do host cung cấp</p>
+      <div class="field">
+        <input type="text" id="codeInput" placeholder="VD: 7K2X9M" style="text-transform:uppercase; text-align:center; font-family:'Baloo 2'; font-size:1.2rem; letter-spacing:2px;">
+      </div>
+      <button class="primary" onclick="submitCode()">Vào phòng</button>
+      <div id="codeError" class="error-msg"></div>
+    </div>
+
+    <div id="screenName">
+      <h1>Xin chào 👋</h1>
+      <p class="sub" id="nameSessionTitle">—</p>
+      <div class="field">
+        <label>Tên của bạn</label>
+        <input type="text" id="nameInput" placeholder="Nhập tên để gửi câu trả lời">
+      </div>
+      <button class="primary" onclick="submitName()">Tiếp tục</button>
+      <div id="nameError" class="error-msg"></div>
+    </div>
+
+    <div id="screenAnswer">
+      <div class="name-pill" id="whoami" style="display:none;"></div>
+      <div class="question-box">
+        <div class="qlabel" id="qCounter">Câu hỏi</div>
+        <div class="qtext" id="qText">—</div>
+      </div>
+      <div class="field">
+        <label>Câu trả lời của bạn</label>
+        <textarea id="answerInput" rows="4" placeholder="Nhập câu trả lời, gửi bao nhiêu lần cũng được..."></textarea>
+      </div>
+      <button class="primary" id="sendBtn" onclick="sendAnswer()">Gửi câu trả lời</button>
+      <div class="toast" id="toast">Đã gửi! Cảm ơn bạn 🎉 Bạn có thể gửi tiếp nếu muốn.</div>
+      <div id="answerError" class="error-msg"></div>
+      <div><button class="switch-name" onclick="clearName()" id="changeNameBtn" style="display:none;">Không phải bạn? Đổi tên</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+let sessionId = null;
+let sessionData = null;
+let myName = null;
+
+function showScreen(id){
+  ['screenLoading','screenCode','screenName','screenAnswer'].forEach(s=>{
+    document.getElementById(s).style.display = (s===id) ? 'block' : 'none';
+  });
+}
+
+window.addEventListener('DOMContentLoaded', ()=>{
+  const params = new URLSearchParams(window.location.search);
+  const codeFromUrl = params.get('session');
+  if(codeFromUrl){
+    showScreen('screenLoading');
+    tryLoadSession(codeFromUrl.toUpperCase());
+  } else {
+    showScreen('screenCode');
+  }
+});
+
+function submitCode(){
+  const code = document.getElementById('codeInput').value.trim().toUpperCase();
+  const err = document.getElementById('codeError');
+  err.textContent = '';
+  if(!code){ err.textContent = 'Nhập mã phiên nhé.'; return; }
+  showScreen('screenLoading');
+  tryLoadSession(code);
+}
+
+async function tryLoadSession(code){
+  try{
+    const doc = await db.collection('sessions').doc(code).get();
+    if(!doc.exists){
+      showScreen('screenCode');
+      document.getElementById('codeError').textContent = 'Không tìm thấy phòng với mã này. Kiểm tra lại nhé.';
+      return;
+    }
+    sessionId = code;
+    sessionData = doc.data();
+    afterSessionLoaded();
+  }catch(e){
+    console.error(e);
+    showScreen('screenCode');
+    document.getElementById('codeError').textContent = 'Có lỗi kết nối. Thử lại nhé.';
+  }
+}
+
+function afterSessionLoaded(){
+  if(!sessionData.anonymous){
+    const savedName = localStorage.getItem('qa_name_' + sessionId);
+    if(savedName){
+      myName = savedName;
+      enterAnswerScreen();
+    } else {
+      document.getElementById('nameSessionTitle').textContent = sessionData.title;
+      showScreen('screenName');
+    }
+  } else {
+    enterAnswerScreen();
+  }
+}
+
+function submitName(){
+  const name = document.getElementById('nameInput').value.trim();
+  const err = document.getElementById('nameError');
+  err.textContent = '';
+  if(!name){ err.textContent = 'Nhập tên nhé.'; return; }
+  myName = name;
+  localStorage.setItem('qa_name_' + sessionId, name);
+  enterAnswerScreen();
+}
+
+function clearName(){
+  localStorage.removeItem('qa_name_' + sessionId);
+  myName = null;
+  document.getElementById('nameInput').value = '';
+  document.getElementById('nameSessionTitle').textContent = sessionData.title;
+  showScreen('screenName');
+}
+
+function enterAnswerScreen(){
+  showScreen('screenAnswer');
+  const whoami = document.getElementById('whoami');
+  const changeBtn = document.getElementById('changeNameBtn');
+  if(myName){
+    whoami.textContent = 'Bạn: ' + myName;
+    whoami.style.display = 'inline-block';
+    changeBtn.style.display = 'inline';
+  } else {
+    whoami.style.display = 'none';
+    changeBtn.style.display = 'none';
+  }
+  listenToSession();
+}
+
+function listenToSession(){
+  db.collection('sessions').doc(sessionId).onSnapshot(doc=>{
+    if(!doc.exists) return;
+    sessionData = doc.data();
+    renderQuestion();
+  });
+}
+
+function renderQuestion(){
+  const qi = sessionData.currentIndex ?? 0;
+  document.getElementById('qCounter').textContent = `Câu ${qi+1} / ${sessionData.questions.length} — ${sessionData.title}`;
+  document.getElementById('qText').textContent = sessionData.questions[qi] || '—';
+}
+
+async function sendAnswer(){
+  const input = document.getElementById('answerInput');
+  const text = input.value.trim();
+  const err = document.getElementById('answerError');
+  const btn = document.getElementById('sendBtn');
+  err.textContent = '';
+  if(!text){ err.textContent = 'Nhập câu trả lời trước đã nhé.'; return; }
+
+  btn.disabled = true;
+  try{
+    await db.collection('sessions').doc(sessionId).collection('answers').add({
+      questionIndex: sessionData.currentIndex ?? 0,
+      text: text,
+      name: myName || null,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    input.value = '';
+    const toast = document.getElementById('toast');
+    toast.style.display = 'block';
+    setTimeout(()=> toast.style.display='none', 2200);
+  }catch(e){
+    console.error(e);
+    err.textContent = 'Gửi không thành công, thử lại nhé.';
+  }finally{
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
